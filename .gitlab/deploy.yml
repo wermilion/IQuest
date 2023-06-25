@@ -4,6 +4,7 @@
     APP_DIRECTORY: "/var/server/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
     TLS_CRT: ${TOMSK_IT_WILD_CRT}
     TLS_KEY: ${TOMSK_IT_WILD_KEY}
+    SSH_OPT: "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
   before_script:
     - apk update
     - apk add openssh-client gettext sshpass
@@ -12,10 +13,10 @@
     - mkdir .docker/tls
     - echo ${TLS_CRT} > .docker/tls/crt.pem
     - echo ${TLS_KEY} > .docker/tls/key.pem
-    - sshpass -p ${SSH_PASSWORD} scp -pr .docker ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_USER}@${SSH_HOST} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_USER}@${SSH_HOST} "docker-compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_USER}@${SSH_HOST} "docker-compose - f ${APP_DIRECTORY}/docker-compose.yml up -d --force-recreate"
+    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -pr .docker ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker-compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker-compose - f ${APP_DIRECTORY}/docker-compose.yml up -d --force-recreate"
 
 
 deploy-dev:

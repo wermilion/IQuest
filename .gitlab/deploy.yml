@@ -3,6 +3,8 @@
   variables:
     APP_DIRECTORY: "/home/${SSH_USER}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
     SSH_OPT: "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+    TLS_CRT: "TOMSK_IT_WILD_CRT"
+    TLS_KEY: "TOMSK_IT_WILD_KEY"
   before_script:
     - apk update
     - apk add openssh-client gettext sshpass

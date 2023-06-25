@@ -22,7 +22,7 @@
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml up -d"
     # shared proxy
-    - envsubst '$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME' < .shared/proxy-config.conf.tpl > .shared/proxy-config.conf
+    - envsubst '$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME' < .shared/proxy-config.conf.tpl > .shared/${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.conf
     - echo "${TLS_CRT}" > .shared-proxy/tls/tomsk-it.ru.pem
     - echo "${TLS_KEY}" > .shared-proxy/tls/tomsk-it.ru-key.pem
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -pr .shared-proxy/ ${SSH_USER}@${SSH_HOST}:/home/${SSH_USER}/

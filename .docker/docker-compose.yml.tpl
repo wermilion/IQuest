@@ -10,6 +10,8 @@ services:
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back
     networks:
       - ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}
+    env_file:
+    - .env-back
   proxy:
     image: bitnami/nginx:1.25.1-debian-11-r2
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-proxy

@@ -10,10 +10,6 @@
     - apk add openssh-client gettext sshpass
   script:
     - envsubst < .docker/docker-compose.yml.tpl > .docker/docker-compose.yml
-    - envsubst '$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME' < .docker/proxy-config.conf.tpl > .docker/proxy-config.conf
-    - mkdir .docker/tls
-    - echo "${TLS_CRT}" > .docker/tls/crt.pem
-    - echo "${TLS_KEY}" > .docker/tls/key.pem
     - cp ${BACK_ENV} .docker/.env.back
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "mkdir -p ${APP_DIRECTORY}"
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -p .docker/docker-compose.yml ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
@@ -23,6 +19,7 @@
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml up -d"
     # shared proxy
     - envsubst '$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME' < .shared/proxy-config.conf.tpl > .shared/${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.conf
+    - mkdir -p .shared-proxy/tls
     - echo "${TLS_CRT}" > .shared-proxy/tls/tomsk-it.ru.pem
     - echo "${TLS_KEY}" > .shared-proxy/tls/tomsk-it.ru-key.pem
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -pr .shared-proxy/ ${SSH_USER}@${SSH_HOST}:/home/${SSH_USER}/

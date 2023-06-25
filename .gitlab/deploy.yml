@@ -1,5 +1,5 @@
 .deploy:
-  image: harbor.tomsk-it.ru/dockerhub/alpine:3.18.2
+  image: harbor.tomsk-it.ru/dockerhub/library/alpine:3.18.2
   variables:
     REMOTE_HOST: "ssh ${SSH_USER}:${SSH_PASSWORD}@{SSH_HOST}"
     APP_DIRECTORY: "/var/server/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"

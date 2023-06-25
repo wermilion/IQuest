@@ -1,0 +1,34 @@
+.kaniko:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [ "" ]
+  script:
+    - |
+      /kaniko/executor \
+      --context "${CI_PROJECT_DIR}" \
+      --dockerfile "${CI_PROJECT_DIR}/.docker/Dockerfile" \
+      --target ${BUILD_TARGET} \
+      --destination "${CI_REGISTRY_IMAGE}/${BUILD_TARGET}:${CI_COMMIT_TAG}"
+
+build-dev-back:
+  extends: .kaniko
+  variables:
+    BUILD_TARGET: proxy
+    CI_COMMIT_TAG: ${CI_COMMIT_SHORT_SHA}
+
+build-dev-front:
+  extends: .kaniko
+  variables:
+    BUILD_TARGET: proxy
+    CI_COMMIT_TAG: ${CI_COMMIT_SHORT_SHA}
+
+build-prod-back:
+  extends: .kaniko
+  variables:
+    BUILD_TARGET: back
+
+build-prod-front:
+  extends: .kaniko
+  variables:
+    BUILD_TARGET: front

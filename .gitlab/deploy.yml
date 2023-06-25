@@ -1,0 +1,30 @@
+.deploy:
+  image: harbor.tomsk-it.ru/dockerhub/alpine:3.18.2
+  variables:
+    REMOTE_HOST: "ssh ${SSH_USER}:${SSH_PASSWORD}@{SSH_HOST}"
+    APP_DIRECTORY: "/var/server/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
+  before_script:
+    - apk update
+    - apk add openssh-client gettext
+  script:
+    - envsubst < .docker/.env.template > .docker/.env
+    - cp ${TLS_CRT} .docker/tls.crt
+    - cp ${TLS_KEY} .docker/tls.key
+    - scp -pr .docker ${REMOTE_HOST}:${APP_DIRECTORY}
+    - ${REMOTE_HOST} "docker login -u ${CI_DEPLOY_USER} -p ${CI_DEPLOY_PASSWORD} ${CI_REGISTRY}"
+    - ${REMOTE_HOST} "docker-compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
+    - ${REMOTE_HOST} "docker-compose - f ${APP_DIRECTORY}/docker-compose.yml up -d --force-recreate"
+
+
+deploy-dev:
+  extends:
+    - .deploy
+    - .from_dev
+  variables:
+    CI_COMMIT_TAG: ${CI_COMMIT_SHORT_SHA}
+
+
+deploy-prod:
+  extends:
+    - .deploy
+    - .from_prod

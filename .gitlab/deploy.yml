@@ -11,6 +11,8 @@
   script:
     - envsubst < .docker/.env.template > .docker/.env
     - mkdir .docker/tls
+    - echo ${TOMSK_IT_WILD_CRT}
+    - echo ${TLS_CRT}
     - cp ${TLS_CRT} .docker/tls/crt.pem
     - cp ${TLS_KEY} .docker/tls/key.pem
     - scp -pr .docker ${REMOTE_HOST}:${APP_DIRECTORY}

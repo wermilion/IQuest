@@ -1,7 +1,7 @@
 .deploy:
   image: harbor.tomsk-it.ru/dockerhub/library/alpine:3.18.2
   variables:
-    APP_DIRECTORY: "/var/server/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
+    APP_DIRECTORY: "~${SSH_USER}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
     TLS_CRT: ${TOMSK_IT_WILD_CRT}
     TLS_KEY: ${TOMSK_IT_WILD_KEY}
     SSH_OPT: "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"

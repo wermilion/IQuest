@@ -11,10 +11,8 @@
   script:
     - envsubst < .docker/.env.template > .docker/.env
     - mkdir .docker/tls
-    - echo ${TOMSK_IT_WILD_CRT}
-    - echo ${TLS_CRT}
-    - cp ${TLS_CRT} .docker/tls/crt.pem
-    - cp ${TLS_KEY} .docker/tls/key.pem
+    - echo ${TLS_CRT} .docker/tls/crt.pem
+    - echo ${TLS_KEY} .docker/tls/key.pem
     - scp -pr .docker ${REMOTE_HOST}:${APP_DIRECTORY}
     - ${REMOTE_HOST} "docker login -u ${$CI_REGISTRY_USER} -p ${$CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
     - ${REMOTE_HOST} "docker-compose -f ${APP_DIRECTORY}/docker-compose.yml pull"

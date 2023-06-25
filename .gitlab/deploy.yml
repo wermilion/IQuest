@@ -8,6 +8,7 @@
     - apk add openssh-client gettext sshpass
   script:
     - envsubst < .docker/docker-compose.yml.tpl > .docker/docker-compose.yml
+    - envsubst '$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME' < proxy-config.conf.tpl > proxy-config.conf
     - mkdir .docker/tls
     - echo "${TLS_CRT}" > .docker/tls/crt.pem
     - echo "${TLS_KEY}" > .docker/tls/key.pem

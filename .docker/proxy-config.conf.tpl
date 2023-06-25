@@ -1,5 +1,5 @@
 server {
-    listen 8082 default_server;
+    listen 8080 default_server;
 
     server_name _;
 
@@ -14,11 +14,11 @@ server {
     ssl_certificate_key /tmp/tls/key.pem;
 
 location / {
-    proxy_pass http://localhost:8080;
+    proxy_pass http://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-front:8080;
     }
 
 location /api/ {
     rewrite ^/api(/.*)$ $1 break;
-    proxy_pass http://localhost:81;
+    proxy_pass http://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back:80;
     }
 }

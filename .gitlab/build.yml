@@ -9,6 +9,7 @@
   script:
     - |
       /kaniko/executor \
+      --skip-unused-stages=true \
       --context "${CI_PROJECT_DIR}" \
       --dockerfile "${CI_PROJECT_DIR}/.docker/Dockerfile" \
       --target ${BUILD_TARGET} \

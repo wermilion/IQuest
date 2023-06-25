@@ -9,7 +9,7 @@ WORKDIR /app
 COPY --from=nodejs /app/dist ./
 
 FROM unit:php8.2 as back
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git unzip && rm -rf /var/lib/apt/lists/*
 COPY --from=composer:2.5.8 /usr/bin/composer /usr/bin/composer
 COPY .docker/unit-config.json /docker-entrypoint.d/
 WORKDIR /app

@@ -3,13 +3,15 @@
   variables:
     REMOTE_HOST: "ssh ${SSH_USER}:${SSH_PASSWORD}@{SSH_HOST}"
     APP_DIRECTORY: "/var/server/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
+    TLS_CRT: ${TOMSK_IT_WILD_CRT}
+    TLS_KEY: ${TOMSK_IT_WILD_KEY}
   before_script:
     - apk update
     - apk add openssh-client gettext
   script:
     - envsubst < .docker/.env.template > .docker/.env
-    - cp ${TLS_CRT} .docker/tls.crt
-    - cp ${TLS_KEY} .docker/tls.key
+    - cp ${TLS_CRT} .docker/crt.pem
+    - cp ${TLS_KEY} .docker/key.pem
     - scp -pr .docker ${REMOTE_HOST}:${APP_DIRECTORY}
     - ${REMOTE_HOST} "docker login -u ${$CI_REGISTRY_USER} -p ${$CI_REGISTRY_PASSWORD} ${CI_REGISTRY}"
     - ${REMOTE_HOST} "docker-compose -f ${APP_DIRECTORY}/docker-compose.yml pull"

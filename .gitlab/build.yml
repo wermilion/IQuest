@@ -3,6 +3,9 @@
   image:
     name: gcr.io/kaniko-project/executor:v1.9.0-debug
     entrypoint: [ "" ]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
   script:
     - |
       /kaniko/executor \
@@ -12,23 +15,31 @@
       --destination "${CI_REGISTRY_IMAGE}/${BUILD_TARGET}:${CI_COMMIT_TAG}"
 
 build-dev-back:
-  extends: .kaniko
+  extends:
+    - .kaniko
+    - .for_dev
   variables:
     BUILD_TARGET: proxy
     CI_COMMIT_TAG: ${CI_COMMIT_SHORT_SHA}
 
 build-dev-front:
-  extends: .kaniko
+  extends:
+    - .kaniko
+    - .for_dev
   variables:
     BUILD_TARGET: proxy
     CI_COMMIT_TAG: ${CI_COMMIT_SHORT_SHA}
 
 build-prod-back:
-  extends: .kaniko
+  extends:
+    - .kaniko
+    - .for_prod
   variables:
     BUILD_TARGET: back
 
 build-prod-front:
-  extends: .kaniko
+  extends:
+    - .kaniko
+    - .for_prod
   variables:
     BUILD_TARGET: front

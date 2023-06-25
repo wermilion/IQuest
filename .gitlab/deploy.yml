@@ -26,7 +26,7 @@
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose-shared.yml pull"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose-shared.yml up -d"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec shared-proxy nginx -t"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec shared-proxy nginx -c reload"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker restart shared-proxy"
 
 
 

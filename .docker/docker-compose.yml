@@ -16,6 +16,6 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - tls:/tmp/tls
-      - proxy-config.conf:/opt/bitnami/nginx/conf/server_blocks/proxy-config.conf
+      - ./tls:/tmp/tls
+      - ./proxy-config.conf:/opt/bitnami/nginx/conf/server_blocks/proxy-config.conf
     network_mode: "host"

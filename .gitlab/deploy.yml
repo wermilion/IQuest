@@ -7,15 +7,15 @@
     - apk update
     - apk add openssh-client gettext sshpass
   script:
-    - envsubst < .docker/.env.template > .docker/.env
+    - envsubst < .docker/docker-compose.yml.tpl > .docker/docker-compose.yml
     - mkdir .docker/tls
     - echo "${TLS_CRT}" > .docker/tls/crt.pem
     - echo "${TLS_KEY}" > .docker/tls/key.pem
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "mkdir -p ${APP_DIRECTORY}"
-    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -pr .docker/ ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
+    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -pr .docker/* ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "echo ${CI_REGISTRY_PASSWORD} | docker login -u ${CI_REGISTRY_USER} --password-stdin ${CI_REGISTRY}"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/.docker/docker-compose.yml pull"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/.docker/docker-compose.yml up -d --force-recreate"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml up -d --force-recreate"
 
 
 deploy-dev:

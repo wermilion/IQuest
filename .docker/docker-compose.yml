@@ -2,16 +2,19 @@ version: "3"
 services:
   front:
     image: ${CI_REGISTRY_IMAGE}/front:${CI_COMMIT_TAG}
+    container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-front
     ports:
       - 127.0.0.1:8080:8080
     network_mode: "host"
   back:
     image: ${CI_REGISTRY_IMAGE}/back:${CI_COMMIT_TAG}
+    container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back
     ports:
       - 127.0.0.1:81:80
     network_mode: "host"
   proxy:
     image: bitnami/nginx:1.25.1-debian-11-r2
+    container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-proxy
     ports:
       - 80:80
       - 443:443

@@ -14,4 +14,7 @@ services:
       - server
 networks:
   server:
-    external: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

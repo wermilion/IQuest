@@ -10,7 +10,7 @@ services:
       - ./tls:/tmp/tls
       - ./server_blocks/:/opt/bitnami/nginx/conf/server_blocks/
     networks:
-      server:
+      - server
 networks:
   server:
     external: true

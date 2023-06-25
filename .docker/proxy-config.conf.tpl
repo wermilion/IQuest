@@ -7,11 +7,11 @@ server {
 }
 
 server {
-    server_name  _;
+    server_name  $CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru;
     listen 4443 ssl default_server;
 
-    ssl_certificate /tmp/tls/crt.pem;
-    ssl_certificate_key /tmp/tls/key.pem;
+    ssl_certificate /tmp/tls/tomsk-it.ru.pem;
+    ssl_certificate_key /tmp/tls/tomsk-it.ru-key.pem;
 
 location / {
     proxy_pass http://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-front:8080;

@@ -23,8 +23,8 @@
     - echo "${TLS_CRT}" > .shared-proxy/tls/tomsk-it.ru.pem
     - echo "${TLS_KEY}" > .shared-proxy/tls/tomsk-it.ru-key.pem
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -pr .shared-proxy/ ${SSH_USER}@${SSH_HOST}:/home/${SSH_USER}/
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose.yml pull"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose.yml up -d"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose-shared.yml pull"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose-shared.yml up -d"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec shared-proxy nginx -t"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec shared-proxy nginx -c reload"
 

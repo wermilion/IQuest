@@ -5,6 +5,8 @@ services:
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-front
   networks:
     server:
+      aliases:
+        - ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-front
   back:
     image: ${CI_REGISTRY_IMAGE}/back:${CI_COMMIT_TAG}
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back
@@ -12,5 +14,8 @@ services:
     - env-back
     networks:
       server:
+        aliases:
+          - ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back
 networks:
   server:
+    external: true

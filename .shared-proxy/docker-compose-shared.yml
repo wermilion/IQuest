@@ -10,4 +10,6 @@ services:
       - ./tls:/tmp/tls
       - ./server_blocks/:/opt/bitnami/nginx/conf/server_blocks/
     networks:
-      bridge:
+      server:
+networks:
+  server:

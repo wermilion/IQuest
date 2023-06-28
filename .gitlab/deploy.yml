@@ -13,6 +13,7 @@
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -p .docker/docker-compose.yml ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -p .docker/.env ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "echo ${CI_REGISTRY_PASSWORD} | docker login -u ${CI_REGISTRY_USER} --password-stdin ${CI_REGISTRY}"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "mkdir -p -o 1001 -g 1001 ${APP_DIRECTORY}/postgresql_data"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml up -d"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back php /app/artisan migrate --force"

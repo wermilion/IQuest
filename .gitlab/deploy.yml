@@ -13,9 +13,9 @@
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -p .docker/docker-compose.yml ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -p .docker/.env ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "echo ${CI_REGISTRY_PASSWORD} | docker login -u ${CI_REGISTRY_USER} --password-stdin ${CI_REGISTRY}"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} docker run --rm --network="server" --env-file ${APP_DIRECTORY}/.env --name $CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME-migrate php artisan migrate
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml up -d"
+    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back php /app/artisan migrate --force"
     # shared proxy
     - mkdir -p .shared-proxy/server_blocks .shared-proxy/tls
     - envsubst '$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME' < .shared-proxy/proxy-config.conf.tpl > .shared-proxy/server_blocks/${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.conf

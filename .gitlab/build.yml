@@ -34,13 +34,13 @@ build-dev-front:
 build-prod-back:
   extends:
     - .kaniko
-    - .from_prod
+    - .for_prod
   variables:
     BUILD_TARGET: back
 
 build-prod-front:
   extends:
     - .kaniko
-    - .from_prod
+    - .for_prod
   variables:
     BUILD_TARGET: front

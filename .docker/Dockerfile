@@ -8,7 +8,7 @@ FROM harbor.tomsk-it.ru/dockerhub/bitnami/nginx:1.25.1-debian-11-r2 as front
 WORKDIR /app
 COPY --from=nodejs /app/dist ./
 
-FROM harbor.tomsk-it.ru/dockerhub/library/unit:php8.2 as back
+FROM harbor.tomsk-it.ru/asap-infra/unit:php8.2-pdo-psql as back
 RUN apt-get update && apt-get install -y git unzip && rm -rf /var/lib/apt/lists/*
 COPY --from=harbor.tomsk-it.ru/dockerhub/library/composer:2.5.8 /usr/bin/composer /usr/bin/composer
 COPY .docker/unit-config.json /docker-entrypoint.d/

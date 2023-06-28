@@ -9,7 +9,7 @@
   script:
     - cp ${BACK_ENV} .docker/.env
     - source .docker/.env
-    - printend | grep "DB_"
+    - printenv | grep "DB_"
     - envsubst < .docker/docker-compose.yml.tpl > .docker/docker-compose.yml
     - cat .docker/docker-compose.yml
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "mkdir -p ${APP_DIRECTORY}"

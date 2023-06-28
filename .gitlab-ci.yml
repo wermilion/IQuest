@@ -1,5 +1,6 @@
 include:
   - local: .gitlab/**.yml
+  - remote: "https://gitasap.ru/iac/gitlab-ci/-/raw/master/v1/shared-include.yml"
 
 stages:
   - build

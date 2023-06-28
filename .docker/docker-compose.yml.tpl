@@ -9,7 +9,18 @@ services:
     image: ${CI_REGISTRY_IMAGE}/back:${CI_COMMIT_TAG}
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back
     env_file:
-    - env-back
+    - .env
+    networks:
+      - server
+  db:
+    image: harbor.tomsk-it.ru/dockerhub/bitnami/postgresql:15.3.0-debian-11-r17
+    container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-db
+    environment:
+      - POSTGRESQL_USERNAME=${DB_USERNAME}
+      - POSTGRESQL_PASSWORD=${DB_PASSWORD}
+      - POSTGRESQL_DATABASE=${DB_DATABASE}
+    volumes:
+      - ./postgresql_data:/bitnami/postgresql
     networks:
       - server
 networks:

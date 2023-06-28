@@ -1,50 +1,22 @@
-.deploy:
-  image: harbor.tomsk-it.ru/dockerhub/library/alpine:3.18.2
-  variables:
-    APP_DIRECTORY: "/home/${SSH_USER}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
-    SSH_OPT: "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
-    TLS_CRT: "${TOMSK_IT_WILD_CRT}"
-    TLS_KEY: "${TOMSK_IT_WILD_KEY}"
-  before_script:
-    - apk update
-    - apk add openssh-client gettext sshpass
-  script:
-    - envsubst < .docker/docker-compose.yml.tpl > .docker/docker-compose.yml
-    - cp ${BACK_ENV} .docker/.env.back
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "mkdir -p ${APP_DIRECTORY}"
-    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -p .docker/docker-compose.yml ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
-    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -p .docker/.env.back ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "echo ${CI_REGISTRY_PASSWORD} | docker login -u ${CI_REGISTRY_USER} --password-stdin ${CI_REGISTRY}"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml up -d"
-    # shared proxy
-    - mkdir -p .shared-proxy/server_blocks .shared-proxy/tls
-    - envsubst '$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME' < .shared-proxy/proxy-config.conf.tpl > .shared-proxy/server_blocks/${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.conf
-    - echo "${TLS_CRT}" > .shared-proxy/tls/tomsk-it.ru.pem
-    - echo "${TLS_KEY}" > .shared-proxy/tls/tomsk-it.ru-key.pem
-    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -pr .shared-proxy/ ${SSH_USER}@${SSH_HOST}:/home/${SSH_USER}/
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose-shared.yml pull"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose-shared.yml up -d"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec shared-proxy nginx -t"
-    - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker restart shared-proxy"
-
-
-
 deploy-dev:
   extends:
     - .deploy
-    - .from_dev
+    - .for_dev
   variables:
     CI_COMMIT_TAG: ${CI_COMMIT_SHORT_SHA}
+    TLS_CRT: "${TOMSK_IT_WILD_CRT}"
+    TLS_KEY: "${TOMSK_IT_WILD_KEY}"
   environment:
     name: dev
-    url: https://asap-template-dev.tomsk-it.ru
-
+    url: https://$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru
 
 deploy-prod:
   extends:
     - .deploy
-    - .from_prod
+    - .for_prod
+  variables:
+    TLS_CRT: "${TOMSK_IT_WILD_CRT}"
+    TLS_KEY: "${TOMSK_IT_WILD_KEY}"
   environment:
     name: prod
-    url: https://asap-template-prod.tomsk-it.ru
+    url: https://$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru

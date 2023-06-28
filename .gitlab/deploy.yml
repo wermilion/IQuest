@@ -8,6 +8,7 @@
     - apk add openssh-client gettext sshpass
   script:
     - cp ${BACK_ENV} .docker/.env
+    - source .docker/.env
     - envsubst < .docker/docker-compose.yml.tpl > .docker/docker-compose.yml
     - sshpass -p ${SSH_PASSWORD} ssh ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "mkdir -p ${APP_DIRECTORY}"
     - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -p .docker/docker-compose.yml ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/

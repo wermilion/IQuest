@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y git unzip && rm -rf /var/lib/apt/lists/
 COPY --from=harbor.tomsk-it.ru/dockerhub/library/composer:2.5.8 /usr/bin/composer /usr/bin/composer
 COPY .docker/unit-config.json /docker-entrypoint.d/
 WORKDIR /app
-COPY --from=nodejs-back /app ./
+COPY back /app/
+COPY --from=nodejs-back /app/public ./public
 RUN composer install
 RUN chown -R unit:unit /app/

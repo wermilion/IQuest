@@ -14,6 +14,7 @@ new Vue({
     // axios.get('/user')
     axios.get('/sanctum/csrf-cookie').then(response => {
       console.log(response)
+      axios.defaults.headers.common['Authorization'] = response.data.token
     });
   }
 }).$mount('#app')

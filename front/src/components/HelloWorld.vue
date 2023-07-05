@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import axios from '@/utils/axios';
+
 export default {
   name: 'HelloWorld',
   props: {
@@ -28,6 +30,9 @@ export default {
     sendForm() {
       console.log('send Form!')
     }
+  },
+  mounted() {
+    axios.get('user')
   }
 }
 </script>

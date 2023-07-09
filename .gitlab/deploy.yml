@@ -17,6 +17,9 @@ deploy-prod:
   variables:
     TLS_CRT: "${TOMSK_IT_WILD_CRT}"
     TLS_KEY: "${TOMSK_IT_WILD_KEY}"
+    SSH_PORT: "12312"
+    TLS_ENABLE: true
+    DOMAIN: "https://$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru"
   environment:
     name: prod
-    url: https://$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru
+    url: ${DOMAIN}

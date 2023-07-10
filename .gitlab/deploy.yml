@@ -7,10 +7,10 @@ deploy-dev:
     SHARED_PROXY_CONFIG_FILE: "proxy-config-tls.conf.tpl"
     TLS_CRT: "${TOMSK_IT_WILD_CRT}"
     TLS_KEY: "${TOMSK_IT_WILD_KEY}"
-    DOMAIN: "https://$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru"
+    DOMAIN: "$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru"
   environment:
     name: dev
-    url: ${DOMAIN}
+    url: https://${DOMAIN}
 
 deploy-prod:
   extends:
@@ -21,7 +21,7 @@ deploy-prod:
     TLS_CRT: "${TOMSK_IT_WILD_CRT}"
     TLS_KEY: "${TOMSK_IT_WILD_KEY}"
     SSH_PORT: "12312"
-    DOMAIN: "https://$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru"
+    DOMAIN: "$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.tomsk-it.ru"
   environment:
     name: prod
-    url: ${DOMAIN}
+    url: https://${DOMAIN}

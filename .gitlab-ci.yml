@@ -1,9 +1,6 @@
 include:
   - local: .gitlab/**.yml
-#  - remote: "https://gitasap.ru/iac/gitlab-ci/-/raw/master/v1/shared-include.yml"
-  - remote: "https://gitasap.ru/iac/gitlab-ci/-/raw/feature/asap-0000/templating/v2/deploy.yml"
-  - remote: "https://gitasap.ru/iac/gitlab-ci/-/raw/feature/asap-0000/templating/v1/rules.yml"
-  - remote: "https://gitasap.ru/iac/gitlab-ci/-/raw/feature/asap-0000/templating/v1/build.yml"
+  - remote: "https://gitasap.ru/iac/gitlab-ci/-/raw/master/v2/shared-include.yml"
 stages:
   - build
   - test

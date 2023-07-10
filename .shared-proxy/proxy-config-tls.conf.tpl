@@ -10,8 +10,8 @@ server {
     server_name  $DOMAIN;
     listen 4443 ssl;
 
-    ssl_certificate /tmp/tls/$DOMAIN.pem;
-    ssl_certificate_key /tmp/tls/$DOMAIN-key.pem;
+    ssl_certificate /tmp/tls/$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME.pem;
+    ssl_certificate_key /tmp/tls/$CI_PROJECT_NAME-$CI_ENVIRONMENT_NAME-key.pem;
 
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;

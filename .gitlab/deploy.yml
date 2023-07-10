@@ -4,7 +4,7 @@ deploy-dev:
     - .for_dev
   variables:
     CI_COMMIT_TAG: "${CI_COMMIT_SHORT_SHA}"
-    SHARED_PROXY_CONFIG_FILE: "proxy-config-tls.conf.tlp"
+    SHARED_PROXY_CONFIG_FILE: "proxy-config-tls.conf.tpl"
     TLS_CRT: "${TOMSK_IT_WILD_CRT}"
     TLS_KEY: "${TOMSK_IT_WILD_KEY}"
   environment:
@@ -16,7 +16,7 @@ deploy-prod:
     - .deploy
     - .for_prod
   variables:
-    SHARED_PROXY_CONFIG_FILE: "proxy-config-tls.conf.tlp"
+    SHARED_PROXY_CONFIG_FILE: "proxy-config-tls.conf.tpl"
     TLS_CRT: "${TOMSK_IT_WILD_CRT}"
     TLS_KEY: "${TOMSK_IT_WILD_KEY}"
     SSH_PORT: "12312"

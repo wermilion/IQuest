@@ -6,6 +6,7 @@ RUN npm run build
 
 FROM harbor.tomsk-it.ru/dockerhub/bitnami/nginx:1.25.1-debian-11-r2 as front
 WORKDIR /app
+COPY .docker/front-nginx.conf /opt/bitnami/nginx/conf/server_blocks/server.conf
 COPY --from=nodejs /app/dist ./
 
 FROM harbor.tomsk-it.ru/dockerhub/library/node:20.3.1-slim as nodejs-back

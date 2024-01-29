@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
             User::query()->firstOrCreate([
                 'name' => 'bogdan',
                 'email' => 'mukhatdisov.b@yandex.ru',
-                'password' => Hash::make('Jxv5bf9VHdcOWq4')
+                'password' => Hash::make('12345678')
             ]);
         } catch (QueryException) {
             echo "Такой пользователь уже существует\n";

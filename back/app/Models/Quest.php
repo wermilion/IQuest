@@ -24,6 +24,7 @@ class Quest extends Model
         'add_time',
         'sequence_number',
         'room_id',
+        'filial_id',
         'type_id',
         'genre_id',
         'age_limit_id',

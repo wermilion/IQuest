@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\AgeLimit;
+use App\Models\Room;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminSeeder::class,
+            CitySeeder::class,
+            FilialSeeder::class,
+            RoomSeeder::class,
+            TypeSeeder::class,
+            GenreSeeder::class,
+            LevelSeeder::class,
+            AgeLimitSeeder::class,
         ]);
     }
 }

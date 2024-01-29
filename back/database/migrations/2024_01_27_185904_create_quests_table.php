@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\AgeLimit;
-use App\Models\Filial;
 use App\Models\Genre;
 use App\Models\Level;
+use App\Models\Room;
 use App\Models\Type;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -30,7 +30,7 @@ return new class extends Migration {
             $table->boolean('add_time')->comment('Можно ли добавить время');
             $table->integer('sequence_number')->comment('Порядковый номер квеста');
 
-            $table->foreignIdFor(Filial::class)->comment('Адрес квеста')->constrained();
+            $table->foreignIdFor(Room::class)->comment('Адрес квеста')->constrained();
             $table->foreignIdFor(Type::class)->comment('Тип квеста')->constrained();
             $table->foreignIdFor(Genre::class)->comment('Жанр квеста')->constrained();
             $table->foreignIdFor(AgeLimit::class)->comment('Возрастное ограничение квеста')->constrained();

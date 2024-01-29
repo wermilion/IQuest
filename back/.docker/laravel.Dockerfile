@@ -23,13 +23,13 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev \
     libonig-dev \
-    libzip-dev
+    libzip-dev \
+    libicu-dev
 
-RUN docker-php-ext-install pdo pdo_pgsql zip
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install pdo pdo_pgsql zip && docker-php-ext-configure intl && docker-php-ext-install intl
 
 WORKDIR /var/www/iquest
 
 COPY . /var/www/iquest
-
-EXPOSE 9000
-CMD ["php-fpm"]

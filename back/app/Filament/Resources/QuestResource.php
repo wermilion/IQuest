@@ -5,11 +5,14 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\QuestResource\Pages;
 use App\Filament\Resources\QuestResource\RelationManagers;
 use App\Models\Quest;
+use App\Models\Room;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Collection;
 
 class QuestResource extends Resource
 {
@@ -24,8 +27,16 @@ class QuestResource extends Resource
             ->schema([
                 Forms\Components\Select::make('filial_id')
                     ->label('Филиал')
-                    ->columnSpanFull()
+                    ->live()
+                    ->preload()
                     ->relationship('filial', 'address')
+                    ->required(),
+                Forms\Components\Select::make('room_id')
+                    ->label('Комната')
+                    ->options(fn(Get $get): Collection => Room::query()
+                        ->where('filial_id', $get('filial_id'))
+                        ->pluck('name', 'id'))
+                    ->preload()
                     ->required(),
                 Forms\Components\Select::make('type_id')
                     ->label('Тип')

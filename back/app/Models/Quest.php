@@ -23,12 +23,18 @@ class Quest extends Model
         'duration',
         'add_time',
         'sequence_number',
+        'room_id',
         'filial_id',
         'type_id',
         'genre_id',
         'age_limit_id',
         'level_id'
     ];
+
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
 
     public function filial(): BelongsTo
     {

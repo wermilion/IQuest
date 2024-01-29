@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FilialResource\Pages;
-use App\Filament\Resources\FilialResource\RelationManagers;
-use App\Models\Filial;
+use App\Filament\Resources\RoomResource\Pages;
+use App\Filament\Resources\RoomResource\RelationManagers;
+use App\Models\Room;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,24 +13,25 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class FilialResource extends Resource
+class RoomResource extends Resource
 {
-    protected static ?string $model = Filial::class;
-    protected static ?string $modelLabel = 'Филиал';
-    protected static ?string $pluralModelLabel = 'Филиалы';
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
+    protected static ?string $model = Room::class;
+    protected static ?string $modelLabel = 'Комната';
+    protected static ?string $pluralModelLabel = 'Комнаты';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Точки';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('city_id')
-                    ->label('Город')
-                    ->relationship('city', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('address')
+                Forms\Components\Select::make('filial_id')
                     ->label('Адрес')
+                    ->relationship('filial', 'address')
+                    ->required(),
+                Forms\Components\TextInput::make('name')
+                    ->label('Название')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -40,12 +41,12 @@ class FilialResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('city.name')
-                    ->label('Город')
+                Tables\Columns\TextColumn::make('filial.address')
+                    ->label('Адрес')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('address')
-                    ->label('Адрес')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Комната')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
@@ -86,9 +87,9 @@ class FilialResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFilials::route('/'),
-            'create' => Pages\CreateFilial::route('/create'),
-            'edit' => Pages\EditFilial::route('/{record}/edit'),
+            'index' => Pages\ListRooms::route('/'),
+            'create' => Pages\CreateRoom::route('/create'),
+            'edit' => Pages\EditRoom::route('/{record}/edit'),
         ];
     }
 }

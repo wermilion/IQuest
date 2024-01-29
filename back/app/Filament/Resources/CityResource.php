@@ -19,6 +19,7 @@ class CityResource extends Resource
     protected static ?string $modelLabel = 'Город';
     protected static ?string $pluralModelLabel = 'Города';
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $navigationGroup = 'Точки';
 
     public static function form(Form $form): Form
     {

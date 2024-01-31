@@ -39,7 +39,6 @@ return new class extends Migration {
             $table->foreignIdFor(Level::class)->comment('Уровень сложности квеста')->constrained();
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

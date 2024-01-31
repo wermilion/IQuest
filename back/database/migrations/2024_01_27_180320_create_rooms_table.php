@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->foreignIdFor(Filial::class)->comment('Ключ филиала')->constrained();
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

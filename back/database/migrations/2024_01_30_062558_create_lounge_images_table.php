@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lounge;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,10 +11,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
+        Schema::create('lounge_images', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('name')->comment('Название жанра квеста');
+            $table->string('image')->comment('Путь к картинке');
+            $table->foreignIdFor(Lounge::class)->comment('Лаундж')->constrained();
 
             $table->timestamps();
         });
@@ -24,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('lounge_images');
     }
 };

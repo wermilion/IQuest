@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('name')->comment('Название уровня сложности квеста');
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -30,6 +30,11 @@ class AgeLimitResource extends Resource
                 Forms\Components\TextInput::make('limit')
                     ->label('Возрастное ограничение')
                     ->required()
+                    ->unique()
+                    ->validationMessages([
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ])
                     ->maxLength(255),
             ]);
     }

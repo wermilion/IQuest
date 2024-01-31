@@ -28,10 +28,16 @@ class FilialResource extends Resource
                 Forms\Components\Select::make('city_id')
                     ->label('Город')
                     ->relationship('city', 'name')
-                    ->required(),
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
                 Forms\Components\TextInput::make('address')
                     ->label('Адрес')
                     ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ])
                     ->maxLength(255),
             ]);
     }

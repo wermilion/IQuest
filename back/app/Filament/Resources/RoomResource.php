@@ -4,14 +4,18 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoomResource\Pages;
 use App\Filament\Resources\RoomResource\RelationManagers;
+use App\Models\City;
+use App\Models\Filial;
 use App\Models\Room;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Collection;
 
 class RoomResource extends Resource
 {
@@ -26,12 +30,19 @@ class RoomResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('city')
+                    ->label('Город')
+                    ->live()
+                    ->options(fn() => City::all()->pluck('name', 'id'))
+                    ->hiddenOn(''),
                 Forms\Components\Select::make('filial_id')
                     ->label('Адрес')
                     ->relationship('filial', 'address')
+                    ->options(fn(Get $get): Collection => Filial::query()
+                        ->where('city_id', $get('city'))
+                        ->pluck('address', 'id'))
                     ->required()
                     ->validationMessages([
-                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 Forms\Components\TextInput::make('name')

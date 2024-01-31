@@ -32,7 +32,6 @@ return new class extends Migration {
             $table->integer('sequence_number')->comment('Порядковый номер квеста');
 
             $table->foreignIdFor(Room::class)->comment('Адрес квеста')->constrained();
-            $table->foreignIdFor(Filial::class)->comment('Адрес квеста')->constrained();
             $table->foreignIdFor(Type::class)->comment('Тип квеста')->constrained();
             $table->foreignIdFor(Genre::class)->comment('Жанр квеста')->constrained();
             $table->foreignIdFor(AgeLimit::class)->comment('Возрастное ограничение квеста')->constrained();

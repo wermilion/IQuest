@@ -24,7 +24,6 @@ class Quest extends Model
         'add_time',
         'sequence_number',
         'room_id',
-        'filial_id',
         'type_id',
         'genre_id',
         'age_limit_id',
@@ -34,11 +33,6 @@ class Quest extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
-    }
-
-    public function filial(): BelongsTo
-    {
-        return $this->belongsTo(Filial::class);
     }
 
     public function type(): BelongsTo

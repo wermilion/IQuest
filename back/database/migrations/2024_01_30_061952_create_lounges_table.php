@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Filial;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,10 +11,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
+        Schema::create('lounges', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('name')->comment('Название жанра квеста');
+            $table->string('name')->comment('Название лаундж-зоны');
+            $table->foreignIdFor(Filial::class)->comment('Филиал лаундж-зоны')->constrained();
 
             $table->timestamps();
         });
@@ -24,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('lounges');
     }
 };

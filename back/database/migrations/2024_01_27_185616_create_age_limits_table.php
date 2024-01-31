@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('limit')->comment('Возрастное ограничение квеста');
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

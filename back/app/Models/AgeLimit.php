@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AgeLimit extends Model
 {
-    use HasFactory, SoftDeletes, QuestRelationTrait;
+    use HasFactory, QuestRelationTrait;
 
     protected $fillable = [
         'limit'

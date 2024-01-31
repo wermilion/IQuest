@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->foreignIdFor(City::class)->comment('Ключ города')->constrained();
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

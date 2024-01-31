@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Level extends Model
 {
-    use HasFactory, SoftDeletes, QuestRelationTrait;
+    use HasFactory, QuestRelationTrait;
 
     protected $fillable = [
         'name',

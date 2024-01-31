@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LevelResource\Pages;
-use App\Filament\Resources\LevelResource\RelationManagers;
-use App\Models\Level;
+use App\Filament\Resources\LoungeResource\Pages;
+use App\Filament\Resources\LoungeResource\RelationManagers;
+use App\Filament\Resources\LoungeResource\RelationManagers\ImagesRelationManager;
+use App\Models\Lounge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,20 +14,24 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class LevelResource extends Resource
+class LoungeResource extends Resource
 {
-    protected static ?string $model = Level::class;
-    protected static ?string $modelLabel = 'Уровень сложности';
-    protected static ?string $pluralModelLabel = 'Уровни сложностей';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Компоненты квестов';
-    protected static ?int $navigationSort = 3;
+    protected static ?string $model = Lounge::class;
+    protected static ?string $modelLabel = 'Лаундж';
 
+    protected static ?string $pluralModelLabel = 'Лаунджи';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Лаундж-зоны';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('filial_id')
+                    ->label('Филиал')
+                    ->required()
+                    ->relationship('filial', 'address'),
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
@@ -43,6 +48,9 @@ class LevelResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('filial.address')
+                    ->label('Адрес')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
@@ -78,16 +86,16 @@ class LevelResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ImagesRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLevels::route('/'),
-            'create' => Pages\CreateLevel::route('/create'),
-            'edit' => Pages\EditLevel::route('/{record}/edit'),
+            'index' => Pages\ListLounges::route('/'),
+            'create' => Pages\CreateLounge::route('/create'),
+            'edit' => Pages\EditLounge::route('/{record}/edit'),
         ];
     }
 }

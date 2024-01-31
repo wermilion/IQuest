@@ -29,11 +29,18 @@ class RoomResource extends Resource
                 Forms\Components\Select::make('filial_id')
                     ->label('Адрес')
                     ->relationship('filial', 'address')
-                    ->required(),
+                    ->required()
+                    ->validationMessages([
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
             ]);
     }
 

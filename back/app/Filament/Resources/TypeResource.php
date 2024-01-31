@@ -29,6 +29,11 @@ class TypeResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
+                    ->unique()
+                    ->validationMessages([
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ])
                     ->maxLength(255),
             ]);
     }

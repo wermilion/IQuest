@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LevelResource\Pages;
-use App\Filament\Resources\LevelResource\RelationManagers;
-use App\Models\Level;
+use App\Filament\Resources\LoungeImageResource\Pages;
+use App\Filament\Resources\LoungeImageResource\RelationManagers;
+use App\Models\LoungeImage;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,29 +13,34 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class LevelResource extends Resource
+class LoungeImageResource extends Resource
 {
-    protected static ?string $model = Level::class;
-    protected static ?string $modelLabel = 'Уровень сложности';
-    protected static ?string $pluralModelLabel = 'Уровни сложностей';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Компоненты квестов';
-    protected static ?int $navigationSort = 3;
+    protected static ?string $model = LoungeImage::class;
+    protected static ?string $modelLabel = 'Картинка';
 
+    protected static ?string $pluralModelLabel = 'Изображения';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Лаундж-зоны';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Название')
+                Forms\Components\Select::make('lounge_id')
+                    ->label('Лаундж')
+                    ->relationship('lounge', 'name')
                     ->required()
-                    ->unique()
                     ->validationMessages([
-                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
-                    ])
-                    ->maxLength(255),
+                    ]),
+                Forms\Components\FileUpload::make('image')
+                    ->label('Изображение')
+                    ->image()
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
             ]);
     }
 
@@ -43,9 +48,12 @@ class LevelResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Название')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('lounge.name')
+                    ->label('Лаундж')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Изображение'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -85,9 +93,9 @@ class LevelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLevels::route('/'),
-            'create' => Pages\CreateLevel::route('/create'),
-            'edit' => Pages\EditLevel::route('/{record}/edit'),
+            'index' => Pages\ListLoungeImages::route('/'),
+            'create' => Pages\CreateLoungeImage::route('/create'),
+            'edit' => Pages\EditLoungeImage::route('/{record}/edit'),
         ];
     }
 }

@@ -20,6 +20,7 @@ class QuestResource extends Resource
     protected static ?string $modelLabel = 'Квест';
     protected static ?string $pluralModelLabel = 'Квесты';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

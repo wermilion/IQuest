@@ -13,15 +13,15 @@ class Quest extends Model
 
     protected $fillable = [
         'name',
-        'name_slug',
-        'desc',
+        'slug',
+        'description',
         'cover',
         'min_price',
         'late_price',
         'min_people',
         'max_people',
         'duration',
-        'add_time',
+        'can_add_time',
         'sequence_number',
         'room_id',
         'type_id',

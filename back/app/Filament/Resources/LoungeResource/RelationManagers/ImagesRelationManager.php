@@ -21,7 +21,9 @@ class ImagesRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\FileUpload::make('image')
+                    ->directory('lounge_images')
                     ->label('Изображение')
+                    ->image()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',

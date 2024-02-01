@@ -5,9 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LoungeResource\Pages;
 use App\Filament\Resources\LoungeResource\RelationManagers;
 use App\Filament\Resources\LoungeResource\RelationManagers\ImagesRelationManager;
+use App\Models\City;
+use App\Models\Filial;
 use App\Models\Lounge;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -28,19 +31,30 @@ class LoungeResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('city')
+                    ->label('Город')
+                    ->live()
+                    ->options(fn() => City::all()->pluck('name', 'id'))
+                    ->hiddenOn(''),
                 Forms\Components\Select::make('filial_id')
                     ->label('Филиал')
+                    ->relationship('filial', 'address')
+                    ->options(fn(Get $get) => Filial::query()
+                        ->where('city_id', $get('city'))
+                        ->pluck('address', 'id'))
                     ->required()
-                    ->relationship('filial', 'address'),
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
                     ->unique()
+                    ->maxLength(255)
                     ->validationMessages([
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
-                    ])
-                    ->maxLength(255),
+                    ]),
             ]);
     }
 
@@ -48,6 +62,9 @@ class LoungeResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('filial.city.name')
+                    ->label('Город')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('filial.address')
                     ->label('Адрес')
                     ->sortable(),

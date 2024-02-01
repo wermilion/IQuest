@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::table('users', function (Blueprint $table) {
             $table->foreignIdFor(Role::class)->comment('Роль')->constrained();
             $table->foreignIdFor(Filial::class)->nullable()->comment('Филиал')->constrained();
-            $table->string('vk_id')->nullable()->comment('ID ВКонтакте');
+            $table->string('vk_id')->nullable()->unique()->comment('ID ВКонтакте');
         });
     }
 

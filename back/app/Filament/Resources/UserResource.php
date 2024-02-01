@@ -61,10 +61,13 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('email')
                     ->label('Почта')
                     ->email()
+                    ->unique()
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
+                        'email' => 'Поле ":attribute" должно быть в формате почты.'
                     ]),
                 Forms\Components\TextInput::make('password')
                     ->label('Пароль')
@@ -77,7 +80,11 @@ class UserResource extends Resource
                     ]),
                 Forms\Components\TextInput::make('vk_id')
                     ->label('VK ID')
-                    ->maxLength(255),
+                    ->unique()
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
+                    ]),
             ]);
     }
 

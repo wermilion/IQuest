@@ -31,11 +31,11 @@ class AgeLimitResource extends Resource
                     ->label('Возрастное ограничение')
                     ->required()
                     ->unique()
+                    ->maxLength(255)
                     ->validationMessages([
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
-                    ])
-                    ->maxLength(255),
+                    ]),
             ]);
     }
 

@@ -31,11 +31,11 @@ class GenreResource extends Resource
                     ->label('Название')
                     ->required()
                     ->unique()
+                    ->maxLength(255)
                     ->validationMessages([
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
-                    ])
-                    ->maxLength(255),
+                    ]),
             ]);
     }
 

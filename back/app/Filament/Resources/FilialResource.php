@@ -35,10 +35,10 @@ class FilialResource extends Resource
                 Forms\Components\TextInput::make('address')
                     ->label('Адрес')
                     ->required()
+                    ->maxLength(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ])
-                    ->maxLength(255),
+                    ]),
             ]);
     }
 

@@ -59,6 +59,10 @@ class RoomResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('filial.city.name')
+                    ->label('Город')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('filial.address')
                     ->label('Адрес')
                     ->numeric()

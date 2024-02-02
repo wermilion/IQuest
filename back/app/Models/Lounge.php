@@ -14,6 +14,7 @@ class Lounge extends Model
 
     protected $fillable = [
         'name',
+        'description',
         'filial_id',
     ];
 

@@ -55,6 +55,13 @@ class LoungeResource extends Resource
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
+                Forms\Components\Textarea::make('description')
+                    ->label('Описание')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.'
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 

@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             GenreSeeder::class,
             LevelSeeder::class,
             AgeLimitSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

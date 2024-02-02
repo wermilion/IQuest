@@ -27,4 +27,9 @@ class Filial extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }

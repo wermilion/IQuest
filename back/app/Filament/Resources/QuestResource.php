@@ -165,6 +165,10 @@ class QuestResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('room.filial.city.name')
+                    ->label('Город')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('room.filial.address')
                     ->label('Адрес')
                     ->numeric()

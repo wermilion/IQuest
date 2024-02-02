@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->string('name')->comment('Название лаундж-зоны');
+            $table->text('description')->comment('Описание лаундж-зоны');
+
             $table->foreignIdFor(Filial::class)->comment('Филиал лаундж-зоны')->constrained();
 
             $table->timestamps();

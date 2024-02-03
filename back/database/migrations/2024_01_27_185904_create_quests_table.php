@@ -22,13 +22,13 @@ return new class extends Migration {
             $table->string('name')->comment('Название квеста');
             $table->string('slug')->comment('Сокращенное имя квеста');
             $table->text('description')->comment('Описание квеста');
-            $table->string('cover')->comment('Обложка квеста');
             $table->decimal('min_price')->comment('Минимальная цена квеста');
             $table->decimal('late_price')->comment('Цена для ночного посещения квеста');
             $table->integer('min_people')->comment('Минимальное кол-во людей');
             $table->integer('max_people')->comment('Максимальное кол-во людей');
             $table->integer('duration')->comment('Продолжительность квеста');
             $table->boolean('can_add_time')->comment('Можно ли добавить время');
+            $table->boolean('is_active')->comment('Статус активности отображения на сайте');
             $table->integer('sequence_number')->comment('Порядковый номер квеста');
 
             $table->foreignIdFor(Room::class)->comment('Адрес квеста')->constrained();

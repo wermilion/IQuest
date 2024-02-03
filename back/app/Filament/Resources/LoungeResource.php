@@ -3,8 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LoungeResource\Pages;
-use App\Filament\Resources\LoungeResource\RelationManagers;
-use App\Filament\Resources\LoungeResource\RelationManagers\ImagesRelationManager;
 use App\Models\City;
 use App\Models\Filial;
 use App\Models\Lounge;
@@ -20,12 +18,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class LoungeResource extends Resource
 {
     protected static ?string $model = Lounge::class;
+
     protected static ?string $modelLabel = 'Лаундж';
 
     protected static ?string $pluralModelLabel = 'Лаунджи';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Лаундж-зоны';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -49,19 +48,46 @@ class LoungeResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->unique()
                     ->maxLength(255)
                     ->validationMessages([
-                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 Forms\Components\Textarea::make('description')
                     ->label('Описание')
+                    ->columnSpanFull()
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.'
+                    ]),
+                Forms\Components\TextInput::make('max_people')
+                    ->label('Макс. кол-во человек')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
-                    ->columnSpanFull(),
+                    ->numeric(),
+                Forms\Components\TextInput::make('min_price')
+                    ->label('Мин. цена')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.'
+                    ])
+                    ->numeric(),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Отображение на сайте')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.'
+                    ]),
+                Forms\Components\FileUpload::make('cover')
+                    ->directory('lounge_images')
+                    ->label('Изображение')
+                    ->columnSpanFull()
+                    ->image()
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
             ]);
     }
 
@@ -78,6 +104,9 @@ class LoungeResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Отображение на сайте')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -105,7 +134,6 @@ class LoungeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ImagesRelationManager::class,
         ];
     }
 

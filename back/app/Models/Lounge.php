@@ -15,16 +15,15 @@ class Lounge extends Model
     protected $fillable = [
         'name',
         'description',
+        'cover',
+        'max_people',
+        'min_price',
+        'is_active',
         'filial_id',
     ];
 
     public function filial(): BelongsTo
     {
         return $this->belongsTo(Filial::class);
-    }
-
-    public function images(): HasMany
-    {
-        return $this->hasMany(LoungeImage::class);
     }
 }

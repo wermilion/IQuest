@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class LoungeImage extends Model
+class QuestImage extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'image',
-        'lounge_id'
+        'quest_id'
     ];
 
-    public function lounge(): BelongsTo
+    public function quest(): BelongsTo
     {
-        return $this->belongsTo(Lounge::class);
+        return $this->belongsTo(Quest::class);
     }
 }

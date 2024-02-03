@@ -149,14 +149,12 @@ class QuestResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\FileUpload::make('cover')
-                    ->directory('covers')
-                    ->label('Обложка')
+                Forms\Components\Toggle::make('is_active')
                     ->columnSpanFull()
-                    ->image()
+                    ->label('Отображение на сайте')
                     ->required()
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
+                        'required' => 'Поле ":attribute" обязательное.'
                     ]),
             ]);
     }
@@ -179,11 +177,6 @@ class QuestResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Сокращ. название')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('cover')
-                    ->label('Обложка')
-                    ->width(200)
-                    ->height(200)
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('type.name')
                     ->label('Тип')
                     ->numeric()
@@ -233,10 +226,13 @@ class QuestResource extends Resource
                     ->label('Порядковый номер')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('add_time')
+                Tables\Columns\IconColumn::make('can_add_time')
                     ->label('Можно ли добавить время')
                     ->boolean()
                     ->hidden(),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label('Отображение на сайте')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -264,7 +260,7 @@ class QuestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\QuestImagesRelationManager::class,
         ];
     }
 

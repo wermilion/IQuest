@@ -16,6 +16,10 @@ return new class extends Migration {
 
             $table->string('name')->comment('Название лаундж-зоны');
             $table->text('description')->comment('Описание лаундж-зоны');
+            $table->string('cover')->comment('Обложка');
+            $table->integer('max_people')->comment('Максимальное кол-во человек');
+            $table->decimal('min_price')->comment('Минимальная цена');
+            $table->boolean('is_active')->comment('Статус активности на сайте');
 
             $table->foreignIdFor(Filial::class)->comment('Филиал лаундж-зоны')->constrained();
 

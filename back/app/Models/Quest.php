@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Quest extends Model
@@ -15,13 +16,13 @@ class Quest extends Model
         'name',
         'slug',
         'description',
-        'cover',
         'min_price',
         'late_price',
         'min_people',
         'max_people',
         'duration',
         'can_add_time',
+        'is_active',
         'sequence_number',
         'room_id',
         'type_id',
@@ -53,5 +54,10 @@ class Quest extends Model
     public function level(): BelongsTo
     {
         return $this->belongsTo(Level::class);
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(QuestImage::class);
     }
 }

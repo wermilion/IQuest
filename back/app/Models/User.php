@@ -50,7 +50,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return User::query()->where('login', $this->login)->exists();
+        return static::query()->where('login', $this->login)->exists();
     }
 
     public function getFilamentName(): string

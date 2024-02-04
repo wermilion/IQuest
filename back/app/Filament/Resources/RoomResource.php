@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\RoomResource\Pages;
 use App\Filament\Resources\RoomResource\RelationManagers;
 use App\Models\City;
@@ -20,12 +21,15 @@ use Illuminate\Support\Collection;
 class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
+
     protected static ?string $modelLabel = 'Комната';
+
     protected static ?string $pluralModelLabel = 'Комнаты';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Точки';
 
-
+    protected static ?string $navigationGroup = NavigationGroup::LOCATIONS->value;
+    
     public static function form(Form $form): Form
     {
         return $form

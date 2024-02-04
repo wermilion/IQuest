@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\FilialResource\Pages;
 use App\Filament\Resources\FilialResource\RelationManagers;
 use App\Models\Filial;
@@ -16,10 +17,14 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class FilialResource extends Resource
 {
     protected static ?string $model = Filial::class;
+
     protected static ?string $modelLabel = 'Филиал';
+
     protected static ?string $pluralModelLabel = 'Филиалы';
+
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-    protected static ?string $navigationGroup = 'Точки';
+
+    protected static ?string $navigationGroup = NavigationGroup::LOCATIONS->value;
 
     public static function form(Form $form): Form
     {

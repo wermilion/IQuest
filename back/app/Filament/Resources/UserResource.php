@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use Illuminate\Validation\Rule;
@@ -27,7 +28,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Пользователи';
+    protected static ?string $navigationGroup = NavigationGroup::USERS->value;
+    
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form

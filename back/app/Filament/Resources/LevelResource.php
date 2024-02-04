@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\LevelResource\Pages;
 use App\Filament\Resources\LevelResource\RelationManagers;
 use App\Models\Level;
@@ -16,12 +17,16 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class LevelResource extends Resource
 {
     protected static ?string $model = Level::class;
-    protected static ?string $modelLabel = 'Уровень сложности';
-    protected static ?string $pluralModelLabel = 'Уровни сложностей';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Компоненты квестов';
-    protected static ?int $navigationSort = 3;
 
+    protected static ?string $modelLabel = 'Уровень сложности';
+
+    protected static ?string $pluralModelLabel = 'Уровни сложностей';
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = NavigationGroup::QUEST_COMPONENTS->value;
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {

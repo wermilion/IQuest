@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\QuestImageResource\Pages;
 use App\Filament\Resources\QuestImageResource\RelationManagers;
 use App\Models\QuestImage;
@@ -23,7 +24,8 @@ class QuestImageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Компоненты квестов';
+    protected static ?string $navigationGroup = NavigationGroup::QUEST_COMPONENTS->value;
+
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form

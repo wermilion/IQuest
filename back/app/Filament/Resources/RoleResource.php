@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
 use App\Models\Role;
@@ -23,7 +24,8 @@ class RoleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Пользователи';
+    protected static ?string $navigationGroup = NavigationGroup::USERS->value;
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form

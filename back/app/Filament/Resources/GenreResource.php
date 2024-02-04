@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\GenreResource\Pages;
 use App\Filament\Resources\GenreResource\RelationManagers;
 use App\Models\Genre;
@@ -16,12 +17,16 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class GenreResource extends Resource
 {
     protected static ?string $model = Genre::class;
-    protected static ?string $modelLabel = 'Жанр';
-    protected static ?string $pluralModelLabel = 'Жанры';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Компоненты квестов';
-    protected static ?int $navigationSort = 2;
 
+    protected static ?string $modelLabel = 'Жанр';
+
+    protected static ?string $pluralModelLabel = 'Жанры';
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = NavigationGroup::QUEST_COMPONENTS->value;
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

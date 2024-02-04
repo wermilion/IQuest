@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\TypeResource\Pages;
 use App\Filament\Resources\TypeResource\RelationManagers;
 use App\Models\Type;
@@ -16,10 +17,15 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class TypeResource extends Resource
 {
     protected static ?string $model = Type::class;
+
     protected static ?string $modelLabel = 'Тип';
+
     protected static ?string $pluralModelLabel = 'Типы';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Компоненты квестов';
+
+    protected static ?string $navigationGroup = NavigationGroup::QUEST_COMPONENTS->value;
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form

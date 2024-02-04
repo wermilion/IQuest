@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use Illuminate\Validation\Rule;
 use App\Models\City;
 use App\Models\Filial;
 use App\Models\User;
@@ -33,6 +34,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Hidden::make('id'),
                 Forms\Components\Select::make('city')
                     ->label('Город')
                     ->live()
@@ -51,23 +53,25 @@ class UserResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\Select::make('role_id')
-                    ->label('Роль')
-                    ->relationship('role', 'name')
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ]),
-                Forms\Components\TextInput::make('email')
-                    ->label('Почта')
-                    ->email()
-                    ->unique()
+                Forms\Components\TextInput::make('surname')
+                    ->label('Фамилия')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('login')
+                    ->label('Логин')
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'email' => 'Поле ":attribute" должно быть в формате почты.'
+                    ]),
+                Forms\Components\Select::make('role_id')
+                    ->label('Роль')
+                    ->relationship('role', 'name')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.'
                     ]),
                 Forms\Components\TextInput::make('password')
                     ->label('Пароль')
@@ -103,8 +107,11 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Имя')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Почта')
+                Tables\Columns\TextColumn::make('surname')
+                    ->label('Фамилия')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('login')
+                    ->label('Логин')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('role.name')
                     ->label('Роль')

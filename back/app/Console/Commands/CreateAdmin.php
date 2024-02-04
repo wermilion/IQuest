@@ -31,18 +31,18 @@ class CreateAdmin extends Command
     public function handle(): void
     {
         $name = $this->ask('What is your name?');
-        $email = $this->ask('Enter an email:');
+        $login = $this->ask('Enter a login:');
         $password = $this->ask('Enter a password:');
 
         $this->validateArguments([
             'name' => $name,
-            'email' => $email,
+            'login' => $login,
             'password' => $password
         ]);
 
         User::query()->create([
             'name' => $name,
-            'email' => $email,
+            'login' => $login,
             'password' => Hash::make($password),
             'role_id' => Role::query()->where('name', 'admin')->first()->value('id')
         ]);
@@ -54,7 +54,7 @@ class CreateAdmin extends Command
     {
         $validator = Validator::make($data, [
             'name' => 'min:1',
-            'email' => 'email',
+            'login' => 'unique:users',
             'password' => 'min:8',
         ]);
 

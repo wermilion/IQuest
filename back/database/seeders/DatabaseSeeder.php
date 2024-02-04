@@ -27,8 +27,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::query()->createOrFirst([
-            'name' => 'bodya',
-            'email' => 'admin@admin.com',
+            'name' => 'bogdan',
+            'surname' => 'mukhatdisov',
+            'login' => 'admin',
             'password' => Hash::make('12345678'),
             'role_id' => 1,
         ]);

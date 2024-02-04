@@ -14,11 +14,11 @@ class EditScheduleQuest extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $quest = Quest::query()->with(['room', 'room.filial', 'room.filial.city'])->findOrFail($data['quest_id']);
+        $quest = Quest::query()->with(['room', 'room.filial', 'room.filial.city'])->find($data['quest_id']);
 
-        $data['room'] = $quest->room->id;
-        $data['filial'] = $quest->room->filial->id;
-        $data['city'] = $quest->room->filial->city->id;
+        $data['room'] = $quest?->room->id;
+        $data['filial'] = $quest?->room->filial->id;
+        $data['city'] = $quest?->room->filial->city->id;
 
         return $data;
     }

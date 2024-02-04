@@ -13,8 +13,10 @@ class EditUser extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $filial = Filial::query()->where('id', $data['filial_id'])->first();
+        $filial = Filial::query()->with('city')->find($data['filial_id']);
+
         $data['city'] = $filial?->city->id;
+
         return $data;
     }
 

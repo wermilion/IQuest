@@ -4,6 +4,7 @@ namespace App\Filament\Resources\LoungeResource\Pages;
 
 use App\Filament\Resources\LoungeResource;
 use App\Models\Filial;
+use App\Models\Lounge;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -13,8 +14,10 @@ class EditLounge extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $city = Filial::query()->where('id', $data['filial_id'])->first()->city;
-        $data['city'] = $city->id;
+        $lounge = Lounge::query()->with(['filial', 'filial.city'])->find($data['id']);
+
+        $data['city'] = $lounge?->filial->city->id;
+
         return $data;
     }
 

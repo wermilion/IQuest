@@ -14,11 +14,10 @@ class EditQuest extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $filial_id = Room::query()->where('id', $data['room_id'])->first()->filial_id;
-        $city_id = Filial::query()->where('id', $filial_id)->first()->city_id;
+        $room = Room::query()->with(['filial', 'filial.city'])->find($data['room_id']);
 
-        $data['filial'] = $filial_id;
-        $data['city'] = $city_id;
+        $data['filial'] = $room?->filial->id;
+        $data['city'] = $room?->filial->city->id;
 
         return $data;
     }

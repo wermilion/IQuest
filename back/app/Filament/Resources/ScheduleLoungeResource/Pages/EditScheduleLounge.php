@@ -13,10 +13,10 @@ class EditScheduleLounge extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $lounge = Lounge::query()->with(['filial', 'filial.city'])->findOrFail($data['lounge_id']);
+        $lounge = Lounge::query()->with(['filial', 'filial.city'])->find($data['lounge_id']);
 
-        $data['filial'] = $lounge->filial->id;
-        $data['city'] = $lounge->filial->city->id;
+        $data['filial'] = $lounge?->filial->id;
+        $data['city'] = $lounge?->filial->city->id;
 
         return $data;
     }

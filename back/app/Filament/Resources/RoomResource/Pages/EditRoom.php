@@ -15,8 +15,10 @@ class EditRoom extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $city = Filial::query()->where('id', $data['filial_id'])->first()->city;
-        $data['city'] = $city->id;
+        $filial = Filial::query()->with('city')->find($data['filial_id']);
+
+        $data['city'] = $filial?->city->id;
+
         return $data;
     }
 

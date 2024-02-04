@@ -25,7 +25,7 @@ class User extends Authenticatable implements FilamentUser
         'login',
         'password',
         'filial_id',
-        'role_id',
+        'role',
         'vk_id'
     ];
 
@@ -46,6 +46,7 @@ class User extends Authenticatable implements FilamentUser
      */
     protected $casts = [
         'password' => 'hashed',
+        'role' => \App\Enums\Role::class,
     ];
 
     public function canAccessPanel(Panel $panel): bool
@@ -56,11 +57,6 @@ class User extends Authenticatable implements FilamentUser
     public function getFilamentName(): string
     {
         return "{$this->surname} {$this->name}";
-    }
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class);
     }
 
     public function filial(): BelongsTo

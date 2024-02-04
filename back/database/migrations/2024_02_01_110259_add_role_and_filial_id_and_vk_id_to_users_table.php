@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Filial;
-use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +12,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignIdFor(Role::class)->comment('Роль')->constrained();
+            $table->string('role')->comment('Роль пользователя');
             $table->foreignIdFor(Filial::class)->nullable()->comment('Филиал')->constrained();
             $table->string('vk_id')->nullable()->unique()->comment('ID ВКонтакте');
         });
@@ -25,8 +24,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
+            $table->dropColumn('role');
 
             $table->dropForeign(['filial_id']);
             $table->dropColumn('filial_id');

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\AgeLimit;
-use App\Models\Room;
+
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
             GenreSeeder::class,
             LevelSeeder::class,
             AgeLimitSeeder::class,
-            RoleSeeder::class,
         ]);
 
         User::query()->createOrFirst([
@@ -31,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'surname' => 'mukhatdisov',
             'login' => 'admin',
             'password' => Hash::make('12345678'),
-            'role_id' => 1,
+            'role' => Role::ADMIN->value,
         ]);
     }
 }

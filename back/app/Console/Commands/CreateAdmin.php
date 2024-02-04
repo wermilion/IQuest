@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
@@ -44,7 +43,7 @@ class CreateAdmin extends Command
             'name' => $name,
             'login' => $login,
             'password' => Hash::make($password),
-            'role_id' => Role::query()->where('name', 'admin')->first()->value('id')
+            'role' => \App\Enums\Role::ADMIN->value,
         ]);
 
         $this->info('Admin created successfully');

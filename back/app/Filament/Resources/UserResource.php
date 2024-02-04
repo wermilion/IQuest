@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\NavigationGroup;
+use App\Enums\Role;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use Illuminate\Validation\Rule;
@@ -29,7 +30,7 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = NavigationGroup::USERS->value;
-    
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -68,9 +69,9 @@ class UserResource extends Resource
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'email' => 'Поле ":attribute" должно быть в формате почты.'
                     ]),
-                Forms\Components\Select::make('role_id')
+                Forms\Components\Select::make('role')
                     ->label('Роль')
-                    ->relationship('role', 'name')
+                    ->options(Role::class)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
@@ -115,9 +116,8 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('login')
                     ->label('Логин')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('role.name')
+                Tables\Columns\TextColumn::make('role')
                     ->label('Роль')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')

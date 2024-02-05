@@ -158,12 +158,14 @@ class QuestResource extends Resource
                     ]),
                 Forms\Components\Textarea::make('weekdays')
                     ->label('Расписание по будням')
+                    ->autosize()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
                 Forms\Components\Textarea::make('weekend')
                     ->label('Расписание по выходным')
+                    ->autosize()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'

@@ -8,4 +8,5 @@ enum NavigationGroup: string
     case LOCATIONS = 'Точки';
     case USERS = 'Пользователи';
     case QUEST_COMPONENTS = 'Компоненты квестов';
+    case HOLIDAYS = 'Праздники';
 }

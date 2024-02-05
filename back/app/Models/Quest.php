@@ -24,11 +24,20 @@ class Quest extends Model
         'can_add_time',
         'is_active',
         'sequence_number',
+        'weekdays',
+        'weekend',
         'room_id',
         'type_id',
         'genre_id',
         'age_limit_id',
         'level_id'
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'can_add_time' => 'boolean',
+        'weekdays' => 'array',
+        'weekend' => 'array',
     ];
 
     public function room(): BelongsTo

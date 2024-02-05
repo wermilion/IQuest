@@ -30,6 +30,8 @@ return new class extends Migration {
             $table->boolean('can_add_time')->comment('Можно ли добавить время');
             $table->boolean('is_active')->comment('Статус активности отображения на сайте');
             $table->integer('sequence_number')->comment('Порядковый номер квеста');
+            $table->string('weekdays')->comment('Расписание по будням');
+            $table->string('weekend')->comment('Расписание по выходным');
 
             $table->foreignIdFor(Room::class)->comment('Адрес квеста')->constrained();
             $table->foreignIdFor(Type::class)->comment('Тип квеста')->constrained();

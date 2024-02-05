@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class QuestImageResource extends Resource
 {
+    protected static bool $shouldRegisterNavigation = false;
+
     protected static ?string $model = QuestImage::class;
 
     protected static ?string $modelLabel = 'Картинка';

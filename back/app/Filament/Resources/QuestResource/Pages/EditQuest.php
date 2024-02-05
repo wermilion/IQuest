@@ -22,6 +22,14 @@ class EditQuest extends EditRecord
         return $data;
     }
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['weekdays'] = explode("\n", $data['weekdays']);
+        $data['weekend'] = explode("\n", $data['weekend']);
+
+        return $data;
+    }
+
     protected function getHeaderActions(): array
     {
         return [

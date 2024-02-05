@@ -95,11 +95,11 @@ class QuestResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->label('Описание')
+                    ->columnSpanFull()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->columnSpanFull(),
+                    ]),
                 Forms\Components\TextInput::make('min_price')
                     ->label('Мин. цена')
                     ->required()
@@ -110,10 +110,10 @@ class QuestResource extends Resource
                 Forms\Components\TextInput::make('late_price')
                     ->label('Вечерная цена')
                     ->required()
+                    ->numeric()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->numeric(),
+                    ]),
                 Forms\Components\TextInput::make('min_people')
                     ->label('Мин. кол-во человек')
                     ->required()
@@ -152,6 +152,18 @@ class QuestResource extends Resource
                 Forms\Components\Toggle::make('is_active')
                     ->columnSpanFull()
                     ->label('Отображение на сайте')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.'
+                    ]),
+                Forms\Components\Textarea::make('weekdays')
+                    ->label('Расписание по будням')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.'
+                    ]),
+                Forms\Components\Textarea::make('weekend')
+                    ->label('Расписание по выходным')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'

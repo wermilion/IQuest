@@ -15,9 +15,11 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class ScheduleQuestResource extends Resource
@@ -112,9 +114,8 @@ class ScheduleQuestResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('time')
                     ->label('Время'),
-                Tables\Columns\IconColumn::make('activity_status')
-                    ->label('Активность слота')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('activity_status')
+                    ->label('Активность слота'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -127,8 +128,25 @@ class ScheduleQuestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('quest.room.filial.city', 'name'),
+                Tables\Filters\Filter::make('date')
+                    ->form([Forms\Components\DatePicker::make('date')->label('Дата')])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when(
+                            $data['date'],
+                            fn(Builder $query, $date): Builder => $query->whereDate('date', '=', $date)
+                        );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['date']) {
+                            $indicators[] = 'Дата: ' . Carbon::parse($data['date'])->locale('ru')->format('M j, Y');
+                        }
+                        return $indicators;
+                    }),
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

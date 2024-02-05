@@ -21,10 +21,10 @@ class LoungeResource extends Resource
 
     protected static ?string $modelLabel = 'Лаундж';
 
-    protected static ?string $pluralModelLabel = 'Лаунджи';
+    protected static ?string $pluralModelLabel = 'Лаундж-зоны';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -104,9 +104,8 @@ class LoungeResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->label('Отображение на сайте')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Отображение на сайте'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -119,8 +118,10 @@ class LoungeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('filial.city', 'name'),
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

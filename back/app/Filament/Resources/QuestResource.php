@@ -23,7 +23,7 @@ class QuestResource extends Resource
     protected static ?string $modelLabel = 'Квест';
     protected static ?string $pluralModelLabel = 'Квесты';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -230,9 +230,8 @@ class QuestResource extends Resource
                     ->label('Можно ли добавить время')
                     ->boolean()
                     ->hidden(),
-                Tables\Columns\IconColumn::make('is_active')
-                    ->label('Отображение на сайте')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Отображение на сайте'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -245,8 +244,10 @@ class QuestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('room.filial.city', 'name'),
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

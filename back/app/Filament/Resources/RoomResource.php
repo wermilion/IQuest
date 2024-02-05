@@ -29,7 +29,7 @@ class RoomResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = NavigationGroup::LOCATIONS->value;
-    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -86,8 +86,10 @@ class RoomResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('filial.city', 'name'),
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

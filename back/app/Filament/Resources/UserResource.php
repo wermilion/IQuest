@@ -28,9 +28,6 @@ class UserResource extends Resource
     protected static ?string $pluralModelLabel = 'Пользователи';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    protected static ?string $navigationGroup = NavigationGroup::USERS->value;
-
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -131,8 +128,10 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('filial.city', 'name'),
+            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

@@ -13,7 +13,12 @@ class QuestImage extends Model
 
     protected $fillable = [
         'image',
+        'is_cover',
         'quest_id'
+    ];
+
+    protected $casts = [
+        'is_cover' => 'boolean'
     ];
 
     public function quest(): BelongsTo

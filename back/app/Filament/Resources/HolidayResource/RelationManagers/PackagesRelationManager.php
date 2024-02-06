@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PackagesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'holiday_packages';
+    protected static string $relationship = 'packages';
 
     protected static ?string $label = 'Пакет';
 
@@ -24,13 +24,48 @@ class PackagesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('package_id')
+                Forms\Components\TextInput::make('name')
                     ->label('Название')
-                    ->options(Package::all()->pluck('name', 'id'))
                     ->required()
+                    ->maxLength(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
+                Forms\Components\TextInput::make('price')
+                    ->label('Цена')
+                    ->required()
+                    ->numeric()
+                    ->minValue(1)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательно.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
+                    ]),
+                Forms\Components\TextInput::make('min_people')
+                    ->label('Мин. кол-во людей')
+                    ->live()
+                    ->numeric()
+                    ->required()
+                    ->minValue('1')
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательно.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
+                    ]),
+                Forms\Components\TextInput::make('max_people')
+                    ->label('Макс. кол-во людей')
+                    ->numeric()
+                    ->required()
+                    ->minValue(fn(Forms\Get $get) => $get('min_people'))
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательно.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во людей".',
+                    ]),
+                Forms\Components\RichEditor::make('description')
+                    ->label('Описание')
+                    ->columnSpanFull()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Отображение на сайте'),
             ]);
     }
 
@@ -40,8 +75,21 @@ class PackagesRelationManager extends RelationManager
             ->heading('Пакеты')
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('package.name')
-                    ->label('Пакет'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Название'),
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Цена')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('min_people')
+                    ->label('Мин. кол-во людей')
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('max_people')
+                    ->label('Макс. кол-во людей')
+                    ->numeric(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Отображение на сайте')
+                    ->sortable(),
             ])
             ->filters([
                 //

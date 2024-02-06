@@ -13,16 +13,15 @@ class Holiday extends Model
 
     protected $fillable = [
         'type',
-        'min_people',
     ];
 
-    public function holiday_packages(): HasMany
+    public function holidayPackages(): HasMany
     {
         return $this->hasMany(HolidayPackage::class);
     }
 
     public function packages(): BelongsToMany
     {
-        return $this->belongsToMany(Package::class, 'holiday_packages', 'holiday_id', 'package_id');
+        return $this->belongsToMany(Package::class, 'holiday_packages');
     }
 }

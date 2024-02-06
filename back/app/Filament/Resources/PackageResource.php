@@ -37,8 +37,8 @@ class PackageResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\TextInput::make('min_price')
-                    ->label('Минимальная цена')
+                Forms\Components\TextInput::make('price')
+                    ->label('Цена')
                     ->required()
                     ->numeric()
                     ->minValue(1)
@@ -46,11 +46,32 @@ class PackageResource extends Resource
                         'required' => 'Поле ":attribute" обязательно.',
                         'min' => 'Поле ":attribute" должно быть больше или равно 1.',
                     ]),
+                Forms\Components\TextInput::make('min_people')
+                    ->label('Мин. кол-во людей')
+                    ->live()
+                    ->numeric()
+                    ->required()
+                    ->minValue('1')
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательно.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
+                    ]),
+                Forms\Components\TextInput::make('max_people')
+                    ->label('Макс. кол-во людей')
+                    ->numeric()
+                    ->required()
+                    ->minValue(fn(Forms\Get $get) => $get('min_people'))
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательно.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во людей".',
+                    ]),
                 Forms\Components\RichEditor::make('description')
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Toggle::make('is_active')
+                    ->label('Отображение на сайте'),
             ]);
     }
 
@@ -58,12 +79,25 @@ class PackageResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('holidayPackages.holiday.type')
+                    ->label('Тип праздника')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('min_price')
-                    ->label('Минимальная цена')
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Цена')
                     ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('min_people')
+                    ->label('Мин. кол-во людей')
+                    ->numeric(),
+                Tables\Columns\TextColumn::make('max_people')
+                    ->label('Макс. кол-во людей')
+                    ->numeric(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Отображение на сайте')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')

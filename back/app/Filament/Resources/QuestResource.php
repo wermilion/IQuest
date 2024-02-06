@@ -116,7 +116,10 @@ class QuestResource extends Resource
                     ]),
                 Forms\Components\TextInput::make('min_people')
                     ->label('Мин. кол-во человек')
+                    ->live()
                     ->required()
+                    ->numeric()
+                    ->minValue('1')
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
@@ -124,8 +127,11 @@ class QuestResource extends Resource
                 Forms\Components\TextInput::make('max_people')
                     ->label('Макс. кол-во человек')
                     ->required()
+                    ->numeric()
+                    ->minValue(fn(Get $get) => $get('min_people'))
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во человек".'
                     ])
                     ->numeric(),
                 Forms\Components\TextInput::make('duration')

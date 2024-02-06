@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\HolidayType;
 use App\Enums\NavigationGroup;
 use App\Filament\Resources\HolidayResource\Pages;
-use App\Filament\Resources\HolidayResource\RelationManagers;
+use App\Filament\Resources\HolidayResource\RelationManagers\PackagesRelationManager;
 use App\Models\Holiday;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -35,17 +35,10 @@ class HolidayResource extends Resource
                     ->label('Тип праздника')
                     ->options(HolidayType::class)
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                    ]),
-                Forms\Components\TextInput::make('min_people')
-                    ->label('Минимальное количество людей')
-                    ->required()
-                    ->numeric()
-                    ->minValue(1)
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
+                        'unique' => 'Поле ":attribute" должно быть уникальным.'
                     ]),
             ]);
     }
@@ -57,10 +50,6 @@ class HolidayResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->label('Тип праздника')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('min_people')
-                    ->label('Минимальное количество людей')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -88,7 +77,7 @@ class HolidayResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\PackagesRelationManager::class,
+            PackagesRelationManager::class,
         ];
     }
 

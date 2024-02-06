@@ -13,8 +13,7 @@ return new class extends Migration {
         Schema::create('holidays', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('type')->comment('Тип праздника');
-            $table->unsignedTinyInteger('min_people')->comment('Мин. кол-во людей');
+            $table->string('type')->unique()->comment('Тип праздника');
 
             $table->timestamps();
         });

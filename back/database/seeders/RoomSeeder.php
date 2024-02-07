@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Room;
+use App\Domain\Locations\Models\Room;
 use Illuminate\Database\Seeder;
 
 class RoomSeeder extends Seeder

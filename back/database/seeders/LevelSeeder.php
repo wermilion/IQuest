@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Level;
+use App\Domain\Quests\Models\Level;
 use Illuminate\Database\Seeder;
 
 class LevelSeeder extends Seeder

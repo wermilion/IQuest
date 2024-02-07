@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Type;
+use App\Domain\Quests\Models\Type;
 use Illuminate\Database\Seeder;
 
 class TypeSeeder extends Seeder

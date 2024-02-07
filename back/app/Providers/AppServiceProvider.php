@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Enums\NavigationGroup;
+use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationGroup as FilamentNavigationGroup;
 use Illuminate\Support\ServiceProvider;

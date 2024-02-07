@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\AgeLimit;
+use App\Domain\Quests\Models\AgeLimit;
 use Illuminate\Database\Seeder;
 
 class AgeLimitSeeder extends Seeder

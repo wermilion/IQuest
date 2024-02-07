@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\AgeLimit;
-use App\Models\Filial;
-use App\Models\Genre;
-use App\Models\Level;
-use App\Models\Room;
-use App\Models\Type;
+use App\Domain\Locations\Models\Room;
+use App\Domain\Quests\Models\AgeLimit;
+use App\Domain\Quests\Models\Genre;
+use App\Domain\Quests\Models\Level;
+use App\Domain\Quests\Models\Type;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

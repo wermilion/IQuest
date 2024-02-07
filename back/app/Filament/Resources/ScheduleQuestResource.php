@@ -15,9 +15,11 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -65,20 +67,25 @@ class ScheduleQuestResource extends Resource
                     ->options(fn(Get $get) => Quest::query()
                         ->where('room_id', $get('room'))
                         ->pluck('name', 'id'))
+                    ->live()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 Forms\Components\DatePicker::make('date')
                     ->label('Дата')
+                    ->live()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\TextInput::make('time')
+                Forms\Components\Select::make('time')
                     ->label('Время')
-                    ->mask('99:99')
-                    ->placeholder('xx:xx')
+                    ->options(function (Get $get) {
+                        return is_weekend($get('date')) ?
+                            Quest::query()->where('id', $get('quest_id'))->first()?->weekend :
+                            Quest::query()->where('id', $get('quest_id'))->first()?->weekdays;
+                    })
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -90,6 +97,16 @@ class ScheduleQuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
             ]);
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return false;
     }
 
     public static function table(Table $table): Table
@@ -114,7 +131,7 @@ class ScheduleQuestResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('time')
                     ->label('Время'),
-                Tables\Columns\ToggleColumn::make('activity_status')
+                Tables\Columns\IconColumn::make('activity_status')
                     ->label('Активность слота'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')

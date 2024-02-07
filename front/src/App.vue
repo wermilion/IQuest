@@ -1,32 +1,23 @@
+<script setup lang="ts">
+import { type WritableComputedRef, computed } from "vue";
+import HeaderComponent from "#/components/header/header-component.vue";
+import FooterComponent from "#/components/footer/footer-component.vue";
+import { useGlobalStore } from "#/stores/common/global.store";
+
+const store = useGlobalStore();
+
+const loading: WritableComputedRef<boolean> = computed({
+  get: () => store.loading,
+  set: (v) => store.setLoading(v),
+});
+</script>
+
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
-  </div>
+  <template v-if="loading"> Loading... </template>
+
+  <template v-else>
+    <HeaderComponent />
+    <router-view />
+    <FooterComponent />
+  </template>
 </template>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>

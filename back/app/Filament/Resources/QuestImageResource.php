@@ -50,12 +50,6 @@ class QuestImageResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением'
                     ]),
-                Forms\Components\Toggle::make('is_cover')
-                    ->label('Обложка')
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                    ]),
             ]);
     }
 

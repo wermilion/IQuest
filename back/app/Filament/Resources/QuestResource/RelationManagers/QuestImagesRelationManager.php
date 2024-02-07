@@ -30,8 +30,6 @@ class QuestImagesRelationManager extends RelationManager
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\Toggle::make('is_cover')
-                    ->label('Обложка'),
             ]);
     }
 
@@ -45,8 +43,6 @@ class QuestImagesRelationManager extends RelationManager
                     ->label('Изображение')
                     ->width(200)
                     ->height(200),
-                Tables\Columns\ToggleColumn::make('is_cover')
-                    ->label('Обложка'),
             ])
             ->filters([
                 //

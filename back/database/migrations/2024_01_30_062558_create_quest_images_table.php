@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->string('image')->comment('Путь к картинке');
-            $table->boolean('is_cover')->comment('Обложка');
             $table->foreignIdFor(Quest::class)->comment('Квест')->constrained();
 
             $table->timestamps();

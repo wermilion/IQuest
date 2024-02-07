@@ -16,6 +16,7 @@ class Quest extends Model
         'name',
         'slug',
         'description',
+        'cover',
         'min_price',
         'late_price',
         'min_people',

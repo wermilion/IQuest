@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('name')->comment('Название квеста');
             $table->string('slug')->comment('Сокращенное имя квеста');
             $table->text('description')->comment('Описание квеста');
+            $table->string('cover')->comment('Обложка квеста');
             $table->decimal('min_price')->comment('Минимальная цена квеста');
             $table->decimal('late_price')->comment('Цена для ночного посещения квеста');
             $table->integer('min_people')->comment('Минимальное кол-во людей');

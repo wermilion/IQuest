@@ -2,11 +2,11 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
-use App\Enums\HolidayType;
+use App\Domain\Holidays\Models\Holiday;
 use App\Filament\Resources\HolidayResource\Pages;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers\PackagesRelationManager;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use App\Models\Holiday;
+use App\Http\ApiV1\FrontApi\Enums\HolidayType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;

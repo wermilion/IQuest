@@ -2,7 +2,7 @@
 
 namespace App\Http\ApiV1\FrontApi\Support\Pagination;
 
-use App\Http\ApiV1\FrontApi\Support\Enums\PaginationTypeEnum;
+use App\Http\ApiV1\FrontApi\Enums\PaginationTypeEnum;
 use Illuminate\Database\Eloquent\Collection;
 
 class OffsetPageBuilder extends AbstractPageBuilder

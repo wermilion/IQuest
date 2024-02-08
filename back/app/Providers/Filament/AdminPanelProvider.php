@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Http\ApiV1\AdminApi\Filament\Pages\Auth\Login;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -31,6 +32,10 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Indigo,
             ])
+            ->brandName('IQuest')
+            ->brandLogo(asset('cp/images/logo.svg'))
+            ->brandLogoHeight('42px')
+            ->defaultThemeMode(ThemeMode::Light)
             ->discoverResources(in: app_path('Http/ApiV1/AdminApi/Filament/Resources'), for: 'App\\Http\\ApiV1\\AdminApi\\Filament\\Resources')
             ->discoverPages(in: app_path('Http/ApiV1/AdminApi/Filament/Pages'), for: 'App\\Http\\ApiV1\\AdminApi\\Filament\\Pages')
             ->pages([

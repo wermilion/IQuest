@@ -2,7 +2,7 @@
 
 namespace App\Http\ApiV1\FrontApi\Support\Pagination;
 
-use App\Http\ApiV1\FrontApi\Support\Enums\PaginationTypeEnum;
+use App\Http\ApiV1\FrontApi\Enums\PaginationTypeEnum;
 use Illuminate\Database\Eloquent\Builder as EloquentQueryBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;

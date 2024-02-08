@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\ApiV1\FrontApi\Support\Enums;
+namespace App\Http\ApiV1\FrontApi\Enums;
 
 /**
  * Pagination types:

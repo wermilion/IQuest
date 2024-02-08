@@ -4,8 +4,8 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
+use App\Domain\Lounges\Models\Lounge;
 use App\Filament\Resources\LoungeResource\Pages;
-use App\Models\Lounge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;

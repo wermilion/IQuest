@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Holiday;
-use App\Models\Package;
+use App\Domain\Holidays\Models\Holiday;
+use App\Domain\Holidays\Models\Package;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

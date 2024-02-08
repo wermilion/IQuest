@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace App\Http\ApiV1\FrontApi\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 

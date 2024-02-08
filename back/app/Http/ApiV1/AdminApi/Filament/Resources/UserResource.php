@@ -4,10 +4,10 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
-use App\Enums\Role;
+use App\Domain\Users\Models\User;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Http\ApiV1\FrontApi\Enums\Role;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;

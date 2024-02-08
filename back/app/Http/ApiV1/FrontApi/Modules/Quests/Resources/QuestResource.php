@@ -3,7 +3,7 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Quests\Resources;
 
 use App\Domain\Quests\Models\Quest;
-use App\Http\ApiV1\FrontApi\Modules\Locations\Resources\FilialResource;
+use App\Http\ApiV1\FrontApi\Modules\Locations\Resources\RoomResource;
 use App\Http\ApiV1\FrontApi\Support\Resources\BaseJsonResource;
 
 /**
@@ -29,7 +29,7 @@ class QuestResource extends BaseJsonResource
             'weekdays' => $this->weekdays,
             'weekend' => $this->weekend,
 
-            'filial' => new FilialResource($this->whenLoaded('filial')),
+            'room' => new RoomResource($this->whenLoaded('room')),
             'type' => new TypeResource($this->whenLoaded('type')),
             'genre' => new GenreResource($this->whenLoaded('genre')),
             'level' => new LevelResource($this->whenLoaded('level')),

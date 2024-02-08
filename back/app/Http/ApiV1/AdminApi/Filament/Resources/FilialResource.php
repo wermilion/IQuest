@@ -31,7 +31,6 @@ class FilialResource extends Resource
                 Forms\Components\Select::make('city_id')
                     ->label('Город')
                     ->relationship('city', 'name')
-                    ->selectablePlaceholder(false)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',

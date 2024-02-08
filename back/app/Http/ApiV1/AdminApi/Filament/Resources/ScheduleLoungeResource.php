@@ -4,10 +4,10 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
+use App\Domain\Schedules\Models\ScheduleLounge;
 use App\Filament\Resources\ScheduleLoungeResource\Pages;
 use App\Filament\Resources\ScheduleLoungeResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use App\Models\ScheduleLounge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;

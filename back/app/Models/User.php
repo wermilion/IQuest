@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Domain\Locations\Models\Filial;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -19,8 +22,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        'surname',
+        'login',
         'password',
+        'filial_id',
+        'role',
+        'vk_id'
     ];
 
     /**
@@ -39,7 +46,22 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'role' => \App\Enums\Role::class,
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return static::query()->where('login', $this->login)->exists();
+    }
+
+    public function getFilamentName(): string
+    {
+        return "{$this->surname} {$this->name}";
+    }
+
+    public function filial(): BelongsTo
+    {
+        return $this->belongsTo(Filial::class);
+    }
 }

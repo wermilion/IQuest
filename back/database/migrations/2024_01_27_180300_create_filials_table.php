@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\City;
+use App\Domain\Locations\Models\City;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->foreignIdFor(City::class)->comment('Ключ города')->constrained();
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

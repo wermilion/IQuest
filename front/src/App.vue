@@ -24,7 +24,7 @@ const loading: WritableComputedRef<boolean> = computed({
   </div>
 </template>
 
-<style>
+<style scoped>
 .page-container {
   display: flex;
   flex-direction: column;

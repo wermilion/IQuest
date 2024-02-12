@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Quests\Models\Genre;
 use App\Filament\Resources\GenreResource\Pages;
 use App\Filament\Resources\GenreResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\CreateGenre;
+use App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\EditGenre;
+use App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\ListGenres;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -83,9 +86,9 @@ class GenreResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\ListGenres::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\CreateGenre::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\EditGenre::route('/{record}/edit'),
+            'index' => ListGenres::route('/'),
+            'create' => CreateGenre::route('/create'),
+            'edit' => EditGenre::route('/{record}/edit'),
         ];
     }
 }

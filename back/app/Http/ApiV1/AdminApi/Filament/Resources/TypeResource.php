@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Quests\Models\Type;
 use App\Filament\Resources\TypeResource\Pages;
 use App\Filament\Resources\TypeResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\CreateType;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\EditType;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\ListTypes;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -83,9 +86,9 @@ class TypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\ListTypes::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\CreateType::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\EditType::route('/{record}/edit'),
+            'index' => ListTypes::route('/'),
+            'create' => CreateType::route('/create'),
+            'edit' => EditType::route('/{record}/edit'),
         ];
     }
 }

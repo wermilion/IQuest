@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Quests\Models\QuestImage;
 use App\Filament\Resources\QuestImageResource\Pages;
 use App\Filament\Resources\QuestImageResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\CreateQuestImage;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\EditQuestImage;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\ListQuestImages;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -38,7 +41,8 @@ class QuestImageResource extends Resource
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\FileUpload::make('image')
                     ->directory('quest_images')
                     ->label('Изображение')
@@ -95,9 +99,9 @@ class QuestImageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\ListQuestImages::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\CreateQuestImage::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\EditQuestImage::route('/{record}/edit'),
+            'index' => ListQuestImages::route('/'),
+            'create' => CreateQuestImage::route('/create'),
+            'edit' => EditQuestImage::route('/{record}/edit'),
         ];
     }
 }

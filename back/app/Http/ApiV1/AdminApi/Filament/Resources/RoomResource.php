@@ -7,6 +7,9 @@ use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
 use App\Filament\Resources\RoomResource\Pages;
 use App\Filament\Resources\RoomResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\CreateRoom;
+use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\EditRoom;
+use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\ListRooms;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -86,7 +89,8 @@ class RoomResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('city')
                     ->label('Город')
-                    ->relationship('filial.city', 'name'),
+                    ->relationship('filial.city', 'name')
+                    ->native(false),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -108,9 +112,9 @@ class RoomResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\ListRooms::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\CreateRoom::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\EditRoom::route('/{record}/edit'),
+            'index' => ListRooms::route('/'),
+            'create' => CreateRoom::route('/create'),
+            'edit' => EditRoom::route('/{record}/edit'),
         ];
     }
 }

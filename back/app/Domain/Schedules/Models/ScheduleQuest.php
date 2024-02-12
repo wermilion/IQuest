@@ -2,10 +2,12 @@
 
 namespace App\Domain\Schedules\Models;
 
+use App\Domain\Bookings\Models\Booking;
 use App\Domain\Quests\Models\Quest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class ScheduleQuest
@@ -17,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $quest_id Идентификатор квеста
  *
  * @property Quest $quest Квест
+ * @property Booking $booking Бронирование
  */
 class ScheduleQuest extends Model
 {
@@ -36,5 +39,11 @@ class ScheduleQuest extends Model
     public function quest(): BelongsTo
     {
         return $this->belongsTo(Quest::class);
+    }
+
+    public function booking(): BelongsToMany
+    {
+        return $this->belongsToMany(Booking::class, 'booking_schedule_quests')
+            ->withPivot(['count_participants', 'final_price']);
     }
 }

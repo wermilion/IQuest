@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Holidays\Models\Package;
 use App\Filament\Resources\PackageResource\Pages;
 use App\Filament\Resources\PackageResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\PackageResource\Pages\CreatePackage;
+use App\Http\ApiV1\AdminApi\Filament\Resources\PackageResource\Pages\EditPackage;
+use App\Http\ApiV1\AdminApi\Filament\Resources\PackageResource\Pages\ListPackages;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -131,9 +134,9 @@ class PackageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\PackageResource\Pages\ListPackages::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\PackageResource\Pages\CreatePackage::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\PackageResource\Pages\EditPackage::route('/{record}/edit'),
+            'index' => ListPackages::route('/'),
+            'create' => CreatePackage::route('/create'),
+            'edit' => EditPackage::route('/{record}/edit'),
         ];
     }
 }

@@ -4,6 +4,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Holidays\Models\Holiday;
 use App\Filament\Resources\HolidayResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\CreateHoliday;
+use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\EditHoliday;
+use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ListHolidays;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers\PackagesRelationManager;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use App\Http\ApiV1\FrontApi\Enums\HolidayType;
@@ -37,7 +40,8 @@ class HolidayResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.'
-                    ]),
+                    ])
+                    ->native(false),
             ]);
     }
 
@@ -82,9 +86,9 @@ class HolidayResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ListHolidays::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\CreateHoliday::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\EditHoliday::route('/{record}/edit'),
+            'index' => ListHolidays::route('/'),
+            'create' => CreateHoliday::route('/create'),
+            'edit' => EditHoliday::route('/{record}/edit'),
         ];
     }
 }

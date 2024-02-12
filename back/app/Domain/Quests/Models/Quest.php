@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class Quest
@@ -74,6 +75,17 @@ class Quest extends Model
         'weekdays' => 'array',
         'weekend' => 'array',
     ];
+
+    protected static function booted(): void
+    {
+        static::updated(function (Quest $quest) {
+            if ($quest->isDirty('cover')) Storage::delete('public/' . $quest->cover);
+        });
+
+        static::deleted(function (Quest $quest) {
+            Storage::delete('public/' . $quest->cover);
+        });
+    }
 
     public function room(): BelongsTo
     {

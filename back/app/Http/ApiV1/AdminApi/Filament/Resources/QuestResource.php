@@ -6,14 +6,18 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
 use App\Domain\Quests\Models\Quest;
-use App\Filament\Resources\QuestResource\Pages;
-use App\Filament\Resources\QuestResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\EditQuest;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\ListQuests;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestImagesRelationManager;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class QuestResource extends Resource
 {
@@ -31,14 +35,16 @@ class QuestResource extends Resource
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
-                    ->hiddenOn(''),
+                    ->hiddenOn('')
+                    ->native(false),
                 Forms\Components\Select::make('filial')
                     ->label('Филиал')
                     ->live()
                     ->options(fn(Get $get) => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
-                    ->hiddenOn(''),
+                    ->hiddenOn('')
+                    ->native(false),
                 Forms\Components\Select::make('room_id')
                     ->label('Комната')
                     ->columnSpanFull()
@@ -48,35 +54,40 @@ class QuestResource extends Resource
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\Select::make('type_id')
                     ->label('Тип')
                     ->relationship('type', 'name')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\Select::make('genre_id')
                     ->label('Жанр')
                     ->relationship('genre', 'name')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\Select::make('age_limit_id')
                     ->label('Ограничение')
                     ->relationship('age_limit', 'limit')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\Select::make('level_id')
                     ->label('Уровень сложность')
                     ->relationship('level', 'name')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
@@ -270,9 +281,35 @@ class QuestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('city')
-                    ->label('Город')
-                    ->relationship('room.filial.city', 'name'),
+                Tables\Filters\Filter::make('location')
+                    ->form([
+                        Forms\Components\Select::make('city_id')
+                            ->label('Город')
+                            ->placeholder('Выберите город')
+                            ->relationship('filial.city', 'name')
+                            ->native(false),
+                        Forms\Components\Select::make('filial_id')
+                            ->label('Филиал')
+                            ->placeholder('Выберите филиал')
+                            ->live()
+                            ->options(fn(Get $get): Collection => Filial::query()
+                                ->where('city_id', $get('city_id'))
+                                ->pluck('address', 'id'))
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['city_id'],
+                                fn(Builder $query, $city_id): Builder => $query
+                                    ->whereHas('filial', fn(Builder $query): Builder => $query->where('city_id', $city_id)),
+                            )
+                            ->when(
+                                $data['filial_id'],
+                                fn(Builder $query, $filial_id): Builder => $query
+                                    ->whereHas('room', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
+                            );
+                    }),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -287,16 +324,16 @@ class QuestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            \App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestImagesRelationManager::class,
+            QuestImagesRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\ListQuests::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\EditQuest::route('/{record}/edit'),
+            'index' => ListQuests::route('/'),
+            'create' => CreateQuest::route('/create'),
+            'edit' => EditQuest::route('/{record}/edit'),
         ];
     }
 }

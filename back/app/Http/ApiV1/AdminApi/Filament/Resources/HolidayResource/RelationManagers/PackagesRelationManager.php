@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers;
 
+use App\Http\ApiV1\AdminApi\Filament\Resources\PackageResource;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -18,51 +19,7 @@ class PackagesRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Название')
-                    ->required()
-                    ->maxLength(255)
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                    ]),
-                Forms\Components\TextInput::make('price')
-                    ->label('Цена')
-                    ->required()
-                    ->numeric()
-                    ->minValue(1)
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
-                    ]),
-                Forms\Components\TextInput::make('min_people')
-                    ->label('Мин. кол-во людей')
-                    ->live()
-                    ->numeric()
-                    ->required()
-                    ->minValue('1')
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
-                    ]),
-                Forms\Components\TextInput::make('max_people')
-                    ->label('Макс. кол-во людей')
-                    ->numeric()
-                    ->required()
-                    ->minValue(fn(Forms\Get $get) => $get('min_people'))
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во людей".',
-                    ]),
-                Forms\Components\RichEditor::make('description')
-                    ->label('Описание')
-                    ->columnSpanFull()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Toggle::make('is_active')
-                    ->label('Отображение на сайте'),
-            ]);
+        return PackageResource::form($form);
     }
 
     public function table(Table $table): Table

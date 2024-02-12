@@ -39,6 +39,4 @@ Route::name('api')->group(function () {
 
     Route::get('filials/{id}', [FilialController::class, 'get']);
     Route::post('filials:search', [FilialController::class, 'search']);
-
-
 });

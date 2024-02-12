@@ -5,6 +5,7 @@ namespace App\Domain\Quests\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class QuestImage
@@ -23,6 +24,17 @@ class QuestImage extends Model
         'image',
         'quest_id'
     ];
+
+    protected static function booted(): void
+    {
+        static::updated(function (QuestImage $questImage) {
+            if ($questImage->isDirty('image')) Storage::delete('public/' . $questImage->image);
+        });
+        
+        static::deleted(function (QuestImage $questImage) {
+            Storage::delete('public/' . $questImage->image);
+        });
+    }
 
     public function quest(): BelongsTo
     {

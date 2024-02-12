@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Quests\Models\AgeLimit;
 use App\Filament\Resources\AgeLimitResource\Pages;
 use App\Filament\Resources\AgeLimitResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\CreateAgeLimit;
+use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\EditAgeLimit;
+use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\ListAgeLimits;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -78,9 +81,9 @@ class AgeLimitResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\ListAgeLimits::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\CreateAgeLimit::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\EditAgeLimit::route('/{record}/edit'),
+            'index' => ListAgeLimits::route('/'),
+            'create' => CreateAgeLimit::route('/create'),
+            'edit' => EditAgeLimit::route('/{record}/edit'),
         ];
     }
 }

@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\Filial;
 use App\Filament\Resources\FilialResource\Pages;
 use App\Filament\Resources\FilialResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\CreateFilial;
+use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\EditFilial;
+use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\ListFilials;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -34,9 +37,17 @@ class FilialResource extends Resource
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\TextInput::make('address')
                     ->label('Адрес')
+                    ->required()
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
+                Forms\Components\TextInput::make('yandex_mark')
+                    ->label('Яндекс метка')
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([
@@ -70,7 +81,8 @@ class FilialResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('city')
                     ->label('Город')
-                    ->relationship('city', 'name'),
+                    ->relationship('city', 'name')
+                    ->native(false),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -92,9 +104,9 @@ class FilialResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\ListFilials::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\CreateFilial::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\EditFilial::route('/{record}/edit'),
+            'index' => ListFilials::route('/'),
+            'create' => CreateFilial::route('/create'),
+            'edit' => EditFilial::route('/{record}/edit'),
         ];
     }
 }

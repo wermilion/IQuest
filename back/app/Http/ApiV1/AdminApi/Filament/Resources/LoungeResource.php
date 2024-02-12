@@ -6,6 +6,9 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
 use App\Filament\Resources\LoungeResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge;
+use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge;
+use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -22,6 +25,7 @@ class LoungeResource extends Resource
     protected static ?string $pluralModelLabel = 'Лаундж-зоны';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -32,17 +36,18 @@ class LoungeResource extends Resource
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
-                    ->hiddenOn(''),
+                    ->hiddenOn('')
+                    ->native(false),
                 Forms\Components\Select::make('filial_id')
                     ->label('Филиал')
-                    ->relationship('filial', 'address')
                     ->options(fn(Get $get) => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
@@ -118,15 +123,13 @@ class LoungeResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('city')
                     ->label('Город')
-                    ->relationship('filial.city', 'name'),
+                    ->relationship('filial.city', 'name')
+                    ->native(false),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -139,9 +142,9 @@ class LoungeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge::route('/{record}/edit'),
+            'index' => ListLounges::route('/'),
+            'create' => CreateLounge::route('/create'),
+            'edit' => EditLounge::route('/{record}/edit'),
         ];
     }
 }

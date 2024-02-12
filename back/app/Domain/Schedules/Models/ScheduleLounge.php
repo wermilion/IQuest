@@ -2,10 +2,12 @@
 
 namespace App\Domain\Schedules\Models;
 
+use App\Domain\Bookings\Models\Booking;
 use App\Domain\Lounges\Models\Lounge;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class ScheduleLounge
@@ -32,5 +34,10 @@ class ScheduleLounge extends Model
     public function lounge(): BelongsTo
     {
         return $this->belongsTo(Lounge::class);
+    }
+
+    public function booking(): BelongsToMany
+    {
+        return $this->belongsToMany(Booking::class, 'booking_schedule_lounges');
     }
 }

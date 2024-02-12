@@ -16,14 +16,14 @@ class CreateAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'create-admin';
+    protected $signature = 'create:admin';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Создает пользователя-админа';
+    protected $description = 'Create admin user';
 
     /**
      * Execute the console command.

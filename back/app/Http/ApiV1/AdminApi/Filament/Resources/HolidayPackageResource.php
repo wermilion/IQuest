@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Holidays\Models\HolidayPackage;
 use App\Filament\Resources\HolidayPackageResource\Pages;
 use App\Filament\Resources\HolidayPackageResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayPackageResource\Pages\CreateHolidayPackage;
+use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayPackageResource\Pages\EditHolidayPackage;
+use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayPackageResource\Pages\ListHolidayPackages;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -32,10 +35,12 @@ class HolidayPackageResource extends Resource
             ->schema([
                 Forms\Components\Select::make('holiday_id')
                     ->relationship('holiday', 'id')
-                    ->required(),
+                    ->required()
+                    ->native(false),
                 Forms\Components\Select::make('package_id')
                     ->relationship('package', 'name')
-                    ->required(),
+                    ->required()
+                    ->native(false),
             ]);
     }
 
@@ -81,9 +86,9 @@ class HolidayPackageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\HolidayPackageResource\Pages\ListHolidayPackages::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\HolidayPackageResource\Pages\CreateHolidayPackage::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\HolidayPackageResource\Pages\EditHolidayPackage::route('/{record}/edit'),
+            'index' => ListHolidayPackages::route('/'),
+            'create' => CreateHolidayPackage::route('/create'),
+            'edit' => EditHolidayPackage::route('/{record}/edit'),
         ];
     }
 }

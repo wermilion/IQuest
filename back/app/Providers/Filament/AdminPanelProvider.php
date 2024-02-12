@@ -35,6 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('IQuest')
             ->brandLogo(asset('cp/images/logo.svg'))
             ->brandLogoHeight('42px')
+            ->favicon(asset('cp/images/favicon.svg'))
             ->defaultThemeMode(ThemeMode::Light)
             ->discoverResources(in: app_path('Http/ApiV1/AdminApi/Filament/Resources'), for: 'App\\Http\\ApiV1\\AdminApi\\Filament\\Resources')
             ->discoverPages(in: app_path('Http/ApiV1/AdminApi/Filament/Pages'), for: 'App\\Http\\ApiV1\\AdminApi\\Filament\\Pages')

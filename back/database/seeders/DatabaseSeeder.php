@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         User::query()->firstOrCreate([
             'name' => 'bogdan',
             'surname' => 'mukhatdisov',
-            'login' => 'admin',
+            'login' => 'admin2',
             'password' => Hash::make('12345678'),
             'role' => Role::ADMIN->value,
         ]);

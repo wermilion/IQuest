@@ -14,9 +14,13 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\EditS
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\ListScheduleQuests;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\RelationManagers\BookingRelationManager;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use Artisan;
+use Filament\Actions\Action;
+use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -195,13 +199,34 @@ class ScheduleQuestResource extends Resource
                         return $indicators;
                     }),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ->headerActions([
+                Tables\Actions\Action::make('schedule-quests')
+                    ->label('Сформировать расписание')
+                    ->form([
+                        Forms\Components\Select::make('city')
+                            ->label('Город')
+                            ->placeholder('Выберите город')
+                            ->options(fn(): Collection => City::all()->pluck('name', 'id'))
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'Поле ":attribute" обязательное.'
+                            ])
+                            ->native(false)
+                    ])
+                    ->action(function (array $data): void {
+                        Artisan::call('create:schedule-quests', ['city_id' => $data['city']]);
+
+                        Notification::make()
+                            ->title('Расписание сформировано!')
+                            ->success()
+                            ->send();
+                    })
+                    ->modalSubmitActionLabel('Сформировать')
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

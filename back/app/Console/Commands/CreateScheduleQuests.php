@@ -17,7 +17,7 @@ class CreateScheduleQuests extends Command
      *
      * @var string
      */
-    protected $signature = 'create:schedule-quests';
+    protected $signature = 'create:schedule-quests {city_id}';
 
     /**
      * The console command description.
@@ -31,9 +31,9 @@ class CreateScheduleQuests extends Command
      */
     public function handle(): void
     {
-        $cityName = $this->ask('Enter city name');
         try {
-            $city = City::query()->where('name', $cityName)->firstOrFail();
+            $city = City::query()->findOrFail($this->argument('city_id'));
+
             echo "Creating schedule quests for city: " . $city->name . "\n";
 
             $currentDate = Carbon::now(); // TODO: check timezone

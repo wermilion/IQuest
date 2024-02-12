@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             AgeLimitSeeder::class,
         ]);
 
-        User::query()->createOrFirst([
+        User::query()->firstOrCreate([
             'name' => 'bogdan',
             'surname' => 'mukhatdisov',
             'login' => 'admin',

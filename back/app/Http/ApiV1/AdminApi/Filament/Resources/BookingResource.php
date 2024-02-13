@@ -52,14 +52,6 @@ class BookingResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),
-                Forms\Components\TextInput::make('email')
-                    ->label('Email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255)
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                    ]),
                 Forms\Components\Select::make('type')
                     ->label('Тип заявки')
                     ->options(BookingType::class)
@@ -89,9 +81,6 @@ class BookingResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Телефон')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->label('Тип заявки')

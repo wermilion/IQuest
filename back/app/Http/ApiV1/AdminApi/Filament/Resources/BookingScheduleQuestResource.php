@@ -19,6 +19,7 @@ class BookingScheduleQuestResource extends Resource
     protected static ?string $model = BookingScheduleQuest::class;
 
     protected static ?string $modelLabel = 'Квест';
+
     protected static ?string $pluralLabel = 'Квесты';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

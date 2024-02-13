@@ -37,14 +37,6 @@ class BookingRelationManager extends RelationManager
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),
-                Forms\Components\TextInput::make('email')
-                    ->label('Email')
-                    ->email()
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                        'email' => 'Поле ":attribute" должно быть Email',
-                    ]),
                 Forms\Components\Select::make('type')
                     ->label('Тип заявки')
                     ->options(BookingType::class)
@@ -87,8 +79,6 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя'),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Телефон'),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Email'),
                 Tables\Columns\TextColumn::make('type')
                     ->label('Тип заявки'),
                 Tables\Columns\SelectColumn::make('status')
@@ -103,7 +93,7 @@ class BookingRelationManager extends RelationManager
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::LOUNGE->value))
                     ->attachAnother(false)
-                    ->recordSelectSearchColumns(['name', 'email', 'phone']),
+                    ->recordSelectSearchColumns(['name', 'phone']),
                 Tables\Actions\CreateAction::make()
                     ->createAnother(false),
             ])

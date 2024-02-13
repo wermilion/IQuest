@@ -15,7 +15,6 @@ return new class extends Migration {
 
             $table->string('name')->comment('Имя');
             $table->string('phone')->comment('Телефон');
-            $table->string('email')->comment('Email');
             $table->string('type')->comment('Тип заявки');
             $table->string('status')->comment('Статус заявки');
 

@@ -72,9 +72,12 @@ class BookingRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('phone')
+            ->recordTitleAttribute('id')
             ->heading('Заявки на бронирование')
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Имя'),
                 Tables\Columns\TextColumn::make('phone')
@@ -93,7 +96,7 @@ class BookingRelationManager extends RelationManager
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::LOUNGE->value))
                     ->attachAnother(false)
-                    ->recordSelectSearchColumns(['name', 'phone']),
+                    ->recordSelectSearchColumns(['id']),
                 Tables\Actions\CreateAction::make()
                     ->createAnother(false),
             ])
@@ -102,9 +105,6 @@ class BookingRelationManager extends RelationManager
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }

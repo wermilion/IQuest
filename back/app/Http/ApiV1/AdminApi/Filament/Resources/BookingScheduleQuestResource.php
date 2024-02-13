@@ -50,6 +50,9 @@ class BookingScheduleQuestResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('booking.id')
+                    ->label('ID')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('booking.name')
                     ->label('Имя')
                     ->numeric(),

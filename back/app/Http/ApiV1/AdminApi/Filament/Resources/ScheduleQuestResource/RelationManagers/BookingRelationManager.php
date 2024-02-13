@@ -94,9 +94,12 @@ class BookingRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('phone')
+            ->recordTitleAttribute('id')
             ->heading('Заявки на бронирование')
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Имя'),
                 Tables\Columns\TextColumn::make('phone')
@@ -141,7 +144,7 @@ class BookingRelationManager extends RelationManager
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value))
-                    ->recordSelectSearchColumns(['name', 'phone'])
+                    ->recordSelectSearchColumns(['id'])
                     ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['activity_status' => false]))
                     ->attachAnother(false),
                 Tables\Actions\CreateAction::make()

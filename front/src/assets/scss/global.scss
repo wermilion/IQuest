@@ -1,5 +1,6 @@
 @import "./normalize.scss";
-@import url("../css/fonts/NEXT-ART/next_art.css");
+@import "../css/fonts/NEXT-ART/next_art.css";
+@import "../css/fonts/onest/onest.css";
 
 html {
   // Убрать
@@ -10,8 +11,6 @@ html {
   height: 100%;
   border: none;
   overflow: hidden;
-
-  max-width: 1440px;
 }
 
 body {
@@ -52,14 +51,14 @@ h2 {
   text-overflow: ellipsis;
 }
 
-.body-bold,
+.bodyBold,
 .body,
 .footnote,
-.small-footnote {
+.smallFootnote {
   font-family: Onest;
 }
 
-.body-bold {
+.bodyBold {
   font-size: 24px;
   font-weight: 700;
   line-height: 28px;
@@ -77,7 +76,7 @@ h2 {
   line-height: 24px;
 }
 
-.small-footnote {
+.smallFootnote {
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
@@ -86,4 +85,9 @@ h2 {
 .container {
   display: flex;
   max-width: 1440px;
+  margin-inline: auto;
+}
+
+.df {
+  display: flex;
 }

@@ -8,7 +8,6 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\CreateHolid
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\EditHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ListHolidays;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers\PackagesRelationManager;
-use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use App\Http\ApiV1\FrontApi\Enums\HolidayType;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,7 +25,7 @@ class HolidayResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = NavigationGroup::HOLIDAYS->value;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

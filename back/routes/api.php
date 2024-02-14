@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\HolidaysController;
-use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\PackagesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\CitiesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\FilialsController;
 use App\Http\ApiV1\FrontApi\Modules\Lounges\Controllers\LoungesController;

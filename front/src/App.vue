@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type WritableComputedRef, computed } from "vue";
-import HeaderComponent from "#/components/header/header-component.vue";
-import FooterComponent from "#/components/footer/footer-component.vue";
+import HeaderComponent from "#/components/header-component.vue";
+import FooterComponent from "#/components/footer-component.vue";
 import { useGlobalStore } from "#/stores/common/global.store";
 
 const store = useGlobalStore();
@@ -13,11 +13,29 @@ const loading: WritableComputedRef<boolean> = computed({
 </script>
 
 <template>
-  <template v-if="loading"> Loading... </template>
+  <div class="page-container">
+    <template v-if="loading"> Loading... </template>
 
-  <template v-else>
-    <HeaderComponent />
-    <router-view />
-    <FooterComponent />
-  </template>
+    <template v-else>
+      <HeaderComponent />
+      <router-view class="container" />
+      <FooterComponent />
+    </template>
+  </div>
 </template>
+
+<style scoped>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  flex: 1;
+}
+
+.footer {
+  margin-top: auto;
+}
+</style>

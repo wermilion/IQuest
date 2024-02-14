@@ -27,6 +27,6 @@ class Debug extends Command
      */
     public function handle()
     {
-        var_dump(Carbon::now()->format('Y-m-d'));
+       
     }
 }

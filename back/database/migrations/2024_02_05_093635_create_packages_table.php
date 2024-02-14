@@ -15,7 +15,7 @@ return new class extends Migration {
 
             $table->string('name')->comment('Название пакета');
             $table->string('description')->comment('Описание пакета');
-            $table->unsignedInteger('price')->comment('Цена пакета');
+            $table->decimal('price')->comment('Цена пакета');
             $table->unsignedInteger('min_people')->comment('Минимальное количество людей');
             $table->unsignedInteger('max_people')->comment('Максимальное количество людей');
             $table->boolean('is_active')->comment('Активность пакетa');

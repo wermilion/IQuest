@@ -2,6 +2,8 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
+use App\Domain\Bookings\Enums\BookingStatus;
+use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Filament\Resources\BookingResource\Pages;
 use App\Filament\Resources\BookingResource\RelationManagers;
@@ -9,8 +11,6 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\CreateBooki
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\EditBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\ListBookings;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use App\Http\ApiV1\FrontApi\Enums\BookingStatus;
-use App\Http\ApiV1\FrontApi\Enums\BookingType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;

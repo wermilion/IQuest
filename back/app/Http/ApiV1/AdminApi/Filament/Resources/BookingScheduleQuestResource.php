@@ -2,12 +2,12 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
+use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Models\BookingScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingQuestResource\Pages\CreateBookingScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingQuestResource\Pages\EditBookingScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingQuestResource\Pages\ListBookingScheduleQuests;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use App\Http\ApiV1\FrontApi\Enums\BookingStatus;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;

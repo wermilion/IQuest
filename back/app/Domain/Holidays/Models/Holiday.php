@@ -2,7 +2,7 @@
 
 namespace App\Domain\Holidays\Models;
 
-use App\Http\ApiV1\FrontApi\Enums\HolidayType;
+use App\Domain\Holidays\Enums\HolidayType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Class Holiday
  *
  * @property int $id Идентификатор праздника
- * @property string $type Тип праздника
+ * @property HolidayType $type Тип праздника
  *
  * @property-read HolidayPackage[] $holidayPackages
  * @property-read Package[] $packages

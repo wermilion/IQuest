@@ -79,7 +79,9 @@ class Quest extends Model
     protected static function booted(): void
     {
         static::updated(function (Quest $quest) {
-            if ($quest->isDirty('cover')) Storage::delete('public/' . $quest->cover);
+            if ($quest->isDirty('cover')) {
+                Storage::delete('public/' . $quest->cover);
+            }
         });
 
         static::deleted(function (Quest $quest) {

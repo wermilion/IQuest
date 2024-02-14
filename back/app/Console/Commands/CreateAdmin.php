@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
-use App\Http\ApiV1\FrontApi\Enums\Role;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;

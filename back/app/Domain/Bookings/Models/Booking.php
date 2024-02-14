@@ -2,10 +2,10 @@
 
 namespace App\Domain\Bookings\Models;
 
+use App\Domain\Bookings\Enums\BookingStatus;
+use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Schedules\Models\ScheduleLounge;
 use App\Domain\Schedules\Models\ScheduleQuest;
-use App\Http\ApiV1\FrontApi\Enums\BookingStatus;
-use App\Http\ApiV1\FrontApi\Enums\BookingType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,8 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $name Имя клиента
  * @property string $phone Номер телефона клиента
  * @property string $email Электронная почта клиента
- * @property string $type Тип бронирования
- * @property string $status Статус бронирования
+ * @property BookingType $type Тип бронирования
+ * @property BookingStatus $status Статус бронирования
  */
 class Booking extends Model
 {
@@ -40,15 +40,21 @@ class Booking extends Model
     {
         static::updated(function (Booking $model) {
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
-                if ($model->type->value == BookingType::QUEST->value) $model->scheduleQuests()->update(['activity_status' => true]);
+                if ($model->type->value == BookingType::QUEST->value) {
+                    $model->scheduleQuests()->update(['activity_status' => true]);
+                }
 
                 $model->delete();
             }
         });
 
         static::deleting(function (Booking $model) {
-            if ($model->scheduleQuests()->exists()) $model->scheduleQuests()->update(['activity_status' => true]);
-            if ($model->scheduleLounges()->exists()) $model->scheduleLounges()->delete();
+            if ($model->scheduleQuests()->exists()) {
+                $model->scheduleQuests()->update(['activity_status' => true]);
+            }
+            if ($model->scheduleLounges()->exists()) {
+                $model->scheduleLounges()->delete();
+            }
         });
     }
 

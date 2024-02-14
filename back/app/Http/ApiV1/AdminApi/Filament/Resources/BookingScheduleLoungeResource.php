@@ -2,11 +2,11 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
+use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Models\BookingScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleLoungeResource\Pages;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleLoungeResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use App\Http\ApiV1\FrontApi\Enums\BookingStatus;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;

@@ -3,7 +3,7 @@
 namespace App\Domain\Users\Models;
 
 use App\Domain\Locations\Models\Filial;
-use App\Http\ApiV1\FrontApi\Enums\Role;
+use App\Domain\Users\Enums\Role;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $id Идентификатор пакета
  * @property string $name Название пакета
  * @property string $description Описание пакета
- * @property int $price Цена пакета
+ * @property float $price Цена пакета
  * @property int $min_people Минимальное количество людей
  * @property int $max_people Максимальное количество людей
  * @property bool $is_active Статус отображения

@@ -2,8 +2,8 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\RelationManagers;
 
-use App\Http\ApiV1\FrontApi\Enums\BookingStatus;
-use App\Http\ApiV1\FrontApi\Enums\BookingType;
+use App\Domain\Bookings\Enums\BookingStatus;
+use App\Domain\Bookings\Enums\BookingType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;

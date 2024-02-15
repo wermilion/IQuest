@@ -30,7 +30,7 @@ const contacts = ref([
 </script>
 
 <template>
-  <div class="baground-black">
+  <div class="border">
     <div class="container footer">
       <img src="/logo/logo_full.svg" alt="logo" />
       <div class="footer-links">
@@ -56,10 +56,15 @@ const contacts = ref([
 </template>
 
 <style scoped lang="scss">
-.baground-black {
-  background-color: $color-black;
-}
+.border {
+  border-top: 2px solid $color-shade-6;
 
+  background-image: url("../../public/gradient/footer-gradient.svg");
+  background-color: $color-base1;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right bottom;
+}
 .footer {
   height: 100%;
   margin-inline: auto;
@@ -80,7 +85,7 @@ const contacts = ref([
       span {
         display: flex;
         gap: 8px;
-        color: $color-white;
+        color: $color-base2;
       }
     }
 
@@ -96,7 +101,7 @@ const contacts = ref([
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    color: $color-white;
+    color: $color-base2;
 
     span {
       display: flex;

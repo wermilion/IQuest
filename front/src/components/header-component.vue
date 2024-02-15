@@ -34,9 +34,7 @@ let isHoverActive = ref(false);
         class="footnote"
       >
         <div class="link" :class="{ selected: $route.path === link.link }">
-          <span v-if="index != 1">[</span> {{ link.name }}
-          <span v-if="index != 1">]</span>
-
+          <span>[</span> {{ link.name }}
           <div class="select" v-if="index == 1">
             <svg
               v-show="!isHoverActive"
@@ -71,12 +69,13 @@ let isHoverActive = ref(false);
               />
             </svg>
           </div>
+          <span>]</span>
         </div>
       </router-link>
     </div>
     <div @click="isActive = !isActive" class="header-select">
       <p class="footnote">Томск</p>
-      <div class="df">
+      <div class="d-flex">
         <svg
           v-show="!isActive"
           width="24"
@@ -129,14 +128,14 @@ let isHoverActive = ref(false);
     gap: 24px;
 
     a {
-      color: $color-opacity05;
+      color: $color-opacity075;
       display: flex;
       gap: 8px;
     }
   }
 
   .selected {
-    color: $color-white;
+    color: $color-base2;
 
     span {
       visibility: visible !important;
@@ -145,7 +144,7 @@ let isHoverActive = ref(false);
 
   .link {
     display: flex;
-    padding: 8px 12px;
+    padding: 8px 0;
     justify-content: center;
     align-items: center;
     gap: 4px;
@@ -161,7 +160,7 @@ let isHoverActive = ref(false);
     .select {
       display: flex;
       path {
-        stroke: $color-opacity05;
+        stroke: $color-opacity075;
       }
     }
   }
@@ -175,7 +174,7 @@ let isHoverActive = ref(false);
     cursor: pointer;
 
     p {
-      color: $color-white;
+      color: $color-base2;
     }
   }
 }

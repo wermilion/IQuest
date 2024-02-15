@@ -3,7 +3,6 @@
 @import "../css/fonts/onest/onest.css";
 
 html {
-  // Убрать
   background-color: $color-secondary;
 
   padding: 0;
@@ -88,6 +87,6 @@ h2 {
   margin-inline: auto;
 }
 
-.df {
+.d-flex {
   display: flex;
 }

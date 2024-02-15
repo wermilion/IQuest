@@ -4,11 +4,11 @@ import { ref } from "vue";
 const links = ref([
   {
     name: "Квесты",
-    link: "/home",
+    link: "/",
   },
   {
     name: "Праздники",
-    link: "#",
+    link: "/quests",
   },
   {
     name: "Сертификат",
@@ -34,7 +34,8 @@ let isHoverActive = ref(false);
         class="footnote"
       >
         <div class="link" :class="{ selected: $route.path === link.link }">
-          <span>[</span> {{ link.name }}
+          <span>[</span>
+          {{ link.name }}
           <div class="select" v-if="index == 1">
             <svg
               v-show="!isHoverActive"
@@ -73,8 +74,13 @@ let isHoverActive = ref(false);
         </div>
       </router-link>
     </div>
-    <div @click="isActive = !isActive" class="header-select">
-      <p class="footnote">Томск</p>
+    <div
+      @click="isActive = !isActive"
+      class="header-select link footnote"
+      :class="{ selected: isActive == true }"
+    >
+      <span>[</span>
+      Томск
       <div class="d-flex">
         <svg
           v-show="!isActive"
@@ -109,6 +115,7 @@ let isHoverActive = ref(false);
           />
         </svg>
       </div>
+      <span>]</span>
     </div>
   </div>
 </template>
@@ -140,6 +147,10 @@ let isHoverActive = ref(false);
     span {
       visibility: visible !important;
     }
+
+    path {
+      stroke: $color-base2;
+    }
   }
 
   .link {
@@ -166,15 +177,11 @@ let isHoverActive = ref(false);
   }
 
   &-select {
-    display: flex;
-    padding: 8px 0px;
-    justify-content: center;
-    align-items: center;
-    gap: 2px;
+    color: $color-opacity075;
     cursor: pointer;
 
-    p {
-      color: $color-base2;
+    path {
+      stroke: $color-opacity075;
     }
   }
 }

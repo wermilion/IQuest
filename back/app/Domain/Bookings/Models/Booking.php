@@ -38,7 +38,7 @@ class Booking extends Model
 
     protected static function booted(): void
     {
-        static::updated(function (Booking $model) {
+        static::updated(function (self $model) {
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
                 if ($model->type->value == BookingType::QUEST->value) {
                     $model->scheduleQuests()->update(['activity_status' => true]);
@@ -48,7 +48,7 @@ class Booking extends Model
             }
         });
 
-        static::deleting(function (Booking $model) {
+        static::deleting(function (self $model) {
             if ($model->scheduleQuests()->exists()) {
                 $model->scheduleQuests()->update(['activity_status' => true]);
             }

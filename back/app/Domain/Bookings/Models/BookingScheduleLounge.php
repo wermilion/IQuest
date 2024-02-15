@@ -28,7 +28,7 @@ class BookingScheduleLounge extends Model
 
     protected static function booted(): void
     {
-        static::deleted(function (BookingScheduleLounge $model) {
+        static::deleted(function (self $model) {
             $model->scheduleLounge->delete();
             $model->booking->delete();
         });

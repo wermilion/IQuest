@@ -27,13 +27,13 @@ class QuestImage extends Model
 
     protected static function booted(): void
     {
-        static::updated(function (QuestImage $questImage) {
+        static::updated(function (self $questImage) {
             if ($questImage->isDirty('image')) {
                 Storage::delete('public/' . $questImage->image);
             }
         });
 
-        static::deleted(function (QuestImage $questImage) {
+        static::deleted(function (self $questImage) {
             Storage::delete('public/' . $questImage->image);
         });
     }

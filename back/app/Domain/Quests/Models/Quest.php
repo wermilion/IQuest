@@ -25,8 +25,6 @@ use Illuminate\Support\Facades\Storage;
  * @property bool $can_add_time - Можно ли добавлять дополнительное время
  * @property bool $is_active - Активность на клиентской части
  * @property int $sequence_number - Порядковый номер
- * @property array $weekdays - Расписание по будням
- * @property array $weekend - Расписание по выходным
  * @property int $room_id - Идентификатор комнаты
  * @property int $type_id - Идентификатор типа
  * @property int $genre_id - Идентификатор жанра

@@ -34,8 +34,6 @@ class AppServiceProvider extends ServiceProvider
                 FilamentNavigationGroup::make()
                     ->label(NavigationGroup::SCHEDULE->value),
                 FilamentNavigationGroup::make()
-                    ->label(NavigationGroup::HOLIDAYS->value),
-                FilamentNavigationGroup::make()
                     ->label(NavigationGroup::QUEST_COMPONENTS->value),
                 FilamentNavigationGroup::make()
                     ->label(NavigationGroup::LOCATIONS->value),

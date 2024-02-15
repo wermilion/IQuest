@@ -78,10 +78,10 @@ class PackagesRelationManager extends RelationManager
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('min_people')
-                    ->label('Мин. кол-во людей')
+                    ->label('Мин. кол-во человек')
                     ->numeric(),
                 Tables\Columns\TextColumn::make('max_people')
-                    ->label('Макс. кол-во людей')
+                    ->label('Макс. кол-во человек')
                     ->numeric(),
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Отображение на сайте')

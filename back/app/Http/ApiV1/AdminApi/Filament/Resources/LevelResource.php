@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Quests\Models\Level;
 use App\Filament\Resources\LevelResource\Pages;
 use App\Filament\Resources\LevelResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\CreateLevel;
+use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\EditLevel;
+use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\ListLevels;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -83,9 +86,9 @@ class LevelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\ListLevels::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\CreateLevel::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\EditLevel::route('/{record}/edit'),
+            'index' => ListLevels::route('/'),
+            'create' => CreateLevel::route('/create'),
+            'edit' => EditLevel::route('/{record}/edit'),
         ];
     }
 }

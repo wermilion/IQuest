@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
+use App\Domain\Users\Enums\Role;
+use App\Domain\Users\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -15,14 +16,14 @@ class CreateAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'create-admin';
+    protected $signature = 'create:admin';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Создает пользователя-админа';
+    protected $description = 'Create admin user';
 
     /**
      * Execute the console command.
@@ -43,7 +44,7 @@ class CreateAdmin extends Command
             'name' => $name,
             'login' => $login,
             'password' => Hash::make($password),
-            'role' => \App\Enums\Role::ADMIN->value,
+            'role' => Role::ADMIN->value,
         ]);
 
         $this->info('Admin created successfully');

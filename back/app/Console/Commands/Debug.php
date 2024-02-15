@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Domain\Quests\Models\Quest;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class Debug extends Command
@@ -26,8 +27,6 @@ class Debug extends Command
      */
     public function handle()
     {
-        Quest::query()->find(1)->update([
-            'is_active' => false,
-        ]);
+       
     }
 }

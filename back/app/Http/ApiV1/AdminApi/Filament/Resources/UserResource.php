@@ -4,10 +4,13 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
-use App\Enums\Role;
+use App\Domain\Users\Enums\Role;
+use App\Domain\Users\Models\User;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\User;
+use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\CreateUser;
+use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\EditUser;
+use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -35,13 +38,15 @@ class UserResource extends Resource
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
-                    ->hiddenOn(''),
+                    ->hiddenOn('')
+                    ->native(false),
                 Forms\Components\Select::make('filial_id')
                     ->label('Филиал')
                     ->relationship('filial', 'address')
                     ->options(fn(Get $get) => Filial::query()
                         ->where('city_id', $get('city'))
-                        ->pluck('address', 'id')),
+                        ->pluck('address', 'id'))
+                    ->native(false),
                 Forms\Components\TextInput::make('name')
                     ->label('Имя')
                     ->required()
@@ -126,7 +131,8 @@ class UserResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('city')
                     ->label('Город')
-                    ->relationship('filial.city', 'name'),
+                    ->relationship('filial.city', 'name')
+                    ->native(false),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -148,9 +154,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\CreateUser::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\EditUser::route('/{record}/edit'),
+            'index' => ListUsers::route('/'),
+            'create' => CreateUser::route('/create'),
+            'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 }

@@ -4,10 +4,15 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
+use App\Domain\Lounges\Models\Lounge;
+use App\Domain\Schedules\Models\ScheduleLounge;
 use App\Filament\Resources\ScheduleLoungeResource\Pages;
 use App\Filament\Resources\ScheduleLoungeResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\CreateScheduleLounge;
+use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\EditScheduleLounge;
+use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\ListScheduleLounges;
+use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\RelationManagers\BookingRelationManager;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use App\Models\ScheduleLounge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -15,6 +20,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -39,18 +45,25 @@ class ScheduleLoungeResource extends Resource
                 Forms\Components\Select::make('city')
                     ->label('Город')
                     ->live()
-                    ->options(fn() => City::all()->pluck('name', 'id'))
-                    ->hiddenOn(''),
+                    ->options(fn(): Collection => City::all()->pluck('name', 'id'))
+                    ->hiddenOn('')
+                    ->native(false),
                 Forms\Components\Select::make('filial')
                     ->label('Адрес')
+                    ->live()
                     ->options(fn(Get $get): Collection => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
-                    ->hiddenOn(''),
+                    ->hiddenOn('')
+                    ->native(false),
                 Forms\Components\Select::make('lounge_id')
                     ->label('Лаундж-зона')
-                    ->relationship('lounge', 'name')
-                    ->required(),
+                    //->relationship('lounge', 'name')
+                    ->options(fn(Get $get): Collection => Lounge::query()
+                        ->where('filial_id', $get('filial'))
+                        ->pluck('name', 'id'))
+                    ->required()
+                    ->native(false),
                 Forms\Components\DatePicker::make('date')
                     ->label('Дата')
                     ->required(),
@@ -65,6 +78,11 @@ class ScheduleLoungeResource extends Resource
                     ->placeholder('xx:xx')
                     ->required(),
             ]);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return !($record->booking()->exists());
     }
 
     public static function table(Table $table): Table
@@ -103,9 +121,35 @@ class ScheduleLoungeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('city')
-                    ->label('Город')
-                    ->relationship('lounge.filial.city', 'name'),
+                Tables\Filters\Filter::make('location')
+                    ->form([
+                        Forms\Components\Select::make('city_id')
+                            ->label('Город')
+                            ->placeholder('Выберите город')
+                            ->relationship('lounge.filial.city', 'name')
+                            ->native(false),
+                        Forms\Components\Select::make('filial_id')
+                            ->label('Филиал')
+                            ->placeholder('Выберите филиал')
+                            ->live()
+                            ->options(fn(Get $get): Collection => Filial::query()
+                                ->where('city_id', $get('city_id'))
+                                ->pluck('address', 'id'))
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['city_id'],
+                                fn(Builder $query, $city_id): Builder => $query
+                                    ->whereHas('lounge.filial', fn(Builder $query): Builder => $query->where('city_id', $city_id)),
+                            )
+                            ->when(
+                                $data['filial_id'],
+                                fn(Builder $query, $filial_id): Builder => $query
+                                    ->whereHas('lounge.filial', fn(Builder $query): Builder => $query->where('id', $filial_id)),
+                            );
+                    }),
                 Tables\Filters\Filter::make('date')
                     ->form([Forms\Components\DatePicker::make('date')->label('Дата')])
                     ->query(function (Builder $query, array $data): Builder {
@@ -124,27 +168,25 @@ class ScheduleLoungeResource extends Resource
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            BookingRelationManager::class
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\ListScheduleLounges::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\CreateScheduleLounge::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\EditScheduleLounge::route('/{record}/edit'),
+            'index' => ListScheduleLounges::route('/'),
+            'create' => CreateScheduleLounge::route('/create'),
+            'edit' => EditScheduleLounge::route('/{record}/edit'),
         ];
     }
 }

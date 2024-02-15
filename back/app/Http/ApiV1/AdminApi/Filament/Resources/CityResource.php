@@ -5,6 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Filament\Resources\CityResource\Pages;
 use App\Filament\Resources\CityResource\RelationManagers;
+use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\CreateCity;
+use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\EditCity;
+use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\ListCities;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -81,9 +84,9 @@ class CityResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => \App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\ListCities::route('/'),
-            'create' => \App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\CreateCity::route('/create'),
-            'edit' => \App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\EditCity::route('/{record}/edit'),
+            'index' => ListCities::route('/'),
+            'create' => CreateCity::route('/create'),
+            'edit' => EditCity::route('/{record}/edit'),
         ];
     }
 }

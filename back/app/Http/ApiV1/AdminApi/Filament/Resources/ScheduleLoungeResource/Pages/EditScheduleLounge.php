@@ -2,8 +2,8 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages;
 
+use App\Domain\Lounges\Models\Lounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource;
-use App\Models\Lounge;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 

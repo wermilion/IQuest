@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::query()->firstOrCreate([
-            'name' => 'bogdan',
-            'surname' => 'mukhatdisov',
-            'login' => 'admin2',
-            'password' => Hash::make('12345678'),
+            'login' => 'admin',
+        ], [
+            'name' => 'Admin',
+            'password' => Hash::make('admin123'),
             'role' => Role::ADMIN->value,
         ]);
     }

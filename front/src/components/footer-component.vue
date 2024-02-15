@@ -30,7 +30,7 @@ const contacts = ref([
 </script>
 
 <template>
-  <div class="border">
+  <footer class="border">
     <div class="container footer">
       <img src="/logo/logo_full.svg" alt="logo" />
       <div class="footer-links">
@@ -52,15 +52,14 @@ const contacts = ref([
         </span>
       </div>
     </div>
-  </div>
+  </footer>
 </template>
 
 <style scoped lang="scss">
 .border {
   border-top: 2px solid $color-shade-6;
 
-  background-image: url("../../public/gradient/footer-gradient.svg");
-  background-color: $color-base1;
+  background-image: url("/gradient/footer-gradient.svg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: right bottom;

@@ -3,16 +3,16 @@
 @import "../css/fonts/onest/onest.css";
 
 html {
-  background-color: $color-secondary;
+  background-color: $color-base1;
 
   padding: 0;
   margin: 0 auto;
   height: 100%;
   border: none;
-  overflow: hidden;
 }
 
 body {
+  margin: 0;
   text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -89,4 +89,8 @@ h2 {
 
 .d-flex {
   display: flex;
+}
+
+.bg-secondary {
+  background-color: $color-secondary;
 }

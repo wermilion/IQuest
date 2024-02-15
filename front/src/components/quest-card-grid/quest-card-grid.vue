@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import QuestCard from "#/components/quest-card-grid/quest-card.vue";
+import card from "#/components/card/card-component.vue";
 import { ref } from "vue";
 
 const quests = ref([
@@ -55,7 +55,7 @@ const quests = ref([
   <section class="cards container">
     <h2>Наши квесты</h2>
     <div class="d-flex cards-grid">
-      <quest-card v-for="quest in quests" :key="quest.name" :="quest" />
+      <card v-for="quest in quests" :key="quest.name" :="quest" />
     </div>
   </section>
 </template>

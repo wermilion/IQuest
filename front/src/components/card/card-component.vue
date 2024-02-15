@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import QuestTag from "./quest-tag.vue";
+import tag from "./tag-component.vue";
 
 interface Props {
   name: string;
@@ -16,7 +16,7 @@ const props = defineProps<Props>();
     <div class="card-body">
       <span class="bodyBold">{{ name }}</span>
       <div class="card-body__tags">
-        <quest-tag v-for="tag in tags" :key="tag" :name="tag" />
+        <tag v-for="tag in tags" :key="tag" :name="tag" />
       </div>
     </div>
   </router-link>

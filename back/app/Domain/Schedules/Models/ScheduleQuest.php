@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $id Идентификатор расписания квеста
  * @property string $date Дата расписания квеста
  * @property string $time Время расписания квеста
+ * @property float $price Цена
  * @property bool $activity_status Статус активности
  * @property int $quest_id Идентификатор квеста
  *
@@ -28,6 +29,7 @@ class ScheduleQuest extends Model
     protected $fillable = [
         'date',
         'time',
+        'price',
         'activity_status',
         'quest_id'
     ];

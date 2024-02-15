@@ -77,10 +77,12 @@ class BookingScheduleLoungeResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('scheduleLounge.time_from')
                     ->label('Время начала')
-                    ->numeric(),
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('scheduleLounge.time_to')
                     ->label('Время конца')
-                    ->numeric(),
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\SelectColumn::make('booking.status')
                     ->label('Статус')
                     ->options(BookingStatus::class)

@@ -76,8 +76,7 @@ class BookingRelationManager extends RelationManager
             ->heading('Заявки на бронирование')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
+                    ->label('ID'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Имя'),
                 Tables\Columns\TextColumn::make('phone')

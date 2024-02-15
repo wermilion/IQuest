@@ -16,6 +16,7 @@ class QuestsResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'short_description' => $this->short_description,
             'description' => $this->description,
             'cover' => $this->cover,
             'min_price' => $this->min_price,
@@ -26,8 +27,6 @@ class QuestsResource extends BaseJsonResource
             'can_add_time' => $this->can_add_time,
             'is_active' => $this->is_active,
             'sequence_number' => $this->sequence_number,
-            'weekdays' => $this->weekdays,
-            'weekend' => $this->weekend,
 
             'room' => new RoomsResource($this->whenLoaded('room')),
             'type' => new TypesResource($this->whenLoaded('type')),

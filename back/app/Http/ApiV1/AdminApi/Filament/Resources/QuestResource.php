@@ -10,9 +10,12 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\EditQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\ListQuests;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestImagesRelationManager;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekdaysSlotsRelationManager;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekendSlotsRelationManager;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,15 +25,19 @@ use Illuminate\Support\Collection;
 class QuestResource extends Resource
 {
     protected static ?string $model = Quest::class;
+
     protected static ?string $modelLabel = 'Квест';
+
     protected static ?string $pluralModelLabel = 'Квесты';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
+            ->schema(components: [
                 Forms\Components\Select::make('city')
                     ->label('Город')
                     ->live()
@@ -102,24 +109,15 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->label('Описание')
-                    ->columnSpanFull()
+                Forms\Components\Textarea::make('short_description')
+                    ->label('Краткое описание')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\TextInput::make('min_price')
-                    ->label('Мин. цена')
+                Forms\Components\Textarea::make('description')
+                    ->label('Описание')
                     ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->numeric(),
-                Forms\Components\TextInput::make('late_price')
-                    ->label('Вечерная цена')
-                    ->required()
-                    ->numeric()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
@@ -175,20 +173,6 @@ class QuestResource extends Resource
                 Forms\Components\Toggle::make('is_active')
                     ->columnSpanFull()
                     ->label('Отображение на сайте')
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ]),
-                Forms\Components\Textarea::make('weekdays')
-                    ->label('Расписание по будням')
-                    ->autosize()
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ]),
-                Forms\Components\Textarea::make('weekend')
-                    ->label('Расписание по выходным')
-                    ->autosize()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
@@ -312,7 +296,7 @@ class QuestResource extends Resource
                     }),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -324,7 +308,13 @@ class QuestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            QuestImagesRelationManager::class,
+            RelationGroup::make('Расписание', [
+                QuestWeekdaysSlotsRelationManager::class,
+                QuestWeekendSlotsRelationManager::class,
+            ]),
+            RelationGroup::make('Изображения', [
+                QuestImagesRelationManager::class,
+            ]),
         ];
     }
 

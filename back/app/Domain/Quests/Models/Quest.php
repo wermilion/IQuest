@@ -19,8 +19,6 @@ use Illuminate\Support\Facades\Storage;
  * @property string $slug - Сокращенное название квеста
  * @property string $description - Описание квеста
  * @property string $cover - Обложка квеста
- * @property float $min_price - Минимальная цена
- * @property float $late_price - Вечерняя цена
  * @property int $min_people - Минимальное количество участников
  * @property int $max_people - Максимальное количество участников
  * @property int $duration - Продолжительность
@@ -50,18 +48,15 @@ class Quest extends Model
     protected $fillable = [
         'name',
         'slug',
+        'short_description',
         'description',
         'cover',
-        'min_price',
-        'late_price',
         'min_people',
         'max_people',
         'duration',
         'can_add_time',
         'is_active',
         'sequence_number',
-        'weekdays',
-        'weekend',
         'room_id',
         'type_id',
         'genre_id',
@@ -72,21 +67,29 @@ class Quest extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'can_add_time' => 'boolean',
-        'weekdays' => 'array',
-        'weekend' => 'array',
     ];
 
     protected static function booted(): void
     {
-        static::updated(function (Quest $quest) {
+        static::updated(function (self $quest) {
             if ($quest->isDirty('cover')) {
                 Storage::delete('public/' . $quest->cover);
             }
         });
 
-        static::deleted(function (Quest $quest) {
+        static::deleted(function (self $quest) {
             Storage::delete('public/' . $quest->cover);
         });
+    }
+
+    public function questWeekdaysSlots(): HasMany
+    {
+        return $this->hasMany(QuestWeekdaysSlot::class);
+    }
+
+    public function questWeekendSlots(): HasMany
+    {
+        return $this->hasMany(QuestWeekendSlot::class);
     }
 
     public function room(): BelongsTo

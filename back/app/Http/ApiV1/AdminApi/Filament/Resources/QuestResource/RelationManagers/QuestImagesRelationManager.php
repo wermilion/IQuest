@@ -14,8 +14,6 @@ class QuestImagesRelationManager extends RelationManager
 
     protected static ?string $label = 'Изображение';
 
-    protected static ?string $pluralModelLabel = 'Изображения';
-
     public function form(Form $form): Form
     {
         return $form

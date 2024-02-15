@@ -42,7 +42,6 @@ class UserResource extends Resource
                     ->native(false),
                 Forms\Components\Select::make('filial_id')
                     ->label('Филиал')
-                    ->relationship('filial', 'address')
                     ->options(fn(Get $get) => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
@@ -73,7 +72,8 @@ class UserResource extends Resource
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ]),
+                    ])
+                    ->native(false),
                 Forms\Components\TextInput::make('password')
                     ->label('Пароль')
                     ->password()

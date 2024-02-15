@@ -88,13 +88,8 @@ class ScheduleQuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->disabledOn('edit'),
-                Forms\Components\Select::make('time')
+                Forms\Components\TextInput::make('time')
                     ->label('Время')
-                    ->options(function (Get $get) {
-                        return is_weekend($get('date')) ?
-                            Quest::query()->where('id', $get('quest_id'))->first()?->weekend :
-                            Quest::query()->where('id', $get('quest_id'))->first()?->weekdays;
-                    })
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -127,7 +122,7 @@ class ScheduleQuestResource extends Resource
                     ->label('Филиал')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('quest.name')
+                Tables\Columns\TextColumn::make('quest.slug')
                     ->label('Квест')
                     ->numeric()
                     ->sortable(),
@@ -137,6 +132,8 @@ class ScheduleQuestResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('time')
                     ->label('Время'),
+                Tables\Columns\TextColumn::make('price')
+                    ->label('Цена'),
                 Tables\Columns\IconColumn::make('activity_status')
                     ->label('Активность слота'),
                 Tables\Columns\TextColumn::make('created_at')
@@ -200,28 +197,6 @@ class ScheduleQuestResource extends Resource
                     }),
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->headerActions([
-                Tables\Actions\Action::make('schedule-quests')
-                    ->label('Сформировать расписание')
-                    ->form([
-                        Forms\Components\Select::make('city')
-                            ->label('Город')
-                            ->placeholder('Выберите город')
-                            ->options(fn(): Collection => City::all()->pluck('name', 'id'))
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Поле ":attribute" обязательное.'
-                            ])
-                            ->native(false)
-                    ])
-                    ->action(function (array $data): void {
-                        Artisan::call('create:schedule-quests', ['city_id' => $data['city']]);
-
-                        Notification::make()
-                            ->title('Расписание сформировано!')
-                            ->success()
-                            ->send();
-                    })
-                    ->modalSubmitActionLabel('Сформировать')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -14,6 +14,7 @@ class QuestsQuery extends QueryBuilder
         parent::__construct(Quest::query());
 
         $this->allowedIncludes([
+            'scheduleQuests',
             'room.filial',
             'type',
             'genre',

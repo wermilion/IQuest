@@ -17,6 +17,7 @@ class ScheduleQuestsResource extends BaseJsonResource
             'id' => $this->id,
             'date' => $this->date,
             'time' => $this->time,
+            'price' => $this->price,
             'activity_status' => $this->activity_status,
             'quest' => new QuestsResource($this->whenLoaded('quest')),
         ];

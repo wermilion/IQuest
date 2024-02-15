@@ -4,6 +4,7 @@ namespace App\Domain\Quests\Models;
 
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
+use App\Domain\Schedules\Models\ScheduleQuest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -78,6 +79,11 @@ class Quest extends Model
         static::deleted(function (self $quest) {
             Storage::delete('public/' . $quest->cover);
         });
+    }
+
+    public function scheduleQuests(): HasMany
+    {
+        return $this->hasMany(ScheduleQuest::class);
     }
 
     public function questWeekdaysSlots(): HasMany

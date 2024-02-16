@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,13 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (config('app.force_https')) {
-            URL::forceScheme('https');
-        }
-
-        config([
-            'filament.favicon' => asset('cp/favicon.ico')
-        ]);
-
+        Model::unguard();
     }
 }

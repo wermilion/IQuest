@@ -16,9 +16,9 @@ class BookingScheduleLoungeResource extends Resource
 {
     protected static ?string $model = BookingScheduleLounge::class;
 
-    protected static ?string $modelLabel = 'Лаундж-зона';
+    protected static ?string $modelLabel = 'Заявка на лаундж-зону';
 
-    protected static ?string $pluralModelLabel = 'Лаундж-зоны';
+    protected static ?string $pluralModelLabel = 'Заявки на лаундж-зоны';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

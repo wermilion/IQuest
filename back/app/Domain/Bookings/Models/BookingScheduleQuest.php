@@ -6,6 +6,7 @@ use App\Domain\Schedules\Models\ScheduleQuest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class BookingScheduleQuest
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class BookingScheduleQuest extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'booking_id',

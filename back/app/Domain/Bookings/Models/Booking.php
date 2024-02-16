@@ -9,6 +9,8 @@ use App\Domain\Schedules\Models\ScheduleQuest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Booking
@@ -19,10 +21,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $email Электронная почта клиента
  * @property BookingType $type Тип бронирования
  * @property BookingStatus $status Статус бронирования
+ *
+ * @property-read  BookingScheduleQuest $bookingScheduleQuest
+ * @property-read  BookingScheduleLounge $bookingScheduleLounge
+ * @property-read  BookingCertificate $bookingCertificate
+ * @property-read  ScheduleQuest $scheduleQuests
+ * @property-read  ScheduleLounge $scheduleLounges
  */
 class Booking extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -50,12 +58,36 @@ class Booking extends Model
 
         static::deleting(function (self $model) {
             if ($model->scheduleQuests()->exists()) {
-                $model->scheduleQuests()->update(['activity_status' => true]);
+                $model->scheduleQuests->update(['activity_status' => true]);
             }
             if ($model->scheduleLounges()->exists()) {
-                $model->scheduleLounges()->delete();
+                $model->scheduleLounges->delete();
+            }
+            if ($model->bookingScheduleQuest()->exists()) {
+                $model->bookingScheduleQuest->delete();
+            }
+            if ($model->bookingScheduleLounge()->exists()) {
+                $model->bookingScheduleLounge->delete();
+            }
+            if ($model->bookingCertificate()->exists()) {
+                $model->bookingCertificate->delete();
             }
         });
+    }
+
+    public function bookingScheduleQuest(): HasOne
+    {
+        return $this->hasOne(BookingScheduleQuest::class);
+    }
+
+    public function bookingScheduleLounge(): HasOne
+    {
+        return $this->hasOne(BookingScheduleLounge::class);
+    }
+
+    public function bookingCertificate(): HasOne
+    {
+        return $this->hasOne(BookingCertificate::class);
     }
 
     public function scheduleQuests(): BelongsToMany

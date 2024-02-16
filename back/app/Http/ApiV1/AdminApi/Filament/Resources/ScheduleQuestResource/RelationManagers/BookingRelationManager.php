@@ -8,6 +8,8 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -100,20 +102,20 @@ class BookingRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->heading('Заявки на бронирование')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label('ID'),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Имя'),
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('phone')
                     ->label('Телефон'),
-                Tables\Columns\SelectColumn::make('status')
+                SelectColumn::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class),
-                Tables\Columns\TextColumn::make('count_participants')
+                TextColumn::make('count_participants')
                     ->label('Кол-во человек'),
-                Tables\Columns\TextColumn::make('final_price')
+                TextColumn::make('final_price')
                     ->label('Общая стоимость'),
-                Tables\Columns\TextColumn::make('comment')
+                TextColumn::make('comment')
                     ->label('Комментарий'),
             ])
             ->filters([

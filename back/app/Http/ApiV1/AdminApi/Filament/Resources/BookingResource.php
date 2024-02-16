@@ -100,8 +100,15 @@ class BookingResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('deleted_at')
+                    ->label('Дата удаления')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\TrashedFilter::make()
+                    ->native(false),
                 Tables\Filters\SelectFilter::make('type')
                     ->label('Тип заявки')
                     ->options(BookingType::class)

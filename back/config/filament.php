@@ -25,7 +25,7 @@ return [
     |
     */
 
-    'path' => env('FILAMENT_PATH', 'cp'),
+    'path' => env('FILAMENT_PATH', 'admin'),
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ return [
     |
     */
 
-    'core_path' => env('FILAMENT_CORE_PATH', 'cp/filament'),
+    'core_path' => env('FILAMENT_CORE_PATH', 'filament'),
 
     /*
     |--------------------------------------------------------------------------
@@ -61,7 +61,7 @@ return [
     |
     */
 
-    'home_url' => '/cp',
+    'home_url' => '/',
 
     /*
     |--------------------------------------------------------------------------
@@ -72,7 +72,7 @@ return [
     |
     */
 
-    'brand' => 'IQuest',
+    'brand' => env('APP_NAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -140,6 +140,7 @@ return [
         'path' => app_path('Filament/Widgets'),
         'register' => [
             Widgets\AccountWidget::class,
+            Widgets\FilamentInfoWidget::class,
         ],
     ],
 
@@ -203,6 +204,9 @@ return [
         //     'broadcaster' => 'pusher',
         //     'key' => env('VITE_PUSHER_APP_KEY'),
         //     'cluster' => env('VITE_PUSHER_APP_CLUSTER'),
+        //     'wsHost' => env('VITE_PUSHER_HOST'),
+        //     'wsPort' => env('VITE_PUSHER_PORT'),
+        //     'wssPort' => env('VITE_PUSHER_PORT'),
         //     'forceTLS' => true,
         // ],
 
@@ -236,7 +240,7 @@ return [
             'have_inline_labels' => false,
         ],
         'footer' => [
-            'should_show_logo' => false,
+            'should_show_logo' => true,
         ],
         'max_content_width' => null,
         'notifications' => [

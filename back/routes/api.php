@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::redirect('/cp/login', '/login')->name('login');
+
 Route::name('api')->group(function () {
     Route::get('quests/{id}', [QuestsController::class, 'get']);
     Route::post('quests:search', [QuestsController::class, 'search']);

@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id Идентификатор бронирования квеста
  * @property int $booking_id Идентификатор бронирования
  * @property int $schedule_quest_id Идентификатор расписания квеста
+ * @property int $count_participants Количество участников
+ * @property float $final_price Итоговая цена
+ * @property string|null $comment Комментарий
  *
  * @property-read Booking $booking Бронирование
  * @property-read ScheduleQuest $scheduleQuest Расписание
@@ -26,6 +29,7 @@ class BookingScheduleQuest extends Model
         'schedule_quest_id',
         'count_participants',
         'final_price',
+        'comment',
     ];
 
     protected static function booted(): void

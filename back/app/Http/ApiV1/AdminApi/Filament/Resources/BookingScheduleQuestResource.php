@@ -83,6 +83,9 @@ class BookingScheduleQuestResource extends Resource
                     ->label('Статус')
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Комментарий')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()

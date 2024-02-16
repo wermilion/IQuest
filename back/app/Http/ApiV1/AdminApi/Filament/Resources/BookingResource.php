@@ -5,8 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
-use App\Filament\Resources\BookingResource\Pages;
-use App\Filament\Resources\BookingResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\CreateBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\EditBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\ListBookings;

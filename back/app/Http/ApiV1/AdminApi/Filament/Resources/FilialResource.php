@@ -3,8 +3,6 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\Filial;
-use App\Filament\Resources\FilialResource\Pages;
-use App\Filament\Resources\FilialResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\CreateFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\EditFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\ListFilials;

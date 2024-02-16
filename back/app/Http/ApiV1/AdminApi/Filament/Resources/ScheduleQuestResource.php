@@ -7,20 +7,14 @@ use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
 use App\Domain\Quests\Models\Quest;
 use App\Domain\Schedules\Models\ScheduleQuest;
-use App\Filament\Resources\ScheduleQuestResource\Pages;
-use App\Filament\Resources\ScheduleQuestResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\CreateScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\EditScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\ListScheduleQuests;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\RelationManagers\BookingRelationManager;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Artisan;
-use Filament\Actions\Action;
-use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -101,7 +95,6 @@ class ScheduleQuestResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
-                    ->disabledOn('edit'),
             ]);
     }
 
@@ -134,7 +127,7 @@ class ScheduleQuestResource extends Resource
                     ->label('Время'),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Цена'),
-                Tables\Columns\IconColumn::make('activity_status')
+                Tables\Columns\ToggleColumn::make('activity_status')
                     ->label('Активность слота'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')

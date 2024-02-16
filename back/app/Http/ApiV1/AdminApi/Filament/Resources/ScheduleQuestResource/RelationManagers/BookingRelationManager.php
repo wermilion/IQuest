@@ -78,6 +78,9 @@ class BookingRelationManager extends RelationManager
                         'numeric' => 'Поле ":attribute" должно быть числом',
                         'min' => 'Поле ":attribute" должно быть больше 0',
                     ]),
+                Forms\Components\TextInput::make('comment')
+                    ->label('Комментарий')
+                    ->maxLength(255)
             ]);
     }
 
@@ -103,8 +106,6 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя'),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Телефон'),
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Тип заявки'),
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class),
@@ -112,6 +113,8 @@ class BookingRelationManager extends RelationManager
                     ->label('Кол-во человек'),
                 Tables\Columns\TextColumn::make('final_price')
                     ->label('Общая стоимость'),
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Комментарий'),
             ])
             ->filters([
                 //
@@ -140,6 +143,9 @@ class BookingRelationManager extends RelationManager
                                 'numeric' => 'Поле ":attribute" должно быть числом',
                                 'min' => 'Поле ":attribute" должно быть больше 0',
                             ]),
+                        Forms\Components\TextInput::make('comment')
+                            ->label('Комментарий')
+                            ->maxLength(255)
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value))

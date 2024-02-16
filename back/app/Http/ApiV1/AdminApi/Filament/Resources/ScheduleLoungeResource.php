@@ -6,8 +6,6 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
 use App\Domain\Schedules\Models\ScheduleLounge;
-use App\Filament\Resources\ScheduleLoungeResource\Pages;
-use App\Filament\Resources\ScheduleLoungeResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\CreateScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\EditScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\ListScheduleLounges;

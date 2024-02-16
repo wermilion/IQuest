@@ -3,8 +3,6 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Quests\Models\AgeLimit;
-use App\Filament\Resources\AgeLimitResource\Pages;
-use App\Filament\Resources\AgeLimitResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\CreateAgeLimit;
 use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\EditAgeLimit;
 use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\ListAgeLimits;
@@ -17,10 +15,15 @@ use Filament\Tables\Table;
 class AgeLimitResource extends Resource
 {
     protected static ?string $model = AgeLimit::class;
+
     protected static ?string $modelLabel = 'Возрастное ограничение';
+
     protected static ?string $pluralModelLabel = 'Возрастные ограничения';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationGroup = 'Компоненты квестов';
+
     protected static ?int $navigationSort = 4;
 
 

@@ -5,8 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
-use App\Filament\Resources\RoomResource\Pages;
-use App\Filament\Resources\RoomResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\CreateRoom;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\EditRoom;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\ListRooms;

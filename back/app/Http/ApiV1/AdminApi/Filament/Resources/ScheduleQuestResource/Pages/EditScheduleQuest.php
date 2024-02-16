@@ -4,8 +4,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages
 
 use App\Domain\Quests\Models\Quest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource;
-use Filament\Actions;
-use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditScheduleQuest extends EditRecord
@@ -28,10 +26,5 @@ class EditScheduleQuest extends EditRecord
         return [
 
         ];
-    }
-
-    protected function getFormActions(): array
-    {
-        return [];
     }
 }

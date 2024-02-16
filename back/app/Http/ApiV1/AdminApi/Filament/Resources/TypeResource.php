@@ -3,8 +3,6 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Quests\Models\Type;
-use App\Filament\Resources\TypeResource\Pages;
-use App\Filament\Resources\TypeResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\CreateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\EditType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages\ListTypes;

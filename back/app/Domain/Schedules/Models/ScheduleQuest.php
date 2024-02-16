@@ -46,6 +46,6 @@ class ScheduleQuest extends Model
     public function booking(): BelongsToMany
     {
         return $this->belongsToMany(Booking::class, 'booking_schedule_quests')
-            ->withPivot(['count_participants', 'final_price']);
+            ->withPivot(['count_participants', 'final_price', 'comment']);
     }
 }

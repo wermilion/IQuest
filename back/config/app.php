@@ -42,7 +42,7 @@ return [
     |
     */
 
-    'debug' => (bool)env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -57,8 +57,6 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'force_https' => env('PUSHER_SCHEME', 'http'),
-
     'asset_url' => env('ASSET_URL'),
 
     /*
@@ -72,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Tomsk',
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -85,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'ru',
+    'locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------

@@ -9,11 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 class EmptyResource implements Responsable
 {
     /**
-     * @param Request $request
+     * @param  Request  $request
      */
     public function toResponse($request): Response
     {
         return response()->json(['data' => null]);
     }
 }
-

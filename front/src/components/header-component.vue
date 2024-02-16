@@ -26,7 +26,7 @@ let isHoverActive = ref(false);
 
 <template>
   <header class="bg-secondary">
-    <div class="header container">
+    <div class="header container-header">
       <router-link to="/">
         <img src="/logo/logo.svg" alt="logo" />
       </router-link>

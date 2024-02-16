@@ -63,10 +63,8 @@ const quests = ref([
 <style scoped lang="scss">
 h2 {
   color: $color-base2;
-  padding-left: 88px;
 }
 .cards {
-  padding-top: 108px;
   display: flex;
   flex-direction: column;
   gap: $cover-32;

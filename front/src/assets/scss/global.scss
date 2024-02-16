@@ -48,6 +48,7 @@ h2 {
   line-height: 44px;
   text-transform: lowercase;
   text-overflow: ellipsis;
+  color: $color-base2;
 }
 
 .bodyBold,
@@ -67,12 +68,14 @@ h2 {
   font-size: 24px;
   font-weight: 400;
   line-height: 28px;
+  color: $color-base2;
 }
 
 .footnote {
   font-size: 20px;
   font-weight: 400;
   line-height: 24px;
+  color: $color-opacity075;
 }
 
 .smallFootnote {
@@ -81,10 +84,17 @@ h2 {
   line-height: 20px;
 }
 
-.container {
+.container,
+.container-header {
   display: flex;
-  max-width: 1440px;
   margin-inline: auto;
+}
+.container-header {
+  max-width: 1440px;
+}
+
+.container {
+  max-width: 1264px;
 }
 
 .d-flex {
@@ -93,4 +103,8 @@ h2 {
 
 .bg-secondary {
   background-color: $color-secondary;
+}
+
+.no-poineter {
+  cursor: auto;
 }

@@ -5,14 +5,19 @@ interface Props {
   name: string;
   img: string;
   tags: string[];
+  link?: string;
 }
 
 const props = defineProps<Props>();
 </script>
 
 <template>
-  <router-link to="#" class="card">
-    <img :src="`/quest-photo/${props.img}.png`" alt="" />
+  <router-link
+    :to="link ? link : '/'"
+    class="card"
+    :class="{ 'no-poineter': !link }"
+  >
+    <img :src="`/quest-photo/${img}.png`" alt="" />
     <div class="card-body">
       <span class="bodyBold">{{ name }}</span>
       <div class="card-body__tags">
@@ -34,11 +39,6 @@ const props = defineProps<Props>();
   border-radius: $cover-8;
   border: 1px solid $color-opacity004;
 
-  img {
-    width: 100%;
-    object-fit: cover;
-  }
-
   &-body {
     background: $color-opacity004;
     backdrop-filter: blur(50px);
@@ -47,6 +47,7 @@ const props = defineProps<Props>();
     display: flex;
     flex-direction: column;
     gap: $cover-36;
+    height: 100%;
 
     span {
       color: $color-base2;

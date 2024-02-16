@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.1",
         "ensi/laravel-query-builder-helpers": "^0.1.6",
-        "filament/filament": "^3.2",
+        "filament/filament": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",

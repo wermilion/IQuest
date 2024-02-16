@@ -2,8 +2,8 @@
 
 namespace App\Http\ApiV1\FrontApi\Support\Pagination;
 
-use Illuminate\Database\Eloquent\Builder as EloquentQueryBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder as SpatieQueryBuilder;
 
@@ -13,7 +13,7 @@ abstract class AbstractPageBuilder
 
     protected ?int $maxLimit = null;
 
-    public function __construct(protected QueryBuilder|EloquentQueryBuilder|SpatieQueryBuilder $query, protected Request $request)
+    public function __construct(protected Builder|SpatieQueryBuilder $query, protected Request $request)
     {
     }
 
@@ -41,5 +41,20 @@ abstract class AbstractPageBuilder
     protected function getDefaultLimit(): int
     {
         return config('pagination.default_limit');
+    }
+
+    protected function count(Builder|SpatieQueryBuilder $query): int
+    {
+        $queryClone = $query->clone();
+        $queryClone->getQuery()->orders = null;
+
+        if ($queryClone->getQuery()->groups) {
+            $emptyQuery = new EloquentBuilder($queryClone->getConnection()->query());
+            $emptyQuery->setBindings($queryClone->getBindings());
+
+            return $emptyQuery->fromRaw("({$queryClone->toSql()}) as count")->count();
+        };
+
+        return $queryClone->count();
     }
 }

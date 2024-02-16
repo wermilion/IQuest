@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use Filament\Facades\Filament;
+use Filament\Navigation\NavigationGroup as FilamentNavigationGroup;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +23,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::unguard();
+        if (config('app.force_https')) {
+            URL::forceScheme('https');
+        }
+
+        Filament::serving(function () {
+            Filament::registerNavigationGroups([
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::BOOKING->value),
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::SCHEDULE->value),
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::QUEST_COMPONENTS->value),
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::LOCATIONS->value),
+            ]);
+        });
     }
 }

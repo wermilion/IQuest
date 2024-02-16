@@ -2,7 +2,7 @@
 
 namespace App\Http\ApiV1\FrontApi\Support\Pagination;
 
-use App\Http\ApiV1\OpenApiGenerated\Enums\PaginationTypeEnum;
+use App\Http\ApiV1\FrontApi\Enums\PaginationTypeEnum;
 use Illuminate\Database\Eloquent\Collection;
 
 class OffsetPageBuilder extends AbstractPageBuilder
@@ -23,7 +23,7 @@ class OffsetPageBuilder extends AbstractPageBuilder
             $total = $collection->count();
         } else {
             $collection = new Collection();
-            $total = $this->query->count();
+            $total = $this->count($this->query);
         }
 
         return new Page($collection, [
@@ -40,10 +40,13 @@ class OffsetPageBuilder extends AbstractPageBuilder
 
         $queryClone = $this->query->clone();
         $collection = $this->query->skip($skip)->limit($limit)->get();
+        $currentListCount = $collection->count();
 
-        $total = $collection->count() === $limit
-            ? $queryClone->count()
-            : $skip + $collection->count();
+        $total = match (true) {
+            $currentListCount == 0 && $skip == 0 => 0,
+            $currentListCount > 0 && $currentListCount < $limit => $skip + $currentListCount,
+            default => $this->count($queryClone),
+        };
 
         return new Page($collection, [
             'offset' => $skip,

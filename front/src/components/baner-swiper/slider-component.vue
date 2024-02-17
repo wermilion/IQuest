@@ -1,48 +1,100 @@
+<script setup lang="ts"></script>
+
 <template>
-  <section ref="slider" class="swiper-container">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide"><h1>1</h1></div>
-      <div class="swiper-slide"><h1>1</h1></div>
-      <div class="swiper-slide"><h1>1</h1></div>
+  <div class="baner-swiper">
+    <div class="baner-swiper__body">
+      <div class="baner-swiper__body-text">
+        <h1>скидка 1000₽ на игру вдвоём</h1>
+        <p class="body">
+          Забронируйте квест на 2 человека и скажите оператору про скидку
+        </p>
+      </div>
     </div>
-    <button class="swiper-button-prev swiper-button"></button>
-    <button class="swiper-button-next swiper-button"></button>
-    <div class="swiper-pagination"></div>
-  </section>
+    <div class="baner-swiper__image">
+      <div class="baner-front">
+        <img loading="lazy" src="/quest-photo/photo.png" alt="baner" />
+      </div>
+      <div class="baner-back">
+        <img loading="lazy" src="/quest-photo/photo.png" alt="baner" />
+      </div>
+    </div>
+  </div>
 </template>
 
-<script setup lang="ts">
-import Swiper from "swiper";
-import { ref, onMounted } from "vue";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import "swiper/css/bundle";
+<style scoped lang="scss">
+.baner-swiper {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
 
-const slider = ref<HTMLElement | null>(null);
-const swiiperOptions: any = {
-  slidersPerView: 1,
-  sliderPerGroup: 1,
-  speed: 800,
-  loop: true,
-  autoplay: {
-    delay: 10000,
-    disableOnInteraction: false,
-  },
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
-  modules: [Navigation, Pagination, Autoplay],
-};
+  &__body {
+    display: flex;
+    margin-top: 48px;
 
-onMounted(() => {
-  if (slider.value) {
-    new Swiper(slider.value as HTMLElement, swiiperOptions);
+    &-text {
+      display: flex;
+      flex-direction: column;
+      gap: $cover-12;
+      max-width: 596px;
+    }
+
+    &-controler {
+      display: flex;
+      align-items: center;
+    }
   }
-});
-</script>
 
-<style></style>
+  &__image {
+    display: flex;
+    position: relative;
+  }
+}
+
+.baner {
+  &-front {
+    position: absolute;
+    right: 174px;
+    top: 22px;
+    z-index: 1;
+    width: 364px;
+    height: 310px;
+    display: flex;
+    transform: rotate(-8deg);
+    padding: 12px 12px 68px 12px;
+    border-radius: $cover-8;
+    border: 0.5px solid $color-shade-5;
+    background: $color-shade-1;
+  }
+  &-back {
+    margin-top: 71px;
+    width: 321px;
+    height: 272px;
+    display: flex;
+    transform: rotate(4deg);
+    padding: 10px 10px 59px 10px;
+    border-radius: $cover-8;
+    border: 0.5px solid $color-shade-5;
+    background: $color-shade-1;
+  }
+}
+
+img {
+  width: 100%;
+  border-radius: $cover-4;
+}
+
+.element {
+  display: flex;
+  width: 100%;
+  height: 6px;
+  border-radius: $cover-2;
+  background-color: $color-opacity004;
+
+  &-container {
+    min-width: 192px;
+    display: flex;
+    gap: $cover-8;
+  }
+}
+</style>

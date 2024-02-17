@@ -3,16 +3,15 @@ import { ref } from "vue";
 
 const linksSocial = ref([
   {
-    heref: "https://vk.com/iquest",
+    link: "https://vk.com/iquest",
     img: "vk.svg",
   },
   {
-    heref: "https://t.me/questtomsk",
+    link: "https://t.me/questtomsk",
     img: "telegram.svg",
   },
   {
-    heref:
-      "https://www.youtube.com/channel/UCiEXe3D9fy8GX9X73lpxOxA?disable_polymer=true",
+    link: "https://www.youtube.com/channel/UCiEXe3D9fy8GX9X73lpxOxA?disable_polymer=true",
     img: "youtube.svg",
   },
 ]);
@@ -40,7 +39,7 @@ const contacts = ref([
           </span>
         </div>
         <div class="footer-links__social">
-          <a v-for="link in linksSocial" :href="link.heref">
+          <a v-for="link in linksSocial" :href="link.link">
             <img :src="`/icons/social/${link.img}`" :alt="link.img" />
           </a>
         </div>

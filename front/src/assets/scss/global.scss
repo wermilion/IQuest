@@ -39,6 +39,7 @@ h1 {
   font-weight: 600;
   line-height: 56px;
   text-transform: lowercase;
+  color: $color-base2;
 }
 
 h2 {
@@ -94,7 +95,8 @@ h2 {
 }
 
 .container {
-  max-width: 1264px;
+  max-width: 1440px;
+  padding-inline: 88px;
 }
 
 .d-flex {

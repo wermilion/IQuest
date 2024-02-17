@@ -25,16 +25,20 @@ checkImageExists(`/icons/genre/${props.name}.png`);
 
 <template>
   <div class="tag">
-    <div v-if="imageExists">
-      <!-- Если изображение существует в текущей папке, отображаем его -->
-      <img
-        v-if="imageExists"
-        :src="`/icons/genre/${props.name}.png`"
-        :alt="props.name"
-      />
-      <!-- Если изображение не найдено в текущей папке, пытаемся загрузить его из другой папки -->
-      <img v-else :src="`/icons/type/${props.name}.png`" :alt="props.name" />
-    </div>
+    <!-- Если изображение существует в текущей папке, отображаем его -->
+    <img
+      loading="lazy"
+      v-if="imageExists"
+      :src="`/icons/genre/${props.name}.png`"
+      :alt="props.name"
+    />
+    <!-- Если изображение не найдено в текущей папке, пытаемся загрузить его из другой папки -->
+    <img
+      v-else
+      loading="lazy"
+      :src="`/icons/type/${props.name}.png`"
+      :alt="props.name"
+    />
 
     <span class="smallFootnote">{{ props.name }}</span>
   </div>
@@ -44,10 +48,8 @@ checkImageExists(`/icons/genre/${props.name}.png`);
 .tag {
   display: flex;
   padding: $cover-8;
-  justify-content: center;
-  align-items: center;
   gap: $cover-8;
-
+  align-items: center;
   border-radius: $cover-8;
   border: 1px solid $color-opacity004;
   background: $color-opacity004;

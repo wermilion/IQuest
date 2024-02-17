@@ -17,7 +17,7 @@ const props = defineProps<Props>();
     class="card"
     :class="{ 'no-poineter': !link }"
   >
-    <img :src="`/quest-photo/${img}.png`" alt="" />
+    <img loading="lazy" :src="`/quest-photo/${img}.png`" :alt="img" />
     <div class="card-body">
       <span class="bodyBold">{{ name }}</span>
       <div class="card-body__tags">

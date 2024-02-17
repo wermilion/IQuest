@@ -8,7 +8,7 @@ const links = ref([
   },
   {
     name: "Праздники",
-    link: "/quests",
+    link: "#",
   },
   {
     name: "Сертификат",
@@ -128,7 +128,7 @@ let isHoverActive = ref(false);
 .header {
   padding: 20px 88px;
   width: 100%;
-  max-height: 88px;
+  max-height: 80px;
   justify-content: space-between;
   align-items: center;
 

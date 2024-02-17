@@ -1,5 +1,6 @@
 <?php
 
+use App\Filament\File\FileUploadHandler;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/cp/livewire/upload-file', [FileUploadHandler::class, 'handle'])
+    ->name('livewire.upload-file')
+    ->middleware(config('livewire.middleware_group', ''));

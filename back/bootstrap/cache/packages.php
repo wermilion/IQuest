@@ -1,9 +1,9 @@
 <?php return array (
-  'anourvalar/eloquent-serialize' => 
+  'akaunting/laravel-money' => 
   array (
-    'aliases' => 
+    'providers' => 
     array (
-      'EloquentSerialize' => 'AnourValar\\EloquentSerialize\\Facades\\EloquentSerializeFacade',
+      0 => 'Akaunting\\Money\\Provider',
     ),
   ),
   'blade-ui-kit/blade-heroicons' => 
@@ -20,13 +20,6 @@
       0 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
     ),
   ),
-  'filament/actions' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Filament\\Actions\\ActionsServiceProvider',
-    ),
-  ),
   'filament/filament' => 
   array (
     'providers' => 
@@ -39,13 +32,6 @@
     'providers' => 
     array (
       0 => 'Filament\\Forms\\FormsServiceProvider',
-    ),
-  ),
-  'filament/infolists' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Filament\\Infolists\\InfolistsServiceProvider',
     ),
   ),
   'filament/notifications' => 
@@ -69,18 +55,26 @@
       0 => 'Filament\\Tables\\TablesServiceProvider',
     ),
   ),
-  'filament/widgets' => 
+  'intervention/image' => 
   array (
     'providers' => 
     array (
-      0 => 'Filament\\Widgets\\WidgetsServiceProvider',
+      0 => 'Intervention\\Image\\ImageServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Image' => 'Intervention\\Image\\Facades\\Image',
     ),
   ),
-  'kirschbaum-development/eloquent-power-joins' => 
+  'irazasyed/telegram-bot-sdk' => 
   array (
+    'aliases' => 
+    array (
+      'Telegram' => 'Telegram\\Bot\\Laravel\\Facades\\Telegram',
+    ),
     'providers' => 
     array (
-      0 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
+      0 => 'Telegram\\Bot\\Laravel\\TelegramServiceProvider',
     ),
   ),
   'laravel/sail' => 
@@ -158,11 +152,11 @@
       'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
     ),
   ),
-  'spatie/laravel-query-builder' => 
+  'spatie/laravel-medialibrary' => 
   array (
     'providers' => 
     array (
-      0 => 'Spatie\\QueryBuilder\\QueryBuilderServiceProvider',
+      0 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
     ),
   ),
 );

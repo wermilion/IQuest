@@ -27,16 +27,20 @@ class BookingCertificate extends Model
         'certificate_type_id',
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
-        static::deleted(function (self $model) {
-            $model->booking->delete();
+        static::deleting(function (self $model) {
+            $model->booking()->delete();
+        });
+
+        static::restoring(function (self $model) {
+            $model->booking->restore();
         });
     }
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class)->withTrashed();
     }
 
     public function certificateType(): BelongsTo

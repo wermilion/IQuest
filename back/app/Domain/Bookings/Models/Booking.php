@@ -51,7 +51,6 @@ class Booking extends Model
                 if ($model->type->value == BookingType::QUEST->value) {
                     $model->scheduleQuests()->update(['activity_status' => true]);
                 }
-
                 $model->delete();
             }
         });
@@ -60,17 +59,26 @@ class Booking extends Model
             if ($model->scheduleQuests()->exists()) {
                 $model->scheduleQuests->update(['activity_status' => true]);
             }
-            if ($model->scheduleLounges()->exists()) {
-                $model->scheduleLounges->delete();
-            }
             if ($model->bookingScheduleQuest()->exists()) {
-                $model->bookingScheduleQuest->delete();
+                $model->bookingScheduleQuest()->delete();
             }
             if ($model->bookingScheduleLounge()->exists()) {
-                $model->bookingScheduleLounge->delete();
+                $model->bookingScheduleLounge()->delete();
             }
             if ($model->bookingCertificate()->exists()) {
-                $model->bookingCertificate->delete();
+                $model->bookingCertificate()->delete();
+            }
+        });
+
+        static::restoring(function (self $model) {
+            if ($model->bookingScheduleQuest()->exists()) {
+                $model->bookingScheduleQuest->restore();
+            }
+            if ($model->bookingScheduleLounge()->exists()) {
+                $model->bookingScheduleLounge->restore();
+            }
+            if ($model->bookingCertificate()->exists()) {
+                $model->bookingCertificate->restore();
             }
         });
     }

@@ -45,10 +45,11 @@ class BookingResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->label('Телефон')
                     ->required()
-                    ->maxLength(255)
+                    ->rules(['size:18'])
                     ->mask('+7 (999) 999-99-99')
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
+                        'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
                 Forms\Components\Select::make('type')
                     ->label('Тип заявки')
@@ -62,6 +63,7 @@ class BookingResource extends Resource
                 Forms\Components\Select::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class)
+                    ->default(BookingStatus::NEW->getLabel())
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
@@ -121,6 +123,7 @@ class BookingResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make()
             ])
             ->bulkActions([
             ]);

@@ -29,15 +29,14 @@ class BookingScheduleLounge extends Model
 
     protected static function booted(): void
     {
-        static::deleted(function (self $model) {
-            $model->scheduleLounge->delete();
-            $model->booking->delete();
+        static::deleting(function (self $model) {
+            $model->booking()->delete();
         });
     }
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class)->withTrashed();
     }
 
     public function scheduleLounge(): BelongsTo

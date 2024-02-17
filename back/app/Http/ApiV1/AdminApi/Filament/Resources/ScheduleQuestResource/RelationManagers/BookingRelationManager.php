@@ -36,10 +36,12 @@ class BookingRelationManager extends RelationManager
                     ]),
                 Forms\Components\TextInput::make('phone')
                     ->label('Телефон')
+                    ->rules(['size:18'])
                     ->mask('+7 (999) 999-99-99')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
+                        'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
                 Forms\Components\Select::make('type')
                     ->label('Тип заявки')

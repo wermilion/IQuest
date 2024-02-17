@@ -39,10 +39,12 @@ class BookingCertificateResource extends Resource
                     ->live()
                     ->relationship('booking',
                         'id',
-                        fn(Builder $query): Builder => $query->where('type', BookingType::CERTIFICATE->value))
+                        fn(Builder $query): Builder => $query
+                            ->where('type', BookingType::CERTIFICATE->value)
+                            ->withoutTrashed())
                     ->native(false),
                 Select::make('certificate_type_id')
-                    ->label('Типа сертификата')
+                    ->label('Тип сертификата')
                     ->relationship('certificateType', 'name')
                     ->native(false),
             ]);
@@ -75,11 +77,10 @@ class BookingCertificateResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

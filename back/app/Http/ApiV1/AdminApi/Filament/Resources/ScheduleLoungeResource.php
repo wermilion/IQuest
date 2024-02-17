@@ -68,12 +68,12 @@ class ScheduleLoungeResource extends Resource
                 Forms\Components\TextInput::make('time_from')
                     ->label('Время начала')
                     ->mask('99:99')
-                    ->placeholder('xx:xx')
+                    ->placeholder('00:00')
                     ->required(),
                 Forms\Components\TextInput::make('time_to')
                     ->label('Время конца')
                     ->mask('99:99')
-                    ->placeholder('xx:xx')
+                    ->placeholder('00:00')
                     ->required(),
             ]);
     }

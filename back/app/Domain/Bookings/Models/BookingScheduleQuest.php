@@ -35,7 +35,7 @@ class BookingScheduleQuest extends Model
 
     protected static function booted(): void
     {
-        static::deleted(function (self $model) {
+        static::deleting(function (self $model) {
             $model->scheduleQuest->update(['activity_status' => true]);
             $model->booking->delete();
         });
@@ -43,7 +43,7 @@ class BookingScheduleQuest extends Model
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class)->withTrashed();
     }
 
     public function scheduleQuest(): BelongsTo

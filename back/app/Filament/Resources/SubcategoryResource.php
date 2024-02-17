@@ -9,9 +9,9 @@ use App\Models\Subcategory;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Resources\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
+use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -25,7 +25,7 @@ class SubcategoryResource extends Resource
 
     protected static ?string $label = 'Подкатегория';
     protected static ?string $pluralLabel = 'Подкатегории';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form

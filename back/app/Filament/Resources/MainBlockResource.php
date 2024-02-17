@@ -12,9 +12,9 @@ use App\Models\Target;
 use App\Traits\BlockTrait;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
@@ -31,7 +31,7 @@ class MainBlockResource extends Resource
     protected static ?string $label = 'Главный';
     protected static ?string $pluralLabel = 'Главный';
     protected static ?string $slug = 'main-block';
-    protected static ?string $navigationIcon = 'heroicon-o-photograph';
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form

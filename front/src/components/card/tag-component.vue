@@ -25,14 +25,12 @@ checkImageExists(`/icons/genre/${props.name}.png`);
 
 <template>
   <div class="tag">
-    <!-- Если изображение существует в текущей папке, отображаем его -->
     <img
       loading="lazy"
       v-if="imageExists"
       :src="`/icons/genre/${props.name}.png`"
       :alt="props.name"
     />
-    <!-- Если изображение не найдено в текущей папке, пытаемся загрузить его из другой папки -->
     <img
       v-else
       loading="lazy"
@@ -53,9 +51,5 @@ checkImageExists(`/icons/genre/${props.name}.png`);
   border-radius: $cover-8;
   border: 1px solid $color-opacity004;
   background: $color-opacity004;
-
-  span {
-    color: $color-opacity075;
-  }
 }
 </style>

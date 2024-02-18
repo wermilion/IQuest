@@ -6,13 +6,13 @@ import type { NavigationGuardNext, RouteLocationNormalized, } from 'vue-router'
 import { useGlobalStore } from '#/stores/common/global.store';
 
 
-const Home = () => import('#/views/home-view.vue')
+const Quests = () => import('#/views/quests-view.vue')
 
 const routes: RouteRecordRaw[] = [
   {
-    path: EAppRoutePaths.Home,
-    name: EAppRouteNames.Home,
-    component: Home,
+    path: EAppRoutePaths.Quests,
+    name: EAppRouteNames.Quests,
+    component: Quests,
   },
 ]
 

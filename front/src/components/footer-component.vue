@@ -3,16 +3,15 @@ import { ref } from "vue";
 
 const linksSocial = ref([
   {
-    heref: "https://vk.com/iquest",
+    link: "https://vk.com/iquest",
     img: "vk.svg",
   },
   {
-    heref: "https://t.me/questtomsk",
+    link: "https://t.me/questtomsk",
     img: "telegram.svg",
   },
   {
-    heref:
-      "https://www.youtube.com/channel/UCiEXe3D9fy8GX9X73lpxOxA?disable_polymer=true",
+    link: "https://www.youtube.com/channel/UCiEXe3D9fy8GX9X73lpxOxA?disable_polymer=true",
     img: "youtube.svg",
   },
 ]);
@@ -30,7 +29,7 @@ const contacts = ref([
 </script>
 
 <template>
-  <div class="baground-black">
+  <footer class="border">
     <div class="container footer">
       <img src="/logo/logo_full.svg" alt="logo" />
       <div class="footer-links">
@@ -40,7 +39,7 @@ const contacts = ref([
           </span>
         </div>
         <div class="footer-links__social">
-          <a v-for="link in linksSocial" :href="link.heref">
+          <a v-for="link in linksSocial" :href="link.link">
             <img :src="`/icons/social/${link.img}`" :alt="link.img" />
           </a>
         </div>
@@ -52,14 +51,18 @@ const contacts = ref([
         </span>
       </div>
     </div>
-  </div>
+  </footer>
 </template>
 
 <style scoped lang="scss">
-.baground-black {
-  background-color: $color-black;
-}
+.border {
+  border-top: 2px solid $color-shade-6;
 
+  background-image: url("/gradient/footer-gradient.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: right bottom;
+}
 .footer {
   height: 100%;
   margin-inline: auto;
@@ -80,7 +83,7 @@ const contacts = ref([
       span {
         display: flex;
         gap: 8px;
-        color: $color-white;
+        color: $color-base2;
       }
     }
 
@@ -96,7 +99,7 @@ const contacts = ref([
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    color: $color-white;
+    color: $color-base2;
 
     span {
       display: flex;

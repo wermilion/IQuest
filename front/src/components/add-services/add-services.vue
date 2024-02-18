@@ -69,6 +69,7 @@ const items = ref([
   width: 100%;
   display: inline-flex;
   padding: $cover-40;
+  justify-content: space-between;
   gap: 102px;
   border-radius: $cover-12;
   border: 2px solid $color-opacity025;

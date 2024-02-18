@@ -2,18 +2,19 @@
 import Swiper from "swiper";
 import SliderComponent from "#/components/baner-swiper/slider-component.vue";
 import { ref, onMounted } from "vue";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css/bundle";
+import "#/assets/scss/swiper.scss";
 
 const slider = ref<HTMLElement | null>(null);
-const swiiperOptions: any = {
+const swiperOptions: any = {
   direction: "vertical",
-  slidersPerView: 1,
-  sliderPerGroup: 1,
+  slidesPerView: 1,
+  spaceBetween: 500,
   speed: 850,
   loop: true,
   autoplay: {
-    delay: 10000,
+    delay: 10000, // Задержка перед сменой слайдов
     disableOnInteraction: false,
   },
   navigation: {
@@ -24,20 +25,22 @@ const swiiperOptions: any = {
     el: ".swiper-pagination",
     clickable: true,
   },
+  EffectFade: true,
+  effect: "fade",
   modules: [Navigation, Pagination, Autoplay],
 };
 
 onMounted(() => {
   if (slider.value) {
-    new Swiper(slider.value as HTMLElement, swiiperOptions);
+    const mySwiper = new Swiper(slider.value, swiperOptions);
   }
 });
 </script>
-
 <template>
   <section class="bg-secondary">
     <div ref="slider" class="swiper-container container">
       <div class="swiper-wrapper">
+        <slider-component class="swiper-slide" />
         <slider-component class="swiper-slide" />
         <slider-component class="swiper-slide" />
         <slider-component class="swiper-slide" />
@@ -91,13 +94,13 @@ onMounted(() => {
   background-size: cover;
   background-position: center;
   overflow: hidden;
-  height: 316px;
+  max-height: 316px;
 }
 
 .swiper-button {
   background: none;
   border: none;
-  width: 44px;
+  width: 50px;
 
   &::after {
     display: none;
@@ -106,10 +109,26 @@ onMounted(() => {
 
 .swiper-container {
   overflow: hidden;
+  position: relative;
+  max-height: 316px;
+}
+
+.swiper-button {
+  top: 260px;
+
+  &.swiper-button-prev {
+    left: auto;
+  }
+
+  &.swiper-button-next {
+    left: 22%;
+  }
 }
 
 .swiper-pagination {
+  left: 9%;
   right: auto;
+  top: 260px;
   min-width: 192px;
   display: flex;
   gap: $cover-8;

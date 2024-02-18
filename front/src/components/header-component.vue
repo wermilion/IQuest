@@ -139,7 +139,7 @@ let isHoverActive = ref(false);
     gap: 24px;
 
     a {
-      color: $color-opacity075;
+      color: $color-opacity06;
       display: flex;
       gap: 8px;
     }
@@ -174,19 +174,16 @@ let isHoverActive = ref(false);
 
     .select {
       display: flex;
-      path {
-        stroke: $color-opacity075;
-      }
     }
   }
 
   &-select {
-    color: $color-opacity075;
+    color: $color-opacity06;
     cursor: pointer;
-
-    path {
-      stroke: $color-opacity075;
-    }
   }
+}
+
+path {
+  stroke: $color-opacity06;
 }
 </style>

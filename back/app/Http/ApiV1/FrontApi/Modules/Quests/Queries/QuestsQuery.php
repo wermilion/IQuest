@@ -3,8 +3,10 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Quests\Queries;
 
 use App\Domain\Quests\Models\Quest;
+use App\Domain\Quests\Models\Type;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class QuestsQuery extends QueryBuilder
@@ -24,7 +26,6 @@ class QuestsQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::callback('is_active', fn(Builder $query, $value) => $query->where('is_active', $value)),
         ]);
 
         $this->allowedSorts([

@@ -37,13 +37,14 @@ class RoomResource extends Resource
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
+                    ->native(false)
                     ->hiddenOn(''),
                 Forms\Components\Select::make('filial_id')
                     ->label('Адрес')
-                    ->relationship('filial', 'address')
                     ->options(fn(Get $get): Collection => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
+                    ->native(false)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',

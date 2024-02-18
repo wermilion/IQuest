@@ -39,8 +39,14 @@ class HolidayResource extends Resource
                         'required' => 'Поле ":attribute" обязательно.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.'
                     ])
-                    ->native(false),
+                    ->native(false)
+                    ->disabled(),
             ]);
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function table(Table $table): Table
@@ -68,9 +74,6 @@ class HolidayResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 
@@ -85,7 +88,6 @@ class HolidayResource extends Resource
     {
         return [
             'index' => ListHolidays::route('/'),
-            'create' => CreateHoliday::route('/create'),
             'edit' => EditHoliday::route('/{record}/edit'),
         ];
     }

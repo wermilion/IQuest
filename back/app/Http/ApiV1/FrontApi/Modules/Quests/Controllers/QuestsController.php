@@ -18,7 +18,7 @@ class QuestsController
     public function search(PageBuilderFactory $pageBuilderFactory, QuestsQuery $query): AnonymousResourceCollection
     {
         return QuestsResource::collectPage(
-            $pageBuilderFactory->fromQuery($query)->build()
+            $pageBuilderFactory->fromQuery($query->where('is_active', true))->build()
         );
     }
 }

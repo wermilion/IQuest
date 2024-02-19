@@ -1,9 +1,9 @@
 <?php return array (
-  'akaunting/laravel-money' => 
+  'anourvalar/eloquent-serialize' => 
   array (
-    'providers' => 
+    'aliases' => 
     array (
-      0 => 'Akaunting\\Money\\Provider',
+      'EloquentSerialize' => 'AnourValar\\EloquentSerialize\\Facades\\EloquentSerializeFacade',
     ),
   ),
   'blade-ui-kit/blade-heroicons' => 
@@ -20,6 +20,13 @@
       0 => 'BladeUI\\Icons\\BladeIconsServiceProvider',
     ),
   ),
+  'filament/actions' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Filament\\Actions\\ActionsServiceProvider',
+    ),
+  ),
   'filament/filament' => 
   array (
     'providers' => 
@@ -32,6 +39,13 @@
     'providers' => 
     array (
       0 => 'Filament\\Forms\\FormsServiceProvider',
+    ),
+  ),
+  'filament/infolists' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Filament\\Infolists\\InfolistsServiceProvider',
     ),
   ),
   'filament/notifications' => 
@@ -55,26 +69,18 @@
       0 => 'Filament\\Tables\\TablesServiceProvider',
     ),
   ),
-  'intervention/image' => 
+  'filament/widgets' => 
   array (
     'providers' => 
     array (
-      0 => 'Intervention\\Image\\ImageServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Image' => 'Intervention\\Image\\Facades\\Image',
+      0 => 'Filament\\Widgets\\WidgetsServiceProvider',
     ),
   ),
-  'irazasyed/telegram-bot-sdk' => 
+  'kirschbaum-development/eloquent-power-joins' => 
   array (
-    'aliases' => 
-    array (
-      'Telegram' => 'Telegram\\Bot\\Laravel\\Facades\\Telegram',
-    ),
     'providers' => 
     array (
-      0 => 'Telegram\\Bot\\Laravel\\TelegramServiceProvider',
+      0 => 'Kirschbaum\\PowerJoins\\PowerJoinsServiceProvider',
     ),
   ),
   'laravel/sail' => 
@@ -152,11 +158,11 @@
       'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
     ),
   ),
-  'spatie/laravel-medialibrary' => 
+  'spatie/laravel-query-builder' => 
   array (
     'providers' => 
     array (
-      0 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
+      0 => 'Spatie\\QueryBuilder\\QueryBuilderServiceProvider',
     ),
   ),
 );

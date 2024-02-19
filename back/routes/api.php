@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\BlockController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\CheckDishController;
-use App\Http\Controllers\Api\CheckDishesController;
-use App\Http\Controllers\Api\DishController;
-use App\Http\Controllers\Api\OrderController;
+use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\HolidaysController;
+use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\CitiesController;
+use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\FilialsController;
+use App\Http\ApiV1\FrontApi\Modules\Lounges\Controllers\LoungesController;
+use App\Http\ApiV1\FrontApi\Modules\Quests\Controllers\QuestsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,17 +23,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/**Категории**/
-Route::get('/categories', [CategoryController::class, 'index'])->name('api.categories');
+Route::get('quests/{id}', [QuestsController::class, 'get']);
+Route::post('quests:search', [QuestsController::class, 'search']);
 
-/**Блюда**/
-Route::get('/dishes', [DishController::class, 'index'])->name('api.dishes');
+Route::get('lounges/{id}', [LoungesController::class, 'get']);
+Route::post('lounges:search', [LoungesController::class, 'search']);
 
-/**Главный блок**/
-Route::get('/main-block', [BlockController::class, 'mainBlock'])->name('api.mainBlock');
+Route::get('holidays/{id}', [HolidaysController::class, 'get']);
+Route::post('holidays:search', [HolidaysController::class, 'search']);
 
-/**Получение заказа**/
-Route::post('/orders', [OrderController::class, 'store'])->name('api.store');
+Route::get('cities/{id}', [CitiesController::class, 'get']);
+Route::post('cities:search', [CitiesController::class, 'search']);
 
-/**Проверка доступно ли блюдо**/
-Route::get('/check-dishes', [CheckDishController::class, 'checkDishes'])->name('api.checkDishes');
+Route::get('filials/{id}', [FilialsController::class, 'get']);
+Route::post('filials:search', [FilialsController::class, 'search']);

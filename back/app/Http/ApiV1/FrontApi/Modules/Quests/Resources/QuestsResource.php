@@ -24,8 +24,6 @@ class QuestsResource extends BaseJsonResource
             'max_people' => $this->max_people,
             'duration' => $this->duration,
             'can_add_time' => $this->can_add_time,
-            'is_active' => $this->is_active,
-            'sequence_number' => $this->sequence_number,
 
             'scheduleQuests' => ScheduleQuestsResource::collection($this->whenLoaded('scheduleQuests')),
             'room' => new RoomsResource($this->whenLoaded('room')),

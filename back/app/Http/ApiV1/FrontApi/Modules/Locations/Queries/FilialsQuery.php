@@ -3,6 +3,7 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Locations\Queries;
 
 use App\Domain\Locations\Models\Filial;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class FilialsQuery extends QueryBuilder
@@ -16,7 +17,7 @@ class FilialsQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            'city.name'
+            AllowedFilter::exact('city', 'city.name'),
         ]);
 
         $this->defaultSort('id');

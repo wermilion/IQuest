@@ -15,7 +15,7 @@ class HolidaysResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'type' => $this->type,
-            'packages' => PackagesResource::collection($this->whenLoaded('packages')),
+            'packages' => PackagesResource::collection($this->whenLoaded('packages')->where('is_active', true)),
         ];
     }
 }

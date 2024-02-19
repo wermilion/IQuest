@@ -19,11 +19,11 @@ class LoungesQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::callback('is_active', fn($query, $value) => $query->where('is_active', $value)),
+            AllowedFilter::exact('city', 'filial.city.name'),
         ]);
 
         $this->allowedSorts([
-            AllowedSort::callback('filial.city.name', fn($query, $direction) => $query->orderBy('filial.city.name', $direction)),
+            AllowedSort::field('filial', 'filial_id'),
         ]);
     }
 }

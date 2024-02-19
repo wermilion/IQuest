@@ -17,7 +17,7 @@ class LoungesController
     public function search(PageBuilderFactory $pageBuilderFactory, LoungesQuery $query): AnonymousResourceCollection
     {
         return LoungesResource::collectPage(
-            $pageBuilderFactory->fromQuery($query)->build()
+            $pageBuilderFactory->fromQuery($query->where('is_active', true))->build()
         );
     }
 }

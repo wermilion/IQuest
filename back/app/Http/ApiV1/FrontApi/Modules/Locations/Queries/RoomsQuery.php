@@ -3,6 +3,7 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Locations\Queries;
 
 use App\Domain\Locations\Models\Room;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class RoomsQuery extends QueryBuilder
@@ -16,7 +17,8 @@ class RoomsQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            'filial.address'
+            AllowedFilter::exact('city', 'filial.city.name'),
+            AllowedFilter::exact('filial', 'filial.address'),
         ]);
 
         $this->defaultSort('id');

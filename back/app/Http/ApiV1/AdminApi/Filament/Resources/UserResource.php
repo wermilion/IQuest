@@ -9,12 +9,16 @@ use App\Domain\Users\Models\User;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\EditUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
+use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
+use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -25,6 +29,7 @@ class UserResource extends Resource
     protected static ?string $pluralModelLabel = 'Пользователи';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -45,24 +50,27 @@ class UserResource extends Resource
                         ->pluck('address', 'id'))
                     ->native(false),
                 Forms\Components\TextInput::make('name')
+                    ->autofocus()
                     ->label('Имя')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(40)
+                    ->rules([new CyrillicRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
                 Forms\Components\TextInput::make('surname')
                     ->label('Фамилия')
-                    ->maxLength(255),
+                    ->rules([new CyrillicRule])
+                    ->maxLength(40),
                 Forms\Components\TextInput::make('login')
                     ->label('Логин')
                     ->unique(ignoreRecord: true)
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(40)
+                    ->rules([new LatinRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
-                        'email' => 'Поле ":attribute" должно быть в формате почты.'
                     ]),
                 Forms\Components\Select::make('role')
                     ->label('Роль')
@@ -75,20 +83,43 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->label('Пароль')
                     ->password()
+                    ->same('password_confirmation')
+                    ->revealable()
                     ->required()
-                    ->maxLength(255)
                     ->hiddenOn('edit')
+                    ->minLength(8)
+                    ->maxLength(32)
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'min' => 'Поле ":attribute" должно содержать не менее 8 символов.',
+                        'max' => 'Поле ":attribute" должно содержать не более 32 символов.',
+                        'same' => 'Поле ":attribute" должно совпадать с полем "Подтверждение пароля".',
+                    ]),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->label('Подтверждение пароля')
+                    ->password()
+                    ->revealable()
+                    ->required()
+                    ->hiddenOn('edit')
+                    ->minLength(8)
+                    ->maxLength(32)
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 Forms\Components\TextInput::make('vk_id')
                     ->label('VK ID')
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255)
                     ->validationMessages([
-                        'unique' => 'Поле ":attribute" должно быть уникальным.',
+                        'unique' => 'Поле ":Attribute" должно быть уникальным.',
                     ]),
             ]);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return Auth::user()->id !== $record->id;
     }
 
     public static function table(Table $table): Table
@@ -136,10 +167,8 @@ class UserResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Пользователи не обнаружены');
     }
 
     public static function getRelations(): array

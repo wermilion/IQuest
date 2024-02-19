@@ -5,10 +5,10 @@ interface Props {
   name: string;
   img: string;
   tags: string[];
-  minDescription: string;
-  time: number;
-  minPerson: number;
-  maxPerson: number;
+  minDescription?: string;
+  time?: number;
+  minPerson?: number;
+  maxPerson?: number;
   link?: string;
 }
 

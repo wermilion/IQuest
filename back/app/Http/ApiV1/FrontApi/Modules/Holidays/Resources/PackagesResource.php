@@ -19,7 +19,7 @@ class PackagesResource extends BaseJsonResource
             'min_people' => $this->min_people,
             'max_people' => $this->max_people,
             'price' => $this->price,
-            'is_active' => $this->is_active,
+            'sequence_number' => $this->sequence_number
         ];
     }
 }

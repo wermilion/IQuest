@@ -10,6 +10,8 @@ class EditScheduleQuest extends EditRecord
 {
     protected static string $resource = ScheduleQuestResource::class;
 
+    protected ?string $heading = 'Редактирование слота';
+
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $quest = Quest::query()->with(['room', 'room.filial', 'room.filial.city'])->find($data['quest_id']);

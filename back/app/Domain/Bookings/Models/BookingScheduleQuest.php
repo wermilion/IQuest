@@ -37,7 +37,13 @@ class BookingScheduleQuest extends Model
     {
         static::deleting(function (self $model) {
             $model->scheduleQuest()->update(['activity_status' => true]);
-            $model->booking()->delete();
+            $model->booking()->forceDelete();
+        });
+
+        static::restoring(function (self $model) {
+            if ($model->booking()->exists()) {
+                $model->booking()->restore();
+            }
         });
     }
 

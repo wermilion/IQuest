@@ -32,10 +32,6 @@ class BookingCertificate extends Model
         static::deleting(function (self $model) {
             $model->booking()->delete();
         });
-
-        static::restoring(function (self $model) {
-            $model->booking()->restore();
-        });
     }
 
     public function booking(): BelongsTo

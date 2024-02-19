@@ -15,9 +15,7 @@ class BookingRelationManager extends RelationManager
 {
     protected static string $relationship = 'booking';
 
-    protected static ?string $label = 'Заявка на бронирование';
-
-    protected static ?string $pluralLabel = 'Заявки на бронирование';
+    protected static ?string $label = 'заявку';
 
     public function form(Form $form): Form
     {
@@ -78,7 +76,9 @@ class BookingRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('id')
-            ->heading('Заявки на бронирование')
+            ->emptyStateHeading('Нет заявки')
+            ->emptyStateDescription('Создать или прикрепить заявку')
+            ->heading('Заявка')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID'),
@@ -93,10 +93,12 @@ class BookingRelationManager extends RelationManager
             ->filters([
                 //
             ])
+            ->paginated(false)
             ->headerActions([
                 Tables\Actions\AttachAction::make()
+                    ->modalHeading('Прикрепить заявку')
                     ->form(fn(Tables\Actions\AttachAction $action) => [
-                        $action->getRecordSelect(),
+                        $action->getRecordSelect()->placeholder('Введите ID заявки'),
                         Forms\Components\TextInput::make('comment')
                             ->label('Комментарий')
                             ->maxLength(255)
@@ -111,9 +113,7 @@ class BookingRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
+                Tables\Actions\DeleteAction::make()->modalHeading('Удалить заявку'),
             ]);
     }
 }

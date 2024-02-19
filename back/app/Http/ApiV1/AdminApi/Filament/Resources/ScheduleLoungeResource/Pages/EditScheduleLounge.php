@@ -11,6 +11,8 @@ class EditScheduleLounge extends EditRecord
 {
     protected static string $resource = ScheduleLoungeResource::class;
 
+    protected ?string $heading = 'Редактирование слота';
+
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $lounge = Lounge::query()->with(['filial', 'filial.city'])->find($data['lounge_id']);

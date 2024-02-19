@@ -173,7 +173,7 @@ class ScheduleQuestResource extends Resource
                             );
                     }),
                 Tables\Filters\SelectFilter::make('name')
-                    ->relationship('quest', 'name')
+                    ->relationship('quest', 'slug')
                     ->label('Квест')
                     ->native(false),
                 Tables\Filters\Filter::make('date')

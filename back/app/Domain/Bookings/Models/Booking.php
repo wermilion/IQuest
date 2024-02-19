@@ -58,19 +58,19 @@ class Booking extends Model
 
         static::deleting(function (self $model) {
             if ($model->scheduleQuests()->exists()) {
-                $model->scheduleQuests->update(['activity_status' => true]);
+                $model->scheduleQuests()->update(['activity_status' => true]);
             }
             if ($model->bookingScheduleQuest()->exists()) {
-                $model->bookingScheduleQuest()->delete();
+                $model->bookingScheduleQuest()->forceDelete();
             }
             if ($model->bookingScheduleLounge()->exists()) {
-                $model->bookingScheduleLounge()->delete();
+                $model->bookingScheduleLounge()->forceDelete();
             }
             if ($model->bookingHoliday()->exists()) {
-                $model->bookingHoliday()->delete();
+                $model->bookingHoliday()->forceDelete();
             }
             if ($model->bookingCertificate()->exists()) {
-                $model->bookingCertificate()->delete();
+                $model->bookingCertificate()->forceDelete();
             }
         });
 

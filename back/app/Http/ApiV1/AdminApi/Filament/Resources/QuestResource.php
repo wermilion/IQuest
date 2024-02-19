@@ -109,14 +109,14 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->maxLength(255),
-                Forms\Components\Textarea::make('short_description')
-                    ->label('Краткое описание')
+                Forms\Components\Textarea::make('description')
+                    ->label('Описание')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\Textarea::make('description')
-                    ->label('Описание')
+                Forms\Components\Textarea::make('short_description')
+                    ->label('Краткое описание')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'

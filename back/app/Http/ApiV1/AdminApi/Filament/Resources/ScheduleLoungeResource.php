@@ -26,9 +26,9 @@ class ScheduleLoungeResource extends Resource
 {
     protected static ?string $model = ScheduleLounge::class;
 
-    protected static ?string $modelLabel = 'Слот расписания лаундж-зоны';
+    protected static ?string $modelLabel = 'Слот расписания лаунж-зоны';
 
-    protected static ?string $pluralModelLabel = 'Расписание лаундж-зон';
+    protected static ?string $pluralModelLabel = 'Расписание лаунж-зон';
 
     protected static ?string $navigationLabel = 'Расписание лаунж-зоны';
 
@@ -57,8 +57,7 @@ class ScheduleLoungeResource extends Resource
                     ->hiddenOn('')
                     ->native(false),
                 Forms\Components\Select::make('lounge_id')
-                    ->label('Лаундж-зона')
-                    //->relationship('lounge', 'name')
+                    ->label('Лаунж-зона')
                     ->options(fn(Get $get): Collection => Lounge::query()
                         ->where('filial_id', $get('filial'))
                         ->pluck('name', 'id'))
@@ -98,7 +97,7 @@ class ScheduleLoungeResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('lounge.name')
-                    ->label('Лаундж-зона')
+                    ->label('Лаунж-зона')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')

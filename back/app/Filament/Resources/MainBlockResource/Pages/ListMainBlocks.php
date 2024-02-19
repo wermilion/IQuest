@@ -15,7 +15,7 @@ class ListMainBlocks extends ListRecords
 {
     protected static string $resource = MainBlockResource::class;
 
-    protected function getHeaderActions(): array
+    protected function getActions(): array
     {
         return [
             //

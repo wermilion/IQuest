@@ -10,9 +10,9 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
+use Filament\Resources\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
+use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +26,7 @@ class CategoryResource extends Resource
 
     protected static ?string $label = 'Категория';
     protected static ?string $pluralLabel = 'Категории';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form

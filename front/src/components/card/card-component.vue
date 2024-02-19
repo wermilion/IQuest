@@ -181,26 +181,26 @@ const props = defineProps<Props>();
         opacity: 1;
       }
     }
-  }
 
-  .card {
-    &:hover {
+    .card {
       transform: scale(0.84);
 
-      .card-body {
+      &-body {
         max-height: 100%;
-      }
-      .card-body__description {
-        transform: translateY(0);
+
+        &__description {
+          transform: translateY(0);
+        }
       }
     }
+  }
 
-    &:not(:hover) {
-      .card-body__description {
+  &:not(:hover) {
+    .card-body {
+      max-height: 152px;
+
+      &__description {
         transform: translateY(100%);
-      }
-      .card-body {
-        max-height: 152px;
       }
     }
   }

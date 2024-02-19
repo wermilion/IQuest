@@ -58,6 +58,9 @@ class BookingRelationManager extends RelationManager
                         'required' => 'Поле ":attribute" обязательно.',
                     ])
                     ->native(false),
+                Forms\Components\TextInput::make('comment')
+                    ->label('Комментарий')
+                    ->maxLength(255)
             ]);
     }
 
@@ -83,8 +86,6 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя'),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Телефон'),
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Тип заявки'),
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class),
@@ -94,6 +95,12 @@ class BookingRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
+                    ->form(fn(Tables\Actions\AttachAction $action) => [
+                        $action->getRecordSelect(),
+                        Forms\Components\TextInput::make('comment')
+                            ->label('Комментарий')
+                            ->maxLength(255)
+                    ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::LOUNGE->value)
                         ->withoutTrashed())

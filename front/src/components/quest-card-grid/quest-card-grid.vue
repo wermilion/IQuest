@@ -12,6 +12,8 @@ const quests = ref([
     time: 60,
     minPerson: 2,
     maxPerson: 6,
+
+    hoverActive: true,
   },
   {
     name: "Кутёж в ирландском пабе",
@@ -22,16 +24,8 @@ const quests = ref([
     time: 60,
     minPerson: 2,
     maxPerson: 6,
-  },
-  {
-    name: "Кутёж в ирландском пабе",
-    img: "photo",
-    tags: ["Комедия", "Квест в реальности"],
-    minDescription:
-      "Вау! Вы, команда самых крутых барменов России, выиграли стажировку в одном из самых крутых заведений Лондона - в пабе «Багровый олень»!",
-    time: 60,
-    minPerson: 2,
-    maxPerson: 6,
+
+    hoverActive: true,
   },
 ]);
 </script>

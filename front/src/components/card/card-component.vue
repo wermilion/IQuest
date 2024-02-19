@@ -5,19 +5,21 @@ interface Props {
   name: string;
   img: string;
   tags: string[];
-  minDescription: string;
-  time: number;
-  minPerson: number;
-  maxPerson: number;
+  minDescription?: string;
+  time?: number;
+  minPerson?: number;
+  maxPerson?: number;
   link?: string;
+
+  hoverActive: boolean;
 }
 
 const props = defineProps<Props>();
 </script>
 
 <template>
-  <div class="hover-container">
-    <div class="hover">
+  <div class="hover-container" :class="{ 'hover-active': hoverActive }">
+    <div v-if="hoverActive" class="hover">
       <svg
         width="32"
         height="400"
@@ -40,18 +42,23 @@ const props = defineProps<Props>();
     <router-link
       :to="link ? link : '/'"
       class="card"
-      :class="{ 'no-pointer': !link }"
+      :class="{ 'no-pointer': !link, hoverActive: hoverActive }"
     >
-      <img loading="lazy" :src="`/quest-photo/${img}.png`" :alt="img" />
+      <div class="card-image">
+        <img loading="lazy" :src="`/quest-photo/${img}.png`" :alt="img" />
+      </div>
+
       <div class="card-body">
         <span class="bodyBold">{{ name }}</span>
         <div class="card-body__tags">
           <tag v-for="tag in tags" :key="tag" :name="tag" />
         </div>
-        <p class="card-body__description footnote">{{ minDescription }}</p>
+        <p v-if="minDescription" class="card-body__description footnote">
+          {{ minDescription }}
+        </p>
       </div>
     </router-link>
-    <div class="hover">
+    <div v-if="hoverActive" class="hover">
       <span class="hover-after footnote"> {{ time }} мин </span>
       <svg
         width="32"
@@ -80,10 +87,17 @@ const props = defineProps<Props>();
   display: flex;
   flex-direction: column;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0, 0, 0.58, 1);
+
+  transition: $hover-animation;
 
   border-radius: $cover-8;
   border: 1px solid $color-opacity004;
+
+  &-image {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 
   img {
     height: 100%;
@@ -94,12 +108,12 @@ const props = defineProps<Props>();
   &-body {
     background: $color-opacity004;
     backdrop-filter: blur(50px);
-    max-height: 152px;
     padding: $cover-24;
     display: flex;
     flex-direction: column;
     gap: $cover-36;
-    height: 100%;
+
+    transition: $hover-animation;
 
     span {
       color: $color-base2;
@@ -112,29 +126,8 @@ const props = defineProps<Props>();
     }
 
     &__description {
-      height: 0;
-      overflow: hidden;
-      transition: height 0.3s cubic-bezier(0, 0, 0.58, 1);
-    }
-  }
-
-  &:hover {
-    transform: scale(0.84);
-
-    .card-body {
-      max-height: max-content;
-    }
-    .card-body__description {
-      height: auto;
-    }
-  }
-
-  &:not(:hover) {
-    .card-body__description {
-      height: 0;
-    }
-    .card-body {
-      max-height: 152px;
+      transform: translateY(100%);
+      transition: $hover-animation;
     }
   }
 }
@@ -149,6 +142,9 @@ const props = defineProps<Props>();
     &-after {
       position: absolute;
       width: max-content;
+
+      opacity: 0;
+      transition: $hover-animation;
     }
 
     &-before {
@@ -157,15 +153,54 @@ const props = defineProps<Props>();
     }
 
     &-after {
-      bottom: -5px;
+      bottom: -10px;
       right: 40px;
     }
 
     svg {
+      opacity: 0;
       position: absolute;
+      transition: $hover-animation;
       top: 1px;
       &:last-child {
         right: 1px;
+      }
+    }
+  }
+}
+
+.hover-active {
+  &:hover {
+    .hover {
+      &-before,
+      &-after {
+        opacity: 1;
+      }
+
+      svg {
+        opacity: 1;
+      }
+    }
+
+    .card {
+      transform: scale(0.84);
+
+      &-body {
+        max-height: 100%;
+
+        &__description {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+
+  &:not(:hover) {
+    .card-body {
+      max-height: 152px;
+
+      &__description {
+        transform: translateY(100%);
       }
     }
   }

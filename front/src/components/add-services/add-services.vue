@@ -6,6 +6,8 @@ const lounge = ref({
   name: "Лаунж зона",
   img: "lounge",
   tags: ["600р/30 мин • 1000р/1 час"],
+
+  hoverActive: false,
 });
 
 const items = ref([

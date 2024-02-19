@@ -1,43 +1,57 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 interface Props {
   name: string;
 }
 
 const props = defineProps<Props>();
-const imageExists = ref(true);
+const imageSrc = ref(`/icons/genre/${props.name}.png`);
+const showImage = ref(true);
 
 const checkImageExists = (url: string) => {
-  const img = new Image();
-  img.src = url;
-  img.onload = () => {
-    imageExists.value = true;
-  };
-  img.onerror = () => {
-    imageExists.value = false;
-  };
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+  });
 };
 
 // Проверяем, существует ли изображение в текущей папке
-checkImageExists(`/icons/genre/${props.name}.png`);
+checkImageExists(imageSrc.value).then((exists) => {
+  if (!exists) {
+    imageSrc.value = `/icons/type/${props.name}.png`;
+    checkImageExists(imageSrc.value).then((stillExists) => {
+      if (!stillExists) {
+        showImage.value = false; // Не отображаем изображение, если не найдено
+      }
+    });
+  }
+});
+
+// Если имя изменяется, обновляем путь к изображению
+watch(
+  () => props.name,
+  (newName) => {
+    imageSrc.value = `/icons/genre/${newName}.png`;
+    checkImageExists(imageSrc.value).then((exists) => {
+      if (!exists) {
+        imageSrc.value = `/icons/type/${newName}.png`;
+        checkImageExists(imageSrc.value).then((stillExists) => {
+          if (!stillExists) {
+            showImage.value = false; // Не отображаем изображение, если не найдено
+          }
+        });
+      }
+    });
+  }
+);
 </script>
 
 <template>
   <div class="tag">
-    <img
-      loading="lazy"
-      v-if="imageExists"
-      :src="`/icons/genre/${props.name}.png`"
-      :alt="props.name"
-    />
-    <img
-      v-else
-      loading="lazy"
-      :src="`/icons/type/${props.name}.png`"
-      :alt="props.name"
-    />
-
+    <img v-if="showImage" loading="lazy" :src="imageSrc" :alt="props.name" />
     <span class="smallFootnote">{{ props.name }}</span>
   </div>
 </template>
@@ -45,10 +59,10 @@ checkImageExists(`/icons/genre/${props.name}.png`);
 <style scoped lang="scss">
 .tag {
   display: flex;
-  padding: $cover-8;
+  padding: $cover-8 $cover-12;
   gap: $cover-8;
   align-items: center;
-  border-radius: $cover-8;
+  border-radius: 120px;
   border: 1px solid $color-opacity004;
   background: $color-opacity004;
 }

@@ -24,9 +24,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property-read  BookingScheduleQuest $bookingScheduleQuest
  * @property-read  BookingScheduleLounge $bookingScheduleLounge
- * @property-read  BookingCertificate $bookingCertificate
  * @property-read  ScheduleQuest $scheduleQuests
  * @property-read  ScheduleLounge $scheduleLounges
+ * @property-read  BookingHoliday $bookingHoliday
+ * @property-read  BookingCertificate $bookingCertificate
  */
 class Booking extends Model
 {
@@ -65,6 +66,9 @@ class Booking extends Model
             if ($model->bookingScheduleLounge()->exists()) {
                 $model->bookingScheduleLounge()->delete();
             }
+            if ($model->bookingHoliday()->exists()) {
+                $model->bookingHoliday()->delete();
+            }
             if ($model->bookingCertificate()->exists()) {
                 $model->bookingCertificate()->delete();
             }
@@ -72,30 +76,38 @@ class Booking extends Model
 
         static::restoring(function (self $model) {
             if ($model->bookingScheduleQuest()->exists()) {
-                $model->bookingScheduleQuest->restore();
+                $model->bookingScheduleQuest()->restore();
             }
             if ($model->bookingScheduleLounge()->exists()) {
-                $model->bookingScheduleLounge->restore();
+                $model->bookingScheduleLounge()->restore();
+            }
+            if ($model->bookingHoliday()->exists()) {
+                $model->bookingHoliday()->restore();
             }
             if ($model->bookingCertificate()->exists()) {
-                $model->bookingCertificate->restore();
+                $model->bookingCertificate()->restore();
             }
         });
     }
 
     public function bookingScheduleQuest(): HasOne
     {
-        return $this->hasOne(BookingScheduleQuest::class);
+        return $this->hasOne(BookingScheduleQuest::class)->withTrashed();
     }
 
     public function bookingScheduleLounge(): HasOne
     {
-        return $this->hasOne(BookingScheduleLounge::class);
+        return $this->hasOne(BookingScheduleLounge::class)->withTrashed();
+    }
+
+    public function bookingHoliday(): HasOne
+    {
+        return $this->hasOne(BookingHoliday::class)->withTrashed();
     }
 
     public function bookingCertificate(): HasOne
     {
-        return $this->hasOne(BookingCertificate::class);
+        return $this->hasOne(BookingCertificate::class)->withTrashed();
     }
 
     public function scheduleQuests(): BelongsToMany
@@ -106,6 +118,7 @@ class Booking extends Model
 
     public function scheduleLounges(): BelongsToMany
     {
-        return $this->belongsToMany(ScheduleLounge::class, 'booking_schedule_lounges');
+        return $this->belongsToMany(ScheduleLounge::class, 'booking_schedule_lounges')
+            ->withPivot(['comment']);
     }
 }

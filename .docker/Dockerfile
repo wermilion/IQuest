@@ -17,6 +17,7 @@ RUN npm run build
 
 FROM harbor.tomsk-it.ru/asap-infra/unit:php8.2-pdo-psql as back
 RUN apt-get update && apt-get install -y git unzip libpng-dev libjpeg62-turbo-dev && docker-php-ext-configure gd --with-jpeg && docker-php-ext-install exif gd && docker-php-source delete && rm -rf /var/lib/apt/lists/* && rm -rf /var/cache/*
+RUN docker-php-ext-install zip && docker-php-ext-configure intl && docker-php-ext-install intl
 COPY --from=harbor.tomsk-it.ru/dockerhub/library/composer:2.5.8 /usr/bin/composer /usr/bin/composer
 COPY .docker/unit-config.json /docker-entrypoint.d/
 WORKDIR /app

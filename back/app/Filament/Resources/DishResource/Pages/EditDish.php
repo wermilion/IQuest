@@ -13,7 +13,7 @@ class EditDish extends EditRecord
 {
     protected static string $resource = DishResource::class;
 
-    protected function getHeaderActions(): array
+    protected function getActions(): array
     {
         return [
             //

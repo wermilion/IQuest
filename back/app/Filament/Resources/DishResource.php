@@ -14,9 +14,9 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Resources\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Table;
+use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -31,7 +31,7 @@ class DishResource extends Resource
     protected static ?string $model = Dish::class;
     protected static ?string $navigationGroup = NavigationGroupEnum::DISHES->value;
     protected static ?string $recordTitleAttribute = 'title';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-collection';
 
     protected static ?string $label = 'Блюдо';
     protected static ?string $pluralLabel = 'Блюда';

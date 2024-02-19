@@ -39,9 +39,5 @@ class AppServiceProvider extends ServiceProvider
                     ->label(NavigationGroup::LOCATIONS->value),
             ]);
         });
-
-        config([
-            'filament.favicon' => asset('cp/favicon.ico')
-        ]);
     }
 }

@@ -81,10 +81,8 @@ class QuestImageResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Изображения квестов не обнаружены');
     }
 
     public static function getRelations(): array

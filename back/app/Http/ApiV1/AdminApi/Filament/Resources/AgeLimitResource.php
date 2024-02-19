@@ -20,6 +20,8 @@ class AgeLimitResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Возрастные ограничения';
 
+    protected static ?string $navigationLabel = 'Возрастные ограничения';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Компоненты квестов';
@@ -68,10 +70,8 @@ class AgeLimitResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Возрастные ограничения не обнаружены');
     }
 
     public static function getRelations(): array

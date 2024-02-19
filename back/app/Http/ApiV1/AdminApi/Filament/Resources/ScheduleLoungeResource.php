@@ -30,6 +30,8 @@ class ScheduleLoungeResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Расписание лаундж-зон';
 
+    protected static ?string $navigationLabel = 'Расписание лаунж-зоны';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = NavigationGroup::SCHEDULE->value;
@@ -168,8 +170,7 @@ class ScheduleLoungeResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-            ]);
+            ->emptyStateHeading('Слоты не обнаружены');
     }
 
     public static function getRelations(): array

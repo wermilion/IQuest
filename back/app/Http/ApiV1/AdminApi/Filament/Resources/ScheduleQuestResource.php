@@ -30,6 +30,8 @@ class ScheduleQuestResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Расписание квестов';
 
+    protected static ?string $navigationLabel = 'Расписание квестов';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = NavigationGroup::SCHEDULE->value;
@@ -172,7 +174,8 @@ class ScheduleQuestResource extends Resource
                     }),
                 Tables\Filters\SelectFilter::make('name')
                     ->relationship('quest', 'name')
-                    ->label('Квест'),
+                    ->label('Квест')
+                    ->native(false),
                 Tables\Filters\Filter::make('date')
                     ->form([Forms\Components\DatePicker::make('date')->label('Дата')])
                     ->query(function (Builder $query, array $data): Builder {
@@ -195,7 +198,8 @@ class ScheduleQuestResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-            ]);
+            ])
+            ->emptyStateHeading('Слоты не обнаружены');
     }
 
     public static function getRelations(): array

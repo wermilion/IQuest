@@ -19,9 +19,9 @@ class LoungeResource extends Resource
 {
     protected static ?string $model = Lounge::class;
 
-    protected static ?string $modelLabel = 'Лаундж';
+    protected static ?string $modelLabel = 'Лаунж';
 
-    protected static ?string $pluralModelLabel = 'Лаундж-зоны';
+    protected static ?string $pluralModelLabel = 'Лаунжи';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -130,7 +130,8 @@ class LoungeResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-            ]);
+            ])
+            ->emptyStateHeading('Лаунжи не обнаружены');
     }
 
     public static function getRelations(): array

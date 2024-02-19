@@ -91,6 +91,7 @@ class BookingResource extends Resource
                 Tables\Columns\SelectColumn::make('status')
                     ->options(BookingStatus::class)
                     ->label('Статус заявки')
+                    ->selectablePlaceholder(false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
@@ -126,7 +127,8 @@ class BookingResource extends Resource
                 Tables\Actions\RestoreAction::make()
             ])
             ->bulkActions([
-            ]);
+            ])
+            ->emptyStateHeading('Заявки не обнаружены');
     }
 
     public static function getRelations(): array

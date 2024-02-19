@@ -16,9 +16,11 @@ class BookingScheduleLoungeResource extends Resource
 {
     protected static ?string $model = BookingScheduleLounge::class;
 
-    protected static ?string $modelLabel = 'Заявка на лаундж-зону';
+    protected static ?string $modelLabel = 'Заявка на лаунж-зону';
 
-    protected static ?string $pluralModelLabel = 'Заявки на лаундж-зоны';
+    protected static ?string $pluralModelLabel = 'Заявки на лаунж-зоны';
+
+    protected static ?string $navigationLabel = 'Заявки на лаунж-зоны';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -67,7 +69,7 @@ class BookingScheduleLoungeResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('scheduleLounge.lounge.name')
-                    ->label('Лаундж-зона')
+                    ->label('Лаунж-зона')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('scheduleLounge.date')
@@ -106,7 +108,8 @@ class BookingScheduleLoungeResource extends Resource
                 Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
-            ]);
+            ])
+            ->emptyStateHeading('Заявок на лаунж-зоны не обнаружено');
     }
 
     public static function getRelations(): array

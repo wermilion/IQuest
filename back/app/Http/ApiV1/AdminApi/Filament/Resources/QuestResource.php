@@ -299,10 +299,8 @@ class QuestResource extends Resource
                 Tables\Actions\EditAction::make()
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Квесты не обнаружены');
     }
 
     public static function getRelations(): array

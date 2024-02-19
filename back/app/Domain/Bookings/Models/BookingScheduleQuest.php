@@ -36,8 +36,8 @@ class BookingScheduleQuest extends Model
     protected static function booted(): void
     {
         static::deleting(function (self $model) {
-            $model->scheduleQuest->update(['activity_status' => true]);
-            $model->booking->delete();
+            $model->scheduleQuest()->update(['activity_status' => true]);
+            $model->booking()->delete();
         });
     }
 

@@ -34,7 +34,7 @@ class BookingCertificate extends Model
         });
 
         static::restoring(function (self $model) {
-            $model->booking->restore();
+            $model->booking()->restore();
         });
     }
 

@@ -21,6 +21,8 @@ class LevelResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Уровни сложностей';
 
+    protected static ?string $navigationLabel = 'Уровни сложностей';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = NavigationGroup::QUEST_COMPONENTS->value;
@@ -68,10 +70,8 @@ class LevelResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Уровни сложностей не обнаружены');
     }
 
     public static function getRelations(): array

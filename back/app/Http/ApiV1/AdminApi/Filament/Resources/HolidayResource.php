@@ -74,7 +74,8 @@ class HolidayResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-            ]);
+            ])
+            ->emptyStateHeading('Праздники не обнаружены');
     }
 
     public static function getRelations(): array

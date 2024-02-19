@@ -10,7 +10,7 @@ class ListSubcategories extends ListRecords
 {
     protected static string $resource = SubcategoryResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             //

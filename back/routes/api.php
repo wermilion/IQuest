@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\HolidaysController;
+use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\PackagesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\CitiesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\FilialsController;
 use App\Http\ApiV1\FrontApi\Modules\Lounges\Controllers\LoungesController;
@@ -35,6 +36,9 @@ Route::post('lounges:search', [LoungesController::class, 'search']);
 
 Route::get('holidays/{id}', [HolidaysController::class, 'get']);
 Route::post('holidays:search', [HolidaysController::class, 'search']);
+
+Route::get('packages/{id}', [PackagesController::class, 'get']);
+Route::post('packages:search/{holiday}', [PackagesController::class, 'search']);
 
 Route::get('cities/{id}', [CitiesController::class, 'get']);
 Route::post('cities:search', [CitiesController::class, 'search']);

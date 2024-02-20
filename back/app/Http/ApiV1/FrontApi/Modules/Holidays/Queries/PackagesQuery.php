@@ -10,5 +10,11 @@ class PackagesQuery extends QueryBuilder
     public function __construct()
     {
         parent::__construct(Package::query());
+
+        $this->allowedSorts([
+            'sequence_number',
+        ]);
+
+        $this->defaultSort('sequence_number');
     }
 }

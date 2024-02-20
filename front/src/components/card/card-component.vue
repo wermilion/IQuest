@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import tag from "./tag-component.vue";
+import tag from './tag-component.vue'
 
 interface Props {
-  name: string;
-  img: string;
-  tags: string[];
-  minDescription?: string;
-  time?: number;
-  minPerson?: number;
-  maxPerson?: number;
-  link?: string;
+  name: string
+  img: string
+  tags: string[]
+  minDescription?: string
+  time?: number
+  minPerson?: number
+  maxPerson?: number
+  link?: string
 
-  hoverActive: boolean;
+  hoverActive: boolean
 }
 
-const props = defineProps<Props>();
+defineProps<Props>()
 </script>
 
 <template>
@@ -42,16 +42,16 @@ const props = defineProps<Props>();
     <router-link
       :to="link ? link : '/'"
       class="card"
-      :class="{ 'no-pointer': !link, hoverActive: hoverActive }"
+      :class="{ 'no-pointer': !link, 'hoverActive': hoverActive }"
     >
       <div class="card-image">
-        <img loading="lazy" :src="`/quest-photo/${img}.png`" :alt="img" />
+        <img loading="lazy" :src="`/quest-photo/${img}.png`" :alt="img">
       </div>
 
       <div class="card-body">
         <span class="bodyBold">{{ name }}</span>
         <div class="card-body__tags">
-          <tag v-for="tag in tags" :key="tag" :name="tag" />
+          <tag v-for="element in tags" :key="element" :name="element" />
         </div>
         <p v-if="minDescription" class="card-body__description footnote">
           {{ minDescription }}

@@ -48,4 +48,4 @@ Route::post('cities:search', [CitiesController::class, 'search']);
 Route::get('filials/{id}', [FilialsController::class, 'get']);
 Route::post('filials:search', [FilialsController::class, 'search']);
 
-Route::post('bookings/create', [BookingsController::class, 'create']);
+Route::post('bookings', [BookingsController::class, 'create']);

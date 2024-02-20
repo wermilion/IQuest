@@ -20,6 +20,7 @@ class LoungesQuery extends QueryBuilder
 
         $this->allowedFilters([
             AllowedFilter::exact('city', 'filial.city.name'),
+            AllowedFilter::callback('is_active', fn($query, $value) => $query->where('is_active', $value)),
         ]);
 
         $this->allowedSorts([

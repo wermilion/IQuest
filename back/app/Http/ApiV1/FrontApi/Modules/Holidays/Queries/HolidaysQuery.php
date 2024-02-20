@@ -11,6 +11,10 @@ class HolidaysQuery extends QueryBuilder
     {
         parent::__construct(Holiday::query());
 
+        $this->allowedIncludes([
+            'packages',
+        ]);
+
         $this->defaultSort('id');
     }
 }

@@ -24,9 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::name('api')->group(function () {
-    Route::get('quests/{id}', [QuestsController::class, 'get']);
-    Route::post('quests:search', [QuestsController::class, 'search']);
+Route::get('quests/{id}', [QuestsController::class, 'get']);
+Route::post('quests:search', [QuestsController::class, 'search']);
 
     Route::get('schedule_quests/{id}', [ScheduleQuestsController::class, 'get']);
     Route::post('schedule_quests:search', [ScheduleQuestsController::class, 'search']);
@@ -34,12 +33,11 @@ Route::name('api')->group(function () {
     Route::get('lounges/{id}', [LoungesController::class, 'get']);
     Route::post('lounges:search', [LoungesController::class, 'search']);
 
-    Route::get('holidays/{id}', [HolidaysController::class, 'get']);
-    Route::post('holidays:search', [HolidaysController::class, 'search']);
+Route::get('holidays/{id}', [HolidaysController::class, 'get']);
+Route::post('holidays:search', [HolidaysController::class, 'search']);
 
-    Route::get('cities/{id}', [CitiesController::class, 'get']);
-    Route::post('cities:search', [CitiesController::class, 'search']);
+Route::get('cities/{id}', [CitiesController::class, 'get']);
+Route::post('cities:search', [CitiesController::class, 'search']);
 
-    Route::get('filials/{id}', [FilialsController::class, 'get']);
-    Route::post('filials:search', [FilialsController::class, 'search']);
-});
+Route::get('filials/{id}', [FilialsController::class, 'get']);
+Route::post('filials:search', [FilialsController::class, 'search']);

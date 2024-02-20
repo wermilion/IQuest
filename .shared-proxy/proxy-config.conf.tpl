@@ -20,4 +20,8 @@ location /api {
 location /cp {
     proxy_pass http://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back:80;
     }
+    
+location /livewire {
+    proxy_pass http://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back:80;
+    }
 }

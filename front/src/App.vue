@@ -13,26 +13,26 @@ const loading: WritableComputedRef<boolean> = computed({
 </script>
 
 <template>
-  <div class="page-container">
+  <div class="main-container">
     <template v-if="loading"> Loading... </template>
 
     <template v-else>
       <HeaderComponent />
-      <router-view class="container" />
+      <router-view class="main" />
       <FooterComponent />
     </template>
   </div>
 </template>
 
 <style scoped>
-.page-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.container {
+.main {
   flex: 1;
+
+  &-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
 }
 
 .footer {

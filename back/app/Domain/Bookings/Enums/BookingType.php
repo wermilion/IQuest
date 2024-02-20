@@ -7,7 +7,7 @@ use Filament\Support\Contracts\HasLabel;
 enum BookingType: string implements HasLabel
 {
     case QUEST = 'Квест';
-    case LOUNGE = 'Лаундж';
+    case LOUNGE = 'Лаунж';
     case HOLIDAY = 'Праздник';
     case CERTIFICATE = 'Сертификат';
 

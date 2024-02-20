@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\ApiV1\FrontApi\Modules\Certificates\Controllers\CertificateTypesController;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\HolidaysController;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\PackagesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\CitiesController;
@@ -39,6 +40,9 @@ Route::post('holidays:search', [HolidaysController::class, 'search']);
 
 Route::get('packages/{id}', [PackagesController::class, 'get']);
 Route::post('packages:search/{holiday}', [PackagesController::class, 'search']);
+
+Route::get('certificate_types/{id}', [CertificateTypesController::class, 'get']);
+Route::post('certificate_types:search', [CertificateTypesController::class, 'search']);
 
 Route::get('cities/{id}', [CitiesController::class, 'get']);
 Route::post('cities:search', [CitiesController::class, 'search']);

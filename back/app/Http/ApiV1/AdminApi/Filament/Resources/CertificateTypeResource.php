@@ -61,7 +61,8 @@ class CertificateTypeResource extends Resource
                 TextColumn::make('name')
                     ->label('Название'),
                 TextColumn::make('price')
-                    ->label('Стоимость'),
+                    ->label('Стоимость')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -73,14 +74,13 @@ class CertificateTypeResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('price')
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
             ])
             ->emptyStateHeading('Сертификаты не обнаружены');
     }

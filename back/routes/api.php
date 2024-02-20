@@ -27,11 +27,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('quests/{id}', [QuestsController::class, 'get']);
 Route::post('quests:search', [QuestsController::class, 'search']);
 
-    Route::get('schedule_quests/{id}', [ScheduleQuestsController::class, 'get']);
-    Route::post('schedule_quests:search', [ScheduleQuestsController::class, 'search']);
+Route::get('schedule_quests/{id}', [ScheduleQuestsController::class, 'get']);
+Route::post('schedule_quests:search', [ScheduleQuestsController::class, 'search']);
 
-    Route::get('lounges/{id}', [LoungesController::class, 'get']);
-    Route::post('lounges:search', [LoungesController::class, 'search']);
+Route::get('lounges/{id}', [LoungesController::class, 'get']);
+Route::post('lounges:search', [LoungesController::class, 'search']);
 
 Route::get('holidays/{id}', [HolidaysController::class, 'get']);
 Route::post('holidays:search', [HolidaysController::class, 'search']);

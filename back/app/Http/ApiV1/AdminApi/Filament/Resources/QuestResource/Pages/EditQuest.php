@@ -11,6 +11,8 @@ class EditQuest extends EditRecord
 {
     protected static string $resource = QuestResource::class;
 
+    protected ?string $heading = 'Редактирование квеста';
+
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $room = Room::query()->with(['filial', 'filial.city'])->find($data['room_id']);

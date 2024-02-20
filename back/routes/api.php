@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\ApiV1\FrontApi\Modules\Bookings\Controllers\BookingsController;
 use App\Http\ApiV1\FrontApi\Modules\Certificates\Controllers\CertificateTypesController;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\HolidaysController;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\PackagesController;
@@ -46,3 +47,5 @@ Route::post('cities:search', [CitiesController::class, 'search']);
 
 Route::get('filials/{id}', [FilialsController::class, 'get']);
 Route::post('filials:search', [FilialsController::class, 'search']);
+
+Route::post('bookings', [BookingsController::class, 'create']);

@@ -14,7 +14,7 @@ class QuestWeekendSlotsRelationManager extends RelationManager
 {
     protected static string $relationship = 'questWeekendSlots';
 
-    protected static ?string $label = 'Тайм-слот';
+    protected static ?string $label = 'слот';
 
     protected static ?string $pluralLabel = 'Тайм-слоты';
 
@@ -27,9 +27,12 @@ class QuestWeekendSlotsRelationManager extends RelationManager
                     ->mask('99:99')
                     ->placeholder('00:00')
                     ->required()
-                    ->maxLength(255)
+                    ->rules([
+                        'regex:/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/',
+                    ])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'regex' => 'Поле ":attribute" должно быть в формате "00:00".',
                     ]),
                 Forms\Components\TextInput::make('price')
                     ->label('Цена')
@@ -46,6 +49,8 @@ class QuestWeekendSlotsRelationManager extends RelationManager
         return $table
             ->heading('Расписание по выходным')
             ->recordTitleAttribute('time')
+            ->emptyStateHeading('Нет слотов')
+            ->emptyStateDescription('Создать слот')
             ->columns([
                 Tables\Columns\TextColumn::make('time')
                     ->label('Время')
@@ -62,8 +67,8 @@ class QuestWeekendSlotsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->modalHeading('Изменить слот'),
+                Tables\Actions\DeleteAction::make()->modalHeading('Удалить слот'),
             ]);
     }
 }

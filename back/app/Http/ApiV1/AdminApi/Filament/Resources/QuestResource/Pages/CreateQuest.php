@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateQuest extends CreateRecord
 {
     protected static string $resource = QuestResource::class;
+
+    protected ?string $heading = 'Создание квеста';
 }

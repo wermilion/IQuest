@@ -12,9 +12,21 @@ class CreateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'phone' => ['required', 'string'],
-            'type' => ['required', new Enum(BookingType::class)],
+            'booking.name' => 'required|string',
+            'booking.phone' => 'required|string',
+            'booking.type' => ['required', new Enum(BookingType::class)],
+
+            'schedule_quest.schedule_quest_id' => 'nullable|integer|exists:schedule_quests,id',
+            'schedule_quest.count_participants' => 'nullable|integer|min:1',
+            'schedule_quest.final_price' => 'nullable|numeric|min:1',
+            'schedule_quest.comment' => 'nullable|string',
+
+            'holiday.holiday_id' => 'nullable|integer',
+            'holiday.package_id' => 'nullable|integer',
+            'holiday.count_participants' => 'nullable|integer|min:1',
+            'holiday.price' => 'nullable|numeric|min:1',
+
+            'certificate_type_id' => 'nullable|integer|exists:certificate_types,id',
         ];
     }
 }

@@ -19,7 +19,7 @@ class BookingRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    protected static ?string $label = 'Заявка на бронирование';
+    protected static ?string $label = 'заявку';
 
     protected static ?string $pluralLabel = 'Заявки на бронирование';
 

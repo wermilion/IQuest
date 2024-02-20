@@ -12,7 +12,7 @@ class QuestImagesRelationManager extends RelationManager
 {
     protected static string $relationship = 'images';
 
-    protected static ?string $label = 'Изображение';
+    protected static ?string $label = 'изображение';
 
     public function form(Form $form): Form
     {
@@ -21,6 +21,7 @@ class QuestImagesRelationManager extends RelationManager
                 Forms\Components\FileUpload::make('image')
                     ->directory('quest_images')
                     ->label('Изображение')
+                    ->columnSpanFull()
                     ->image()
                     ->required()
                     ->validationMessages([
@@ -34,6 +35,8 @@ class QuestImagesRelationManager extends RelationManager
         return $table
             ->heading('Изображения')
             ->recordTitleAttribute('image')
+            ->emptyStateHeading('Изображений не обнаружено')
+            ->emptyStateDescription('Добавить изображение')
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Изображение')
@@ -44,7 +47,11 @@ class QuestImagesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label('Добавить')
+                    ->modalHeading('Добавление изображение')
+                    ->modalSubmitActionLabel('Добавить')
+                    ->createAnother(false),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

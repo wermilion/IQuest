@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('booking_schedule_lounges', function (Blueprint $table) {
-            $table->string('N')->nullable();
+            $table->string('comment')->nullable();
         });
     }
 
@@ -20,7 +20,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('booking_lounges', function (Blueprint $table) {
+        Schema::table('booking_schedule_lounges', function (Blueprint $table) {
             $table->dropColumn('comment');
         });
     }

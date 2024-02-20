@@ -3,7 +3,6 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Holidays\Queries;
 
 use App\Domain\Holidays\Models\Package;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PackagesQuery extends QueryBuilder
@@ -12,8 +11,10 @@ class PackagesQuery extends QueryBuilder
     {
         parent::__construct(Package::query());
 
-        $this->allowedFilters([
-            AllowedFilter::callback('is_active', fn($query, $value) => $query->where('is_active', $value)),
+        $this->allowedSorts([
+            'sequence_number',
         ]);
+
+        $this->defaultSort('sequence_number');
     }
 }

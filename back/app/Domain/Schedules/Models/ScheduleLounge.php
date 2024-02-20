@@ -38,6 +38,7 @@ class ScheduleLounge extends Model
 
     public function booking(): BelongsToMany
     {
-        return $this->belongsToMany(Booking::class, 'booking_schedule_lounges');
+        return $this->belongsToMany(Booking::class, 'booking_schedule_lounges')
+            ->withPivot(['comment']);
     }
 }

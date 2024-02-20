@@ -3,8 +3,6 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Quests\Models\QuestImage;
-use App\Filament\Resources\QuestImageResource\Pages;
-use App\Filament\Resources\QuestImageResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\CreateQuestImage;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\EditQuestImage;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestImageResource\Pages\ListQuestImages;
@@ -83,10 +81,8 @@ class QuestImageResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Изображения квестов не обнаружены');
     }
 
     public static function getRelations(): array

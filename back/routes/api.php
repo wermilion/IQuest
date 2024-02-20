@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\ApiV1\FrontApi\Modules\Certificates\Controllers\CertificateTypesController;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\HolidaysController;
+use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\PackagesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\CitiesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\FilialsController;
 use App\Http\ApiV1\FrontApi\Modules\Lounges\Controllers\LoungesController;
 use App\Http\ApiV1\FrontApi\Modules\Quests\Controllers\QuestsController;
+use App\Http\ApiV1\FrontApi\Modules\Schedules\Controllers\ScheduleQuestsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,11 +29,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('quests/{id}', [QuestsController::class, 'get']);
 Route::post('quests:search', [QuestsController::class, 'search']);
 
+Route::get('schedule_quests/{id}', [ScheduleQuestsController::class, 'get']);
+Route::post('schedule_quests:search', [ScheduleQuestsController::class, 'search']);
+
 Route::get('lounges/{id}', [LoungesController::class, 'get']);
 Route::post('lounges:search', [LoungesController::class, 'search']);
 
 Route::get('holidays/{id}', [HolidaysController::class, 'get']);
 Route::post('holidays:search', [HolidaysController::class, 'search']);
+
+Route::get('certificate_types/{id}', [CertificateTypesController::class, 'get']);
+Route::post('certificate_types:search', [CertificateTypesController::class, 'search']);
 
 Route::get('cities/{id}', [CitiesController::class, 'get']);
 Route::post('cities:search', [CitiesController::class, 'search']);

@@ -5,8 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
-use App\Filament\Resources\RoomResource\Pages;
-use App\Filament\Resources\RoomResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\CreateRoom;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\EditRoom;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\ListRooms;
@@ -39,13 +37,14 @@ class RoomResource extends Resource
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
+                    ->native(false)
                     ->hiddenOn(''),
                 Forms\Components\Select::make('filial_id')
                     ->label('Адрес')
-                    ->relationship('filial', 'address')
                     ->options(fn(Get $get): Collection => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
+                    ->native(false)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -96,10 +95,8 @@ class RoomResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Комнат не обнаружено');
     }
 
     public static function getRelations(): array

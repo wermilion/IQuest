@@ -5,7 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Models\BookingScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleLoungeResource\Pages;
-use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleLoungeResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,9 +16,11 @@ class BookingScheduleLoungeResource extends Resource
 {
     protected static ?string $model = BookingScheduleLounge::class;
 
-    protected static ?string $modelLabel = 'Лаундж-зона';
+    protected static ?string $modelLabel = 'Заявка на лаунж-зону';
 
-    protected static ?string $pluralModelLabel = 'Лаундж-зоны';
+    protected static ?string $pluralModelLabel = 'Заявки на лаунж-зоны';
+
+    protected static ?string $navigationLabel = 'Заявки на лаунж-зоны';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -68,7 +69,7 @@ class BookingScheduleLoungeResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('scheduleLounge.lounge.name')
-                    ->label('Лаундж-зона')
+                    ->label('Лаунж-зона')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('scheduleLounge.date')
@@ -77,10 +78,12 @@ class BookingScheduleLoungeResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('scheduleLounge.time_from')
                     ->label('Время начала')
-                    ->numeric(),
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('scheduleLounge.time_to')
                     ->label('Время конца')
-                    ->numeric(),
+                    ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\SelectColumn::make('booking.status')
                     ->label('Статус')
                     ->options(BookingStatus::class)
@@ -97,13 +100,16 @@ class BookingScheduleLoungeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make()
+                    ->native(false),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
-            ]);
+            ])
+            ->emptyStateHeading('Заявок на лаунж-зоны не обнаружено');
     }
 
     public static function getRelations(): array

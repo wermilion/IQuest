@@ -3,8 +3,6 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\City;
-use App\Filament\Resources\CityResource\Pages;
-use App\Filament\Resources\CityResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\CreateCity;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\EditCity;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\ListCities;
@@ -68,10 +66,8 @@ class CityResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Города не обнаружены');
     }
 
     public static function getRelations(): array

@@ -6,8 +6,6 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
 use App\Domain\Schedules\Models\ScheduleLounge;
-use App\Filament\Resources\ScheduleLoungeResource\Pages;
-use App\Filament\Resources\ScheduleLoungeResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\CreateScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\EditScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\ListScheduleLounges;
@@ -28,9 +26,11 @@ class ScheduleLoungeResource extends Resource
 {
     protected static ?string $model = ScheduleLounge::class;
 
-    protected static ?string $modelLabel = 'Слот расписания лаундж-зоны';
+    protected static ?string $modelLabel = 'Слот расписания лаунж-зоны';
 
-    protected static ?string $pluralModelLabel = 'Расписание лаундж-зон';
+    protected static ?string $pluralModelLabel = 'Расписание лаунж-зон';
+
+    protected static ?string $navigationLabel = 'Расписание лаунж-зоны';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -57,8 +57,7 @@ class ScheduleLoungeResource extends Resource
                     ->hiddenOn('')
                     ->native(false),
                 Forms\Components\Select::make('lounge_id')
-                    ->label('Лаундж-зона')
-                    //->relationship('lounge', 'name')
+                    ->label('Лаунж-зона')
                     ->options(fn(Get $get): Collection => Lounge::query()
                         ->where('filial_id', $get('filial'))
                         ->pluck('name', 'id'))
@@ -70,12 +69,12 @@ class ScheduleLoungeResource extends Resource
                 Forms\Components\TextInput::make('time_from')
                     ->label('Время начала')
                     ->mask('99:99')
-                    ->placeholder('xx:xx')
+                    ->placeholder('00:00')
                     ->required(),
                 Forms\Components\TextInput::make('time_to')
                     ->label('Время конца')
                     ->mask('99:99')
-                    ->placeholder('xx:xx')
+                    ->placeholder('00:00')
                     ->required(),
             ]);
     }
@@ -98,7 +97,7 @@ class ScheduleLoungeResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('lounge.name')
-                    ->label('Лаундж-зона')
+                    ->label('Лаунж-зона')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
@@ -170,8 +169,7 @@ class ScheduleLoungeResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-            ]);
+            ->emptyStateHeading('Слоты не обнаружены');
     }
 
     public static function getRelations(): array

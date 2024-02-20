@@ -5,7 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
-use App\Filament\Resources\LoungeResource\Pages;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges;
@@ -20,9 +19,9 @@ class LoungeResource extends Resource
 {
     protected static ?string $model = Lounge::class;
 
-    protected static ?string $modelLabel = 'Лаундж';
+    protected static ?string $modelLabel = 'Лаунж';
 
-    protected static ?string $pluralModelLabel = 'Лаундж-зоны';
+    protected static ?string $pluralModelLabel = 'Лаунжи';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -83,6 +82,7 @@ class LoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
                 Forms\Components\FileUpload::make('cover')
+                    ->disk('public')
                     ->directory('lounge_images')
                     ->label('Изображение')
                     ->columnSpanFull()
@@ -130,7 +130,8 @@ class LoungeResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-            ]);
+            ])
+            ->emptyStateHeading('Лаунжи не обнаружены');
     }
 
     public static function getRelations(): array

@@ -3,8 +3,8 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Quests\Queries;
 
 use App\Domain\Quests\Models\Quest;
-use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class QuestsQuery extends QueryBuilder
@@ -14,6 +14,7 @@ class QuestsQuery extends QueryBuilder
         parent::__construct(Quest::query());
 
         $this->allowedIncludes([
+            'scheduleQuests',
             'room.filial',
             'type',
             'genre',
@@ -23,11 +24,16 @@ class QuestsQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::callback('is_active', fn(Builder $query, $value) => $query->where('is_active', $value)),
+            AllowedFilter::exact('city', 'room.filial.city.name'),
+            AllowedFilter::callback('is_active', fn($query, $value) => $query->where('is_active', $value)),
         ]);
 
         $this->allowedSorts([
-            'sequence_number',
+            AllowedSort::field('sequence_number'),
+            AllowedSort::field('type', 'type_id'),
+            AllowedSort::field('genre', 'genre_id'),
+            AllowedSort::field('level', 'level_id'),
+            AllowedSort::field('age_limit', 'age_limit_id'),
         ]);
 
         $this->defaultSort('sequence_number');

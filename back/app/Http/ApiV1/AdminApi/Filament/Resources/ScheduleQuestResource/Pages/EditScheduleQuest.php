@@ -4,13 +4,13 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages
 
 use App\Domain\Quests\Models\Quest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource;
-use Filament\Actions;
-use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditScheduleQuest extends EditRecord
 {
     protected static string $resource = ScheduleQuestResource::class;
+
+    protected ?string $heading = 'Редактирование слота';
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
@@ -28,10 +28,5 @@ class EditScheduleQuest extends EditRecord
         return [
 
         ];
-    }
-
-    protected function getFormActions(): array
-    {
-        return [];
     }
 }

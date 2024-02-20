@@ -8,6 +8,8 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -15,7 +17,7 @@ class BookingRelationManager extends RelationManager
 {
     protected static string $relationship = 'booking';
 
-    protected static ?string $recordTitleAttribute = 'phone';
+    protected static ?string $recordTitleAttribute = 'id';
 
     protected static ?string $label = 'Заявка на бронирование';
 
@@ -34,10 +36,12 @@ class BookingRelationManager extends RelationManager
                     ]),
                 Forms\Components\TextInput::make('phone')
                     ->label('Телефон')
+                    ->rules(['size:18'])
                     ->mask('+7 (999) 999-99-99')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
+                        'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
                 Forms\Components\Select::make('type')
                     ->label('Тип заявки')
@@ -78,6 +82,9 @@ class BookingRelationManager extends RelationManager
                         'numeric' => 'Поле ":attribute" должно быть числом',
                         'min' => 'Поле ":attribute" должно быть больше 0',
                     ]),
+                Forms\Components\TextInput::make('comment')
+                    ->label('Комментарий')
+                    ->maxLength(255)
             ]);
     }
 
@@ -94,33 +101,35 @@ class BookingRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('id')
-            ->heading('Заявки на бронирование')
+            ->heading('Заявка')
+            ->emptyStateHeading('Нет заявки')
+            ->emptyStateDescription('Создать или прикрепить заявку')
+            ->paginated(false)
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('id')
+                    ->label('ID'),
+                TextColumn::make('name')
                     ->label('Имя'),
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('phone')
                     ->label('Телефон'),
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Тип заявки'),
-                Tables\Columns\SelectColumn::make('status')
+                SelectColumn::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class),
-                Tables\Columns\TextColumn::make('count_participants')
+                TextColumn::make('count_participants')
                     ->label('Кол-во человек'),
-                Tables\Columns\TextColumn::make('final_price')
+                TextColumn::make('final_price')
                     ->label('Общая стоимость'),
+                TextColumn::make('comment')
+                    ->label('Комментарий'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
+                    ->modalHeading('Прикрепить заявку')
                     ->form(fn(Tables\Actions\AttachAction $action) => [
-                        $action->getRecordSelect(),
+                        $action->getRecordSelect()->placeholder('Введите ID заявки'),
                         Forms\Components\TextInput::make('count_participants')
                             ->label('Количество участников')
                             ->numeric()
@@ -141,6 +150,9 @@ class BookingRelationManager extends RelationManager
                                 'numeric' => 'Поле ":attribute" должно быть числом',
                                 'min' => 'Поле ":attribute" должно быть больше 0',
                             ]),
+                        Forms\Components\TextInput::make('comment')
+                            ->label('Комментарий')
+                            ->maxLength(255)
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value))
@@ -153,9 +165,7 @@ class BookingRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-            ])
-            ->bulkActions([
+                Tables\Actions\DeleteAction::make()->modalHeading('Удалить заявку'),
             ]);
     }
 }

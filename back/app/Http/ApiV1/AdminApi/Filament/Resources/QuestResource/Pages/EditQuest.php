@@ -18,17 +18,6 @@ class EditQuest extends EditRecord
         $data['filial'] = $room?->filial->id;
         $data['city'] = $room?->filial->city->id;
 
-        $data['weekdays'] = implode("\n", str_replace(',', "\n", $data['weekdays']));
-        $data['weekend'] = implode("\n", str_replace(',', "\n", $data['weekend']));
-
-        return $data;
-    }
-
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        $data['weekdays'] = explode("\n", $data['weekdays']);
-        $data['weekend'] = explode("\n", $data['weekend']);
-
         return $data;
     }
 

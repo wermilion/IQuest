@@ -6,6 +6,7 @@ use App\Domain\Schedules\Models\ScheduleLounge;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class BookingScheduleLounge
@@ -13,30 +14,35 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id Идентификатор бронирования лаунджа
  * @property int $booking_id Идентификатор бронирования
  * @property int $schedule_lounge_id Идентификатор расписания лаунджа
+ * @property string|null $comment Комментарий
  *
  * @property-read Booking $booking Бронирование
  * @property-read ScheduleLounge $scheduleLounge Расписание
  */
 class BookingScheduleLounge extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'booking_id',
-        'schedule_lounge_id'
+        'schedule_lounge_id',
+        'comment',
     ];
 
     protected static function booted(): void
     {
-        static::deleted(function (BookingScheduleLounge $model) {
-            $model->scheduleLounge->delete();
-            $model->booking->delete();
+        static::deleting(function (self $model) {
+            $model->booking()->delete();
+        });
+
+        static::restoring(function (self $model) {
+            $model->booking()->restore();
         });
     }
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class)->withTrashed();
     }
 
     public function scheduleLounge(): BelongsTo

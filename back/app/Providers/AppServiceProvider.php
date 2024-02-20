@@ -23,9 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (config('app.force_https')) {
-            URL::forceScheme('https');
-        }
+        URL::forceScheme(config('app.force_https'));
 
         Filament::serving(function () {
             Filament::registerNavigationGroups([

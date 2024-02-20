@@ -9,6 +9,8 @@ use App\Domain\Schedules\Models\ScheduleQuest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Booking
@@ -19,10 +21,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $email Электронная почта клиента
  * @property BookingType $type Тип бронирования
  * @property BookingStatus $status Статус бронирования
+ *
+ * @property-read  BookingScheduleQuest $bookingScheduleQuest
+ * @property-read  BookingScheduleLounge $bookingScheduleLounge
+ * @property-read  ScheduleQuest $scheduleQuests
+ * @property-read  ScheduleLounge $scheduleLounges
+ * @property-read  BookingHoliday $bookingHoliday
+ * @property-read  BookingCertificate $bookingCertificate
  */
 class Booking extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -38,34 +47,78 @@ class Booking extends Model
 
     protected static function booted(): void
     {
-        static::updated(function (Booking $model) {
+        static::updated(function (self $model) {
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
                 if ($model->type->value == BookingType::QUEST->value) {
                     $model->scheduleQuests()->update(['activity_status' => true]);
                 }
-
                 $model->delete();
             }
         });
 
-        static::deleting(function (Booking $model) {
+        static::deleting(function (self $model) {
             if ($model->scheduleQuests()->exists()) {
                 $model->scheduleQuests()->update(['activity_status' => true]);
             }
-            if ($model->scheduleLounges()->exists()) {
-                $model->scheduleLounges()->delete();
+            if ($model->bookingScheduleQuest()->exists()) {
+                $model->bookingScheduleQuest()->forceDelete();
+            }
+            if ($model->bookingScheduleLounge()->exists()) {
+                $model->bookingScheduleLounge()->forceDelete();
+            }
+            if ($model->bookingHoliday()->exists()) {
+                $model->bookingHoliday()->forceDelete();
+            }
+            if ($model->bookingCertificate()->exists()) {
+                $model->bookingCertificate()->forceDelete();
             }
         });
+
+        static::restoring(function (self $model) {
+            if ($model->bookingScheduleQuest()->exists()) {
+                $model->bookingScheduleQuest()->restore();
+            }
+            if ($model->bookingScheduleLounge()->exists()) {
+                $model->bookingScheduleLounge()->restore();
+            }
+            if ($model->bookingHoliday()->exists()) {
+                $model->bookingHoliday()->restore();
+            }
+            if ($model->bookingCertificate()->exists()) {
+                $model->bookingCertificate()->restore();
+            }
+        });
+    }
+
+    public function bookingScheduleQuest(): HasOne
+    {
+        return $this->hasOne(BookingScheduleQuest::class)->withTrashed();
+    }
+
+    public function bookingScheduleLounge(): HasOne
+    {
+        return $this->hasOne(BookingScheduleLounge::class)->withTrashed();
+    }
+
+    public function bookingHoliday(): HasOne
+    {
+        return $this->hasOne(BookingHoliday::class)->withTrashed();
+    }
+
+    public function bookingCertificate(): HasOne
+    {
+        return $this->hasOne(BookingCertificate::class)->withTrashed();
     }
 
     public function scheduleQuests(): BelongsToMany
     {
         return $this->belongsToMany(ScheduleQuest::class, 'booking_schedule_quests')
-            ->withPivot(['count_participants', 'final_price']);
+            ->withPivot(['count_participants', 'final_price', 'comment']);
     }
 
     public function scheduleLounges(): BelongsToMany
     {
-        return $this->belongsToMany(ScheduleLounge::class, 'booking_schedule_lounges');
+        return $this->belongsToMany(ScheduleLounge::class, 'booking_schedule_lounges')
+            ->withPivot(['comment']);
     }
 }

@@ -18,9 +18,11 @@ class BookingScheduleQuestResource extends Resource
 {
     protected static ?string $model = BookingScheduleQuest::class;
 
-    protected static ?string $modelLabel = 'Квест';
+    protected static ?string $modelLabel = 'Заявка на квест';
 
-    protected static ?string $pluralLabel = 'Квесты';
+    protected static ?string $pluralLabel = 'Заявки на квесты';
+
+    protected static ?string $navigationLabel = 'Заявки на квесты';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -83,6 +85,9 @@ class BookingScheduleQuestResource extends Resource
                     ->label('Статус')
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Комментарий')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -95,11 +100,14 @@ class BookingScheduleQuestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make()
+                    ->native(false),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make()
-            ]);
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+            ])
+            ->emptyStateHeading('Заявки на квесты не обнаружены');
     }
 
     public static function getRelations(): array
@@ -113,8 +121,6 @@ class BookingScheduleQuestResource extends Resource
     {
         return [
             'index' => ListBookingScheduleQuests::route('/'),
-            'create' => CreateBookingScheduleQuest::route('/create'),
-            'edit' => EditBookingScheduleQuest::route('/{record}/edit'),
         ];
     }
 }

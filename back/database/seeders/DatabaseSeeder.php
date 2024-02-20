@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             GenreSeeder::class,
             LevelSeeder::class,
             AgeLimitSeeder::class,
+            HolidaySeeder::class,
         ]);
 
         User::query()->firstOrCreate([

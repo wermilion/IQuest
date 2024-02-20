@@ -20,7 +20,6 @@ class LoungesResource extends BaseJsonResource
             'cover' => $this->cover,
             'max_people' => $this->max_people,
             'min_price' => $this->min_price,
-            'is_active' => $this->is_active,
             'filial' => new FilialsResource($this->whenLoaded('filial')),
         ];
     }

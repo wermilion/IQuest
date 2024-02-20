@@ -3,7 +3,6 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Schedules\Resources;
 
 use App\Domain\Schedules\Models\ScheduleQuest;
-use App\Http\ApiV1\FrontApi\Modules\Quests\Resources\QuestsResource;
 use App\Http\ApiV1\FrontApi\Support\Resources\BaseJsonResource;
 
 /**
@@ -17,8 +16,9 @@ class ScheduleQuestsResource extends BaseJsonResource
             'id' => $this->id,
             'date' => $this->date,
             'time' => $this->time,
+            'price' => $this->price,
             'activity_status' => $this->activity_status,
-            'quest' => new QuestsResource($this->whenLoaded('quest')),
+            'quest' => $this->quest_id,
         ];
     }
 }

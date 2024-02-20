@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Queries\PackagesQuery;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Resources\PackagesResource;
 use App\Http\ApiV1\FrontApi\Support\Pagination\PageBuilderFactory;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class PackagesController
 {
@@ -13,7 +14,7 @@ class PackagesController
         return new PackagesResource($query->findOrFail($id));
     }
 
-    public function search(PageBuilderFactory $pageBuilderFactory, PackagesQuery $query): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function search(PageBuilderFactory $pageBuilderFactory, PackagesQuery $query): AnonymousResourceCollection
     {
         return PackagesResource::collectPage(
             $pageBuilderFactory->fromQuery($query)->build()

@@ -3,7 +3,6 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Schedules\Queries;
 
 use App\Domain\Schedules\Models\ScheduleQuest;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -14,13 +13,16 @@ class ScheduleQuestsQuery extends QueryBuilder
         parent::__construct(ScheduleQuest::query());
 
         $this->allowedIncludes([
-            'quest',
+            'quest'
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::exact('id'),
+            AllowedFilter::exact('quest', "quest_id"),
+            AllowedFilter::exact('date'),
         ]);
 
-        $this->defaultSort('id');
+        $this->allowedSorts([
+            'time',
+        ]);
     }
 }

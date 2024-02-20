@@ -3,8 +3,6 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Quests\Models\Level;
-use App\Filament\Resources\LevelResource\Pages;
-use App\Filament\Resources\LevelResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\CreateLevel;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\EditLevel;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\ListLevels;
@@ -22,6 +20,8 @@ class LevelResource extends Resource
     protected static ?string $modelLabel = 'Уровень сложности';
 
     protected static ?string $pluralModelLabel = 'Уровни сложностей';
+
+    protected static ?string $navigationLabel = 'Уровни сложностей';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -70,10 +70,8 @@ class LevelResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Уровни сложностей не обнаружены');
     }
 
     public static function getRelations(): array

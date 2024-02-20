@@ -4,6 +4,7 @@ namespace App\Domain\Quests\Models;
 
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
+use App\Domain\Schedules\Models\ScheduleQuest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,16 +20,12 @@ use Illuminate\Support\Facades\Storage;
  * @property string $slug - Сокращенное название квеста
  * @property string $description - Описание квеста
  * @property string $cover - Обложка квеста
- * @property float $min_price - Минимальная цена
- * @property float $late_price - Вечерняя цена
  * @property int $min_people - Минимальное количество участников
  * @property int $max_people - Максимальное количество участников
  * @property int $duration - Продолжительность
  * @property bool $can_add_time - Можно ли добавлять дополнительное время
  * @property bool $is_active - Активность на клиентской части
  * @property int $sequence_number - Порядковый номер
- * @property array $weekdays - Расписание по будням
- * @property array $weekend - Расписание по выходным
  * @property int $room_id - Идентификатор комнаты
  * @property int $type_id - Идентификатор типа
  * @property int $genre_id - Идентификатор жанра
@@ -50,18 +47,15 @@ class Quest extends Model
     protected $fillable = [
         'name',
         'slug',
+        'short_description',
         'description',
         'cover',
-        'min_price',
-        'late_price',
         'min_people',
         'max_people',
         'duration',
         'can_add_time',
         'is_active',
         'sequence_number',
-        'weekdays',
-        'weekend',
         'room_id',
         'type_id',
         'genre_id',
@@ -72,21 +66,34 @@ class Quest extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'can_add_time' => 'boolean',
-        'weekdays' => 'array',
-        'weekend' => 'array',
     ];
 
     protected static function booted(): void
     {
-        static::updated(function (Quest $quest) {
+        static::updated(function (self $quest) {
             if ($quest->isDirty('cover')) {
                 Storage::delete('public/' . $quest->cover);
             }
         });
 
-        static::deleted(function (Quest $quest) {
+        static::deleted(function (self $quest) {
             Storage::delete('public/' . $quest->cover);
         });
+    }
+
+    public function scheduleQuests(): HasMany
+    {
+        return $this->hasMany(ScheduleQuest::class);
+    }
+
+    public function questWeekdaysSlots(): HasMany
+    {
+        return $this->hasMany(QuestWeekdaysSlot::class);
+    }
+
+    public function questWeekendSlots(): HasMany
+    {
+        return $this->hasMany(QuestWeekendSlot::class);
     }
 
     public function room(): BelongsTo

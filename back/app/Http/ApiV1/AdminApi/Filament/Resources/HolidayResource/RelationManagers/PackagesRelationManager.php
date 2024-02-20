@@ -23,7 +23,7 @@ class PackagesRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -59,9 +59,19 @@ class PackagesRelationManager extends RelationManager
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
-                    ->maxLength(255),
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Отображение на сайте'),
+                Forms\Components\TextInput::make('sequence_number')
+                    ->label('Порядковый номер')
+                    ->numeric()
+                    ->required()
+                    ->minValue(1)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательно.',
+                    ])
             ]);
     }
 
@@ -71,6 +81,9 @@ class PackagesRelationManager extends RelationManager
             ->heading('Пакеты')
             ->recordTitleAttribute('name')
             ->columns([
+                Tables\Columns\TextColumn::make('sequence_number')
+                    ->label('Порядковый номер')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название'),
                 Tables\Columns\TextColumn::make('price')
@@ -87,6 +100,7 @@ class PackagesRelationManager extends RelationManager
                     ->label('Отображение на сайте')
                     ->sortable(),
             ])
+            ->defaultSort('sequence_number')
             ->filters([
                 //
             ])
@@ -97,10 +111,6 @@ class PackagesRelationManager extends RelationManager
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->emptyStateHeading('Пакеты не обнаружены');
     }
 }

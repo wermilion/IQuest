@@ -3,8 +3,6 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Quests\Models\Genre;
-use App\Filament\Resources\GenreResource\Pages;
-use App\Filament\Resources\GenreResource\RelationManagers;
 use App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\CreateGenre;
 use App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\EditGenre;
 use App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages\ListGenres;
@@ -70,10 +68,8 @@ class GenreResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Жанры не обнаружены');
     }
 
     public static function getRelations(): array

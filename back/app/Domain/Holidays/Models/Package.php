@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $min_people Минимальное количество людей
  * @property int $max_people Максимальное количество людей
  * @property bool $is_active Статус отображения
+ * @property int $sequence_number Порядковый номер пакета
  *
  * @property-read Holiday[] $holidays
  * @property-read HolidayPackage[] $holidayPackages
@@ -32,6 +33,7 @@ class Package extends Model
         'min_people',
         'max_people',
         'is_active',
+        'sequence_number',
     ];
 
     protected $casts = [

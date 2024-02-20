@@ -4,7 +4,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Holidays\Enums\HolidayType;
 use App\Domain\Holidays\Models\Holiday;
-use App\Filament\Resources\HolidayResource\Pages;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\CreateHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\EditHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ListHolidays;
@@ -40,8 +39,14 @@ class HolidayResource extends Resource
                         'required' => 'Поле ":attribute" обязательно.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.'
                     ])
-                    ->native(false),
+                    ->native(false)
+                    ->disabled(),
             ]);
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function table(Table $table): Table
@@ -69,10 +74,8 @@ class HolidayResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ])
+            ->emptyStateHeading('Праздники не обнаружены');
     }
 
     public static function getRelations(): array
@@ -86,7 +89,6 @@ class HolidayResource extends Resource
     {
         return [
             'index' => ListHolidays::route('/'),
-            'create' => CreateHoliday::route('/create'),
             'edit' => EditHoliday::route('/{record}/edit'),
         ];
     }

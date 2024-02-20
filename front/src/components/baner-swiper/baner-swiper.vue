@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import Swiper from 'swiper'
-import { onMounted, ref } from 'vue'
-import { Autoplay, Navigation, Pagination } from 'swiper/modules'
-import SliderComponent from '#/components/baner-swiper/slider-component.vue'
-import 'swiper/css/bundle'
-import '#/assets/scss/swiper.scss'
+import Swiper from "swiper";
+import { onMounted, ref } from "vue";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import SliderComponent from "#/components/baner-swiper/slider-component.vue";
+import "swiper/css/bundle";
+import "#/assets/scss/swiper.scss";
 
-const slider = ref<HTMLElement | null>(null)
+const slider = ref<HTMLElement | null>(null);
 const swiperOptions: any = {
-  direction: 'vertical',
+  direction: "vertical",
   slidesPerView: 1,
   spaceBetween: 500,
   speed: 850,
@@ -18,22 +18,21 @@ const swiperOptions: any = {
     disableOnInteraction: false,
   },
   navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
   },
   pagination: {
-    el: '.swiper-pagination',
+    el: ".swiper-pagination",
     clickable: true,
   },
   EffectFade: true,
-  effect: 'fade',
+  effect: "fade",
   modules: [Navigation, Pagination, Autoplay],
-}
+};
 
 onMounted(() => {
-  if (slider.value)
-    (Swiper as any)(slider.value, swiperOptions)
-})
+  if (slider.value) new Swiper(slider.value, swiperOptions);
+});
 </script>
 
 <template>

@@ -12,10 +12,10 @@
     </div>
     <div class="baner-swiper__image">
       <div class="baner-front">
-        <img loading="lazy" src="/quest-photo/photo.png" alt="baner" />
+        <img loading="lazy" src="/quest-photo/photo.png" alt="baner">
       </div>
       <div class="baner-back">
-        <img loading="lazy" src="/quest-photo/photo.png" alt="baner" />
+        <img loading="lazy" src="/quest-photo/photo.png" alt="baner">
       </div>
     </div>
   </div>
@@ -26,7 +26,6 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  
 
   &__body {
     display: flex;

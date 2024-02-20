@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import Swiper from "swiper";
-import SliderComponent from "#/components/baner-swiper/slider-component.vue";
-import { ref, onMounted } from "vue";
-import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
-import "swiper/css/bundle";
-import "#/assets/scss/swiper.scss";
+import Swiper from 'swiper'
+import { onMounted, ref } from 'vue'
+import { Autoplay, Navigation, Pagination } from 'swiper/modules'
+import SliderComponent from '#/components/baner-swiper/slider-component.vue'
+import 'swiper/css/bundle'
+import '#/assets/scss/swiper.scss'
 
-const slider = ref<HTMLElement | null>(null);
+const slider = ref<HTMLElement | null>(null)
 const swiperOptions: any = {
-  direction: "vertical",
+  direction: 'vertical',
   slidesPerView: 1,
   spaceBetween: 500,
   speed: 850,
@@ -18,32 +18,32 @@ const swiperOptions: any = {
     disableOnInteraction: false,
   },
   navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
   },
   pagination: {
-    el: ".swiper-pagination",
+    el: '.swiper-pagination',
     clickable: true,
   },
   EffectFade: true,
-  effect: "fade",
+  effect: 'fade',
   modules: [Navigation, Pagination, Autoplay],
-};
+}
 
 onMounted(() => {
-  if (slider.value) {
-    const mySwiper = new Swiper(slider.value, swiperOptions);
-  }
-});
+  if (slider.value)
+    (Swiper as any)(slider.value, swiperOptions)
+})
 </script>
+
 <template>
   <section class="bg-secondary">
     <div ref="slider" class="swiper-container container">
       <div class="swiper-wrapper">
-        <slider-component class="swiper-slide" />
-        <slider-component class="swiper-slide" />
-        <slider-component class="swiper-slide" />
-        <slider-component class="swiper-slide" />
+        <SliderComponent class="swiper-slide" />
+        <SliderComponent class="swiper-slide" />
+        <SliderComponent class="swiper-slide" />
+        <SliderComponent class="swiper-slide" />
       </div>
 
       <button class="swiper-button-prev swiper-button">
@@ -82,7 +82,7 @@ onMounted(() => {
           />
         </svg>
       </button>
-      <div class="swiper-pagination"></div>
+      <div class="swiper-pagination" />
     </div>
   </section>
 </template>

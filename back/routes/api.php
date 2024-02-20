@@ -38,9 +38,6 @@ Route::post('lounges:search', [LoungesController::class, 'search']);
 Route::get('holidays/{id}', [HolidaysController::class, 'get']);
 Route::post('holidays:search', [HolidaysController::class, 'search']);
 
-Route::get('packages/{id}', [PackagesController::class, 'get']);
-Route::post('packages:search/{holiday}', [PackagesController::class, 'search']);
-
 Route::get('certificate_types/{id}', [CertificateTypesController::class, 'get']);
 Route::post('certificate_types:search', [CertificateTypesController::class, 'search']);
 

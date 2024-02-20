@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import addServicesVue from "#/components/add-services/add-services.vue";
-import QuestCardGrid from "#/components/quest-card-grid/quest-card-grid.vue";
-import BanerSwiper from "#/components/baner-swiper/baner-swiper.vue";
+import addServicesVue from '#/components/add-services/add-services.vue'
+import QuestCardGrid from '#/components/quest-card-grid/quest-card-grid.vue'
+import BanerSwiper from '#/components/baner-swiper/baner-swiper.vue'
 </script>
 
 <template>

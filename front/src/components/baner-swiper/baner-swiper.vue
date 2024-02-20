@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Swiper from "swiper";
+import { onMounted, ref } from "vue";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import SliderComponent from "#/components/baner-swiper/slider-component.vue";
-import { ref, onMounted } from "vue";
-import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css/bundle";
 import "#/assets/scss/swiper.scss";
 
@@ -31,19 +31,18 @@ const swiperOptions: any = {
 };
 
 onMounted(() => {
-  if (slider.value) {
-    const mySwiper = new Swiper(slider.value, swiperOptions);
-  }
+  if (slider.value) new Swiper(slider.value, swiperOptions);
 });
 </script>
+
 <template>
   <section class="bg-secondary">
     <div ref="slider" class="swiper-container container">
       <div class="swiper-wrapper">
-        <slider-component class="swiper-slide" />
-        <slider-component class="swiper-slide" />
-        <slider-component class="swiper-slide" />
-        <slider-component class="swiper-slide" />
+        <SliderComponent class="swiper-slide" />
+        <SliderComponent class="swiper-slide" />
+        <SliderComponent class="swiper-slide" />
+        <SliderComponent class="swiper-slide" />
       </div>
 
       <button class="swiper-button-prev swiper-button">
@@ -82,7 +81,7 @@ onMounted(() => {
           />
         </svg>
       </button>
-      <div class="swiper-pagination"></div>
+      <div class="swiper-pagination" />
     </div>
   </section>
 </template>

@@ -1,45 +1,46 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 
 const links = ref([
   {
-    name: "Квесты",
-    link: "/",
+    name: 'Квесты',
+    link: '/',
   },
   {
-    name: "Праздники",
-    link: "#",
+    name: 'Праздники',
+    link: '#',
   },
   {
-    name: "Сертификат",
-    link: "/",
+    name: 'Сертификат',
+    link: '/',
   },
   {
-    name: "Контакты",
-    link: "/",
+    name: 'Контакты',
+    link: '/',
   },
-]);
+])
 
-let isActive = ref(false);
-let isHoverActive = ref(false);
+const isActive = ref(false)
+const isHoverActive = ref(false)
 </script>
 
 <template>
   <header class="bg-secondary">
     <div class="header container-header">
       <router-link to="/">
-        <img src="/logo/logo.svg" alt="logo" />
+        <img src="/logo/logo.svg" alt="logo">
       </router-link>
       <div class="header-links">
         <router-link
           v-for="(link, index) in links"
+          :key="link.name"
           :to="link.link"
           class="footnote"
         >
           <div class="link" :class="{ selected: $route.path === link.link }">
             <span>[</span>
             {{ link.name }}
-            <div class="select" v-if="index == 1">
+            <div v-if="index === 1" class="select">
               <svg
                 v-show="!isHoverActive"
                 width="24"
@@ -78,9 +79,9 @@ let isHoverActive = ref(false);
         </router-link>
       </div>
       <div
-        @click="isActive = !isActive"
         class="header-select link footnote"
-        :class="{ selected: isActive == true }"
+        :class="{ selected: isActive === true }"
+        @click="isActive = !isActive"
       >
         <span>[</span>
         Томск

@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class BookingScheduleLounge extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'booking_id',
@@ -33,10 +33,6 @@ class BookingScheduleLounge extends Model
     {
         static::deleting(function (self $model) {
             $model->booking()->delete();
-        });
-
-        static::restoring(function (self $model) {
-            $model->booking()->restore();
         });
     }
 

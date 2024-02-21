@@ -110,9 +110,12 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('vk_id')
                     ->label('VK ID')
                     ->unique(ignoreRecord: true)
-                    ->maxLength(255)
+                    ->minLength(1)
+                    ->maxLength(10)
                     ->validationMessages([
                         'unique' => 'Поле ":Attribute" должно быть уникальным.',
+                        'min' => 'Поле ":Attribute" должно содержать не менее 1 символа.',
+                        'max' => 'Поле ":Attribute" должно содержать не более 10 символов.',
                     ]),
             ]);
     }

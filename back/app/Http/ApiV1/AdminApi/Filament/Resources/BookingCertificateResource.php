@@ -74,15 +74,11 @@ class BookingCertificateResource extends Resource
 
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
-                    ->native(false),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-            ])
-            ->bulkActions([
             ])
             ->emptyStateHeading('Заявки на сертификаты не обнаружены');
     }

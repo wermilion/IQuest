@@ -77,7 +77,6 @@ class LoungeResource extends Resource
                     ->numeric(),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Отображение на сайте')
-                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),

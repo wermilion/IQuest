@@ -9,6 +9,7 @@ use App\Domain\Holidays\Models\Holiday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
@@ -43,6 +44,9 @@ class BookingHolidayResource extends Resource
                         ->pluck('id', 'id'))
                     ->searchable()
                     ->native(false),
+                TextInput::make('comment')
+                    ->label('Комментарий')
+                    ->maxLength(255),
                 Select::make('holiday')
                     ->label('Тип праздника')
                     ->live()
@@ -83,15 +87,11 @@ class BookingHolidayResource extends Resource
                     ->label('Пакет'),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
-                    ->native(false),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-            ])
-            ->bulkActions([
             ])
             ->emptyStateHeading('Заявок на праздники не обнаружено');
     }

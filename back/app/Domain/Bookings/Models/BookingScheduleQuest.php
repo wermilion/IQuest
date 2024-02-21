@@ -3,10 +3,14 @@
 namespace App\Domain\Bookings\Models;
 
 use App\Domain\Schedules\Models\ScheduleQuest;
+use App\Domain\Users\Enums\Role;
+use App\Domain\Users\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use VK\Client\VKApiClient;
 
 /**
  * Class BookingScheduleQuest
@@ -23,7 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class BookingScheduleQuest extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'booking_id',
@@ -37,17 +41,12 @@ class BookingScheduleQuest extends Model
     {
         static::created(function (self $model) {
             $model->scheduleQuest()->update(['activity_status' => false]);
+            self::sendMessage($model);
         });
 
         static::deleting(function (self $model) {
             $model->scheduleQuest()->update(['activity_status' => true]);
-            $model->booking()->forceDelete();
-        });
-
-        static::restoring(function (self $model) {
-            if ($model->booking()->exists()) {
-                $model->booking()->restore();
-            }
+            $model->booking()->delete();
         });
     }
 
@@ -59,5 +58,45 @@ class BookingScheduleQuest extends Model
     public function scheduleQuest(): BelongsTo
     {
         return $this->belongsTo(ScheduleQuest::class);
+    }
+
+    private static function sendMessage(self $model): void
+    {
+        $vk = new VKApiClient();
+
+        $comment = $model->comment ? 'Комментарий: ' . $model->comment : '';
+        $message = [
+            'Новая заявка. Тип: ' . $model->booking->type->value,
+            'Имя клиента: ' . $model->booking->name,
+            'Телефон: ' . $model->booking->phone,
+            'Квест: ' . $model->scheduleQuest->quest->slug,
+            'Дата и время: ' . Carbon::parse($model->scheduleQuest->date)->translatedFormat('d.m.Y') . ' ' . $model->scheduleQuest->time,
+            'Кол-во участников: ' . $model->count_participants,
+            'Цена: ' . $model->final_price,
+            $comment
+        ];
+
+        $userIds = User::query()
+            ->whereNotNull('vk_id')
+            ->whereIn('role', [Role::ADMIN->value, Role::OPERATOR->value])
+            ->orWhere('filial_id', $model->scheduleQuest->quest->filial->id)
+            ->where('role', Role::FILIAL_ADMIN->value)
+            ->pluck('vk_id')
+            ->toArray();
+
+        foreach ($userIds as $userId) {
+            $isAllow = $vk->messages()->isMessagesFromGroupAllowed(env('VK_ACCESS_TOKEN'), [
+                'group_id' => env('VK_GROUP_ID'),
+                'user_id' => $userId,
+            ]);
+
+            if ($isAllow['is_allowed']) {
+                $vk->messages()->send(env('VK_ACCESS_TOKEN'), [
+                    'user_id' => $userId,
+                    'random_id' => 0,
+                    'message' => implode('<br>', $message),
+                ]);
+            }
+        }
     }
 }

@@ -71,12 +71,6 @@ class PackagesRelationManager extends RelationManager
                     ->label('Цена')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('min_people')
-                    ->label('Мин. кол-во человек')
-                    ->numeric(),
-                Tables\Columns\TextColumn::make('max_people')
-                    ->label('Макс. кол-во человек')
-                    ->numeric(),
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Отображение на сайте')
                     ->sortable(),

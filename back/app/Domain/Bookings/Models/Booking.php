@@ -6,11 +6,16 @@ use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Schedules\Models\ScheduleLounge;
 use App\Domain\Schedules\Models\ScheduleQuest;
+use App\Domain\Users\Enums\Role;
+use App\Domain\Users\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use VK\Client\VKApiClient;
 
 /**
  * Class Booking
@@ -26,6 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read  BookingScheduleLounge $bookingScheduleLounge
  * @property-read  ScheduleQuest $scheduleQuests
  * @property-read  ScheduleLounge $scheduleLounges
+ * @property-read  ScheduleLounge $scheduleLounge
  * @property-read  BookingHoliday $bookingHoliday
  * @property-read  BookingCertificate $bookingCertificate
  */
@@ -47,6 +53,12 @@ class Booking extends Model
 
     protected static function booted(): void
     {
+        static::created(function (self $model) {
+            if ($model->type->value == BookingType::LOUNGE->value) {
+                self::sendMessage($model);
+            }
+        });
+
         static::updated(function (self $model) {
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
                 if ($model->type->value == BookingType::QUEST->value) {
@@ -59,33 +71,13 @@ class Booking extends Model
         static::deleting(function (self $model) {
             if ($model->scheduleQuests()->exists()) {
                 $model->scheduleQuests()->update(['activity_status' => true]);
-            }
-            if ($model->bookingScheduleQuest()->exists()) {
-                $model->bookingScheduleQuest()->forceDelete();
-            }
-            if ($model->bookingScheduleLounge()->exists()) {
-                $model->bookingScheduleLounge()->forceDelete();
-            }
-            if ($model->bookingHoliday()->exists()) {
-                $model->bookingHoliday()->forceDelete();
-            }
-            if ($model->bookingCertificate()->exists()) {
-                $model->bookingCertificate()->forceDelete();
-            }
-        });
-
-        static::restoring(function (self $model) {
-            if ($model->bookingScheduleQuest()->exists()) {
-                $model->bookingScheduleQuest()->restore();
-            }
-            if ($model->bookingScheduleLounge()->exists()) {
-                $model->bookingScheduleLounge()->restore();
-            }
-            if ($model->bookingHoliday()->exists()) {
-                $model->bookingHoliday()->restore();
-            }
-            if ($model->bookingCertificate()->exists()) {
-                $model->bookingCertificate()->restore();
+                $model->bookingScheduleQuest()->delete();
+            } else if ($model->bookingScheduleLounge()->exists()) {
+                $model->bookingScheduleLounge()->delete();
+            } else if ($model->bookingHoliday()->exists()) {
+                $model->bookingHoliday()->delete();
+            } else if ($model->bookingCertificate()->exists()) {
+                $model->bookingCertificate()->delete();
             }
         });
     }
@@ -120,5 +112,37 @@ class Booking extends Model
     {
         return $this->belongsToMany(ScheduleLounge::class, 'booking_schedule_lounges')
             ->withPivot(['comment']);
+    }
+
+    private static function sendMessage(self $model): void
+    {
+        $vk = new VKApiClient();
+
+        $message = [
+            'Новая заявка. Тип: ' . $model->type->value,
+            'Имя клиента: ' . $model->name,
+            'Телефон: ' . $model->phone,
+        ];
+
+        $userIds = User::query()
+            ->whereNotNull('vk_id')
+            ->whereIn('role', [Role::ADMIN->value, Role::OPERATOR->value])
+            ->pluck('vk_id')
+            ->toArray();
+
+        foreach ($userIds as $userId) {
+            $isAllow = $vk->messages()->isMessagesFromGroupAllowed(env('VK_ACCESS_TOKEN'), [
+                'group_id' => env('VK_GROUP_ID'),
+                'user_id' => $userId,
+            ]);
+
+            if ($isAllow['is_allowed']) {
+                $vk->messages()->send(env('VK_ACCESS_TOKEN'), [
+                    'user_id' => $userId,
+                    'random_id' => 0,
+                    'message' => implode('<br>', $message),
+                ]);
+            }
+        }
     }
 }

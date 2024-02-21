@@ -86,6 +86,8 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя'),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('Телефон'),
+                Tables\Columns\TextColumn::make('comment')
+                    ->label('Комментарий'),
                 Tables\Columns\SelectColumn::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class),

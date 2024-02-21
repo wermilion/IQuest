@@ -93,7 +93,6 @@ class ScheduleQuestResource extends Resource
                     ->disabledOn('edit'),
                 Forms\Components\Toggle::make('activity_status')
                     ->label('Активность слота')
-                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])

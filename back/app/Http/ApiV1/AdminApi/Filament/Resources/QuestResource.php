@@ -155,20 +155,21 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->numeric(),
-                Forms\Components\FileUpload::make('cover')
-                    ->directory('quest_covers')
-                    ->label('Обложка')
-                    ->image()
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                        'image' => 'Поле ":attribute" должно быть изображением.'
-                    ]),
                 Forms\Components\Toggle::make('is_active')
                     ->columnSpanFull()
                     ->label('Отображение на сайте')
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
+                    ]),
+                Forms\Components\FileUpload::make('cover')
+                    ->directory('quest_covers')
+                    ->label('Обложка')
+                    ->columnSpanFull()
+                    ->image()
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'image' => 'Поле ":attribute" должно быть изображением.'
                     ]),
             ]);
     }
@@ -176,13 +177,14 @@ class QuestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Квесты не обнаружены')
             ->columns([
                 Tables\Columns\TextColumn::make('room.filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('room.filial.address')
-                    ->label('Адрес')
+                    ->label('Филиал')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
@@ -290,10 +292,7 @@ class QuestResource extends Resource
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make()
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Квесты не обнаружены');
+            ]);
     }
 
     public static function getRelations(): array

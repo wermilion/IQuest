@@ -100,14 +100,10 @@ class BookingScheduleLoungeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
-                    ->native(false),
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
-            ])
-            ->bulkActions([
             ])
             ->emptyStateHeading('Заявок на лаунж-зоны не обнаружено');
     }

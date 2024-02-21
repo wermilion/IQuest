@@ -98,28 +98,34 @@ class QuestResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->label('Название')
                     ->required()
+                    ->maxLength(30)
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->maxLength(255),
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" не должно превышать :max символов.'
+                    ]),
                 Forms\Components\TextInput::make('slug')
                     ->label('Сокращ. название')
                     ->required()
+                    ->maxLength(10)
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->maxLength(255),
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" не должно превышать :max символов.'
+                    ]),
                 Forms\Components\Textarea::make('description')
                     ->label('Описание')
                     ->required()
+                    ->maxLength(1000)
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" не должно превышать :max символов.'
                     ]),
                 Forms\Components\Textarea::make('short_description')
                     ->label('Краткое описание')
                     ->required()
+                    ->maxLength(125)
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" не должно превышать :max символов.'
                     ]),
                 Forms\Components\TextInput::make('min_people')
                     ->label('Мин. кол-во человек')
@@ -139,34 +145,33 @@ class QuestResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во человек".'
-                    ])
-                    ->numeric(),
+                    ]),
                 Forms\Components\TextInput::make('duration')
                     ->label('Продолжительность (в мин)')
                     ->required()
+                    ->numeric()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->numeric(),
+                    ]),
                 Forms\Components\TextInput::make('sequence_number')
                     ->label('Порядковый номер')
                     ->required()
+                    ->numeric()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->numeric(),
+                    ]),
                 Forms\Components\Toggle::make('is_active')
-                    ->columnSpanFull()
                     ->label('Отображение на сайте')
+                    ->columnSpanFull()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
                 Forms\Components\FileUpload::make('cover')
-                    ->directory('quest_covers')
                     ->label('Обложка')
+                    ->directory('quest_covers')
                     ->columnSpanFull()
-                    ->image()
                     ->required()
+                    ->image()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.'

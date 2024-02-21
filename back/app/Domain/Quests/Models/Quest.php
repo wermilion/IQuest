@@ -5,6 +5,7 @@ namespace App\Domain\Quests\Models;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
 use App\Domain\Schedules\Models\ScheduleQuest;
+use App\Traits\HasCover;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,7 +24,6 @@ use Illuminate\Support\Facades\Storage;
  * @property int $min_people - Минимальное количество участников
  * @property int $max_people - Максимальное количество участников
  * @property int $duration - Продолжительность
- * @property bool $can_add_time - Можно ли добавлять дополнительное время
  * @property bool $is_active - Активность на клиентской части
  * @property int $sequence_number - Порядковый номер
  * @property int $room_id - Идентификатор комнаты
@@ -42,7 +42,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Quest extends Model
 {
-    use HasFactory;
+    use HasFactory, HasCover;
 
     protected $fillable = [
         'name',
@@ -53,7 +53,6 @@ class Quest extends Model
         'min_people',
         'max_people',
         'duration',
-        'can_add_time',
         'is_active',
         'sequence_number',
         'room_id',
@@ -65,19 +64,15 @@ class Quest extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
-        'can_add_time' => 'boolean',
     ];
 
     protected static function booted(): void
     {
-        static::updated(function (self $quest) {
-            if ($quest->isDirty('cover')) {
-                Storage::delete('public/' . $quest->cover);
+        static::deleting(function (self $model) {
+            foreach ($model->images as $image) {
+                Storage::delete('public/' . $image->image);
             }
-        });
-
-        static::deleted(function (self $quest) {
-            Storage::delete('public/' . $quest->cover);
+            $model->images()->delete();
         });
     }
 

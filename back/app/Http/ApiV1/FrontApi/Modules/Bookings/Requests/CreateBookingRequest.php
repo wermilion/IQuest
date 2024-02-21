@@ -23,8 +23,6 @@ class CreateBookingRequest extends FormRequest
 
             'holiday.holiday_id' => 'nullable|integer',
             'holiday.package_id' => 'nullable|integer',
-            'holiday.count_participants' => 'nullable|integer|min:1',
-            'holiday.price' => 'nullable|numeric|min:1',
 
             'certificate_type_id' => 'nullable|integer|exists:certificate_types,id',
         ];

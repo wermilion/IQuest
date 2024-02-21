@@ -28,8 +28,6 @@ class BookingHoliday extends Model
     protected $fillable = [
         'booking_id',
         'holiday_package_id',
-        'count_participants',
-        'price',
     ];
 
     protected static function booted(): void

@@ -158,7 +158,7 @@ class QuestResource extends Resource
                 Forms\Components\FileUpload::make('cover')
                     ->label('Обложка')
                     ->image()
-                    ->required()
+                    //->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.'

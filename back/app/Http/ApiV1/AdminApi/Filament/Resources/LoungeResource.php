@@ -87,7 +87,7 @@ class LoungeResource extends Resource
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
-                    ->required()
+                    //->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

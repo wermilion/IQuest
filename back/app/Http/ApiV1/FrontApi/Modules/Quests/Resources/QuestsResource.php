@@ -23,7 +23,6 @@ class QuestsResource extends BaseJsonResource
             'min_people' => $this->min_people,
             'max_people' => $this->max_people,
             'duration' => $this->duration,
-            'can_add_time' => $this->can_add_time,
 
             'scheduleQuests' => ScheduleQuestsResource::collection($this->whenLoaded('scheduleQuests')),
             'room' => new RoomsResource($this->whenLoaded('room')),

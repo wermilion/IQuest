@@ -82,8 +82,7 @@ class LoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
                 Forms\Components\FileUpload::make('cover')
-                    ->disk('public')
-                    ->directory('lounge_images')
+                    ->directory('lounge_covers')
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()

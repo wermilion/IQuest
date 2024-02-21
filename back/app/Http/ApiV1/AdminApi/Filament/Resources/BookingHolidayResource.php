@@ -8,9 +8,7 @@ use App\Domain\Bookings\Models\BookingHoliday;
 use App\Domain\Holidays\Models\Holiday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Filament\Actions\RestoreAction;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
@@ -66,26 +64,6 @@ class BookingHolidayResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->native(false),
-                TextInput::make('count_participants')
-                    ->label('Количество участников')
-                    ->numeric()
-                    ->minValue(1)
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно быть больше нуля.',
-                        'numeric' => 'Поле ":attribute" должно быть числом.',
-                    ]),
-                TextInput::make('price')
-                    ->label('Стоимость')
-                    ->numeric()
-                    ->minValue(1)
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно быть больше нуля.',
-                        'numeric' => 'Поле ":attribute" должно быть числом.',
-                    ])
             ]);
     }
 
@@ -103,10 +81,6 @@ class BookingHolidayResource extends Resource
                     ->label('Тип праздника'),
                 Tables\Columns\TextColumn::make('holidayPackage.package.name')
                     ->label('Пакет'),
-                Tables\Columns\TextColumn::make('count_participants')
-                    ->label('Количество участников'),
-                Tables\Columns\TextColumn::make('price')
-                    ->label('Стоимость'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()

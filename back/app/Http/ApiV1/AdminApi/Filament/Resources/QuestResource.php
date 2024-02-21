@@ -156,6 +156,7 @@ class QuestResource extends Resource
                     ])
                     ->numeric(),
                 Forms\Components\FileUpload::make('cover')
+                    ->directory('quest_covers')
                     ->label('Обложка')
                     ->image()
                     ->required()
@@ -163,17 +164,9 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.'
                     ]),
-                Forms\Components\Toggle::make('can_add_time')
-                    ->columnSpanFull()
-                    ->label('Можно ли добавить время')
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ]),
                 Forms\Components\Toggle::make('is_active')
                     ->columnSpanFull()
                     ->label('Отображение на сайте')
-                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),

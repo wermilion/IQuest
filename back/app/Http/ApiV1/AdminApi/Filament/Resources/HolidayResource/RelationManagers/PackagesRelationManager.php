@@ -36,24 +36,13 @@ class PackagesRelationManager extends RelationManager
                         'required' => 'Поле ":attribute" обязательно.',
                         'min' => 'Поле ":attribute" должно быть больше или равно 1.',
                     ]),
-                Forms\Components\TextInput::make('min_people')
-                    ->label('Мин. кол-во людей')
-                    ->live()
+                Forms\Components\TextInput::make('sequence_number')
+                    ->label('Порядковый номер')
                     ->numeric()
                     ->required()
-                    ->minValue('1')
+                    ->minValue(1)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
-                    ]),
-                Forms\Components\TextInput::make('max_people')
-                    ->label('Макс. кол-во людей')
-                    ->numeric()
-                    ->required()
-                    ->minValue(fn(Forms\Get $get) => $get('min_people'))
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во людей".',
                     ]),
                 Forms\Components\RichEditor::make('description')
                     ->label('Описание')
@@ -64,14 +53,6 @@ class PackagesRelationManager extends RelationManager
                     ]),
                 Forms\Components\Toggle::make('is_active')
                     ->label('Отображение на сайте'),
-                Forms\Components\TextInput::make('sequence_number')
-                    ->label('Порядковый номер')
-                    ->numeric()
-                    ->required()
-                    ->minValue(1)
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                    ])
             ]);
     }
 

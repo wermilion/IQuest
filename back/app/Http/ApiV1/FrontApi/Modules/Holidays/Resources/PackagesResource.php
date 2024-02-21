@@ -16,8 +16,6 @@ class PackagesResource extends BaseJsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'min_people' => $this->min_people,
-            'max_people' => $this->max_people,
             'price' => $this->price,
             'sequence_number' => $this->sequence_number,
         ];

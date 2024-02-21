@@ -15,7 +15,8 @@ class CreateBookingHoliday extends CreateRecord
         $data['holiday_package_id'] = HolidayPackage::query()
             ->where('holiday_id', $data['holiday'])
             ->where('package_id', $data['package'])
-            ->firstOrFail()->id;
+            ->firstOrFail()
+            ->id;
 
         unset($data['holiday'], $data['package']);
 

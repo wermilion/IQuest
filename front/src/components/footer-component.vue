@@ -22,6 +22,7 @@ const contacts = ref([
   {
     text: "94-29-10",
     img: "phone.svg",
+    link: "tel:94-29-10",
   },
   {
     text: "iquest.tsk@gmail.com",
@@ -37,7 +38,8 @@ const contacts = ref([
       <div class="footer-links">
         <div class="footer-links__contacts">
           <span v-for="info in contacts" :key="info.text" class="body">
-            <img :src="`/icons/${info.img}`" :alt="info.img" /> {{ info.text }}
+            <img :src="`/icons/${info.img}`" :alt="info.img" />
+            <a :href="info.link">{{ info.text }}</a>
           </span>
         </div>
         <div class="footer-links__social">
@@ -55,9 +57,9 @@ const contacts = ref([
         <p class="smallFootnote">Политика конфиденциальности</p>
         <span class="smallFootnote">
           Разработано в
-          <a :href="linkASAP" target="_blank"
-            ><img src="/logo/asapLogo.svg" alt="asapLogo"
-          /></a>
+          <a :href="linkASAP" target="_blank">
+            <img src="/logo/asapLogo.svg" alt="asapLogo" />
+          </a>
         </span>
       </div>
     </div>
@@ -93,6 +95,10 @@ const contacts = ref([
       span {
         display: flex;
         gap: 8px;
+        color: $color-base2;
+      }
+
+      a {
         color: $color-base2;
       }
     }

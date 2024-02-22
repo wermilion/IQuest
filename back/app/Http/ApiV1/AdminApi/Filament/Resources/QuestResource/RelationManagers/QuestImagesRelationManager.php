@@ -55,7 +55,7 @@ class QuestImagesRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()->modalHeading('Удалить изображение'),
             ]);
     }
 }

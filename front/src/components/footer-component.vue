@@ -72,8 +72,7 @@ const contacts = ref([
 
   background-image: url("/gradient/footer-gradient.svg");
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: right bottom;
+  background-position: center top;
 }
 .footer {
   height: 100%;

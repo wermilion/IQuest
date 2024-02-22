@@ -7,6 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Class Service
+ *
+ * @property int $id Идентификатор
+ * @property string $name Название
+ * @property string $price Цена
+ * @property string $unit Единица измерения
+ * @property int $city_id Город
+ *
+ * @property City $city Город
+ */
 class Service extends Model
 {
     use HasFactory;

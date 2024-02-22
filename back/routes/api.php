@@ -3,12 +3,13 @@
 use App\Http\ApiV1\FrontApi\Modules\Bookings\Controllers\BookingsController;
 use App\Http\ApiV1\FrontApi\Modules\Certificates\Controllers\CertificateTypesController;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\HolidaysController;
-use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\PackagesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\CitiesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\FilialsController;
 use App\Http\ApiV1\FrontApi\Modules\Lounges\Controllers\LoungesController;
 use App\Http\ApiV1\FrontApi\Modules\Quests\Controllers\QuestsController;
+use App\Http\ApiV1\FrontApi\Modules\Sales\Controllers\SalesController;
 use App\Http\ApiV1\FrontApi\Modules\Schedules\Controllers\ScheduleQuestsController;
+use App\Http\ApiV1\FrontApi\Modules\Services\Controllers\ServicesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -49,3 +50,9 @@ Route::get('filials/{id}', [FilialsController::class, 'get']);
 Route::post('filials:search', [FilialsController::class, 'search']);
 
 Route::post('bookings', [BookingsController::class, 'create']);
+
+Route::get('sales/{id}', [SalesController::class, 'get']);
+Route::post('sales:search', [SalesController::class, 'search']);
+
+Route::get('services/{id}', [ServicesController::class, 'get']);
+Route::post('services:search', [ServicesController::class, 'search']);

@@ -103,7 +103,6 @@ class BookingScheduleQuestResource extends Resource
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->emptyStateHeading('Заявки на квесты не обнаружены');
     }

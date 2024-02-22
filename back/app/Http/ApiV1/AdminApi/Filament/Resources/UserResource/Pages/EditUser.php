@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages;
 use App\Domain\Locations\Models\Filial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
@@ -23,6 +24,12 @@ class EditUser extends EditRecord
         $data['city'] = $filial?->city->id;
 
         return $data;
+    }
+
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->url(static::getResource()::getUrl());
     }
 
     protected function getHeaderActions(): array

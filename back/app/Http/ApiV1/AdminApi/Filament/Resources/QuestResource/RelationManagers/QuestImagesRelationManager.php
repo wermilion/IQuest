@@ -49,7 +49,7 @@ class QuestImagesRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->label('Добавить')
-                    ->modalHeading('Добавление изображение')
+                    ->modalHeading('Добавление изображения')
                     ->modalSubmitActionLabel('Добавить')
                     ->createAnother(false),
             ])

@@ -5,11 +5,18 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Page
 use App\Domain\Holidays\Models\HolidayPackage;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditBookingHoliday extends EditRecord
 {
     protected static string $resource = BookingHolidayResource::class;
+
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->url(static::getResource()::getUrl());
+    }
 
     protected function mutateFormDataBeforeFill(array $data): array
     {

@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Page
 use App\Domain\Lounges\Models\Lounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditScheduleLounge extends EditRecord
@@ -12,6 +13,12 @@ class EditScheduleLounge extends EditRecord
     protected static string $resource = ScheduleLoungeResource::class;
 
     protected ?string $heading = 'Редактирование слота';
+
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->url(static::getResource()::getUrl());
+    }
 
     protected function mutateFormDataBeforeFill(array $data): array
     {

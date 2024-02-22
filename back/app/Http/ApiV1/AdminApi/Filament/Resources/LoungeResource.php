@@ -95,12 +95,13 @@ class LoungeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Лаунжи не обнаружены')
             ->columns([
                 Tables\Columns\TextColumn::make('filial.city.name')
                     ->label('Город')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('filial.address')
-                    ->label('Адрес')
+                    ->label('Филиал')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Название')
@@ -126,10 +127,7 @@ class LoungeResource extends Resource
             ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Лаунжи не обнаружены');
+            ]);
     }
 
     public static function getRelations(): array

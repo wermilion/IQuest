@@ -14,6 +14,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class BookingHolidayResource extends Resource
@@ -75,23 +76,24 @@ class BookingHolidayResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('booking.id')
+                TextColumn::make('booking.id')
                     ->label('ID'),
-                Tables\Columns\TextColumn::make('booking.name')
+                TextColumn::make('booking.name')
                     ->label('Имя'),
-                Tables\Columns\TextColumn::make('booking.phone')
+                TextColumn::make('booking.phone')
                     ->label('Телефон'),
-                Tables\Columns\TextColumn::make('holidayPackage.holiday.type')
+                TextColumn::make('holidayPackage.holiday.type')
                     ->label('Тип праздника'),
-                Tables\Columns\TextColumn::make('holidayPackage.package.name')
+                TextColumn::make('holidayPackage.package.name')
                     ->label('Пакет'),
+                TextColumn::make('comment')
+                    ->label('Комментарий'),
             ])
             ->filters([
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->emptyStateHeading('Заявок на праздники не обнаружено');
     }

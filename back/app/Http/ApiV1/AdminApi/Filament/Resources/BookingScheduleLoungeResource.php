@@ -103,7 +103,6 @@ class BookingScheduleLoungeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->emptyStateHeading('Заявок на лаунж-зоны не обнаружено');
     }

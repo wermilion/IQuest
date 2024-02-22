@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import Swiper from "swiper";
 import { onMounted, ref } from "vue";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import {
+  Autoplay,
+  Navigation,
+  Pagination,
+  EffectCreative,
+} from "swiper/modules";
+
 import SliderComponent from "#/components/baner-swiper/slider-component.vue";
 import "swiper/css/bundle";
 import "#/assets/scss/swiper.scss";
@@ -25,9 +31,18 @@ const swiperOptions: any = {
     el: ".swiper-pagination",
     clickable: true,
   },
-  EffectFade: true,
-  effect: "fade",
-  modules: [Navigation, Pagination, Autoplay],
+
+  creativeEffect: {
+    prev: {
+      translate: [0, 1000, 0],
+    },
+    next: {
+      translate: [0, 1000, 0],
+    },
+  },
+
+  effect: "creative",
+  modules: [Navigation, Pagination, Autoplay, EffectCreative],
 };
 
 onMounted(() => {
@@ -90,10 +105,8 @@ onMounted(() => {
 .bg-secondary {
   background-image: url(/gradient/baner-gradient.svg);
   background-repeat: no-repeat;
-  background-size: cover;
   background-position: center;
   overflow: hidden;
-  max-height: 316px;
 }
 
 .swiper-button {

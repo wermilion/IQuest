@@ -5,6 +5,11 @@
   border-radius: $cover-2;
 }
 
+.swiper-creative,
+.swiper-slide {
+  overflow: visible !important;
+}
+
 .swiper-pagination-bullet-active {
   background-color: $color-opacity06;
 }

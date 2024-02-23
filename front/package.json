@@ -13,7 +13,7 @@
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "typecheck": "vue-tsc -p tsconfig.app.json --noEmit",
-    "postinstall": "husky install"
+    "postinstall": "simple-git-hooks"
   },
   "dependencies": {
     "axios": "^1.6.7",
@@ -30,12 +30,15 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.56.0",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
     "sass": "^1.71.1",
+    "simple-git-hooks": "^2.9.0",
     "typescript": "^5.3.3",
     "vite": "^5.1.4",
     "vue-tsc": "^1.8.27"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "cd front && npx lint-staged && npm run typecheck",
+    "post-commit": "git status"
   },
   "lint-staged": {
     "*": "eslint --fix"

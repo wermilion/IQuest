@@ -1,40 +1,33 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import card from '#/components/card/card-component.vue'
+import card from "#/components/card/card-component.vue";
+import { onMounted, ref, watch } from "vue";
+import { useDataStore } from "../../stores/quest/quest";
 
-const quests = ref([
-  {
-    name: 'Кутёж в ирландском пабе',
-    img: 'photo',
-    tags: ['Комедия', 'Квест в реальности'],
-    minDescription:
-      'Вау! Вы, команда самых крутых барменов России, выиграли стажировку в одном из самых крутых заведений Лондона - в пабе «Багровый олень»!',
-    time: 60,
-    minPerson: 2,
-    maxPerson: 6,
+const quests: any = ref(null);
 
-    hoverActive: true,
+const dataStore = useDataStore();
+
+onMounted(() => {
+  dataStore.fetchQuests();
+});
+
+watch(
+  () => dataStore.data,
+  (newVal) => {
+    if (newVal && newVal.data) {
+      quests.value = newVal.data;
+      console.log(quests.value);
+    }
   },
-  {
-    name: 'Кутёж в ирландском пабе',
-    img: 'photo',
-    tags: ['Комедия', 'Квест в реальности'],
-    minDescription:
-      'Вау! Вы, команда самых крутых барменов России, выиграли стажировку в одном из самых крутых заведений Лондона - в пабе «Багровый олень»!',
-    time: 60,
-    minPerson: 2,
-    maxPerson: 6,
-
-    hoverActive: true,
-  },
-])
+  { immediate: true }
+);
 </script>
 
 <template>
   <section class="cards container">
     <h2>Наши квесты</h2>
     <div class="d-flex cards-grid">
-      <card v-for="quest in quests" :key="quest.name" :="quest" />
+      <card v-for="quest in quests" :key="quest.id" :="quest" />
     </div>
   </section>
 </template>

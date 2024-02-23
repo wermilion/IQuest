@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import tag from './tag-component.vue'
+import tag from "./tag-component.vue";
 
 interface Props {
-  name: string
-  img: string
-  tags: string[]
-  minDescription?: string
-  time?: number
-  minPerson?: number
-  maxPerson?: number
-  link?: string
+  name: string;
+  cover: string;
+  genre?: {
+    name: string;
+  };
+  type?: {
+    name: string;
+  };
+  short_description?: string;
+  duracion?: number;
+  min_people?: number;
+  max_people?: number;
 
-  hoverActive: boolean
+  hoverActive: boolean;
 }
 
-defineProps<Props>()
+const props = defineProps<Props>();
 </script>
 
 <template>
@@ -36,30 +40,27 @@ defineProps<Props>()
         />
       </svg>
       <span class="hover-before footnote">
-        {{ minPerson }}-{{ maxPerson }} игрока
+        {{ min_people }}-{{ max_people }} игрока
       </span>
     </div>
-    <router-link
-      :to="link ? link : '/'"
-      class="card"
-      :class="{ 'no-pointer': !link, 'hoverActive': hoverActive }"
-    >
+    <router-link to="/" class="card" :class="{ hoverActive: hoverActive }">
       <div class="card-image">
-        <img loading="lazy" :src="`/quest-photo/${img}.png`" :alt="img">
+        <img loading="lazy" :src="`/quest-photo/${cover}.png`" :alt="cover" />
       </div>
 
       <div class="card-body">
         <span class="bodyBold">{{ name }}</span>
         <div class="card-body__tags">
-          <tag v-for="element in tags" :key="element" :name="element" />
+          <tag :name="type?.name" />
+          <tag :name="genre?.name" />
         </div>
-        <p v-if="minDescription" class="card-body__description footnote">
-          {{ minDescription }}
+        <p v-if="short_description" class="card-body__description footnote">
+          {{ short_description }}
         </p>
       </div>
     </router-link>
     <div v-if="hoverActive" class="hover">
-      <span class="hover-after footnote"> {{ time }} мин </span>
+      <span class="hover-after footnote"> {{ duracion }} мин </span>
       <svg
         width="32"
         height="400"

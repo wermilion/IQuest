@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { type WritableComputedRef, computed } from "vue";
-import HeaderComponent from "#/components/header-component.vue";
-import FooterComponent from "#/components/footer-component.vue";
-import { useGlobalStore } from "#/stores/common/global.store";
+import { type WritableComputedRef, computed } from 'vue'
+import { setupStore } from './stores/combine-stores'
+import HeaderComponent from '#/components/header-component.vue'
+import FooterComponent from '#/components/footer-component.vue'
 
-const store = useGlobalStore();
+const store = setupStore('global')
 
 const loading: WritableComputedRef<boolean> = computed({
   get: () => store.loading,
-  set: (v) => store.setLoading(v),
-});
+  set: v => store.setLoading(v),
+})
 </script>
 
 <template>
   <div class="main-container">
-    <template v-if="loading"> Loading... </template>
+    <template v-if="loading">
+      Loading...
+    </template>
 
     <template v-else>
       <HeaderComponent />

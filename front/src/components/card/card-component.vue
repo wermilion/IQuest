@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import tag from "./tag-component.vue";
+import { computed, ref } from 'vue'
+import Tag from './tag-component.vue'
+import type { Quest } from '#/types/models/quest'
 
 interface Props {
-  name: string;
-  cover: string;
-  genre?: {
-    name: string;
-  };
-  type?: {
-    name: string;
-  };
-  short_description?: string;
-  duracion?: number;
-  min_people?: number;
-  max_people?: number;
-
-  hoverActive: boolean;
+  quest: Quest
+  isHover: boolean
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
+
+const hoverActive = ref(props.isHover)
+
+const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 </script>
 
 <template>
@@ -40,27 +34,33 @@ const props = defineProps<Props>();
         />
       </svg>
       <span class="hover-before footnote">
-        {{ min_people }}-{{ max_people }} игрока
+        {{ quest.min_people }}-{{ quest.max_people }} игрока
       </span>
     </div>
-    <router-link to="/" class="card" :class="{ hoverActive: hoverActive }">
+    <router-link to="/" class="card" :class="{ hoverActive }">
       <div class="card-image">
-        <img loading="lazy" :src="`/quest-photo/${cover}.png`" :alt="cover" />
+        <img
+          loading="lazy"
+          :src="`/quest-photo/${quest.cover}.png`"
+          :alt="quest.cover"
+        >
       </div>
 
       <div class="card-body">
-        <span class="bodyBold">{{ name }}</span>
+        <span class="bodyBold">{{ quest.name }}</span>
         <div class="card-body__tags">
-          <tag :name="type?.name" />
-          <tag :name="genre?.name" />
+          <Tag v-for="tag in tags" :key="tag" :name="tag" />
         </div>
-        <p v-if="short_description" class="card-body__description footnote">
-          {{ short_description }}
+        <p
+          v-if="quest.short_description"
+          class="card-body__description footnote"
+        >
+          {{ quest.short_description }}
         </p>
       </div>
     </router-link>
     <div v-if="hoverActive" class="hover">
-      <span class="hover-after footnote"> {{ duracion }} мин </span>
+      <span class="hover-after footnote"> {{ quest.duration }} мин </span>
       <svg
         width="32"
         height="400"
@@ -107,6 +107,7 @@ const props = defineProps<Props>();
   }
 
   &-body {
+    max-height: 152px;
     background: $color-opacity004;
     backdrop-filter: blur(50px);
     padding: $cover-24;

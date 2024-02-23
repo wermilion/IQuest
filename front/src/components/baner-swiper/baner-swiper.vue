@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import Swiper from "swiper";
-import { onMounted, ref } from "vue";
+import 'swiper/css/bundle'
+import '#/assets/scss/swiper.scss'
+import Swiper from 'swiper'
+import { onMounted, ref } from 'vue'
 import {
   Autoplay,
+  EffectCreative,
   Navigation,
   Pagination,
-  EffectCreative,
-} from "swiper/modules";
+} from 'swiper/modules'
+import type { SwiperOptions } from 'swiper/types'
+import SliderComponent from '#/components/baner-swiper/slider-component.vue'
 
-import SliderComponent from "#/components/baner-swiper/slider-component.vue";
-import "swiper/css/bundle";
-import "#/assets/scss/swiper.scss";
-
-const slider = ref<HTMLElement | null>(null);
-const swiperOptions: any = {
-  direction: "vertical",
+const slider = ref<HTMLElement | null>(null)
+const swiperOptions: SwiperOptions = {
+  direction: 'vertical',
   slidesPerView: 1,
   spaceBetween: 500,
   speed: 850,
@@ -24,11 +24,11 @@ const swiperOptions: any = {
     disableOnInteraction: false,
   },
   navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
   },
   pagination: {
-    el: ".swiper-pagination",
+    el: '.swiper-pagination',
     clickable: true,
   },
 
@@ -41,13 +41,16 @@ const swiperOptions: any = {
     },
   },
 
-  effect: "creative",
+  effect: 'creative',
   modules: [Navigation, Pagination, Autoplay, EffectCreative],
-};
+}
 
 onMounted(() => {
-  if (slider.value) new Swiper(slider.value, swiperOptions);
-});
+  if (slider.value) {
+    // eslint-disable-next-line no-new
+    new Swiper(slider.value, swiperOptions)
+  }
+})
 </script>
 
 <template>

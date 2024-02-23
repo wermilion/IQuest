@@ -1,41 +1,48 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import card from "#/components/card/card-component.vue";
+import { ref } from 'vue'
+import Card from '#/components/card/card-component.vue'
+import PhoneNumber from '#/components/shared/phone-number.vue'
+import type { Quest } from '#/types/models/quest'
 
-const lounge = ref({
-  name: "Лаунж зона",
-  img: "lounge",
-  tags: ["600р/30 мин • 1000р/1 час"],
-
-  hoverActive: false,
-});
+const lounge = ref<{ quest: Quest, isHover: boolean }>({
+  quest: {
+    id: 1,
+    name: 'Лаунж зона',
+    cover: 'lounge',
+    type: {
+      id: 1,
+      name: '600р/30 мин • 1000р/1 час',
+    },
+  },
+  isHover: false,
+})
 
 const items = ref([
   {
-    name: "Мастер-класс",
-    price: "450₽/чел",
+    name: 'Мастер-класс',
+    price: '450₽/чел',
   },
   {
-    name: "Настольные игры в лаунж",
-    price: "500₽/60 мин",
+    name: 'Настольные игры в лаунж',
+    price: '500₽/60 мин',
   },
   {
-    name: "Снимок на Polaroid",
-    price: "500₽/шт",
+    name: 'Снимок на Polaroid',
+    price: '500₽/шт',
   },
   {
-    name: "Игра «Угадай кто?»",
-    price: "450₽/30 мин",
+    name: 'Игра «Угадай кто?»',
+    price: '450₽/30 мин',
   },
   {
-    name: "Игротека на выезд",
-    price: "3000₽/3 часа",
+    name: 'Игротека на выезд',
+    price: '3000₽/3 часа',
   },
   {
-    name: "Съемка в локации квеста",
-    price: "3000₽/60 мин",
+    name: 'Съемка в локации квеста',
+    price: '3000₽/60 мин',
   },
-]);
+])
 </script>
 
 <template>
@@ -44,10 +51,7 @@ const items = ref([
       <h2>Доп услуги</h2>
       <div class="add-services__info">
         <div class="add-services__info-header d-flex">
-          <span class="body">
-            <img src="/icons/phone.svg" alt="phone" />
-            <p>94-29-10</p>
-          </span>
+          <PhoneNumber />
           <span class="footnote">подробности у нашего оператора</span>
         </div>
         <div class="add-services__info-list">
@@ -62,7 +66,7 @@ const items = ref([
         </div>
       </div>
     </div>
-    <card v-bind="lounge" />
+    <Card v-bind="lounge" />
   </section>
 </template>
 

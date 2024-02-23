@@ -1,33 +1,25 @@
 <script setup lang="ts">
-import card from "#/components/card/card-component.vue";
-import { onMounted, ref, watch } from "vue";
-import { useDataStore } from "../../stores/quest/quest";
+import { onMounted } from 'vue'
+import card from '#/components/card/card-component.vue'
+import { setupStore } from '#/stores/combine-stores'
 
-const quests: any = ref(null);
-
-const dataStore = useDataStore();
+const questStore = setupStore('quest')
 
 onMounted(() => {
-  dataStore.fetchQuests();
-});
-
-watch(
-  () => dataStore.data,
-  (newVal) => {
-    if (newVal && newVal.data) {
-      quests.value = newVal.data;
-      console.log(quests.value);
-    }
-  },
-  { immediate: true }
-);
+  questStore.fetchQuests()
+})
 </script>
 
 <template>
   <section class="cards container">
     <h2>Наши квесты</h2>
     <div class="d-flex cards-grid">
-      <card v-for="quest in quests" :key="quest.id" :="quest" />
+      <card
+        v-for="quest in questStore.quests"
+        :key="quest.id"
+        :is-hover="true"
+        :quest="quest"
+      />
     </div>
   </section>
 </template>
@@ -42,7 +34,6 @@ h2 {
   gap: $cover-32;
 
   &-grid {
-    justify-content: center;
     align-items: center;
     align-content: center;
     gap: $cover-32;

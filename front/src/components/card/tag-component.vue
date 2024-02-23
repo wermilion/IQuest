@@ -1,53 +1,55 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch } from 'vue'
 
 interface Props {
-  name?: string;
+  name?: string
 }
 
-const props = defineProps<Props>();
-const imageSrc = ref(`/icons/genre/${props.name}.png`);
-const showImage = ref(true);
+const props = defineProps<Props>()
+const imageSrc = ref(`/icons/genre/${props.name}.png`)
+const showImage = ref(true)
 
 function checkImageExists(url: string) {
   return new Promise((resolve) => {
-    const img = new Image();
-    img.src = url;
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-  });
+    const img = new Image()
+    img.src = url
+    img.onload = () => resolve(true)
+    img.onerror = () => resolve(false)
+  })
 }
 
 // Проверяем, существует ли изображение в текущей папке
 checkImageExists(imageSrc.value).then((exists) => {
   if (!exists) {
-    imageSrc.value = `/icons/type/${props.name}.png`;
+    imageSrc.value = `/icons/type/${props.name}.png`
     checkImageExists(imageSrc.value).then((stillExists) => {
-      if (!stillExists) showImage.value = false; // Не отображаем изображение, если не найдено
-    });
+      if (!stillExists)
+        showImage.value = false // Не отображаем изображение, если не найдено
+    })
   }
-});
+})
 
 // Если имя изменяется, обновляем путь к изображению
 watch(
   () => props.name,
   (newName) => {
-    imageSrc.value = `/icons/genre/${newName}.png`;
+    imageSrc.value = `/icons/genre/${newName}.png`
     checkImageExists(imageSrc.value).then((exists) => {
       if (!exists) {
-        imageSrc.value = `/icons/type/${newName}.png`;
+        imageSrc.value = `/icons/type/${newName}.png`
         checkImageExists(imageSrc.value).then((stillExists) => {
-          if (!stillExists) showImage.value = false; // Не отображаем изображение, если не найдено
-        });
+          if (!stillExists)
+            showImage.value = false // Не отображаем изображение, если не найдено
+        })
       }
-    });
-  }
-);
+    })
+  },
+)
 </script>
 
 <template>
   <div class="tag">
-    <img v-if="showImage" loading="lazy" :src="imageSrc" :alt="props.name" />
+    <img v-if="showImage" :src="imageSrc" :alt="props.name">
     <span class="smallFootnote">{{ props.name }}</span>
   </div>
 </template>

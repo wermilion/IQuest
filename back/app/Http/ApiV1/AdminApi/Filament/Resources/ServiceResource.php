@@ -44,8 +44,10 @@ class ServiceResource extends Resource
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
+                    ->maxLength(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 TextInput::make('price')
                     ->label('Цена')
@@ -57,8 +59,10 @@ class ServiceResource extends Resource
                 TextInput::make('unit')
                     ->label('Единица измерения')
                     ->required()
+                    ->maxLength(20)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ])
             ]);
     }

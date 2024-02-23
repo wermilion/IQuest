@@ -15,6 +15,7 @@ class FilialsResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'address' => $this->address,
+            'yandex_mark' => $this->yandex_mark,
             'city' => new CitiesResource($this->whenLoaded('city')),
         ];
     }

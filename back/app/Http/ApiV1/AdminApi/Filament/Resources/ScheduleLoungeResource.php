@@ -10,6 +10,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\Crea
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\EditScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\ListScheduleLounges;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\RelationManagers\BookingRelationManager;
+use App\Http\ApiV1\AdminApi\Filament\Rules\TimeRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -70,23 +71,17 @@ class ScheduleLoungeResource extends Resource
                     ->label('Время начала')
                     ->mask('99:99')
                     ->placeholder('00:00')
-                    ->rules([
-                        'regex:/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/',
-                    ])
+                    ->rules([new TimeRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'regex' => 'Поле ":attribute" должно быть в формате "00:00".',
                     ]),
                 Forms\Components\TextInput::make('time_to')
                     ->label('Время конца')
                     ->mask('99:99')
                     ->placeholder('00:00')
-                    ->rules([
-                        'regex:/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/',
-                    ])
+                    ->rules([new TimeRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'regex' => 'Поле ":attribute" должно быть в формате "00:00".',
                     ]),
             ]);
     }
@@ -120,16 +115,6 @@ class ScheduleLoungeResource extends Resource
                     ->label('Время начала'),
                 Tables\Columns\TextColumn::make('time_to')
                     ->label('Время конца'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Дата создания')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Дата обновления')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\Filter::make('location')

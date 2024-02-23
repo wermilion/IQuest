@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers;
 
+use App\Http\ApiV1\AdminApi\Filament\Rules\TimeRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -25,12 +26,9 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
                     ->mask('99:99')
                     ->placeholder('00:00')
                     ->required()
-                    ->rules([
-                        'regex:/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/',
-                    ])
+                    ->rules([new TimeRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'regex' => 'Поле ":attribute" должно быть в формате "00:00".',
                     ]),
                 Forms\Components\TextInput::make('price')
                     ->label('Цена')

@@ -12,6 +12,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\ListQuests;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestImagesRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekdaysSlotsRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekendSlotsRelationManager;
+use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -107,6 +108,7 @@ class QuestResource extends Resource
                     ->label('Сокращ. название')
                     ->required()
                     ->maxLength(10)
+                    ->rules([new LatinRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'

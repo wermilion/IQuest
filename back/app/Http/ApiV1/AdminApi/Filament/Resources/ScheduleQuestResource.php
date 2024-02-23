@@ -130,16 +130,6 @@ class ScheduleQuestResource extends Resource
                     ->label('Цена'),
                 Tables\Columns\ToggleColumn::make('activity_status')
                     ->label('Активность слота'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Дата создания')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Дата обновления')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\Filter::make('location')

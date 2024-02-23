@@ -24,6 +24,8 @@ class CreateBookingAction
             ]);
         }
 
+        SendMessageBookingAction::execute($booking);
+
         return $booking;
     }
 

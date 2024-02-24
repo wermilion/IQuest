@@ -3,28 +3,28 @@ import type { Quest } from '#/types/models/quest'
 import { api } from '#/utils/api'
 
 //* --- State ----------------------------------------------- *//
-interface QuestState {
-  quest: Quest | null
+interface QuestListState {
+  questList: Quest[]
   error: unknown
 }
 
 //* --- Store ----------------------------------------------- *//
-export const useQuestStore = defineStore('quest', {
-  state: (): QuestState => ({
-    quest: null,
+export const useQuestListStore = defineStore('questList', {
+  state: (): QuestListState => ({
+    questList: [],
     error: {},
   }),
   actions: {
-    async fetchQuest(id: string) {
+    async fetchQuests() {
       try {
-        const response = await api.quest.getQuest(id, {
-          include: ['type', 'genre', 'room.filial', 'images', 'age_limit', 'level'],
+        const response = await api.quest.getSearch({
+          include: ['type', 'genre'],
           filter: {
             city: 'Томск',
             is_active: true,
           },
         })
-        this.quest = response.data.data
+        this.questList = response.data.data
       }
       catch (error) {
         this.error = error

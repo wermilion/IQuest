@@ -1,21 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Card from '#/components/card/card-component.vue'
 import PhoneNumber from '#/components/shared/phone-number.vue'
-import type { Quest } from '#/types/models/quest'
-
-const lounge = ref<{ quest: Quest, isHover: boolean }>({
-  quest: {
-    id: 1,
-    name: 'Лаунж зона',
-    cover: 'lounge',
-    type: {
-      id: 1,
-      name: '600р/30 мин • 1000р/1 час',
-    },
-  },
-  isHover: false,
-})
 
 const items = ref([
   {
@@ -66,7 +51,7 @@ const items = ref([
         </div>
       </div>
     </div>
-    <Card v-bind="lounge" />
+    <!-- <Card v-bind="lounge" /> -->
   </section>
 </template>
 

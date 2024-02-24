@@ -16,7 +16,7 @@ const links = ref([
   },
   {
     name: 'Контакты',
-    link: 'Contacts',
+    link: 'contacts',
   },
 ])
 

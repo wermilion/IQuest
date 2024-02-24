@@ -1,14 +1,14 @@
 <script setup lang="ts">
 const phoneNumber = {
   text: '94-29-10',
-  img: 'phone.svg',
+  img: 'phone',
   link: 'tel:94-29-10',
 }
 </script>
 
 <template>
   <span class="body">
-    <img :src="`/icons/${phoneNumber.img}`" :alt="phoneNumber.img">
+    <img :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
     <a :href="phoneNumber.link">{{ phoneNumber.text }}</a>
   </span>
 </template>

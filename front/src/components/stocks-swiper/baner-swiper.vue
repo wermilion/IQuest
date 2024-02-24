@@ -10,7 +10,7 @@ import {
   Pagination,
 } from 'swiper/modules'
 import type { SwiperOptions } from 'swiper/types'
-import SliderComponent from '#/components/baner-swiper/slider-component.vue'
+import SliderComponent from '#/components/stocks-swiper/slider-component.vue'
 
 const slider = ref<HTMLElement | null>(null)
 const swiperOptions: SwiperOptions = {
@@ -110,16 +110,6 @@ onMounted(() => {
   background-repeat: no-repeat;
   background-position: center;
   overflow: hidden;
-}
-
-.swiper-button {
-  background: none;
-  border: none;
-  width: 50px;
-
-  &::after {
-    display: none;
-  }
 }
 
 .swiper-container {

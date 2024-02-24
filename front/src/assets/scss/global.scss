@@ -33,6 +33,13 @@ body {
   }
 }
 
+.btn-container {
+  width: 100%;
+  display: flex;
+  padding: $cover-16 $cover-24;
+  align-items: center;
+}
+
 .loading-lazy {
   &:not(.loaded),
   &:not(.error) {
@@ -75,6 +82,15 @@ h2 {
   color: $color-base2;
 }
 
+h3 {
+  font-family: Onest;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 36px;
+  color: $color-opacity06;
+}
+
 .bodyBold,
 .body,
 .footnote,
@@ -86,6 +102,7 @@ h2 {
   font-size: 24px;
   font-weight: 700;
   line-height: 28px;
+  color: $color-base2;
 }
 
 .body {
@@ -119,6 +136,7 @@ h2 {
 }
 .container {
   max-width: 1440px;
+  width: 100%;
   padding-inline: 88px;
 }
 
@@ -132,5 +150,9 @@ h2 {
 }
 
 .no-poineter {
-  cursor: auto;
+  cursor: none;
+}
+
+.poineter {
+  cursor: pointer;
 }

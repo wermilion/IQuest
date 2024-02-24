@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import card from '#/components/card/card-component.vue'
+import card from '#/components/quest-card/card-component.vue'
 import { setupStore } from '#/stores/combine-stores'
 
-const questStore = setupStore('quest')
+const questStore = setupStore('questList')
 
 onMounted(() => {
   questStore.fetchQuests()
@@ -15,7 +15,7 @@ onMounted(() => {
     <h2>Наши квесты</h2>
     <div class="d-flex cards-grid">
       <card
-        v-for="quest in questStore.quests"
+        v-for="quest in questStore.questList"
         :key="quest.id"
         :is-hover="true"
         :quest="quest"

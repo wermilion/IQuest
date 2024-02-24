@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Tag from './tag-component.vue'
+import { EAppRouteNames } from '#/types/routes'
 import type { Quest } from '#/types/models/quest'
+import router from '#/router'
 
 interface Props {
   quest: Quest
@@ -16,7 +18,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 </script>
 
 <template>
-  <div class="hover-container" :class="{ 'hover-active': hoverActive }">
+  <div class="hover-container poineter" :class="{ 'hover-active': hoverActive }">
     <div v-if="hoverActive" class="hover">
       <svg
         width="32"
@@ -37,7 +39,11 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
         {{ quest.min_people }}-{{ quest.max_people }} игрока
       </span>
     </div>
-    <router-link to="/" class="card" :class="{ hoverActive }">
+    <div
+      class="card"
+      :class="{ hoverActive }"
+      @click="router.push({ name: EAppRouteNames.Quest, params: { id: quest.id } })"
+    >
       <div class="card-image">
         <img
           loading="lazy"
@@ -58,7 +64,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
           {{ quest.short_description }}
         </p>
       </div>
-    </router-link>
+    </div>
     <div v-if="hoverActive" class="hover">
       <span class="hover-after footnote"> {{ quest.duration }} мин </span>
       <svg

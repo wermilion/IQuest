@@ -9,4 +9,8 @@ export default (instance: AxiosInstance) => ({
   getSearch(payload: SearchQuestsRequest): AxiosPromise<{ data: Quest[] }> {
     return instance.post('/quests:search', payload)
   },
+
+  getQuest(id: string, params: SearchQuestsRequest): AxiosPromise<{ data: Quest }> {
+    return instance.get(`/quests/${id}`, { params })
+  },
 })

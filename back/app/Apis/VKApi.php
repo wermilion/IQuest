@@ -6,19 +6,17 @@ use Exception;
 use Log;
 use VK\Client\VKApiClient;
 
+/**
+ * Class VKApi
+ *
+ * @property VKApiClient $vk Клиент VK
+ * @property string $accessToken Токен доступа
+ * @property string $groupId ID группы
+ */
 class VKApi
 {
-    public VKApiClient $vk;
-
-    public string $accessToken;
-
-    public int $groupId;
-
-    public function __construct($accessToken, $groupId)
+    public function __construct(private readonly VKApiClient $vk, private readonly string $accessToken, private readonly string $groupId)
     {
-        $this->vk = new VKApiClient();
-        $this->accessToken = $accessToken;
-        $this->groupId = $groupId;
     }
 
     public function isMessagesFromGroupAllowed(int $userId): bool
@@ -50,7 +48,7 @@ class VKApi
                 'message' => $message,
             ]);
         } catch (Exception $e) {
-            
+
         }
     }
 }

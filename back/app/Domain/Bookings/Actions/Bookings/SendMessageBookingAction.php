@@ -9,12 +9,19 @@ use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
 use Carbon\Carbon;
 
+/**
+ * Class SendMessageBookingAction
+ *
+ * @property VKApi $vk
+ */
 class SendMessageBookingAction
 {
+    public function __construct(private readonly VKApi $vk)
+    {
+    }
+
     public function execute(Booking $booking): void
     {
-        $vk = new VKApi(env('VK_ACCESS_TOKEN'), env('VK_GROUP_ID'));
-
         $userIds = User::query()
             ->whereNotNull('vk_id')
             ->whereIn('role', [Role::ADMIN->value, Role::OPERATOR->value])
@@ -28,7 +35,7 @@ class SendMessageBookingAction
         ];
 
         foreach ($userIds as $userId) {
-            if (!$vk->isMessagesFromGroupAllowed($userId)) {
+            if (!$this->vk->isMessagesFromGroupAllowed($userId)) {
                 unset($userIds[$userId]);
             }
         }
@@ -38,14 +45,14 @@ class SendMessageBookingAction
         }
 
         match ($booking->type->value) {
-            BookingType::QUEST->value => $this->sendMessageQuest($vk, $booking, $userIds, $message),
-            BookingType::LOUNGE->value => $this->sendMessageLounge($vk, $userIds, $message),
-            BookingType::HOLIDAY->value => $this->sendMessageHoliday($vk, $booking, $userIds, $message),
-            BookingType::CERTIFICATE->value => $this->sendMessageCertificate($vk, $booking, $userIds, $message),
+            BookingType::QUEST->value => $this->sendMessageQuest($booking, $userIds, $message),
+            BookingType::LOUNGE->value => $this->sendMessageLounge($userIds, $message),
+            BookingType::HOLIDAY->value => $this->sendMessageHoliday($booking, $userIds, $message),
+            BookingType::CERTIFICATE->value => $this->sendMessageCertificate($booking, $userIds, $message),
         };
     }
 
-    private function sendMessageQuest(VKApi $vk, Booking $booking, $userIds, array $message): void
+    private function sendMessageQuest(Booking $booking, $userIds, array $message): void
     {
         $bookingScheduleQuest = $booking->bookingScheduleQuest;
 
@@ -69,18 +76,18 @@ class SendMessageBookingAction
         );
 
         foreach ($userIds as $userId) {
-            $vk->sendMessage($userId, implode('<br>', $message));
+            $this->vk->sendMessage($userId, implode('<br>', $message));
         }
     }
 
-    private function sendMessageLounge(VKApi $vk, $userIds, array $message): void
+    private function sendMessageLounge($userIds, array $message): void
     {
         foreach ($userIds as $userId) {
-            $vk->sendMessage($userId, implode('<br>', $message));
+            $this->vk->sendMessage($userId, implode('<br>', $message));
         }
     }
 
-    private function sendMessageHoliday(VKApi $vk, Booking $booking, $userIds, array $message): void
+    private function sendMessageHoliday(Booking $booking, $userIds, array $message): void
     {
         $holidayPackage = $booking->bookingHoliday->holidayPackage;
 
@@ -90,11 +97,11 @@ class SendMessageBookingAction
         );
 
         foreach ($userIds as $userId) {
-            $vk->sendMessage($userId, implode('<br>', $message));
+            $this->vk->sendMessage($userId, implode('<br>', $message));
         }
     }
 
-    private function sendMessageCertificate(VKApi $vk, Booking $booking, $userIds, array $message): void
+    private function sendMessageCertificate(Booking $booking, $userIds, array $message): void
     {
         $bookingCertificate = $booking->bookingCertificate;
 
@@ -104,7 +111,7 @@ class SendMessageBookingAction
         );
 
         foreach ($userIds as $userId) {
-            $vk->sendMessage($userId, implode('<br>', $message));
+            $this->vk->sendMessage($userId, implode('<br>', $message));
         }
     }
 }

@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
+/**
+ * Class QuestWeekendSlot
+ *
+ * @property int $id - Идентификатор
+ * @property int $quest_id - Идентификатор квеста
+ * @property string $time - Время
+ * @property float $price - Цена
+ *
+ * @property-read Quest $quest
+ */
 class QuestWeekendSlot extends Model
 {
     use HasFactory;

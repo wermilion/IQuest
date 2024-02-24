@@ -40,8 +40,6 @@ class ScheduleQuestResource extends Resource
 
     protected static ?string $navigationLabel = 'Расписание квестов';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = NavigationGroup::SCHEDULE->value;
 
     protected static ?int $navigationSort = 1;

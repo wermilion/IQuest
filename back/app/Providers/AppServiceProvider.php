@@ -38,13 +38,17 @@ class AppServiceProvider extends ServiceProvider
         Filament::serving(function () {
             Filament::registerNavigationGroups([
                 FilamentNavigationGroup::make()
-                    ->label(NavigationGroup::BOOKING->value),
+                    ->label(NavigationGroup::BOOKING->value)
+                    ->icon('heroicon-o-lock-closed'),
                 FilamentNavigationGroup::make()
-                    ->label(NavigationGroup::SCHEDULE->value),
+                    ->label(NavigationGroup::SCHEDULE->value)
+                    ->icon('heroicon-m-calendar-days'),
                 FilamentNavigationGroup::make()
-                    ->label(NavigationGroup::QUEST_COMPONENTS->value),
+                    ->label(NavigationGroup::QUEST_COMPONENTS->value)
+                    ->icon('heroicon-o-inbox'),
                 FilamentNavigationGroup::make()
-                    ->label(NavigationGroup::LOCATIONS->value),
+                    ->label(NavigationGroup::LOCATIONS->value)
+                    ->icon('heroicon-o-building-office-2'),
             ]);
         });
     }

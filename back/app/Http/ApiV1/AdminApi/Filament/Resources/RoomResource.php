@@ -29,8 +29,6 @@ class RoomResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Комнаты';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = NavigationGroup::LOCATIONS->value;
 
     public static function form(Form $form): Form

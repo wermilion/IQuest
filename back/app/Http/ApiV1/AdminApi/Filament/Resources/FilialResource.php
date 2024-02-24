@@ -24,8 +24,6 @@ class FilialResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Филиалы';
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
-
     protected static ?string $navigationGroup = NavigationGroup::LOCATIONS->value;
 
     public static function form(Form $form): Form

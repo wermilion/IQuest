@@ -33,8 +33,6 @@ class BookingResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Заявки';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = NavigationGroup::BOOKING->value;
 
     protected static ?int $navigationSort = 1;

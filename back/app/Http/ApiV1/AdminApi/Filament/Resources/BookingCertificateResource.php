@@ -29,8 +29,6 @@ class BookingCertificateResource extends Resource
 
     protected static ?string $navigationLabel = 'Заявки на сертификаты';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = NavigationGroup::BOOKING->value;
 
     protected static ?int $navigationSort = 5;

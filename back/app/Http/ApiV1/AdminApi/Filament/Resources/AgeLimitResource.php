@@ -23,8 +23,6 @@ class AgeLimitResource extends Resource
 
     protected static ?string $navigationLabel = 'Возрастные ограничения';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = 'Компоненты квестов';
 
     protected static ?int $navigationSort = 4;

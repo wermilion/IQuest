@@ -22,8 +22,6 @@ class GenreResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Жанры';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = NavigationGroup::QUEST_COMPONENTS->value;
 
     protected static ?int $navigationSort = 2;

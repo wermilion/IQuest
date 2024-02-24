@@ -4,14 +4,14 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Holidays\Enums\HolidayType;
 use App\Domain\Holidays\Models\Holiday;
-use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\CreateHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\EditHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ListHolidays;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers\PackagesRelationManager;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class HolidayResource extends Resource
@@ -30,7 +30,7 @@ class HolidayResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('type')
+                Select::make('type')
                     ->label('Тип праздника')
                     ->options(HolidayType::class)
                     ->required()
@@ -52,30 +52,24 @@ class HolidayResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Праздники не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Тип праздника')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('type')
+                    ->label('Тип праздника'),
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Праздники не обнаружены');
+                EditAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

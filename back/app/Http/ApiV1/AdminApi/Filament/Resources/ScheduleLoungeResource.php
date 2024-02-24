@@ -11,11 +11,18 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\Edit
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\ListScheduleLounges;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\RelationManagers\BookingRelationManager;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -42,13 +49,13 @@ class ScheduleLoungeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('city')
+                Select::make('city')
                     ->label('Город')
                     ->live()
                     ->options(fn(): Collection => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
                     ->native(false),
-                Forms\Components\Select::make('filial')
+                Select::make('filial')
                     ->label('Адрес')
                     ->live()
                     ->options(fn(Get $get): Collection => Filial::query()
@@ -56,17 +63,23 @@ class ScheduleLoungeResource extends Resource
                         ->pluck('address', 'id'))
                     ->hiddenOn('')
                     ->native(false),
-                Forms\Components\Select::make('lounge_id')
-                    ->label('Лаунж-зона')
+                Select::make('lounge_id')
+                    ->label('Лаунж')
                     ->options(fn(Get $get): Collection => Lounge::query()
                         ->where('filial_id', $get('filial'))
                         ->pluck('name', 'id'))
                     ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ])
                     ->native(false),
-                Forms\Components\DatePicker::make('date')
+                DatePicker::make('date')
                     ->label('Дата')
-                    ->required(),
-                Forms\Components\TextInput::make('time_from')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
+                TextInput::make('time_from')
                     ->label('Время начала')
                     ->mask('99:99')
                     ->placeholder('00:00')
@@ -77,7 +90,7 @@ class ScheduleLoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'regex' => 'Поле ":attribute" должно быть в формате "00:00".',
                     ]),
-                Forms\Components\TextInput::make('time_to')
+                TextInput::make('time_to')
                     ->label('Время конца')
                     ->mask('99:99')
                     ->placeholder('00:00')
@@ -99,50 +112,51 @@ class ScheduleLoungeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Слоты не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('lounge.filial.city.name')
+                TextColumn::make('lounge.filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('lounge.filial.address')
+                TextColumn::make('lounge.filial.address')
                     ->label('Филиал')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('lounge.name')
-                    ->label('Лаунж-зона')
+                TextColumn::make('lounge.name')
+                    ->label('Лаунж')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('date')
+                TextColumn::make('date')
                     ->label('Дата')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('time_from')
+                TextColumn::make('time_from')
                     ->label('Время начала'),
-                Tables\Columns\TextColumn::make('time_to')
+                TextColumn::make('time_to')
                     ->label('Время конца'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\Filter::make('location')
+                Filter::make('location')
                     ->form([
-                        Forms\Components\Select::make('city_id')
+                        Select::make('city_id')
                             ->label('Город')
                             ->placeholder('Выберите город')
+                            ->live()
                             ->relationship('lounge.filial.city', 'name')
                             ->native(false),
-                        Forms\Components\Select::make('filial_id')
+                        Select::make('filial_id')
                             ->label('Филиал')
                             ->placeholder('Выберите филиал')
-                            ->live()
                             ->options(fn(Get $get): Collection => Filial::query()
                                 ->where('city_id', $get('city_id'))
                                 ->pluck('address', 'id'))
@@ -161,8 +175,12 @@ class ScheduleLoungeResource extends Resource
                                     ->whereHas('lounge.filial', fn(Builder $query): Builder => $query->where('id', $filial_id)),
                             );
                     }),
-                Tables\Filters\Filter::make('date')
-                    ->form([Forms\Components\DatePicker::make('date')->label('Дата')])
+                SelectFilter::make('lounge')
+                    ->relationship('lounge', 'name')
+                    ->label('Лаунж')
+                    ->native(false),
+                Filter::make('date')
+                    ->form([DatePicker::make('date')->label('Дата')])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['date'],
@@ -176,12 +194,11 @@ class ScheduleLoungeResource extends Resource
                         }
                         return $indicators;
                     }),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->emptyStateHeading('Слоты не обнаружены');
+                EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление слота'),
+            ]);
     }
 
     public static function getRelations(): array

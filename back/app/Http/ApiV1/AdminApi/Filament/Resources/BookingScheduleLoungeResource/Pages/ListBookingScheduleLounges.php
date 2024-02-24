@@ -10,6 +10,8 @@ class ListBookingScheduleLounges extends ListRecords
 {
     protected static string $resource = BookingScheduleLoungeResource::class;
 
+    protected ?string $heading = 'Заявки на лаунжи';
+
     protected function getHeaderActions(): array
     {
         return [

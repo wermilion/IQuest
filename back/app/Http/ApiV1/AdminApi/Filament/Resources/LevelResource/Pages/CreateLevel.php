@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateLevel extends CreateRecord
 {
     protected static string $resource = LevelResource::class;
+
+    protected ?string $heading = 'Создание уровня сложности';
 }

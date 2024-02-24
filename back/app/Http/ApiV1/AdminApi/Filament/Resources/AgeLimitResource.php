@@ -6,10 +6,11 @@ use App\Domain\Quests\Models\AgeLimit;
 use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\CreateAgeLimit;
 use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\EditAgeLimit;
 use App\Http\ApiV1\AdminApi\Filament\Resources\AgeLimitResource\Pages\ListAgeLimits;
-use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class AgeLimitResource extends Resource
@@ -33,14 +34,15 @@ class AgeLimitResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('limit')
+                TextInput::make('limit')
+                    ->autofocus()
                     ->label('Возрастное ограничение')
                     ->required()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255)
                     ->validationMessages([
-                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
+                        'unique' => 'Поле ":attribute" должно быть уникальным.'
                     ]),
             ]);
     }
@@ -48,37 +50,24 @@ class AgeLimitResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Возрастные ограничения не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('limit')
-                    ->label('Возрастное ограничение')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('limit')
+                    ->label('Возрастное ограничение'),
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Возрастные ограничения не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

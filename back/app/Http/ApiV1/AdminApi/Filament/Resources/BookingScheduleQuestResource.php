@@ -4,13 +4,14 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Models\BookingScheduleQuest;
-use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleQuestResource\Pages\CreateBookingScheduleQuest;
-use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleQuestResource\Pages\EditBookingScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleQuestResource\Pages\ListBookingScheduleQuests;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,70 +52,58 @@ class BookingScheduleQuestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Заявки на квесты не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('booking.id')
+                TextColumn::make('booking.id')
                     ->label('ID')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('booking.name')
+                TextColumn::make('booking.name')
                     ->label('Имя')
                     ->numeric(),
-                Tables\Columns\TextColumn::make('booking.phone')
+                TextColumn::make('booking.phone')
                     ->label('Телефон')
                     ->numeric()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('scheduleQuest.quest.filial.city.name')
+                TextColumn::make('scheduleQuest.quest.filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scheduleQuest.quest.filial.address')
+                TextColumn::make('scheduleQuest.quest.filial.address')
                     ->label('Адрес')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scheduleQuest.quest.name')
+                TextColumn::make('scheduleQuest.quest.name')
                     ->label('Квест')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scheduleQuest.date')
+                TextColumn::make('scheduleQuest.date')
                     ->label('Дата')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scheduleQuest.time')
+                TextColumn::make('scheduleQuest.time')
                     ->label('Время')
                     ->numeric(),
-                Tables\Columns\SelectColumn::make('booking.status')
+                SelectColumn::make('booking.status')
                     ->label('Статус')
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
-                Tables\Columns\TextColumn::make('comment')
+                TextColumn::make('comment')
                     ->label('Комментарий')
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make()
-                    ->native(false),
-            ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-            ])
-            ->emptyStateHeading('Заявки на квесты не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                DeleteAction::make()->modalHeading('Удаление заявки'),
+            ]);
     }
 
     public static function getPages(): array

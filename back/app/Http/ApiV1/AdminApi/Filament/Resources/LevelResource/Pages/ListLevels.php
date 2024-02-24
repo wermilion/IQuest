@@ -10,6 +10,8 @@ class ListLevels extends ListRecords
 {
     protected static string $resource = LevelResource::class;
 
+    protected ?string $heading = 'Уровни сложностей';
+
     protected function getHeaderActions(): array
     {
         return [

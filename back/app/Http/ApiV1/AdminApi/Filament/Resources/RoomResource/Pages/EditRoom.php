@@ -5,11 +5,14 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages;
 use App\Domain\Locations\Models\Filial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource;
 use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditRoom extends EditRecord
 {
     protected static string $resource = RoomResource::class;
+
+    protected ?string $heading = 'Редактирование комнаты';
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
@@ -23,7 +26,7 @@ class EditRoom extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()->modalHeading('Удаление комнаты'),
         ];
     }
 }

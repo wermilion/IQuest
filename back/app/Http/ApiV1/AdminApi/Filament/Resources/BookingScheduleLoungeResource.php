@@ -4,11 +4,13 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Models\BookingScheduleLounge;
-use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleLoungeResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleLoungeResource\Pages\ListBookingScheduleLounges;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -49,82 +51,66 @@ class BookingScheduleLoungeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Заявок на лаунж-зоны не обнаружено')
             ->columns([
-                Tables\Columns\TextColumn::make('booking.id')
+                TextColumn::make('booking.id')
                     ->label('ID')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('booking.name')
+                TextColumn::make('booking.name')
                     ->label('Имя')
                     ->numeric(),
-                Tables\Columns\TextColumn::make('booking.phone')
+                TextColumn::make('booking.phone')
                     ->label('Телефон')
                     ->numeric()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('scheduleLounge.lounge.filial.city.name')
+                TextColumn::make('scheduleLounge.lounge.filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scheduleLounge.lounge.filial.address')
+                TextColumn::make('scheduleLounge.lounge.filial.address')
                     ->label('Адрес')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scheduleLounge.lounge.name')
+                TextColumn::make('scheduleLounge.lounge.name')
                     ->label('Лаунж-зона')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scheduleLounge.date')
+                TextColumn::make('scheduleLounge.date')
                     ->label('Дата')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scheduleLounge.time_from')
+                TextColumn::make('scheduleLounge.time_from')
                     ->label('Время начала')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('scheduleLounge.time_to')
+                TextColumn::make('scheduleLounge.time_to')
                     ->label('Время конца')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\SelectColumn::make('booking.status')
+                SelectColumn::make('booking.status')
                     ->label('Статус')
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make()
-                    ->native(false),
-            ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Заявок на лаунж-зоны не обнаружено');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                DeleteAction::make()->modalHeading('Удаление заявки'),
+            ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBookingScheduleLounges::route('/'),
-            'create' => Pages\CreateBookingScheduleLounge::route('/create'),
-            'edit' => Pages\EditBookingScheduleLounge::route('/{record}/edit'),
+            'index' => ListBookingScheduleLounges::route('/'),
         ];
     }
 }

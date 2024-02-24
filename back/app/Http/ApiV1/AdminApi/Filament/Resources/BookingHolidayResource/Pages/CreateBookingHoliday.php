@@ -10,6 +10,8 @@ class CreateBookingHoliday extends CreateRecord
 {
     protected static string $resource = BookingHolidayResource::class;
 
+    protected ?string $heading = 'Создание заявки на праздник';
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['holiday_package_id'] = HolidayPackage::query()

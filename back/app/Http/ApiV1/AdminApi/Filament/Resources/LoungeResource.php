@@ -8,11 +8,19 @@ use App\Domain\Lounges\Models\Lounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges;
-use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class LoungeResource extends Resource
@@ -31,13 +39,13 @@ class LoungeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('city')
+                Select::make('city')
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
                     ->native(false),
-                Forms\Components\Select::make('filial_id')
+                Select::make('filial_id')
                     ->label('Филиал')
                     ->options(fn(Get $get) => Filial::query()
                         ->where('city_id', $get('city'))
@@ -47,41 +55,41 @@ class LoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->native(false),
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Название')
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\TextInput::make('max_people')
+                TextInput::make('max_people')
                     ->label('Макс. кол-во человек')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->numeric(),
-                Forms\Components\TextInput::make('min_price')
+                TextInput::make('min_price')
                     ->label('Мин. цена')
                     ->required()
+                    ->numeric()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_active')
+                    ]),
+                Toggle::make('is_active')
                     ->label('Отображение на сайте')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\FileUpload::make('cover')
+                FileUpload::make('cover')
                     ->disk('public')
                     ->directory('lounge_images')
                     ->label('Изображение')
@@ -97,47 +105,39 @@ class LoungeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Лаунжи не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('filial.city.name')
+                TextColumn::make('filial.city.name')
                     ->label('Город')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('filial.address')
-                    ->label('Адрес')
+                TextColumn::make('filial.address')
+                    ->label('Филиал')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
-                Tables\Columns\ToggleColumn::make('is_active')
+                ToggleColumn::make('is_active')
                     ->label('Отображение на сайте'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('city')
+                SelectFilter::make('city')
                     ->label('Город')
                     ->relationship('filial.city', 'name')
                     ->native(false),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Лаунжи не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-        ];
+                EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

@@ -7,10 +7,11 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\CreateLevel;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\EditLevel;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LevelResource\Pages\ListLevels;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class LevelResource extends Resource
@@ -33,14 +34,15 @@ class LevelResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
+                    ->autofocus()
                     ->label('Название')
                     ->required()
-                    ->unique()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255)
                     ->validationMessages([
-                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'required' => 'Поле ":attribute" обязательное.',
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                     ]),
             ]);
     }
@@ -48,37 +50,24 @@ class LevelResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Уровни сложностей не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Название')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('name')
+                    ->label('Название'),
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Уровни сложностей не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

@@ -4,12 +4,14 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Page
 
 use App\Domain\Holidays\Models\HolidayPackage;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditBookingHoliday extends EditRecord
 {
     protected static string $resource = BookingHolidayResource::class;
+
+    protected ?string $heading = 'Редактирование заявки на праздник';
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
@@ -25,7 +27,7 @@ class EditBookingHoliday extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()->modalHeading('Удаление заявки'),
         ];
     }
 }

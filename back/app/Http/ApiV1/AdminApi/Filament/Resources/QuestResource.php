@@ -12,12 +12,21 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\ListQuests;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestImagesRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekdaysSlotsRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekendSlotsRelationManager;
-use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -38,13 +47,13 @@ class QuestResource extends Resource
     {
         return $form
             ->schema(components: [
-                Forms\Components\Select::make('city')
+                Select::make('city')
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
                     ->native(false),
-                Forms\Components\Select::make('filial')
+                Select::make('filial')
                     ->label('Филиал')
                     ->live()
                     ->options(fn(Get $get) => Filial::query()
@@ -52,7 +61,7 @@ class QuestResource extends Resource
                         ->pluck('address', 'id'))
                     ->hiddenOn('')
                     ->native(false),
-                Forms\Components\Select::make('room_id')
+                Select::make('room_id')
                     ->label('Комната')
                     ->columnSpanFull()
                     ->options(fn(Get $get) => Room::query()
@@ -63,7 +72,7 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->native(false),
-                Forms\Components\Select::make('type_id')
+                Select::make('type_id')
                     ->label('Тип')
                     ->relationship('type', 'name')
                     ->required()
@@ -71,7 +80,7 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->native(false),
-                Forms\Components\Select::make('genre_id')
+                Select::make('genre_id')
                     ->label('Жанр')
                     ->relationship('genre', 'name')
                     ->required()
@@ -79,7 +88,7 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->native(false),
-                Forms\Components\Select::make('age_limit_id')
+                Select::make('age_limit_id')
                     ->label('Ограничение')
                     ->relationship('age_limit', 'limit')
                     ->required()
@@ -87,7 +96,7 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->native(false),
-                Forms\Components\Select::make('level_id')
+                Select::make('level_id')
                     ->label('Уровень сложность')
                     ->relationship('level', 'name')
                     ->required()
@@ -95,33 +104,33 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->native(false),
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Название')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->maxLength(255),
-                Forms\Components\TextInput::make('slug')
+                TextInput::make('slug')
                     ->label('Сокращ. название')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->label('Описание')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\Textarea::make('short_description')
+                Textarea::make('short_description')
                     ->label('Краткое описание')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\TextInput::make('min_people')
+                TextInput::make('min_people')
                     ->label('Мин. кол-во человек')
                     ->live()
                     ->required()
@@ -131,7 +140,7 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->numeric(),
-                Forms\Components\TextInput::make('max_people')
+                TextInput::make('max_people')
                     ->label('Макс. кол-во человек')
                     ->required()
                     ->numeric()
@@ -141,21 +150,21 @@ class QuestResource extends Resource
                         'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во человек".'
                     ])
                     ->numeric(),
-                Forms\Components\TextInput::make('duration')
+                TextInput::make('duration')
                     ->label('Продолжительность (в мин)')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->numeric(),
-                Forms\Components\TextInput::make('sequence_number')
+                TextInput::make('sequence_number')
                     ->label('Порядковый номер')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->numeric(),
-                Forms\Components\FileUpload::make('cover')
+                FileUpload::make('cover')
                     ->label('Обложка')
                     ->image()
                     //->required()
@@ -163,14 +172,14 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.'
                     ]),
-                Forms\Components\Toggle::make('can_add_time')
+                Toggle::make('can_add_time')
                     ->columnSpanFull()
                     ->label('Можно ли добавить время')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\Toggle::make('is_active')
+                Toggle::make('is_active')
                     ->columnSpanFull()
                     ->label('Отображение на сайте')
                     ->required()
@@ -183,96 +192,97 @@ class QuestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Квесты не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('room.filial.city.name')
+                TextColumn::make('room.filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('room.filial.address')
+                TextColumn::make('room.filial.address')
                     ->label('Адрес')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Название')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                TextColumn::make('slug')
                     ->label('Сокращ. название')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type.name')
+                TextColumn::make('type.name')
                     ->label('Тип')
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('genre.name')
+                TextColumn::make('genre.name')
                     ->label('Жанр')
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('age_limit.id')
+                TextColumn::make('age_limit.id')
                     ->label('Возрастное ограничение')
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('level.name')
+                TextColumn::make('level.name')
                     ->label('Уровень сложности')
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('min_price')
+                TextColumn::make('min_price')
                     ->label('Минимальная цена')
                     ->numeric()
                     ->sortable()
                     ->hidden(),
-                Tables\Columns\TextColumn::make('late_price')
+                TextColumn::make('late_price')
                     ->label('Вечерняя цена')
                     ->numeric()
                     ->sortable()
                     ->hidden(),
-                Tables\Columns\TextColumn::make('min_people')
+                TextColumn::make('min_people')
                     ->label('Мин. кол-во человек')
                     ->numeric()
                     ->sortable()
                     ->hidden(),
-                Tables\Columns\TextColumn::make('max_people')
+                TextColumn::make('max_people')
                     ->label('Макс. кол-во человек')
                     ->numeric()
                     ->sortable()
                     ->hidden(),
-                Tables\Columns\TextColumn::make('duration')
+                TextColumn::make('duration')
                     ->label('Продолжительность')
                     ->numeric()
                     ->sortable()
                     ->hidden(),
-                Tables\Columns\TextColumn::make('sequence_number')
+                TextColumn::make('sequence_number')
                     ->label('Порядковый номер')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('can_add_time')
+                IconColumn::make('can_add_time')
                     ->label('Можно ли добавить время')
                     ->boolean()
                     ->hidden(),
-                Tables\Columns\ToggleColumn::make('is_active')
+                ToggleColumn::make('is_active')
                     ->label('Отображение на сайте'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\Filter::make('location')
+                Filter::make('location')
                     ->form([
-                        Forms\Components\Select::make('city_id')
+                        Select::make('city_id')
                             ->label('Город')
                             ->placeholder('Выберите город')
                             ->relationship('filial.city', 'name')
                             ->native(false),
-                        Forms\Components\Select::make('filial_id')
+                        Select::make('filial_id')
                             ->label('Филиал')
                             ->placeholder('Выберите филиал')
                             ->live()
@@ -294,13 +304,10 @@ class QuestResource extends Resource
                                     ->whereHas('room', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
                             );
                     }),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
-                Tables\Actions\EditAction::make()
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Квесты не обнаружены');
+                EditAction::make()
+            ]);
     }
 
     public static function getRelations(): array

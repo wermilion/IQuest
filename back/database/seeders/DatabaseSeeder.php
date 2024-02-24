@@ -16,13 +16,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            CitySeeder::class,
-            FilialSeeder::class,
-            RoomSeeder::class,
-            TypeSeeder::class,
-            GenreSeeder::class,
-            LevelSeeder::class,
-            AgeLimitSeeder::class,
             HolidaySeeder::class,
         ]);
 

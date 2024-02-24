@@ -2,8 +2,10 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\RelationManagers;
 
+use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
+use App\Domain\Bookings\Models\Booking;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -160,7 +162,10 @@ class BookingRelationManager extends RelationManager
                     ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['activity_status' => false]))
                     ->attachAnother(false),
                 Tables\Actions\CreateAction::make()
-                    ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['activity_status' => false]))
+                    ->after(function (RelationManager $livewire, Booking $booking) {
+                        $livewire->ownerRecord->update(['activity_status' => false]);
+                        resolve(SendMessageBookingAction::class)->execute($booking);
+                    })
                     ->createAnother(false),
             ])
             ->actions([

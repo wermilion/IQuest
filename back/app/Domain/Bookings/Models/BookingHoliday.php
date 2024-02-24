@@ -2,6 +2,7 @@
 
 namespace App\Domain\Bookings\Models;
 
+use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Holidays\Models\HolidayPackage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +31,10 @@ class BookingHoliday extends Model
 
     protected static function booted(): void
     {
+        static::created(function (self $model) {
+            resolve(SendMessageBookingAction::class)->execute($model->booking);
+        });
+
         static::deleting(function (self $model) {
             $model->booking()->delete();
         });

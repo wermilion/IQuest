@@ -2,6 +2,7 @@
 
 namespace App\Domain\Bookings\Models;
 
+use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Schedules\Models\ScheduleLounge;
@@ -48,6 +49,12 @@ class Booking extends Model
 
     protected static function booted(): void
     {
+        static::created(function (self $model) {
+            if ($model->type->value == BookingType::LOUNGE->value) {
+                resolve(SendMessageBookingAction::class)->execute($model);
+            }
+        });
+
         static::updated(function (self $model) {
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
                 if ($model->type->value == BookingType::QUEST->value) {

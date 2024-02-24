@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class SendMessageBookingAction
 {
-    public static function execute(Booking $booking): void
+    public function execute(Booking $booking): void
     {
         $vk = new VKApi(env('VK_ACCESS_TOKEN'), env('VK_GROUP_ID'));
 
@@ -38,14 +38,14 @@ class SendMessageBookingAction
         }
 
         match ($booking->type->value) {
-            BookingType::QUEST->value => self::sendMessageQuest($vk, $booking, $userIds, $message),
-            BookingType::LOUNGE->value => self::sendMessageLounge($vk, $userIds, $message),
-            BookingType::HOLIDAY->value => self::sendMessageHoliday($vk, $booking, $userIds, $message),
-            BookingType::CERTIFICATE->value => self::sendMessageCertificate($vk, $booking, $userIds, $message),
+            BookingType::QUEST->value => $this->sendMessageQuest($vk, $booking, $userIds, $message),
+            BookingType::LOUNGE->value => $this->sendMessageLounge($vk, $userIds, $message),
+            BookingType::HOLIDAY->value => $this->sendMessageHoliday($vk, $booking, $userIds, $message),
+            BookingType::CERTIFICATE->value => $this->sendMessageCertificate($vk, $booking, $userIds, $message),
         };
     }
 
-    private static function sendMessageQuest(VKApi $vk, Booking $booking, $userIds, array $message): void
+    private function sendMessageQuest(VKApi $vk, Booking $booking, $userIds, array $message): void
     {
         $bookingScheduleQuest = $booking->bookingScheduleQuest;
 
@@ -73,14 +73,14 @@ class SendMessageBookingAction
         }
     }
 
-    private static function sendMessageLounge(VKApi $vk, $userIds, array $message): void
+    private function sendMessageLounge(VKApi $vk, $userIds, array $message): void
     {
         foreach ($userIds as $userId) {
             $vk->sendMessage($userId, implode('<br>', $message));
         }
     }
 
-    private static function sendMessageHoliday(VKApi $vk, Booking $booking, $userIds, array $message): void
+    private function sendMessageHoliday(VKApi $vk, Booking $booking, $userIds, array $message): void
     {
         $holidayPackage = $booking->bookingHoliday->holidayPackage;
 
@@ -94,7 +94,7 @@ class SendMessageBookingAction
         }
     }
 
-    private static function sendMessageCertificate(VKApi $vk, Booking $booking, $userIds, array $message): void
+    private function sendMessageCertificate(VKApi $vk, Booking $booking, $userIds, array $message): void
     {
         $bookingCertificate = $booking->bookingCertificate;
 

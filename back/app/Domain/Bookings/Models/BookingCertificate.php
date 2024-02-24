@@ -2,6 +2,7 @@
 
 namespace App\Domain\Bookings\Models;
 
+use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Certificates\Models\CertificateType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,10 @@ class BookingCertificate extends Model
 
     protected static function booted(): void
     {
+        static::created(function (self $model) {
+            resolve(SendMessageBookingAction::class)->execute($model->booking);
+        });
+
         static::deleting(function (self $model) {
             $model->booking()->delete();
         });

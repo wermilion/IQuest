@@ -23,9 +23,7 @@ class CreateBookingAction
                 'booking_id' => $booking->id
             ]);
         }
-
-        SendMessageBookingAction::execute($booking);
-
+        
         return $booking;
     }
 

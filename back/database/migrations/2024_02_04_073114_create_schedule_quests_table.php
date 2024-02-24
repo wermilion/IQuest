@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Quests\Models\Quest;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +15,9 @@ return new class extends Migration {
 
             $table->date('date')->comment('Дата');
             $table->time('time')->comment('Время');
-            $table->boolean('activity_status')->comment('Статус активности в расписании');
-            $table->foreignIdFor(Quest::class)->comment('Квест')->constrained();
+            $table->decimal('price')->comment('Цена');
+            $table->boolean('is_active')->comment('Статус активности');
+            $table->foreignId('quest_id')->comment('Квест')->constrained(table: 'quests');
 
             $table->timestamps();
         });

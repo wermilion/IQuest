@@ -14,7 +14,7 @@ return new class extends Migration {
         Schema::create('quest_weekend_slots', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignIdFor(Quest::class)->comment('Квест')->constrained();
+            $table->foreignId('quest_id')->comment('Квест')->constrained(table: 'quests');
             $table->time('time')->comment('Время');
             $table->decimal('price')->comment('Цена');
 

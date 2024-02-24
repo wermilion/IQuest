@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Lounges\Models\Lounge;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,9 +14,9 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->date('date')->comment('Дата');
-            $table->time('time_from')->comment('Время начада');
+            $table->time('time_from')->comment('Время начала');
             $table->time('time_to')->comment('Время конца');
-            $table->foreignIdFor(Lounge::class)->comment('Лаундж-зона')->constrained();
+            $table->foreignId('lounge_id')->comment('Лаунж')->constrained(table: 'lounges');
 
             $table->timestamps();
         });

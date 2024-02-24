@@ -4,6 +4,7 @@ namespace App\Domain\Quests\Models;
 
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
+use App\Domain\Quests\Enums\LevelEnum;
 use App\Domain\Schedules\Models\ScheduleQuest;
 use App\Traits\HasCover;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,20 +25,19 @@ use Illuminate\Support\Facades\Storage;
  * @property int $min_people - Минимальное количество участников
  * @property int $max_people - Максимальное количество участников
  * @property int $duration - Продолжительность
+ * @property LevelEnum $level - Уровень сложности
  * @property bool $is_active - Активность на клиентской части
  * @property int $sequence_number - Порядковый номер
  * @property int $room_id - Идентификатор комнаты
  * @property int $type_id - Идентификатор типа
  * @property int $genre_id - Идентификатор жанра
  * @property int $age_limit_id - Идентификатор возрастного ограничения
- * @property int $level_id - Идентификатор уровня
  *
  * @property-read Filial $filial
  * @property-read Room $room
  * @property-read Type $type
  * @property-read Genre $genre
  * @property-read AgeLimit $age_limit
- * @property-read Level $level
  * @property-read QuestImage[] $images
  */
 class Quest extends Model
@@ -53,16 +53,17 @@ class Quest extends Model
         'min_people',
         'max_people',
         'duration',
+        'level',
         'is_active',
         'sequence_number',
         'room_id',
         'type_id',
         'genre_id',
         'age_limit_id',
-        'level_id'
     ];
 
     protected $casts = [
+        'level' => LevelEnum::class,
         'is_active' => 'boolean',
     ];
 
@@ -120,11 +121,6 @@ class Quest extends Model
     public function age_limit(): BelongsTo
     {
         return $this->belongsTo(AgeLimit::class);
-    }
-
-    public function level(): BelongsTo
-    {
-        return $this->belongsTo(Level::class);
     }
 
     public function images(): HasMany

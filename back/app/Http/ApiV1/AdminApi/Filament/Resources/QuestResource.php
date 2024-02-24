@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
+use App\Domain\Quests\Enums\LevelEnum;
 use App\Domain\Quests\Models\Quest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\EditQuest;
@@ -88,9 +89,9 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->native(false),
-                Forms\Components\Select::make('level_id')
+                Forms\Components\Select::make('level')
                     ->label('Уровень сложность')
-                    ->relationship('level', 'name')
+                    ->options(LevelEnum::class)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
@@ -210,26 +211,15 @@ class QuestResource extends Resource
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('age_limit.id')
+                Tables\Columns\TextColumn::make('age_limit.limit')
                     ->label('Возрастное ограничение')
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('level.name')
+                Tables\Columns\TextColumn::make('level')
                     ->label('Уровень сложности')
-                    ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('min_price')
-                    ->label('Минимальная цена')
-                    ->numeric()
-                    ->sortable()
-                    ->hidden(),
-                Tables\Columns\TextColumn::make('late_price')
-                    ->label('Вечерняя цена')
-                    ->numeric()
-                    ->sortable()
-                    ->hidden(),
                 Tables\Columns\TextColumn::make('min_people')
                     ->label('Мин. кол-во человек')
                     ->numeric()
@@ -249,10 +239,6 @@ class QuestResource extends Resource
                     ->label('Порядковый номер')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('can_add_time')
-                    ->label('Можно ли добавить время')
-                    ->boolean()
-                    ->hidden(),
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Отображение на сайте'),
                 Tables\Columns\TextColumn::make('created_at')

@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Locations\Models\City;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,8 +19,8 @@ return new class extends Migration {
             $table->string('back_image')->comment('Изображение');
             $table->boolean('is_active')->comment('Видимость');
 
-            $table->foreignIdFor(City::class)->comment('Город')->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('city_id')->comment('Город')->constrained(table: 'cities')
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $date Дата расписания квеста
  * @property string $time Время расписания квеста
  * @property float $price Цена
- * @property bool $activity_status Статус активности
+ * @property bool $is_active Статус активности
  * @property int $quest_id Идентификатор квеста
  *
  * @property Quest $quest Квест
@@ -30,12 +30,12 @@ class ScheduleQuest extends Model
         'date',
         'time',
         'price',
-        'activity_status',
+        'is_active',
         'quest_id'
     ];
 
     protected $casts = [
-        'activity_status' => 'boolean'
+        'is_active' => 'boolean'
     ];
 
     public function quest(): BelongsTo

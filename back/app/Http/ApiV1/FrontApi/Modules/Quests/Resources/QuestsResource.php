@@ -23,12 +23,12 @@ class QuestsResource extends BaseJsonResource
             'min_people' => $this->min_people,
             'max_people' => $this->max_people,
             'duration' => $this->duration,
+            'level' => $this->level,
 
             'scheduleQuests' => ScheduleQuestsResource::collection($this->whenLoaded('scheduleQuests')),
             'room' => new RoomsResource($this->whenLoaded('room')),
             'type' => new TypesResource($this->whenLoaded('type')),
             'genre' => new GenresResource($this->whenLoaded('genre')),
-            'level' => new LevelsResource($this->whenLoaded('level')),
             'age_limit' => new AgeLimitsResource($this->whenLoaded('age_limit')),
             'images' => QuestImagesResource::collection($this->whenLoaded('images'))
         ];

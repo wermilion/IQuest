@@ -131,6 +131,7 @@ class ScheduleQuestResource extends Resource
                 Tables\Columns\ToggleColumn::make('activity_status')
                     ->label('Активность слота'),
             ])
+            ->defaultSort('date')
             ->filters([
                 Tables\Filters\Filter::make('location')
                     ->form([

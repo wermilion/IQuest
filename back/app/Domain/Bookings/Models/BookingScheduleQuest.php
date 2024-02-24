@@ -36,12 +36,12 @@ class BookingScheduleQuest extends Model
     protected static function booted(): void
     {
         static::created(function (self $model) {
-            $model->scheduleQuest()->update(['activity_status' => false]);
+            $model->scheduleQuest()->update(['is_active' => false]);
             resolve(SendMessageBookingAction::class)->execute($model->booking);
         });
 
         static::deleting(function (self $model) {
-            $model->scheduleQuest()->update(['activity_status' => true]);
+            $model->scheduleQuest()->update(['is_active' => true]);
             $model->booking()->delete();
         });
     }

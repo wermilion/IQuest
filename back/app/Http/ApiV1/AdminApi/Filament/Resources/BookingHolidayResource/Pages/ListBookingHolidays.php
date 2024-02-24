@@ -10,6 +10,8 @@ class ListBookingHolidays extends ListRecords
 {
     protected static string $resource = BookingHolidayResource::class;
 
+    protected ?string $heading = 'Заявки на праздники';
+
     protected function getHeaderActions(): array
     {
         return [

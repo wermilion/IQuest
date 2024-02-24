@@ -10,6 +10,8 @@ class ListBookingCertificates extends ListRecords
 {
     protected static string $resource = BookingCertificateResource::class;
 
+    protected ?string $heading = 'Заявки на сертификаты';
+
     protected function getHeaderActions(): array
     {
         return [

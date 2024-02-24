@@ -4,8 +4,8 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Page
 
 use App\Domain\Lounges\Models\Lounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource;
-use Filament\Actions;
 use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditScheduleLounge extends EditRecord
@@ -33,7 +33,7 @@ class EditScheduleLounge extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()->modalHeading('Удаление слота'),
         ];
     }
 }

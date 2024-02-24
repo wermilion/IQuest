@@ -2,10 +2,13 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers;
 
-use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Table;
 
 class QuestImagesRelationManager extends RelationManager
@@ -18,7 +21,7 @@ class QuestImagesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('image')
+                FileUpload::make('image')
                     ->directory('quest_images')
                     ->label('Изображение')
                     ->columnSpanFull()
@@ -43,19 +46,16 @@ class QuestImagesRelationManager extends RelationManager
                     ->width(200)
                     ->height(200),
             ])
-            ->filters([
-                //
-            ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->label('Добавить')
                     ->modalHeading('Добавление изображения')
                     ->modalSubmitActionLabel('Добавить')
                     ->createAnother(false),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->modalHeading('Удалить изображение'),
+                EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление изображения'),
             ]);
     }
 }

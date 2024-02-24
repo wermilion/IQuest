@@ -11,11 +11,16 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\EditUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -36,20 +41,19 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Hidden::make('id'),
-                Forms\Components\Select::make('city')
+                Select::make('city')
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
                     ->native(false),
-                Forms\Components\Select::make('filial_id')
+                Select::make('filial_id')
                     ->label('Филиал')
                     ->options(fn(Get $get) => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
                     ->native(false),
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->autofocus()
                     ->label('Имя')
                     ->required()
@@ -58,11 +62,11 @@ class UserResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Forms\Components\TextInput::make('surname')
+                TextInput::make('surname')
                     ->label('Фамилия')
                     ->rules([new CyrillicRule])
                     ->maxLength(40),
-                Forms\Components\TextInput::make('login')
+                TextInput::make('login')
                     ->label('Логин')
                     ->unique(ignoreRecord: true)
                     ->required()
@@ -72,7 +76,7 @@ class UserResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                     ]),
-                Forms\Components\Select::make('role')
+                Select::make('role')
                     ->label('Роль')
                     ->options(Role::class)
                     ->required()
@@ -80,7 +84,7 @@ class UserResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
                     ->native(false),
-                Forms\Components\TextInput::make('password')
+                TextInput::make('password')
                     ->label('Пароль')
                     ->password()
                     ->same('password_confirmation')
@@ -95,7 +99,7 @@ class UserResource extends Resource
                         'max' => 'Поле ":attribute" должно содержать не более 32 символов.',
                         'same' => 'Поле ":attribute" должно совпадать с полем "Подтверждение пароля".',
                     ]),
-                Forms\Components\TextInput::make('password_confirmation')
+                TextInput::make('password_confirmation')
                     ->label('Подтверждение пароля')
                     ->password()
                     ->revealable()
@@ -107,7 +111,7 @@ class UserResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\TextInput::make('vk_id')
+                TextInput::make('vk_id')
                     ->label('VK ID')
                     ->unique(ignoreRecord: true)
                     ->minLength(1)
@@ -128,57 +132,51 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Пользователи не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('filial.city.name')
+                TextColumn::make('filial.city.name')
                     ->label('Город')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('filial.address')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('filial.address')
                     ->label('Филиал')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('name')
                     ->label('Имя')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('surname')
+                TextColumn::make('surname')
                     ->label('Фамилия')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('login')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('login')
                     ->label('Логин')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('role')
+                TextColumn::make('role')
                     ->label('Роль')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('city')
+                SelectFilter::make('city')
                     ->label('Город')
                     ->relationship('filial.city', 'name')
                     ->native(false),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Пользователи не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

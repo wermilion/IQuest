@@ -3,13 +3,15 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages;
 
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource;
-use Filament\Actions;
 use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditBookingCertificate extends EditRecord
 {
     protected static string $resource = BookingCertificateResource::class;
+
+    protected ?string $heading = 'Редактирование заявки на сертификат';
 
     protected function getCancelFormAction(): Action
     {
@@ -20,7 +22,7 @@ class EditBookingCertificate extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()->modalHeading('Удаление заявки'),
         ];
     }
 }

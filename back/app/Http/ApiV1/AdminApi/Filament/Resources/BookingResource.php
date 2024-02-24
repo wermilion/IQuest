@@ -9,10 +9,18 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\CreateBooki
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\EditBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\ListBookings;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\RestoreAction;
+use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class BookingResource extends Resource
@@ -35,14 +43,14 @@ class BookingResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Имя')
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),
-                Forms\Components\TextInput::make('phone')
+                TextInput::make('phone')
                     ->label('Телефон')
                     ->required()
                     ->rules(['size:18'])
@@ -51,7 +59,7 @@ class BookingResource extends Resource
                         'required' => 'Поле ":attribute" обязательно.',
                         'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
-                Forms\Components\Select::make('type')
+                Select::make('type')
                     ->label('Тип заявки')
                     ->options(BookingType::class)
                     ->required()
@@ -60,7 +68,7 @@ class BookingResource extends Resource
                     ])
                     ->native(false)
                     ->disabledOn('edit'),
-                Forms\Components\Select::make('status')
+                Select::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class)
                     ->default(BookingStatus::NEW->getLabel())
@@ -75,67 +83,55 @@ class BookingResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Заявки не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label('ID')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Имя')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('name')
+                    ->label('Имя'),
+                TextColumn::make('phone')
                     ->label('Телефон')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Тип заявки')
-                    ->searchable(),
-                Tables\Columns\SelectColumn::make('status')
+                TextColumn::make('type')
+                    ->label('Тип заявки'),
+                SelectColumn::make('status')
                     ->options(BookingStatus::class)
                     ->label('Статус заявки')
-                    ->selectablePlaceholder(false)
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                    ->selectablePlaceholder(false),
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
+                TextColumn::make('deleted_at')
                     ->label('Дата удаления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make()
+                TrashedFilter::make()
                     ->native(false),
-                Tables\Filters\SelectFilter::make('type')
+                SelectFilter::make('type')
                     ->label('Тип заявки')
                     ->options(BookingType::class)
                     ->native(false),
-                Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class)
                     ->native(false),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make()
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Заявки не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление заявки'),
+                RestoreAction::make()->modalHeading('Восстановление заявки'),
+            ]);
     }
 
     public static function getPages(): array

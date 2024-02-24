@@ -3,13 +3,16 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages;
 
 use App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource;
-use Filament\Actions;
 use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+
 use Filament\Resources\Pages\EditRecord;
 
 class EditType extends EditRecord
 {
     protected static string $resource = TypeResource::class;
+
+    protected ?string $heading = 'Редактирование типа';
 
     protected function getCancelFormAction(): Action
     {
@@ -20,7 +23,7 @@ class EditType extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()->modalHeading('Удаление типа'),
         ];
     }
 }

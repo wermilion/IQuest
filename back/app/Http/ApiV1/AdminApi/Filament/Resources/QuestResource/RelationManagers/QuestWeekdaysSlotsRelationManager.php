@@ -3,10 +3,13 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers;
 
 use App\Http\ApiV1\AdminApi\Filament\Rules\TimeRule;
-use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class QuestWeekdaysSlotsRelationManager extends RelationManager
@@ -21,7 +24,7 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('time')
+                TextInput::make('time')
                     ->label('Время')
                     ->mask('99:99')
                     ->placeholder('00:00')
@@ -30,7 +33,7 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\TextInput::make('price')
+                TextInput::make('price')
                     ->label('Цена')
                     ->required()
                     ->numeric()
@@ -48,25 +51,22 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
             ->emptyStateHeading('Нет слотов')
             ->emptyStateDescription('Создать слот')
             ->columns([
-                Tables\Columns\TextColumn::make('time')
+                TextColumn::make('time')
                     ->label('Время')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('price')
+                TextColumn::make('price')
                     ->label('Цена')
                     ->sortable(),
             ])
             ->defaultSort('time')
-            ->filters([
-                //
-            ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->modalHeading('Создание слота')
                     ->createAnother(false),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->modalHeading('Изменить слот'),
-                Tables\Actions\DeleteAction::make()->modalHeading('Удалить слот'),
+                EditAction::make()->modalHeading('Изменить слот'),
+                DeleteAction::make()->modalHeading('Удалить слот'),
             ]);
     }
 }

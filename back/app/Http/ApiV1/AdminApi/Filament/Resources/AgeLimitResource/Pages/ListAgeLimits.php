@@ -10,6 +10,8 @@ class ListAgeLimits extends ListRecords
 {
     protected static string $resource = AgeLimitResource::class;
 
+    protected ?string $heading = 'Возрастные ограничения';
+
     protected function getHeaderActions(): array
     {
         return [

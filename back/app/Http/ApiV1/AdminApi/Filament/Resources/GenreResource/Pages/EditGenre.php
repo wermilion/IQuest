@@ -3,13 +3,15 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource\Pages;
 
 use App\Http\ApiV1\AdminApi\Filament\Resources\GenreResource;
-use Filament\Actions;
 use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditGenre extends EditRecord
 {
     protected static string $resource = GenreResource::class;
+
+    protected ?string $heading = 'Редактирование жанра';
 
     protected function getCancelFormAction(): Action
     {
@@ -20,7 +22,7 @@ class EditGenre extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()->modalHeading('Удаление жанра'),
         ];
     }
 }

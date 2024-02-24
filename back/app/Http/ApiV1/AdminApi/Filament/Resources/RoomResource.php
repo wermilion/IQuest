@@ -9,11 +9,15 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\CreateRoom;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\EditRoom;
 use App\Http\ApiV1\AdminApi\Filament\Resources\RoomResource\Pages\ListRooms;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 
@@ -33,23 +37,25 @@ class RoomResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('city')
+                Select::make('city')
                     ->label('Город')
+                    ->placeholder('Выберите город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
                     ->native(false)
                     ->hiddenOn(''),
-                Forms\Components\Select::make('filial_id')
-                    ->label('Адрес')
+                Select::make('filial_id')
+                    ->label('Филиал')
+                    ->placeholder('Выберите филиал')
                     ->options(fn(Get $get): Collection => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
-                    ->native(false)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ]),
-                Forms\Components\TextInput::make('name')
+                    ])
+                    ->native(false),
+                TextInput::make('name')
                     ->label('Название')
                     ->required()
                     ->maxLength(255)
@@ -62,48 +68,39 @@ class RoomResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Комнат не обнаружено')
             ->columns([
-                Tables\Columns\TextColumn::make('filial.city.name')
+                TextColumn::make('filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('filial.address')
-                    ->label('Адрес')
+                TextColumn::make('filial.address')
+                    ->label('Филиал')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Комната')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('name')
+                    ->label('Комната'),
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('filial.city.name')
             ->filters([
-                Tables\Filters\SelectFilter::make('city')
+                SelectFilter::make('city')
                     ->label('Город')
                     ->relationship('filial.city', 'name')
                     ->native(false),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Комнат не обнаружено');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

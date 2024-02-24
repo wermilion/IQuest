@@ -124,9 +124,6 @@ class BookingRelationManager extends RelationManager
                 TextColumn::make('comment')
                     ->label('Комментарий'),
             ])
-            ->filters([
-                //
-            ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->modalHeading('Прикрепить заявку')
@@ -159,11 +156,11 @@ class BookingRelationManager extends RelationManager
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value))
                     ->recordSelectSearchColumns(['id'])
-                    ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['activity_status' => false]))
+                    ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['is_active' => false]))
                     ->attachAnother(false),
                 Tables\Actions\CreateAction::make()
                     ->after(function (RelationManager $livewire, Booking $booking) {
-                        $livewire->ownerRecord->update(['activity_status' => false]);
+                        $livewire->ownerRecord->update(['is_active' => false]);
                         resolve(SendMessageBookingAction::class)->execute($booking);
                     })
                     ->createAnother(false),

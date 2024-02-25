@@ -82,9 +82,12 @@ const chips = computed(() => {
 
 <style scoped lang="scss">
 .info {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+
   max-width: 616px;
   max-height: 411px;
-  position: sticky;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

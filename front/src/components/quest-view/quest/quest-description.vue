@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import Arrow from '#/assets/svg/shared/arrow=default.svg?component'
 
-const description = 'ВАУ! Вы - команда крутейших барменов России выиграли стажировку в одном из самых популярных пабов Лондона! Он знаменит своим фирменным коктейлем, рецепт которого хранится в строжайшем секрете. После месяца вашей работы пришёл день, когда должно решиться - останетесь вы здесь, или вам придётся возвращаться обратно на родину. Совпало так, что в этот же вечер - день рождения местного бармена, с которым вы успели сильно подружиться... Вы выпили ВЕСЬ алкоголь, который был в пабе, попутно разбив телевизор и сломав вешалку. Проснувшись наутро, вы поняли, что если старший бармен увидит все это, то о работе здесь не будет и речи. Вам срочно нужно что-то придумать, ведь до его прихода остался час...'
+defineProps<{ description: string }>()
 
 const isExpanded = ref(false)
 
@@ -14,38 +15,61 @@ function toggleExpand() {
   <div class="description">
     <h3>Описание</h3>
     <div class="description-content">
-      <p class="body" :class="{ expanded: isExpanded }">
+      <p class="body" :class="{ extend: isExpanded }">
         {{ description }}
       </p>
-      <button @click="toggleExpand">
-        {{ isExpanded ? 'Свернуть' : 'Читать дальше' }}
-      </button>
+      <div class="read-more body pointer" :class="{ active: isExpanded }" @click="toggleExpand">
+        {{ isExpanded ? 'Свернуть' : 'Читать дальше' }} <Arrow />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.animate-text {
+  animation: textChange 0.25s ease-in-out;
+}
+
+@keyframes textChange {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.read-more {
+  width: max-content;
+  display: flex;
+  gap: $cover-8;
+  align-items: center;
+  transition: all 0.25s ease-in-out;
+  color: $color-opacity06;
+
+  :deep(svg){
+    transform: rotate(0);
+    transition: all 0.1s ease-in-out;
+    stroke-opacity:0.6;
+  }
+
+  &.active {
+    :deep(svg){
+    transform: rotate(180deg);
+  }
+  }
+}
+
 .description {
   display: flex;
   flex-direction: column;
   gap: $cover-12;
 
- .description-content {
+  &-content {
     p {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      transition: all 1s ease;
-    }
-
-    p.expanded {
-      -webkit-line-clamp: unset;
-      max-height: 1000px;
-    }
-
-    p:not(.expanded) {
-      -webkit-line-clamp: 3;
+      transition: all 0.25s ease-in-out;
       max-height: 84px;
+    }
+    p.extend {
+      max-height: 100%;
     }
   }
 }

@@ -20,10 +20,10 @@ defineProps<{
     </div>
     <div class="main-container">
       <div class="photo-description">
-        <QuestImages />
-        <QuestDescription />
+        <QuestImages :images="quest.imgaes" />
+        <QuestDescription :description="quest.description" />
       </div>
-      <QuestInfo :info="quest" />
+      <QuestInfo class="info-main" :info="quest" />
     </div>
   </section>
 </template>
@@ -44,6 +44,7 @@ defineProps<{
 }
 
 .main-container {
+  height: max-content;
   display: flex;
   justify-content: space-between;
 }

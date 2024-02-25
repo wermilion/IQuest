@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 
 const links = ref([
   {
-    name: "Квесты",
-    link: "/",
+    name: 'Квесты',
+    link: '/',
   },
   {
-    name: "Праздники",
-    link: "#",
+    name: 'Праздники',
+    link: '#',
   },
   {
-    name: "Сертификат",
-    link: "/",
+    name: 'Сертификат',
+    link: '/',
   },
   {
-    name: "Контакты",
-    link: "Contacts",
+    name: 'Контакты',
+    link: 'contacts',
   },
-]);
+])
 
-const isActive = ref(false);
-const isHoverActive = ref(false);
+const isActive = ref(false)
+const isHoverActive = ref(false)
 </script>
 
 <template>
   <header class="container-header">
     <div class="header">
       <router-link to="/">
-        <img src="/logo/logo.svg" alt="logo" />
+        <img src="/logo/logo.svg" alt="logo">
       </router-link>
       <div class="header-links">
         <router-link

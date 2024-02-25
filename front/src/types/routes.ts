@@ -1,7 +1,11 @@
 export enum EAppRouteNames {
-  Quests = 'Quests',
+  Home = 'Quests',
+  Quest = 'Quest',
+  Contacts = 'Contacts',
 }
 
 export enum EAppRoutePaths {
-  Quests = '/',
+  Home = '/',
+  Quest = '/quest/:id',
+  Contacts = '/contacts',
 }

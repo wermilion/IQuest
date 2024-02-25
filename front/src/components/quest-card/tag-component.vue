@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 
 interface Props {
-  name: string
+  name?: string
 }
 
 const props = defineProps<Props>()
@@ -49,7 +49,7 @@ watch(
 
 <template>
   <div class="tag">
-    <img v-if="showImage" loading="lazy" :src="imageSrc" :alt="props.name">
+    <img v-if="showImage" :src="imageSrc" :alt="props.name">
     <span class="smallFootnote">{{ props.name }}</span>
   </div>
 </template>

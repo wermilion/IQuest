@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import tag from './tag-component.vue'
+import { computed, ref } from 'vue'
+import Tag from './tag-component.vue'
+import { EAppRouteNames } from '#/types/routes'
+import type { Quest } from '#/types/models/quest'
+import router from '#/router'
 
 interface Props {
-  name: string
-  img: string
-  tags: string[]
-  minDescription?: string
-  time?: number
-  minPerson?: number
-  maxPerson?: number
-  link?: string
-
-  hoverActive: boolean
+  quest: Quest
+  isHover: boolean
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const hoverActive = ref(props.isHover)
+
+const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 </script>
 
 <template>
-  <div class="hover-container" :class="{ 'hover-active': hoverActive }">
+  <div class="hover-container poineter" :class="{ 'hover-active': hoverActive }">
     <div v-if="hoverActive" class="hover">
       <svg
         width="32"
@@ -36,30 +36,37 @@ defineProps<Props>()
         />
       </svg>
       <span class="hover-before footnote">
-        {{ minPerson }}-{{ maxPerson }} игрока
+        {{ quest.min_people }}-{{ quest.max_people }} игрока
       </span>
     </div>
-    <router-link
-      :to="link ? link : '/'"
+    <div
       class="card"
-      :class="{ 'no-pointer': !link, 'hoverActive': hoverActive }"
+      :class="{ hoverActive }"
+      @click="router.push({ name: EAppRouteNames.Quest, params: { id: quest.id } })"
     >
       <div class="card-image">
-        <img loading="lazy" :src="`/quest-photo/${img}.png`" :alt="img">
+        <img
+          loading="lazy"
+          :src="`/quest-photo/${quest.cover}.png`"
+          :alt="quest.cover"
+        >
       </div>
 
       <div class="card-body">
-        <span class="bodyBold">{{ name }}</span>
+        <span class="bodyBold">{{ quest.name }}</span>
         <div class="card-body__tags">
-          <tag v-for="element in tags" :key="element" :name="element" />
+          <Tag v-for="tag in tags" :key="tag" :name="tag" />
         </div>
-        <p v-if="minDescription" class="card-body__description footnote">
-          {{ minDescription }}
+        <p
+          v-if="quest.short_description"
+          class="card-body__description footnote"
+        >
+          {{ quest.short_description }}
         </p>
       </div>
-    </router-link>
+    </div>
     <div v-if="hoverActive" class="hover">
-      <span class="hover-after footnote"> {{ time }} мин </span>
+      <span class="hover-after footnote"> {{ quest.duration }} мин </span>
       <svg
         width="32"
         height="400"
@@ -106,6 +113,7 @@ defineProps<Props>()
   }
 
   &-body {
+    max-height: 152px;
     background: $color-opacity004;
     backdrop-filter: blur(50px);
     padding: $cover-24;

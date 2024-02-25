@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import card from '#/components/card/card-component.vue'
-
-const lounge = ref({
-  name: 'Лаунж зона',
-  img: 'lounge',
-  tags: ['600р/30 мин • 1000р/1 час'],
-
-  hoverActive: false,
-})
+import PhoneNumber from '#/components/shared/phone-number.vue'
 
 const items = ref([
   {
@@ -44,10 +36,7 @@ const items = ref([
       <h2>Доп услуги</h2>
       <div class="add-services__info">
         <div class="add-services__info-header d-flex">
-          <span class="body">
-            <img src="/icons/phone.svg" alt="phone">
-            <p>94-29-10</p>
-          </span>
+          <PhoneNumber />
           <span class="footnote">подробности у нашего оператора</span>
         </div>
         <div class="add-services__info-list">
@@ -62,12 +51,13 @@ const items = ref([
         </div>
       </div>
     </div>
-    <card v-bind="lounge" />
+    <!-- <Card v-bind="lounge" /> -->
   </section>
 </template>
 
 <style scoped lang="scss">
 .add-services {
+  max-width: 1264px;
   width: 100%;
   display: inline-flex;
   padding: $cover-40;

@@ -5,20 +5,31 @@ import { EAppRouteNames, EAppRoutePaths } from '#/types/routes'
 
 import { useGlobalStore } from '#/stores/common/global.store'
 
-const Quests = () => import('#/views/quests-view.vue')
+const Home = () => import('#/views/home.vue')
+const Quest = () => import('#/views/quest.vue')
+const Contacts = () => import('#/views/contacts.vue')
 
 const routes: RouteRecordRaw[] = [
   {
-    path: EAppRoutePaths.Quests,
-    name: EAppRouteNames.Quests,
-    component: Quests,
+    path: EAppRoutePaths.Home,
+    name: EAppRouteNames.Home,
+    component: Home,
+  },
+  {
+    path: EAppRoutePaths.Quest,
+    name: EAppRouteNames.Quest,
+    component: Quest,
+  },
+  {
+    path: EAppRoutePaths.Contacts,
+    name: EAppRouteNames.Contacts,
+    component: Contacts,
   },
 ]
 
 const router: Router = createRouter({
   history: createWebHistory(),
   routes,
-
 })
 
 router.beforeEach(

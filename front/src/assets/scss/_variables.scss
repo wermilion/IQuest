@@ -1,4 +1,5 @@
 $color-primary: #7422d4;
+$color-light-primary: #8B41DE;
 $color-secondary: #333682;
 $color-gradient: linear-gradient(88deg, #7422d4 0%, #d641dd 99.91%);
 
@@ -16,15 +17,22 @@ $color-opacity025: #ffffff40;
 
 $color-base2: #ffffff;
 $color-opacity06: #ffffff99;
+$color-opacity012: #FFFFFF1F;
 $color-opacity004: #ffffff0a;
 
+
 $hover-animation: all 0.3s cubic-bezier(0, 0, 0.58, 1);
+$hover-anim-btn: all 0.150s ease-in-out;
 
 $cover-2: 2px;
 $cover-4: 4px;
 $cover-8: 8px;
 $cover-12: 12px;
+$cover-16: 16px;
+$cover-20: 20px;
 $cover-24: 24px;
 $cover-32: 32px;
 $cover-36: 36px;
 $cover-40: 40px;
+$cover-48: 48px;
+$cover-64: 64px;

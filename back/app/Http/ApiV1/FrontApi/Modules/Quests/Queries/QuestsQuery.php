@@ -19,7 +19,6 @@ class QuestsQuery extends QueryBuilder
             'age_limit',
             'room.filial',
             'images',
-            'scheduleQuests',
         ]);
 
         $this->allowedFilters([

@@ -14,8 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name Название пакета
  * @property string $description Описание пакета
  * @property float $price Цена пакета
- * @property int $min_people Минимальное количество людей
- * @property int $max_people Максимальное количество людей
  * @property bool $is_active Статус отображения
  * @property int $sequence_number Порядковый номер пакета
  *
@@ -30,8 +28,6 @@ class Package extends Model
         'name',
         'description',
         'price',
-        'min_people',
-        'max_people',
         'is_active',
         'sequence_number',
     ];

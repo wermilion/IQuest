@@ -2,8 +2,10 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\RelationManagers;
 
+use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
+use App\Domain\Bookings\Models\Booking;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -122,9 +124,6 @@ class BookingRelationManager extends RelationManager
                 TextColumn::make('comment')
                     ->label('Комментарий'),
             ])
-            ->filters([
-                //
-            ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->modalHeading('Прикрепить заявку')
@@ -157,10 +156,13 @@ class BookingRelationManager extends RelationManager
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value))
                     ->recordSelectSearchColumns(['id'])
-                    ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['activity_status' => false]))
+                    ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['is_active' => false]))
                     ->attachAnother(false),
                 Tables\Actions\CreateAction::make()
-                    ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['activity_status' => false]))
+                    ->after(function (RelationManager $livewire, Booking $booking) {
+                        $livewire->ownerRecord->update(['is_active' => false]);
+                        resolve(SendMessageBookingAction::class)->execute($booking);
+                    })
                     ->createAnother(false),
             ])
             ->actions([

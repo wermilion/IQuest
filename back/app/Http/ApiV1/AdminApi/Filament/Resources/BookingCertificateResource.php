@@ -5,12 +5,15 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\BookingCertificate;
-use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\CreateBookingCertificate;
+use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\EditBookingCertificate;
+use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\ListBookingCertificates;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -26,8 +29,6 @@ class BookingCertificateResource extends Resource
 
     protected static ?string $navigationLabel = 'Заявки на сертификаты';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
     protected static ?string $navigationGroup = NavigationGroup::BOOKING->value;
 
     protected static ?int $navigationSort = 5;
@@ -38,6 +39,7 @@ class BookingCertificateResource extends Resource
             ->schema([
                 Select::make('booking_id')
                     ->label('ID заявки')
+                    ->placeholder('Выберите ID заявки')
                     ->live()
                     ->relationship('booking',
                         'id',
@@ -47,6 +49,7 @@ class BookingCertificateResource extends Resource
                     ->native(false),
                 Select::make('certificate_type_id')
                     ->label('Тип сертификата')
+                    ->placeholder('Выберите тип сертификата')
                     ->relationship('certificateType', 'name')
                     ->native(false),
             ]);
@@ -55,6 +58,7 @@ class BookingCertificateResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Заявки на сертификаты не обнаружены')
             ->columns([
                 TextColumn::make('booking.id')
                     ->label('ID'),
@@ -71,35 +75,19 @@ class BookingCertificateResource extends Resource
                     ->label('Статус')
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
-
-            ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make()
-                    ->native(false),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Заявки на сертификаты не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление заявки'),
+            ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBookingCertificates::route('/'),
-            'create' => Pages\CreateBookingCertificate::route('/create'),
-            'edit' => Pages\EditBookingCertificate::route('/{record}/edit'),
+            'index' => ListBookingCertificates::route('/'),
+            'create' => CreateBookingCertificate::route('/create'),
+            'edit' => EditBookingCertificate::route('/{record}/edit'),
         ];
     }
 }

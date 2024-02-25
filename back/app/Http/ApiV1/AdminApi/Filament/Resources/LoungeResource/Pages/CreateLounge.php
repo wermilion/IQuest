@@ -8,4 +8,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateLounge extends CreateRecord
 {
     protected static string $resource = LoungeResource::class;
+
+    protected ?string $heading = 'Создание лаунжа';
 }

@@ -4,7 +4,8 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages;
 
 use App\Domain\Locations\Models\Room;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditQuest extends EditRecord
@@ -23,10 +24,16 @@ class EditQuest extends EditRecord
         return $data;
     }
 
+    protected function getCancelFormAction(): Action
+    {
+        return parent::getCancelFormAction()
+            ->url(static::getResource()::getUrl());
+    }
+
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()->modalHeading('Удаление квеста'),
         ];
     }
 }

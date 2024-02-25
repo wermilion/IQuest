@@ -10,7 +10,10 @@ use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class FilialResource extends Resource
@@ -21,8 +24,6 @@ class FilialResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Филиалы';
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
-
     protected static ?string $navigationGroup = NavigationGroup::LOCATIONS->value;
 
     public static function form(Form $form): Form
@@ -31,6 +32,7 @@ class FilialResource extends Resource
             ->schema([
                 Forms\Components\Select::make('city_id')
                     ->label('Город')
+                    ->placeholder('Выберите город')
                     ->relationship('city', 'name')
                     ->required()
                     ->validationMessages([
@@ -57,44 +59,35 @@ class FilialResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Филиалы не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('city.name')
+                TextColumn::make('city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('address')
-                    ->label('Адрес')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('address')
+                    ->label('Филиал'),
+                TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Дата обновления')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('city.name')
             ->filters([
-                Tables\Filters\SelectFilter::make('city')
+                SelectFilter::make('city')
                     ->label('Город')
                     ->relationship('city', 'name')
                     ->native(false),
-            ], layout: Tables\Enums\FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Пользователи не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

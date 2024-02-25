@@ -10,6 +10,8 @@ class ListScheduleQuests extends ListRecords
 {
     protected static string $resource = ScheduleQuestResource::class;
 
+    protected ?string $heading = 'Расписание квестов';
+
     protected function getHeaderActions(): array
     {
         return [

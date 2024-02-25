@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Quests\Models\Quest;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +13,7 @@ return new class extends Migration {
         Schema::create('quest_weekdays_slots', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignIdFor(Quest::class)->comment('Квест')->constrained();
+            $table->foreignId('quest_id')->comment('Квест')->constrained(table: 'quests');
             $table->time('time')->comment('Время');
             $table->decimal('price')->comment('Цена');
 

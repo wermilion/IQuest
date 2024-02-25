@@ -22,11 +22,4 @@ class EditScheduleQuest extends EditRecord
 
         return $data;
     }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-
-        ];
-    }
 }

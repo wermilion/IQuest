@@ -14,13 +14,12 @@ class QuestsQuery extends QueryBuilder
         parent::__construct(Quest::query());
 
         $this->allowedIncludes([
-            'scheduleQuests',
-            'room.filial',
             'type',
             'genre',
-            'level',
             'age_limit',
-            'images'
+            'room.filial',
+            'images',
+            'scheduleQuests',
         ]);
 
         $this->allowedFilters([
@@ -32,7 +31,6 @@ class QuestsQuery extends QueryBuilder
             AllowedSort::field('sequence_number'),
             AllowedSort::field('type', 'type_id'),
             AllowedSort::field('genre', 'genre_id'),
-            AllowedSort::field('level', 'level_id'),
             AllowedSort::field('age_limit', 'age_limit_id'),
         ]);
 

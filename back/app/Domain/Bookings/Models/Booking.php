@@ -2,6 +2,7 @@
 
 namespace App\Domain\Bookings\Models;
 
+use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Schedules\Models\ScheduleLounge;
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read  BookingScheduleLounge $bookingScheduleLounge
  * @property-read  ScheduleQuest $scheduleQuests
  * @property-read  ScheduleLounge $scheduleLounges
+ * @property-read  ScheduleLounge $scheduleLounge
  * @property-read  BookingHoliday $bookingHoliday
  * @property-read  BookingCertificate $bookingCertificate
  */
@@ -47,10 +49,16 @@ class Booking extends Model
 
     protected static function booted(): void
     {
+        static::created(function (self $model) {
+            if ($model->type->value == BookingType::LOUNGE->value) {
+                resolve(SendMessageBookingAction::class)->execute($model);
+            }
+        });
+
         static::updated(function (self $model) {
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
                 if ($model->type->value == BookingType::QUEST->value) {
-                    $model->scheduleQuests()->update(['activity_status' => true]);
+                    $model->scheduleQuests()->update(['is_active' => true]);
                 }
                 $model->delete();
             }
@@ -58,56 +66,36 @@ class Booking extends Model
 
         static::deleting(function (self $model) {
             if ($model->scheduleQuests()->exists()) {
-                $model->scheduleQuests()->update(['activity_status' => true]);
-            }
-            if ($model->bookingScheduleQuest()->exists()) {
-                $model->bookingScheduleQuest()->forceDelete();
-            }
-            if ($model->bookingScheduleLounge()->exists()) {
-                $model->bookingScheduleLounge()->forceDelete();
-            }
-            if ($model->bookingHoliday()->exists()) {
-                $model->bookingHoliday()->forceDelete();
-            }
-            if ($model->bookingCertificate()->exists()) {
-                $model->bookingCertificate()->forceDelete();
-            }
-        });
-
-        static::restoring(function (self $model) {
-            if ($model->bookingScheduleQuest()->exists()) {
-                $model->bookingScheduleQuest()->restore();
-            }
-            if ($model->bookingScheduleLounge()->exists()) {
-                $model->bookingScheduleLounge()->restore();
-            }
-            if ($model->bookingHoliday()->exists()) {
-                $model->bookingHoliday()->restore();
-            }
-            if ($model->bookingCertificate()->exists()) {
-                $model->bookingCertificate()->restore();
+                $model->scheduleQuests()->update(['is_active' => true]);
+                $model->bookingScheduleQuest()->delete();
+            } else if ($model->bookingScheduleLounge()->exists()) {
+                $model->bookingScheduleLounge()->delete();
+            } else if ($model->bookingHoliday()->exists()) {
+                $model->bookingHoliday()->delete();
+            } else if ($model->bookingCertificate()->exists()) {
+                $model->bookingCertificate()->delete();
             }
         });
     }
 
     public function bookingScheduleQuest(): HasOne
     {
-        return $this->hasOne(BookingScheduleQuest::class)->withTrashed();
+        return $this->hasOne(BookingScheduleQuest::class);
     }
 
     public function bookingScheduleLounge(): HasOne
     {
-        return $this->hasOne(BookingScheduleLounge::class)->withTrashed();
+        return $this->hasOne(BookingScheduleLounge::class);
     }
 
     public function bookingHoliday(): HasOne
     {
-        return $this->hasOne(BookingHoliday::class)->withTrashed();
+        return $this->hasOne(BookingHoliday::class);
     }
 
     public function bookingCertificate(): HasOne
     {
-        return $this->hasOne(BookingCertificate::class)->withTrashed();
+        return $this->hasOne(BookingCertificate::class);
     }
 
     public function scheduleQuests(): BelongsToMany

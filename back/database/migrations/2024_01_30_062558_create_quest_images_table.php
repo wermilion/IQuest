@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Quests\Models\Quest;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +14,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->string('image')->comment('Путь к картинке');
-            $table->foreignIdFor(Quest::class)->comment('Квест')->constrained();
+            $table->foreignId('quest_id')->comment('Квест')->constrained(table: 'quests');
 
             $table->timestamps();
         });

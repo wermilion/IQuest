@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Locations\Models\Filial;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +20,7 @@ return new class extends Migration {
             $table->decimal('min_price')->comment('Минимальная цена');
             $table->boolean('is_active')->comment('Статус активности на сайте');
 
-            $table->foreignIdFor(Filial::class)->comment('Филиал лаундж-зоны')->constrained();
+            $table->foreignId('filial_id')->comment('Филиал лаундж-зоны')->constrained(table: 'filials');
 
             $table->timestamps();
         });

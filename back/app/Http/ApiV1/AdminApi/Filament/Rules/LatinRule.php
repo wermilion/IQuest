@@ -11,12 +11,12 @@ class LatinRule implements ValidationRule
     /**
      * Run the validation rule.
      *
-     * @param \Closure(string): PotentiallyTranslatedString $fail
+     * @param Closure(string): PotentiallyTranslatedString $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/[a-zA-Z]/u', $value)) {
-            $fail('Поле ":attribute" должно содержать только латиницу.');
+        if (!preg_match('/^[a-zA-Z0-9\.\-_@!#$%^&*(){}?><,;:\'"\/\\\|`~]+$/', $value)) {
+            $fail('Поле ":attribute" должно содержать только латиницу и спец. символы.');
         }
     }
 }

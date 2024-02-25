@@ -11,6 +11,10 @@ class CitiesQuery extends QueryBuilder
     {
         parent::__construct(City::query());
 
+        $this->allowedSorts([
+            'name'
+        ]);
+
         $this->defaultSort('name');
     }
 }

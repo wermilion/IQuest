@@ -2,12 +2,11 @@
 
 namespace App\Domain\Bookings\Models;
 
+use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Holidays\Models\HolidayPackage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class BookingHoliday
@@ -15,25 +14,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id Идентификатор заявки на праздник
  * @property int $booking_id Идентификатор бронирования
  * @property int $holiday_package_id Идентификатор пакета праздника
- * @property int $count_participants Количество участников
- * @property int $price Цена
+ * @property string|null $comment Комментарий
  *
  * @property-read Booking $booking Бронирование
  * @property-read HolidayPackage $holidayPackage Пакет праздника
  */
 class BookingHoliday extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'booking_id',
         'holiday_package_id',
-        'count_participants',
-        'price',
+        'comment',
     ];
 
     protected static function booted(): void
     {
+        static::created(function (self $model) {
+            resolve(SendMessageBookingAction::class)->execute($model->booking);
+        });
+
         static::deleting(function (self $model) {
             $model->booking()->delete();
         });

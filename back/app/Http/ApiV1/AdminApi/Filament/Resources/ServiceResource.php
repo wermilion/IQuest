@@ -3,16 +3,18 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Services\Models\Service;
-use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\CreateService;
+use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\EditService;
+use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\ListServices;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class ServiceResource extends Resource
@@ -44,8 +46,10 @@ class ServiceResource extends Resource
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
+                    ->maxLength(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 TextInput::make('price')
                     ->label('Цена')
@@ -57,8 +61,10 @@ class ServiceResource extends Resource
                 TextInput::make('unit')
                     ->label('Единица измерения')
                     ->required()
+                    ->maxLength(20)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ])
             ]);
     }
@@ -88,7 +94,7 @@ class ServiceResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('city_id')
+                SelectFilter::make('city_id')
                     ->label('Город')
                     ->relationship('city', 'name')
                     ->native(false),
@@ -99,19 +105,12 @@ class ServiceResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListServices::route('/'),
-            'create' => Pages\CreateService::route('/create'),
-            'edit' => Pages\EditService::route('/{record}/edit'),
+            'index' => ListServices::route('/'),
+            'create' => CreateService::route('/create'),
+            'edit' => EditService::route('/{record}/edit'),
         ];
     }
 }

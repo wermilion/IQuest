@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('status')->comment('Статус заявки');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

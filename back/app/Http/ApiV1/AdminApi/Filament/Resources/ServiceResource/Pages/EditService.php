@@ -3,8 +3,8 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages;
 
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource;
-use Filament\Actions;
 use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditService extends EditRecord
@@ -22,8 +22,7 @@ class EditService extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()
-                ->modalHeading('Удалить услугу'),
+            DeleteAction::make()->modalHeading('Удалить услугу'),
         ];
     }
 }

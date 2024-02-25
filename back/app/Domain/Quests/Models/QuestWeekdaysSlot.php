@@ -39,7 +39,7 @@ class QuestWeekdaysSlot extends Model
                         'date' => $currentDate->format('Y-m-d'),
                         'time' => $slot->time,
                         'price' => $slot->price,
-                        'activity_status' => true,
+                        'is_active' => true,
                         'quest_id' => $slot->quest_id,
                     ]);
                 }

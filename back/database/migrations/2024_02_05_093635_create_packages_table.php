@@ -14,11 +14,10 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->string('name')->comment('Название пакета');
-            $table->string('description')->comment('Описание пакета');
+            $table->text('description')->comment('Описание пакета');
             $table->decimal('price')->comment('Цена пакета');
-            $table->unsignedInteger('min_people')->comment('Минимальное количество людей');
-            $table->unsignedInteger('max_people')->comment('Максимальное количество людей');
             $table->boolean('is_active')->comment('Активность пакетa');
+            $table->unsignedInteger('sequence_number')->comment('Порядковый номер пакета');
 
             $table->timestamps();
         });

@@ -1,7 +1,5 @@
 <?php
 
-use App\Domain\Bookings\Models\Booking;
-use App\Domain\Certificates\Models\CertificateType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,10 +13,11 @@ return new class extends Migration {
         Schema::create('booking_certificates', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignIdFor(Booking::class)->comment('Идентификатор бронирования')->constrained()
+            $table->foreignId('booking_id')->comment('Идентификатор бронирования')->constrained(table: 'bookings')
                 ->cascadeOnDelete();
-            $table->foreignIdFor(CertificateType::class)->comment('Идентификатор типа сертификата')->constrained();
-            
+            $table->foreignId('certificate_type_id')->comment('Идентификатор типа сертификата')
+                ->constrained(table: 'certificate_types');
+
             $table->timestamps();
         });
     }

@@ -1,7 +1,5 @@
 <?php
 
-use App\Domain\Bookings\Models\Booking;
-use App\Domain\Holidays\Models\HolidayPackage;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,13 +13,12 @@ return new class extends Migration {
         Schema::create('booking_holidays', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignIdFor(Booking::class)->comment('Бронирование')->constrained();
-            $table->foreignIdFor(HolidayPackage::class)->comment('Тип праздника и пакет')->constrained();
-            $table->unsignedTinyInteger('count_participants')->comment('Количество участников');
-            $table->decimal('price')->comment('Цена');
+            $table->foreignId('booking_id')->comment('Бронирование')->constrained(table: 'bookings');
+            $table->foreignId('holiday_package_id')->comment('Тип праздника и пакет')->constrained(table: 'holiday_packages');
+
+            $table->string('comment')->nullable()->comment('Комментарий');
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

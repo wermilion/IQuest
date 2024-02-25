@@ -23,7 +23,7 @@ class CreateBookingAction
                 'booking_id' => $booking->id
             ]);
         }
-
+        
         return $booking;
     }
 
@@ -37,7 +37,6 @@ class CreateBookingAction
         unset($data['holiday']['holiday_id'], $data['holiday']['package_id']);
 
         $booking->bookingHoliday()->create([
-            ...$data['holiday'],
             'booking_id' => $booking->id,
             'holiday_package_id' => $holidayPackagedId,
         ]);

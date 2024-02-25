@@ -2,10 +2,15 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers;
 
-use Filament\Forms;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Table;
 
 class PackagesRelationManager extends RelationManager
@@ -20,14 +25,14 @@ class PackagesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Название')
                     ->required()
                     ->maxLength(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\TextInput::make('price')
+                TextInput::make('price')
                     ->label('Цена')
                     ->required()
                     ->numeric()
@@ -36,42 +41,24 @@ class PackagesRelationManager extends RelationManager
                         'required' => 'Поле ":attribute" обязательно.',
                         'min' => 'Поле ":attribute" должно быть больше или равно 1.',
                     ]),
-                Forms\Components\TextInput::make('min_people')
-                    ->label('Мин. кол-во людей')
-                    ->live()
-                    ->numeric()
+                TextInput::make('sequence_number')
+                    ->label('Порядковый номер')
                     ->required()
-                    ->minValue('1')
+                    ->numeric()
+                    ->minValue(1)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                         'min' => 'Поле ":attribute" должно быть больше или равно 1.',
                     ]),
-                Forms\Components\TextInput::make('max_people')
-                    ->label('Макс. кол-во людей')
-                    ->numeric()
-                    ->required()
-                    ->minValue(fn(Forms\Get $get) => $get('min_people'))
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во людей".',
-                    ]),
-                Forms\Components\RichEditor::make('description')
+                RichEditor::make('description')
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\Toggle::make('is_active')
+                Toggle::make('is_active')
                     ->label('Отображение на сайте'),
-                Forms\Components\TextInput::make('sequence_number')
-                    ->label('Порядковый номер')
-                    ->numeric()
-                    ->required()
-                    ->minValue(1)
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательно.',
-                    ])
             ]);
     }
 
@@ -80,6 +67,7 @@ class PackagesRelationManager extends RelationManager
         return $table
             ->heading('Пакеты')
             ->recordTitleAttribute('name')
+            ->emptyStateHeading('Пакеты не обнаружены')
             ->columns([
                 Tables\Columns\TextColumn::make('sequence_number')
                     ->label('Порядковый номер')
@@ -90,27 +78,17 @@ class PackagesRelationManager extends RelationManager
                     ->label('Цена')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('min_people')
-                    ->label('Мин. кол-во человек')
-                    ->numeric(),
-                Tables\Columns\TextColumn::make('max_people')
-                    ->label('Макс. кол-во человек')
-                    ->numeric(),
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Отображение на сайте')
                     ->sortable(),
             ])
             ->defaultSort('sequence_number')
-            ->filters([
-                //
-            ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->emptyStateHeading('Пакеты не обнаружены');
+                EditAction::make(),
+                DeleteAction::make(),
+            ]);
     }
 }

@@ -6,15 +6,18 @@ use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Domain\Bookings\Models\BookingHoliday;
 use App\Domain\Holidays\Models\Holiday;
-use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\CreateBookingHoliday;
+use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
+use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\ListBookingHolidays;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Filament\Actions\RestoreAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class BookingHolidayResource extends Resource
@@ -26,8 +29,6 @@ class BookingHolidayResource extends Resource
     protected static ?string $pluralModelLabel = 'Заявки на праздники';
 
     protected static ?string $navigationLabel = 'Заявки на праздники';
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = NavigationGroup::BOOKING->value;
 
@@ -45,6 +46,9 @@ class BookingHolidayResource extends Resource
                         ->pluck('id', 'id'))
                     ->searchable()
                     ->native(false),
+                TextInput::make('comment')
+                    ->label('Комментарий')
+                    ->maxLength(255),
                 Select::make('holiday')
                     ->label('Тип праздника')
                     ->live()
@@ -56,7 +60,6 @@ class BookingHolidayResource extends Resource
                     ->native(false),
                 Select::make('package')
                     ->label('Пакет')
-                    ->live()
                     ->options(fn(Get $get) => Holiday::query()
                         ->find($get('holiday'))
                         ?->packages
@@ -66,75 +69,40 @@ class BookingHolidayResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->native(false),
-                TextInput::make('count_participants')
-                    ->label('Количество участников')
-                    ->numeric()
-                    ->minValue(1)
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно быть больше нуля.',
-                        'numeric' => 'Поле ":attribute" должно быть числом.',
-                    ]),
-                TextInput::make('price')
-                    ->label('Стоимость')
-                    ->numeric()
-                    ->minValue(1)
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно быть больше нуля.',
-                        'numeric' => 'Поле ":attribute" должно быть числом.',
-                    ])
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Заявок на праздники не обнаружено')
             ->columns([
-                Tables\Columns\TextColumn::make('booking.id')
+                TextColumn::make('booking.id')
                     ->label('ID'),
-                Tables\Columns\TextColumn::make('booking.name')
+                TextColumn::make('booking.name')
                     ->label('Имя'),
-                Tables\Columns\TextColumn::make('booking.phone')
+                TextColumn::make('booking.phone')
                     ->label('Телефон'),
-                Tables\Columns\TextColumn::make('holidayPackage.holiday.type')
+                TextColumn::make('holidayPackage.holiday.type')
                     ->label('Тип праздника'),
-                Tables\Columns\TextColumn::make('holidayPackage.package.name')
+                TextColumn::make('holidayPackage.package.name')
                     ->label('Пакет'),
-                Tables\Columns\TextColumn::make('count_participants')
-                    ->label('Количество участников'),
-                Tables\Columns\TextColumn::make('price')
-                    ->label('Стоимость'),
-            ])
-            ->filters([
-                Tables\Filters\TrashedFilter::make()
-                    ->native(false),
+                TextColumn::make('comment')
+                    ->label('Комментарий')
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-            ])
-            ->bulkActions([
-            ])
-            ->emptyStateHeading('Заявок на праздники не обнаружено');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление заявки'),
+            ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBookingHolidays::route('/'),
-            'create' => Pages\CreateBookingHoliday::route('/create'),
-            'edit' => Pages\EditBookingHoliday::route('/{record}/edit'),
+            'index' => ListBookingHolidays::route('/'),
+            'create' => CreateBookingHoliday::route('/create'),
+            'edit' => EditBookingHoliday::route('/{record}/edit'),
         ];
     }
 }

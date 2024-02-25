@@ -1,10 +1,5 @@
 <?php
 
-use App\Domain\Locations\Models\Room;
-use App\Domain\Quests\Models\AgeLimit;
-use App\Domain\Quests\Models\Genre;
-use App\Domain\Quests\Models\Level;
-use App\Domain\Quests\Models\Type;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,23 +16,19 @@ return new class extends Migration {
             $table->string('name')->comment('Название квеста');
             $table->string('slug')->comment('Сокращенное имя квеста');
             $table->text('description')->comment('Описание квеста');
+            $table->text('short_description')->comment('Краткое описание квеста');
             $table->string('cover')->comment('Обложка квеста');
-            $table->decimal('min_price')->comment('Минимальная цена квеста');
-            $table->decimal('late_price')->comment('Цена для ночного посещения квеста');
             $table->integer('min_people')->comment('Минимальное кол-во людей');
             $table->integer('max_people')->comment('Максимальное кол-во людей');
             $table->integer('duration')->comment('Продолжительность квеста');
-            $table->boolean('can_add_time')->comment('Можно ли добавить время');
+            $table->integer('level')->comment('Уровень сложности');
             $table->boolean('is_active')->comment('Статус активности отображения на сайте');
             $table->integer('sequence_number')->comment('Порядковый номер квеста');
-            $table->string('weekdays')->comment('Расписание по будням');
-            $table->string('weekend')->comment('Расписание по выходным');
 
-            $table->foreignIdFor(Room::class)->comment('Адрес квеста')->constrained();
-            $table->foreignIdFor(Type::class)->comment('Тип квеста')->constrained();
-            $table->foreignIdFor(Genre::class)->comment('Жанр квеста')->constrained();
-            $table->foreignIdFor(AgeLimit::class)->comment('Возрастное ограничение квеста')->constrained();
-            $table->foreignIdFor(Level::class)->comment('Уровень сложности квеста')->constrained();
+            $table->foreignId('room_id')->comment('Адрес квеста')->constrained(table: 'rooms');
+            $table->foreignId('type_id')->comment('Тип квеста')->constrained(table: 'types');
+            $table->foreignId('genre_id')->comment('Жанр квеста')->constrained(table: 'genres');
+            $table->foreignId('age_limit_id')->comment('Возрастное ограничение квеста')->constrained(table: 'age_limits');
 
             $table->timestamps();
         });

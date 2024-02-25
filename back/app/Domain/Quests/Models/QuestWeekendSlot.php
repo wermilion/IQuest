@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
+/**
+ * Class QuestWeekendSlot
+ *
+ * @property int $id - Идентификатор
+ * @property int $quest_id - Идентификатор квеста
+ * @property string $time - Время
+ * @property float $price - Цена
+ *
+ * @property-read Quest $quest
+ */
 class QuestWeekendSlot extends Model
 {
     use HasFactory;
@@ -29,7 +39,7 @@ class QuestWeekendSlot extends Model
                         'date' => $currentDate->format('Y-m-d'),
                         'time' => $slot->time,
                         'price' => $slot->price,
-                        'activity_status' => true,
+                        'is_active' => true,
                         'quest_id' => $slot->quest_id,
                     ]);
                 }

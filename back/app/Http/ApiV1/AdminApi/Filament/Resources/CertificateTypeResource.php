@@ -3,12 +3,15 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Certificates\Models\CertificateType;
-use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
+use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
+use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ListCertificateTypes;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -29,6 +32,7 @@ class CertificateTypeResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
+                    ->autofocus()
                     ->label('Название')
                     ->required()
                     ->maxLength(255)
@@ -57,6 +61,7 @@ class CertificateTypeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('Сертификаты не обнаружены')
             ->columns([
                 TextColumn::make('name')
                     ->label('Название'),
@@ -75,29 +80,18 @@ class CertificateTypeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('price')
-            ->filters([
-                //
-            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->emptyStateHeading('Сертификаты не обнаружены');
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
+                EditAction::make(),
+                DeleteAction::make(),
+            ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCertificateTypes::route('/'),
-            'create' => Pages\CreateCertificateType::route('/create'),
-            'edit' => Pages\EditCertificateType::route('/{record}/edit'),
+            'index' => ListCertificateTypes::route('/'),
+            'create' => CreateCertificateType::route('/create'),
+            'edit' => EditCertificateType::route('/{record}/edit'),
         ];
     }
 }

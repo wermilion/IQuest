@@ -14,7 +14,7 @@ class ScheduleQuestsQuery extends QueryBuilder
         parent::__construct(ScheduleQuest::query());
 
         $this->allowedIncludes([
-            'quest'
+            'timeslots'
         ]);
 
         $this->allowedFilters([
@@ -40,7 +40,6 @@ class ScheduleQuestsQuery extends QueryBuilder
 
         $this->defaultSorts([
             'date',
-            'time',
         ]);
     }
 }

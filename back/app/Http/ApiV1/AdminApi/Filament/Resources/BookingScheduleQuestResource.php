@@ -62,23 +62,23 @@ class BookingScheduleQuestResource extends Resource
                     ->label('Телефон')
                     ->numeric()
                     ->searchable(),
-                TextColumn::make('scheduleQuest.quest.filial.city.name')
+                TextColumn::make('timeslot.scheduleQuest.quest.filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('scheduleQuest.quest.filial.address')
+                TextColumn::make('timeslot.scheduleQuest.quest.filial.address')
                     ->label('Адрес')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('scheduleQuest.quest.name')
+                TextColumn::make('timeslot.scheduleQuest.quest.name')
                     ->label('Квест')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('scheduleQuest.date')
+                TextColumn::make('timeslot.scheduleQuest.date')
                     ->label('Дата')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('scheduleQuest.time')
+                TextColumn::make('timeslot.time')
                     ->label('Время')
                     ->numeric(),
                 SelectColumn::make('booking.status')

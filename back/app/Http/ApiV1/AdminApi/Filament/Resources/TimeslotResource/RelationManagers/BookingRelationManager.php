@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\RelationManagers;
+namespace App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\RelationManagers;
 
 use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;

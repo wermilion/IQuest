@@ -14,11 +14,9 @@ class ScheduleQuestsResource extends BaseJsonResource
     {
         return [
             'id' => $this->id,
-            'date' => $this->date,
-            'time' => $this->time,
-            'price' => $this->price,
-            'is_active' => $this->is_active,
             'quest' => $this->quest_id,
+            'date' => $this->date,
+            'timeslots' => TimeslotsResource::collection($this->whenLoaded('timeslots')),
         ];
     }
 }

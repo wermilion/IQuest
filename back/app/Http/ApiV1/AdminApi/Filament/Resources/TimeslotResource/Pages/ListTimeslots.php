@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages;
+namespace App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages;
 
-use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListScheduleQuests extends ListRecords
+class ListTimeslots extends ListRecords
 {
-    protected static string $resource = ScheduleQuestResource::class;
+    protected static string $resource = TimeslotResource::class;
 
     protected ?string $heading = 'Расписание квестов';
 

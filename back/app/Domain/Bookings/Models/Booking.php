@@ -7,6 +7,7 @@ use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Schedules\Models\ScheduleLounge;
 use App\Domain\Schedules\Models\ScheduleQuest;
+use App\Domain\Schedules\Models\Timeslot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -58,15 +59,15 @@ class Booking extends Model
         static::updated(function (self $model) {
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
                 if ($model->type->value == BookingType::QUEST->value) {
-                    $model->scheduleQuests()->update(['is_active' => true]);
+                    $model->timeslots()->update(['is_active' => true]);
                 }
                 $model->delete();
             }
         });
 
         static::deleting(function (self $model) {
-            if ($model->scheduleQuests()->exists()) {
-                $model->scheduleQuests()->update(['is_active' => true]);
+            if ($model->timeslots()->exists()) {
+                $model->timeslots()->update(['is_active' => true]);
                 $model->bookingScheduleQuest()->delete();
             } else if ($model->bookingScheduleLounge()->exists()) {
                 $model->bookingScheduleLounge()->delete();
@@ -98,9 +99,9 @@ class Booking extends Model
         return $this->hasOne(BookingCertificate::class);
     }
 
-    public function scheduleQuests(): BelongsToMany
+    public function timeslots(): BelongsToMany
     {
-        return $this->belongsToMany(ScheduleQuest::class, 'booking_schedule_quests')
+        return $this->belongsToMany(Timeslot::class, 'booking_schedule_quests')
             ->withPivot(['count_participants', 'final_price', 'comment']);
     }
 

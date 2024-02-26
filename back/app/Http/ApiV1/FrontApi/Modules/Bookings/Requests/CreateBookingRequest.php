@@ -16,7 +16,7 @@ class CreateBookingRequest extends FormRequest
             'booking.phone' => 'required|string',
             'booking.type' => ['required', new Enum(BookingType::class)],
 
-            'schedule_quest.schedule_quest_id' => 'nullable|integer|exists:schedule_quests,id',
+            'schedule_quest.timeslot_id' => 'nullable|integer|exists:timeslots,id',
             'schedule_quest.count_participants' => 'nullable|integer|min:1',
             'schedule_quest.final_price' => 'nullable|numeric|min:1',
             'schedule_quest.comment' => 'nullable|string',

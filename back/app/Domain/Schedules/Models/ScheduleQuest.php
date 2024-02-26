@@ -8,18 +8,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class ScheduleQuest
  *
  * @property int $id Идентификатор расписания квеста
  * @property string $date Дата расписания квеста
- * @property string $time Время расписания квеста
- * @property float $price Цена
- * @property bool $is_active Статус активности
  * @property int $quest_id Идентификатор квеста
  *
  * @property Quest $quest Квест
+ * @property HasMany $timeslots Временные слоты
  * @property Booking $booking Бронирование
  */
 class ScheduleQuest extends Model
@@ -28,9 +27,6 @@ class ScheduleQuest extends Model
 
     protected $fillable = [
         'date',
-        'time',
-        'price',
-        'is_active',
         'quest_id'
     ];
 
@@ -41,6 +37,11 @@ class ScheduleQuest extends Model
     public function quest(): BelongsTo
     {
         return $this->belongsTo(Quest::class);
+    }
+
+    public function timeslots(): HasMany
+    {
+        return $this->hasMany(Timeslot::class);
     }
 
     public function booking(): BelongsToMany

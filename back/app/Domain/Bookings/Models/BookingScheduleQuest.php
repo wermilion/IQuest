@@ -3,7 +3,7 @@
 namespace App\Domain\Bookings\Models;
 
 use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
-use App\Domain\Schedules\Models\ScheduleQuest;
+use App\Domain\Schedules\Models\Timeslot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $comment Комментарий
  *
  * @property-read Booking $booking Бронирование
- * @property-read ScheduleQuest $scheduleQuest Расписание
+ * @property-read Timeslot $timeslot Расписание
  */
 class BookingScheduleQuest extends Model
 {
@@ -27,7 +27,7 @@ class BookingScheduleQuest extends Model
 
     protected $fillable = [
         'booking_id',
-        'schedule_quest_id',
+        'timeslot_id',
         'count_participants',
         'final_price',
         'comment',
@@ -36,12 +36,12 @@ class BookingScheduleQuest extends Model
     protected static function booted(): void
     {
         static::created(function (self $model) {
-            $model->scheduleQuest()->update(['is_active' => false]);
+            $model->timeslot()->update(['is_active' => false]);
             resolve(SendMessageBookingAction::class)->execute($model->booking);
         });
 
         static::deleting(function (self $model) {
-            $model->scheduleQuest()->update(['is_active' => true]);
+            $model->timeslot()->update(['is_active' => true]);
             $model->booking()->delete();
         });
     }
@@ -51,8 +51,8 @@ class BookingScheduleQuest extends Model
         return $this->belongsTo(Booking::class)->withTrashed();
     }
 
-    public function scheduleQuest(): BelongsTo
+    public function timeslot(): BelongsTo
     {
-        return $this->belongsTo(ScheduleQuest::class);
+        return $this->belongsTo(Timeslot::class);
     }
 }

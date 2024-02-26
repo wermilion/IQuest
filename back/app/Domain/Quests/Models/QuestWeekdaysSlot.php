@@ -2,8 +2,9 @@
 
 namespace App\Domain\Quests\Models;
 
-use App\Domain\Schedules\Models\ScheduleQuest;
-use Illuminate\Support\Carbon;
+use App\Domain\Quests\Actions\QuestWeekendSlots\CreateQuestWeekdaysSlot;
+use App\Domain\Quests\Actions\QuestWeekendSlots\DeleteQuestWeekdaysSlot;
+use App\Domain\Quests\Actions\QuestWeekendSlots\UpdateQuestWeekdaysSlot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,49 +31,16 @@ class QuestWeekdaysSlot extends Model
 
     protected static function booted(): void
     {
-        static::created(function (self $slot) {
-            $currentDate = Carbon::now();
-            $i = 0;
-            while ($i < 30) {
-                if ($currentDate->isWeekday()) {
-                    ScheduleQuest::create([
-                        'date' => $currentDate->format('Y-m-d'),
-                        'time' => $slot->time,
-                        'price' => $slot->price,
-                        'is_active' => true,
-                        'quest_id' => $slot->quest_id,
-                    ]);
-                }
-                $currentDate = $currentDate->addDay();
-                $i++;
-            }
+        static::created(function (self $model) {
+            resolve(CreateQuestWeekdaysSlot::class)->execute($model);
         });
 
-        static::updated(function (self $slot) {
-            if ($slot->isDirty('time')) {
-                ScheduleQuest::query()
-                    ->where('quest_id', $slot->quest_id)
-                    ->where('time', $slot->time)
-                    ->update([
-                        'time' => $slot->time
-                    ]);
-            }
-            if ($slot->isDirty('price')) {
-                ScheduleQuest::query()
-                    ->where('quest_id', $slot->quest_id)
-                    ->where('time', $slot->time)
-                    ->update([
-                        'price' => $slot->price
-                    ]);
-            }
+        static::updating(function (self $model) {
+            resolve(UpdateQuestWeekdaysSlot::class)->execute($model);
         });
 
-        static::deleted(function (self $slot) {
-            ScheduleQuest::query()
-                ->where('quest_id', $slot->quest_id)
-                ->where('time', $slot->time)
-                ->where('price', $slot->price)
-                ->delete();
+        static::deleted(function (self $model) {
+            resolve(DeleteQuestWeekdaysSlot::class)->execute($model);
         });
     }
 

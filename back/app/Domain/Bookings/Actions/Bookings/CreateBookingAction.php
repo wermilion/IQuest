@@ -23,7 +23,7 @@ class CreateBookingAction
                 'booking_id' => $booking->id
             ]);
         }
-        
+
         return $booking;
     }
 

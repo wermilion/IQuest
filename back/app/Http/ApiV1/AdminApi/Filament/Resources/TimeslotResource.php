@@ -6,11 +6,12 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
 use App\Domain\Quests\Models\Quest;
-use App\Domain\Schedules\Models\ScheduleQuest;
-use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\CreateScheduleQuest;
-use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\EditScheduleQuest;
-use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\ListScheduleQuests;
-use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\RelationManagers\BookingRelationManager;
+use App\Domain\Schedules\Models\Timeslot;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\CreateTimeslot;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\EditTimeslot;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\ListTimeslots;
+use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\RelationManagers\BookingRelationManager;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -19,6 +20,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -30,9 +32,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
-class ScheduleQuestResource extends Resource
+class TimeslotResource extends Resource
 {
-    protected static ?string $model = ScheduleQuest::class;
+    protected static ?string $model = Timeslot::class;
 
     protected static ?string $modelLabel = 'Слот расписания квеста';
 
@@ -50,13 +52,11 @@ class ScheduleQuestResource extends Resource
             ->schema([
                 Select::make('city')
                     ->label('Город')
-                    ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
                     ->disabledOn('edit'),
                 Select::make('filial')
                     ->label('Филиал')
-                    ->live()
                     ->options(fn(Get $get): Collection => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
@@ -64,16 +64,14 @@ class ScheduleQuestResource extends Resource
                     ->disabledOn('edit'),
                 Select::make('room')
                     ->label('Комната')
-                    ->live()
                     ->options(fn(Get $get): Collection => Room::query()
                         ->where('filial_id', $get('filial'))
                         ->pluck('name', 'id'))
                     ->hiddenOn('')
                     ->disabledOn('edit'),
-                Select::make('quest_id')
+                Select::make('quest')
                     ->label('Квест')
                     ->placeholder('Выберите квест')
-                    ->relationship('quest', 'name')
                     ->options(fn(Get $get) => Quest::query()
                         ->where('room_id', $get('room'))
                         ->pluck('name', 'id'))
@@ -114,19 +112,19 @@ class ScheduleQuestResource extends Resource
         return $table
             ->emptyStateHeading('Слоты не обнаружены')
             ->columns([
-                TextColumn::make('quest.room.filial.city.name')
+                TextColumn::make('scheduleQuest.quest.room.filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('quest.room.filial.address')
+                TextColumn::make('scheduleQuest.quest.room.filial.address')
                     ->label('Филиал')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('quest.slug')
+                TextColumn::make('scheduleQuest.quest.slug')
                     ->label('Квест')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('date')
+                TextColumn::make('scheduleQuest.date')
                     ->label('Дата')
                     ->date()
                     ->sortable(),
@@ -137,7 +135,7 @@ class ScheduleQuestResource extends Resource
                 ToggleColumn::make('is_active')
                     ->label('Активность слота'),
             ])
-            ->defaultSort('date')
+            ->defaultSort('scheduleQuest.date')
             ->filters([
                 Filter::make('location')
                     ->form([
@@ -145,7 +143,7 @@ class ScheduleQuestResource extends Resource
                             ->label('Город')
                             ->live()
                             ->placeholder('Выберите город')
-                            ->relationship('quest.filial.city', 'name')
+                            ->relationship('scheduleQuest.quest.filial.city', 'name')
                             ->native(false),
                         Select::make('filial_id')
                             ->label('Филиал')
@@ -160,16 +158,16 @@ class ScheduleQuestResource extends Resource
                             ->when(
                                 $data['city_id'],
                                 fn(Builder $query, $city_id): Builder => $query
-                                    ->whereHas('quest.filial', fn(Builder $query): Builder => $query->where('city_id', $city_id)),
+                                    ->whereHas('scheduleQuest.quest.filial', fn(Builder $query): Builder => $query->where('city_id', $city_id)),
                             )
                             ->when(
                                 $data['filial_id'],
                                 fn(Builder $query, $filial_id): Builder => $query
-                                    ->whereHas('quest.room', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
+                                    ->whereHas('scheduleQuest.quest.room', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
                             );
                     }),
                 SelectFilter::make('slug')
-                    ->relationship('quest', 'slug')
+                    ->relationship('scheduleQuest.quest', 'slug')
                     ->label('Квест')
                     ->native(false),
                 Filter::make('date')
@@ -177,7 +175,9 @@ class ScheduleQuestResource extends Resource
                     ->query(function (Builder $query, array $data): Builder {
                         return $query->when(
                             $data['date'],
-                            fn(Builder $query, $date): Builder => $query->whereDate('date', '=', $date)
+                            fn(Builder $query, $date): Builder => $query
+                                ->whereHas('scheduleQuest', fn(Builder $query): Builder => $query
+                                    ->whereDate('date', '=', $date))
                         );
                     })
                     ->indicateUsing(function (array $data): array {
@@ -203,9 +203,9 @@ class ScheduleQuestResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListScheduleQuests::route('/'),
-            'create' => CreateScheduleQuest::route('/create'),
-            'edit' => EditScheduleQuest::route('/{record}/edit'),
+            'index' => ListTimeslots::route('/'),
+            'create' => CreateTimeslot::route('/create'),
+            'edit' => EditTimeslot::route('/{record}/edit'),
         ];
     }
 }

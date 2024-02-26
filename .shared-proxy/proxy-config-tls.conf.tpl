@@ -34,4 +34,7 @@ location /cp {
 location /livewire {
     proxy_pass http://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back:80;
     }
+location /storage {
+    proxy_pass http://${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back:80;
+    }
 }

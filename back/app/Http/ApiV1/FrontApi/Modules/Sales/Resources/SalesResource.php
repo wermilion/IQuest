@@ -4,6 +4,7 @@ namespace App\Http\ApiV1\FrontApi\Modules\Sales\Resources;
 
 use App\Domain\Sales\Models\Sale;
 use App\Http\ApiV1\FrontApi\Support\Resources\BaseJsonResource;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @mixin Sale
@@ -16,8 +17,8 @@ class SalesResource extends BaseJsonResource
             'id' => $this->id,
             'name' => $this->header,
             'description' => $this->description,
-            'front_image' => $this->front_image,
-            'back_image' => $this->back_image,
+            'front_image' => $this->front_image ? Storage::url($this->front_image) : null,
+            'back_image' => $this->back_image ? Storage::url($this->back_image) : null,
         ];
     }
 }

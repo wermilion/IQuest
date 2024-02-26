@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\FrontApi\Modules\Quests\Resources;
 use App\Domain\Quests\Models\Quest;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Resources\RoomsResource;
 use App\Http\ApiV1\FrontApi\Support\Resources\BaseJsonResource;
+use Storage;
 
 /**
  * @mixin Quest
@@ -19,7 +20,7 @@ class QuestsResource extends BaseJsonResource
             'slug' => $this->slug,
             'short_description' => $this->short_description,
             'description' => $this->description,
-            'cover' => $this->cover,
+            'cover' => $this->cover ? Storage::url($this->cover) : null,
             'min_people' => $this->min_people,
             'max_people' => $this->max_people,
             'duration' => $this->duration,

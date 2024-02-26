@@ -22,7 +22,7 @@ class EditService extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make()->modalHeading('Удалить услугу'),
+            DeleteAction::make()->modalHeading('Удаление услуги'),
         ];
     }
 }

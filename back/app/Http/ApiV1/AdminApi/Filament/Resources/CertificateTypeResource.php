@@ -6,12 +6,14 @@ use App\Domain\Certificates\Models\CertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ListCertificateTypes;
+use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ViewCertificateType;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -82,7 +84,8 @@ class CertificateTypeResource extends Resource
             ->defaultSort('price')
             ->actions([
                 EditAction::make(),
-                DeleteAction::make(),
+                ViewAction::make()->modalHeading('Просмотр сертификата'),
+                DeleteAction::make()->modalHeading('Удаление сертификата'),
             ]);
     }
 

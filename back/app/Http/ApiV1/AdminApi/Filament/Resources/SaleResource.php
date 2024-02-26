@@ -3,7 +3,12 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Sales\Models\Sale;
+use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages;
+use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\CreateSale;
+use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\EditSale;
+use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\ListSales;
+use Auth;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -12,6 +17,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Enums\FiltersLayout;
@@ -92,7 +98,8 @@ class SaleResource extends Resource
                 TextColumn::make('description')
                     ->label('Описание'),
                 ToggleColumn::make('is_active')
-                    ->label('Отображение на сайте'),
+                    ->label('Отображение на сайте')
+                    ->disabled(Auth::user()->role !== Role::ADMIN),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -111,23 +118,17 @@ class SaleResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
-                DeleteAction::make()->modalHeading('Удалить акцию')
+                ViewAction::make()->modalHeading('Просмотр акции'),
+                DeleteAction::make()->modalHeading('Удаление акции')
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSales::route('/'),
-            'create' => Pages\CreateSale::route('/create'),
-            'edit' => Pages\EditSale::route('/{record}/edit'),
+            'index' => ListSales::route('/'),
+            'create' => CreateSale::route('/create'),
+            'edit' => EditSale::route('/{record}/edit'),
         ];
     }
 }

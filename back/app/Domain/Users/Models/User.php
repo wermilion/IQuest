@@ -21,7 +21,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $login Логин пользователя
  * @property string $password Пароль пользователя
  * @property int $filial_id Идентификатор филиала
- * @property string $role Роль пользователя
+ * @property Role $role Роль пользователя
  * @property string $vk_id Идентификатор пользователя во ВКонтакте
  *
  * @property Filial $filial Филиал

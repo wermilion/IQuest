@@ -20,6 +20,8 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
 
     protected static ?string $pluralLabel = 'Тайм-слоты';
 
+    protected static bool $isLazy = false;
+
     public function form(Form $form): Form
     {
         return $form

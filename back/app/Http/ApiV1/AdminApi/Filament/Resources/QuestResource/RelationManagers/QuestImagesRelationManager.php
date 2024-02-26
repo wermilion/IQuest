@@ -17,6 +17,8 @@ class QuestImagesRelationManager extends RelationManager
 
     protected static ?string $label = 'изображение';
 
+    protected static bool $isLazy = false;
+
     public function form(Form $form): Form
     {
         return $form

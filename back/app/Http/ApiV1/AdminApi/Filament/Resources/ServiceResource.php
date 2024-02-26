@@ -12,6 +12,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
@@ -101,7 +102,8 @@ class ServiceResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
-                DeleteAction::make()->modalHeading('Удалить услугу'),
+                ViewAction::make()->modalHeading('Просмотр услуги'),
+                DeleteAction::make()->modalHeading('Удаление услуги'),
             ]);
     }
 

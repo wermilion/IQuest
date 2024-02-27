@@ -12,6 +12,11 @@ class CreateBookingHoliday extends CreateRecord
 
     protected ?string $heading = 'Создание заявки на праздник';
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['holiday_package_id'] = HolidayPackage::query()

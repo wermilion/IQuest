@@ -10,4 +10,9 @@ class CreateRoom extends CreateRecord
     protected static string $resource = RoomResource::class;
 
     protected ?string $heading = 'Создание комнаты';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

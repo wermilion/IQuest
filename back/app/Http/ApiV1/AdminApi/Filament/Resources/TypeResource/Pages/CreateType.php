@@ -10,4 +10,9 @@ class CreateType extends CreateRecord
     protected static string $resource = TypeResource::class;
 
     protected ?string $heading = 'Создание типа';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

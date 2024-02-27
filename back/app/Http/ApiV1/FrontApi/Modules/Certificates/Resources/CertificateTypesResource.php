@@ -4,6 +4,7 @@ namespace App\Http\ApiV1\FrontApi\Modules\Certificates\Resources;
 
 use App\Domain\Certificates\Models\CertificateType;
 use App\Http\ApiV1\FrontApi\Support\Resources\BaseJsonResource;
+use Storage;
 
 /**
  * @mixin CertificateType
@@ -16,7 +17,8 @@ class CertificateTypesResource extends BaseJsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'price' => $this->price
+            'price' => $this->price,
+            'cover' => $this->cover ? Storage::url($this->cover) : null,
         ];
     }
 }

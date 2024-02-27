@@ -10,4 +10,9 @@ class CreateFilial extends CreateRecord
     protected static string $resource = FilialResource::class;
 
     protected ?string $heading = 'Создание филиала';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

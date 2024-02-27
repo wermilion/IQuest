@@ -9,11 +9,13 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ListHoliday
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ViewHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers\PackagesRelationManager;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class HolidayResource extends Resource
@@ -34,6 +36,7 @@ class HolidayResource extends Resource
             ->schema([
                 Select::make('type')
                     ->label('Тип праздника')
+                    ->columnSpanFull()
                     ->options(HolidayType::class)
                     ->required()
                     ->unique(ignoreRecord: true)
@@ -43,6 +46,8 @@ class HolidayResource extends Resource
                     ])
                     ->native(false)
                     ->disabled(),
+                Toggle::make('is_active')
+                    ->label('Отображение на сайте'),
             ]);
     }
 
@@ -58,6 +63,8 @@ class HolidayResource extends Resource
             ->columns([
                 TextColumn::make('type')
                     ->label('Тип праздника'),
+                ToggleColumn::make('is_active')
+                    ->label('Отображение на сайте'),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()

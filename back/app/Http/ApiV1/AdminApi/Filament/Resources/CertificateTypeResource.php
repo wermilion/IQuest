@@ -6,7 +6,7 @@ use App\Domain\Certificates\Models\CertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ListCertificateTypes;
-use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ViewCertificateType;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -56,6 +56,16 @@ class CertificateTypeResource extends Resource
                     ->maxLength(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                    ]),
+                FileUpload::make('cover')
+                    ->directory('certificate_images')
+                    ->label('Изображение')
+                    ->columnSpanFull()
+                    ->image()
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'image' => 'Поле ":attribute" должно быть изображением.',
                     ]),
             ]);
     }

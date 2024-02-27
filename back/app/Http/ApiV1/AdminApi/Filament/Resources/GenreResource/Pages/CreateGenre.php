@@ -10,4 +10,9 @@ class CreateGenre extends CreateRecord
     protected static string $resource = GenreResource::class;
 
     protected ?string $heading = 'Создание жанра';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

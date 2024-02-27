@@ -11,4 +11,9 @@ class CreateSale extends CreateRecord
     protected static string $resource = SaleResource::class;
 
     protected ?string $heading = 'Создание акции';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

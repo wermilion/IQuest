@@ -10,4 +10,9 @@ class CreateCity extends CreateRecord
     protected static string $resource = CityResource::class;
 
     protected ?string $heading = 'Создание города';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

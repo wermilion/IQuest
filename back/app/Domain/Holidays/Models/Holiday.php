@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id Идентификатор праздника
  * @property HolidayType $type Тип праздника
+ * @property bool $is_active Статус активности
  *
  * @property-read HolidayPackage[] $holidayPackages
  * @property-read Package[] $packages
@@ -23,10 +24,12 @@ class Holiday extends Model
 
     protected $fillable = [
         'type',
+        'is_active',
     ];
 
     protected $casts = [
         'type' => HolidayType::class,
+        'is_active' => 'boolean',
     ];
 
     public function holidayPackages(): HasMany

@@ -128,6 +128,7 @@ class QuestResource extends Resource
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
                     ]),
                 Textarea::make('description')
+                    ->autosize()
                     ->label('Описание')
                     ->required()
                     ->maxLength(1000)
@@ -136,6 +137,7 @@ class QuestResource extends Resource
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
                     ]),
                 Textarea::make('short_description')
+                    ->autosize()
                     ->label('Краткое описание')
                     ->required()
                     ->maxLength(125)

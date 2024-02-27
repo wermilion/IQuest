@@ -58,7 +58,7 @@ class SendMessageBookingAction
 
         $adminFilials = User::query()
             ->whereNotNull('vk_id')
-            ->where('filial_id', $bookingScheduleQuest->scheduleQuest->quest->filial->id)
+            ->where('filial_id', $bookingScheduleQuest->timeslot->scheduleQuest->quest->filial->id)
             ->where('role', Role::FILIAL_ADMIN->value)
             ->pluck('vk_id')
             ->toArray();
@@ -67,9 +67,9 @@ class SendMessageBookingAction
 
         $comment = $bookingScheduleQuest->comment ? 'Комментарий: ' . $bookingScheduleQuest->comment : '';
         array_push($message,
-            'Квест: ' . $bookingScheduleQuest->scheduleQuest->quest->slug,
-            'Дата и время: ' . Carbon::parse($bookingScheduleQuest->scheduleQuest->date)
-                ->translatedFormat('d.m.Y') . ' ' . $bookingScheduleQuest->scheduleQuest->time,
+            'Квест: ' . $bookingScheduleQuest->timeslot->scheduleQuest->quest->slug,
+            'Дата и время: ' . Carbon::parse($bookingScheduleQuest->timeslot->scheduleQuest->date)
+                ->translatedFormat('d.m.Y') . ' ' . $bookingScheduleQuest->timeslot->time,
             'Кол-во участников: ' . $bookingScheduleQuest->count_participants,
             'Цена: ' . $bookingScheduleQuest->final_price,
             $comment

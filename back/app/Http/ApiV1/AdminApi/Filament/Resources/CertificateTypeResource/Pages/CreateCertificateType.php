@@ -10,4 +10,9 @@ class CreateCertificateType extends CreateRecord
     protected static string $resource = CertificateTypeResource::class;
 
     protected ?string $heading = 'Создание сертификата';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -113,12 +113,13 @@ class UserResource extends Resource
                 TextInput::make('vk_id')
                     ->label('VK ID')
                     ->unique(ignoreRecord: true)
-                    ->minLength(1)
-                    ->maxLength(10)
+                    ->numeric()
+                    ->rules([
+                        'digits_between:1,19',
+                    ])
                     ->validationMessages([
                         'unique' => 'Поле ":Attribute" должно быть уникальным.',
-                        'min' => 'Поле ":Attribute" должно содержать не менее 1 символа.',
-                        'max' => 'Поле ":Attribute" должно содержать не более 10 символов.',
+                        'digits_between' => 'Поле ":Attribute" должно содержать от 1 до 19 цифр.',
                     ]),
             ]);
     }

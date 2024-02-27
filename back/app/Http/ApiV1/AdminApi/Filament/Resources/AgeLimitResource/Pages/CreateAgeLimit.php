@@ -10,4 +10,9 @@ class CreateAgeLimit extends CreateRecord
     protected static string $resource = AgeLimitResource::class;
 
     protected ?string $heading = 'Создание возрастного ограничения';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -10,4 +10,9 @@ class CreateBooking extends CreateRecord
     protected static string $resource = BookingResource::class;
 
     protected ?string $heading = 'Создание заявки';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -11,4 +11,9 @@ class CreateService extends CreateRecord
     protected static string $resource = ServiceResource::class;
 
     protected ?string $heading = 'Создание услуги';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

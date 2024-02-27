@@ -10,4 +10,9 @@ class CreateLounge extends CreateRecord
     protected static string $resource = LoungeResource::class;
 
     protected ?string $heading = 'Создание лаунжа';
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

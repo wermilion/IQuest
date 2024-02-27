@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -93,7 +94,8 @@ class CertificateTypeResource extends Resource
             ->defaultSort('price')
             ->actions([
                 EditAction::make(),
-                DeleteAction::make(),
+                ViewAction::make()->modalHeading('Просмотр сертификата'),
+                DeleteAction::make()->modalHeading('Удаление сертификата'),
             ]);
     }
 

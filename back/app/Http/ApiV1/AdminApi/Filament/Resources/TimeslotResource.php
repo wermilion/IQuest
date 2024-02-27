@@ -7,12 +7,13 @@ use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
 use App\Domain\Quests\Models\Quest;
 use App\Domain\Schedules\Models\Timeslot;
-use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\CreateTimeslot;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\EditTimeslot;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\ListTimeslots;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\RelationManagers\BookingRelationManager;
+use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -20,7 +21,6 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -96,9 +96,7 @@ class TimeslotResource extends Resource
                     ->disabledOn('edit'),
                 Toggle::make('is_active')
                     ->label('Активность слота')
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                    ])
+                    ->disabled(Auth::user()->role !== Role::ADMIN)
             ]);
     }
 
@@ -110,6 +108,9 @@ class TimeslotResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->orderBy('date')->orderBy('time');
+            })
             ->emptyStateHeading('Слоты не обнаружены')
             ->columns([
                 TextColumn::make('scheduleQuest.quest.room.filial.city.name')
@@ -133,7 +134,8 @@ class TimeslotResource extends Resource
                 TextColumn::make('price')
                     ->label('Цена'),
                 ToggleColumn::make('is_active')
-                    ->label('Активность слота'),
+                    ->label('Активность слота')
+                    ->disabled(Auth::user()->role !== Role::ADMIN),
             ])
             ->defaultSort('scheduleQuest.date')
             ->filters([

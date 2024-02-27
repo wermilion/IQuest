@@ -7,13 +7,16 @@ use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
 use App\Domain\Quests\Enums\LevelEnum;
 use App\Domain\Quests\Models\Quest;
+use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\EditQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\ListQuests;
+use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\ViewQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestImagesRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekdaysSlotsRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekendSlotsRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
+use Auth;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -24,12 +27,14 @@ use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class QuestResource extends Resource
@@ -245,7 +250,8 @@ class QuestResource extends Resource
                     ->numeric()
                     ->sortable(),
                 ToggleColumn::make('is_active')
-                    ->label('Отображение на сайте'),
+                    ->label('Отображение на сайте')
+                    ->disabled(Auth::user()->role !== Role::ADMIN),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -289,7 +295,8 @@ class QuestResource extends Resource
                     }),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
-                EditAction::make()
+                EditAction::make(),
+                ViewAction::make(),
             ]);
     }
 
@@ -312,6 +319,7 @@ class QuestResource extends Resource
             'index' => ListQuests::route('/'),
             'create' => CreateQuest::route('/create'),
             'edit' => EditQuest::route('/{record}/edit'),
+            'view' => ViewQuest::route('/{record}'),
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers;
 
+use App\Domain\Users\Enums\Role;
+use Auth;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -11,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Table;
 
 class PackagesRelationManager extends RelationManager
@@ -80,6 +83,7 @@ class PackagesRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label('Отображение на сайте')
+                    ->disabled(Auth::user()->role !== Role::ADMIN)
                     ->sortable(),
             ])
             ->defaultSort('sequence_number')
@@ -87,7 +91,8 @@ class PackagesRelationManager extends RelationManager
                 CreateAction::make(),
             ])
             ->actions([
-                EditAction::make(),
+                EditAction::make()->modalHeading('Редактирование пакета'),
+                ViewAction::make()->modalHeading('Просмотр пакета'),
                 DeleteAction::make(),
             ]);
     }

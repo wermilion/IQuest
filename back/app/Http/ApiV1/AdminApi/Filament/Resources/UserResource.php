@@ -11,6 +11,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\EditUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
+use Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -21,8 +22,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -45,12 +45,14 @@ class UserResource extends Resource
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
+                    ->hidden(Auth::user()->role !== Role::ADMIN)
                     ->native(false),
                 Select::make('filial_id')
                     ->label('Филиал')
                     ->options(fn(Get $get) => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
+                    ->hidden(Auth::user()->role !== Role::ADMIN)
                     ->native(false),
                 TextInput::make('name')
                     ->autofocus()
@@ -82,6 +84,7 @@ class UserResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
+                    ->disabled(Auth::user()->role !== Role::ADMIN)
                     ->native(false),
                 TextInput::make('password')
                     ->label('Пароль')
@@ -124,14 +127,14 @@ class UserResource extends Resource
             ]);
     }
 
-    public static function canDelete(Model $record): bool
-    {
-        return Auth::user()->id !== $record->id;
-    }
-
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                if (Auth::user()->role !== Role::ADMIN) {
+                    $query->where('id', Auth::user()->id);
+                }
+            })
             ->emptyStateHeading('Пользователи не обнаружены')
             ->columns([
                 TextColumn::make('filial.city.name')

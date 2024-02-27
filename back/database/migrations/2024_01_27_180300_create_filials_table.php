@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\City;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +14,8 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->string('address')->comment('Адрес филиала');
-            $table->foreignIdFor(City::class)->comment('Ключ города')->constrained();
+            $table->string('yandex_mark')->nullable()->comment('Яндекс метка');
+            $table->foreignId('city_id')->comment('Ключ города')->constrained(table: 'cities');
 
             $table->timestamps();
         });

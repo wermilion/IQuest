@@ -42,6 +42,9 @@ return [
 
     'default_filesystem_disk' => env('FILAMENT_FILESYSTEM_DISK', 'public'),
 
+    'path' => env('FILAMENT_PATH', 'cp'),
+    'core_path' => env('FILAMENT_CORE_PATH', 'cp/filament'),
+
     /*
     |--------------------------------------------------------------------------
     | Assets Path
@@ -54,7 +57,7 @@ return [
     |
     */
 
-    'assets_path' => null,
+    'assets_path' => 'cp',
 
     /*
     |--------------------------------------------------------------------------

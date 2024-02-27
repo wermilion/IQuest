@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\ApiV1\AdminApi\Filament\Pages\Auth\Login;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -26,16 +28,21 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('cp')
             ->path('cp')
-            ->login()
+            ->login(Login::class)
             ->colors([
                 'primary' => Color::Indigo,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->brandName('IQuest')
+            ->brandLogo(asset('cp/images/logo.svg'))
+            ->brandLogoHeight('42px')
+            ->favicon(asset('cp/images/favicon.svg'))
+            ->defaultThemeMode(ThemeMode::Light)
+            ->discoverResources(in: app_path('Http/ApiV1/AdminApi/Filament/Resources'), for: 'App\\Http\\ApiV1\\AdminApi\\Filament\\Resources')
+            ->discoverPages(in: app_path('Http/ApiV1/AdminApi/Filament/Pages'), for: 'App\\Http\\ApiV1\\AdminApi\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Http/ApiV1/AdminApi/Filament/Widgets'), for: 'App\\Http\\ApiV1\\AdminApi\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
             ])

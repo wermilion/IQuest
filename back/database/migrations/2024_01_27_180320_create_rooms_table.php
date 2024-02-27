@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Filial;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +14,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->string('name')->comment('Название комнаты');
-            $table->foreignIdFor(Filial::class)->comment('Ключ филиала')->constrained();
+            $table->foreignId('filial_id')->comment('Ключ филиала')->constrained(table: 'filials');
 
             $table->timestamps();
         });

@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('schedule_quests', function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->date('date')->comment('Дата');
+            $table->time('time')->comment('Время');
+            $table->decimal('price')->comment('Цена');
+            $table->boolean('is_active')->comment('Статус активности');
+            $table->foreignId('quest_id')->comment('Квест')->constrained(table: 'quests');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('schedule_quests');
+    }
+};

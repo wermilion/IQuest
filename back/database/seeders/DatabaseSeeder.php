@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\AgeLimit;
-use App\Models\Room;
+
+use App\Domain\Users\Enums\Role;
+use App\Domain\Users\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,14 +16,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            CitySeeder::class,
-            FilialSeeder::class,
-            RoomSeeder::class,
-            TypeSeeder::class,
-            GenreSeeder::class,
-            LevelSeeder::class,
-            AgeLimitSeeder::class,
-            RoleSeeder::class,
+            HolidaySeeder::class,
+        ]);
+
+        User::query()->firstOrCreate([
+            'login' => 'admin',
+        ], [
+            'name' => 'Admin',
+            'password' => Hash::make('admin123'),
+            'role' => Role::ADMIN->value,
         ]);
     }
 }

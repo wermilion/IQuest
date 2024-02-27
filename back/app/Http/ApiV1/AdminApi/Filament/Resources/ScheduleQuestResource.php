@@ -7,11 +7,13 @@ use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
 use App\Domain\Quests\Models\Quest;
 use App\Domain\Schedules\Models\ScheduleQuest;
+use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\CreateScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\EditScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\Pages\ListScheduleQuests;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleQuestResource\RelationManagers\BookingRelationManager;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use Auth;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -98,9 +100,7 @@ class ScheduleQuestResource extends Resource
                     ->disabledOn('edit'),
                 Toggle::make('is_active')
                     ->label('Активность слота')
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.',
-                    ])
+                    ->disabled(Auth::user()->role !== Role::ADMIN)
             ]);
     }
 
@@ -112,6 +112,9 @@ class ScheduleQuestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->orderBy('date')->orderBy('time');
+            })
             ->emptyStateHeading('Слоты не обнаружены')
             ->columns([
                 TextColumn::make('quest.room.filial.city.name')
@@ -135,9 +138,9 @@ class ScheduleQuestResource extends Resource
                 TextColumn::make('price')
                     ->label('Цена'),
                 ToggleColumn::make('is_active')
-                    ->label('Активность слота'),
+                    ->label('Активность слота')
+                    ->disabled(Auth::user()->role !== Role::ADMIN),
             ])
-            ->defaultSort('date')
             ->filters([
                 Filter::make('location')
                     ->form([

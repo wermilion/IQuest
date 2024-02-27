@@ -6,11 +6,13 @@ use App\Domain\Holidays\Enums\HolidayType;
 use App\Domain\Holidays\Models\Holiday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\EditHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ListHolidays;
+use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\Pages\ViewHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers\PackagesRelationManager;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -69,6 +71,7 @@ class HolidayResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
+                ViewAction::make(),
             ]);
     }
 
@@ -84,6 +87,7 @@ class HolidayResource extends Resource
         return [
             'index' => ListHolidays::route('/'),
             'edit' => EditHoliday::route('/{record}/edit'),
+            'view' => ViewHoliday::route('/{record}'),
         ];
     }
 }

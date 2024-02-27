@@ -5,9 +5,12 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
+use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges;
+use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ViewLounge;
+use Auth;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -17,6 +20,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Enums\FiltersLayout;
@@ -116,7 +120,8 @@ class LoungeResource extends Resource
                     ->label('Название')
                     ->searchable(),
                 ToggleColumn::make('is_active')
-                    ->label('Отображение на сайте'),
+                    ->label('Отображение на сайте')
+                    ->disabled(Auth::user()->role !== Role::ADMIN),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()
@@ -136,6 +141,7 @@ class LoungeResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
+                ViewAction::make(),
             ]);
     }
 
@@ -145,6 +151,7 @@ class LoungeResource extends Resource
             'index' => ListLounges::route('/'),
             'create' => CreateLounge::route('/create'),
             'edit' => EditLounge::route('/{record}/edit'),
+            'view' => ViewLounge::route('/{record}'),
         ];
     }
 }

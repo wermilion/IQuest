@@ -22,7 +22,7 @@ class EditSale extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()->modalHeading('Удалить акцию'),
+            Actions\DeleteAction::make()->modalHeading('Удаление акции'),
         ];
     }
 }

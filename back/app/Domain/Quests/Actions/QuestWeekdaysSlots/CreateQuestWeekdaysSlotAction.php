@@ -7,7 +7,7 @@ use App\Domain\Schedules\Models\ScheduleQuest;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 
-class CreateQuestWeekdaysSlot
+class CreateQuestWeekdaysSlotAction
 {
     public function execute(QuestWeekdaysSlot $slot): void
     {

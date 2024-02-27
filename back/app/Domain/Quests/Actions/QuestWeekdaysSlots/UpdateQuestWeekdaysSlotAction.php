@@ -4,7 +4,7 @@ namespace App\Domain\Quests\Actions\QuestWeekdaysSlots;
 
 use App\Domain\Quests\Models\QuestWeekendSlot;
 
-class UpdateQuestWeekdaysSlot
+class UpdateQuestWeekdaysSlotAction
 {
     public function execute(QuestWeekendSlot $slot): void
     {

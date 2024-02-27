@@ -4,7 +4,7 @@ namespace App\Domain\Quests\Actions\QuestWeekdaysSlots;
 
 use App\Domain\Quests\Models\QuestWeekdaysSlot;
 
-class DeleteQuestWeekdaysSlot
+class DeleteQuestWeekdaysSlotAction
 {
     public function execute(QuestWeekdaysSlot $slot): void
     {

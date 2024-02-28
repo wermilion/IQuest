@@ -90,7 +90,8 @@ class PackagesRelationManager extends RelationManager
             ])
             ->defaultSort('sequence_number')
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->createAnother(false),
             ])
             ->actions([
                 EditAction::make()->modalHeading('Редактирование пакета'),

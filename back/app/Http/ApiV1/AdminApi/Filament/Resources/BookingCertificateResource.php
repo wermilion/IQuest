@@ -45,7 +45,8 @@ class BookingCertificateResource extends Resource
                         'id',
                         fn(Builder $query): Builder => $query
                             ->where('type', BookingType::CERTIFICATE->value)
-                            ->withoutTrashed())
+                            ->whereDoesntHave('bookingCertificate'))
+                    ->searchable()
                     ->native(false),
                 Select::make('certificate_type_id')
                     ->label('Тип сертификата')

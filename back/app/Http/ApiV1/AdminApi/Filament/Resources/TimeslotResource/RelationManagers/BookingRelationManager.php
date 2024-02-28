@@ -6,10 +6,14 @@ use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
-use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Tables\Actions\AttachAction;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -31,14 +35,14 @@ class BookingRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Имя')
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),
-                Forms\Components\TextInput::make('phone')
+                TextInput::make('phone')
                     ->label('Телефон')
                     ->rules(['size:18'])
                     ->mask('+7 (999) 999-99-99')
@@ -47,7 +51,7 @@ class BookingRelationManager extends RelationManager
                         'required' => 'Поле ":attribute" обязательно.',
                         'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
-                Forms\Components\Select::make('type')
+                Select::make('type')
                     ->label('Тип заявки')
                     ->options(BookingType::class)
                     ->default(BookingType::QUEST->getLabel())
@@ -57,7 +61,7 @@ class BookingRelationManager extends RelationManager
                         'required' => 'Поле ":attribute" обязательно.',
                     ])
                     ->native(false),
-                Forms\Components\Select::make('status')
+                Select::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class)
                     ->default(BookingStatus::NEW->getLabel())
@@ -66,7 +70,7 @@ class BookingRelationManager extends RelationManager
                         'required' => 'Поле ":attribute" обязательно.',
                     ])
                     ->native(false),
-                Forms\Components\TextInput::make('count_participants')
+                TextInput::make('count_participants')
                     ->label('Количество участников')
                     ->numeric()
                     ->minValue(1)
@@ -76,7 +80,7 @@ class BookingRelationManager extends RelationManager
                         'numeric' => 'Поле ":attribute" должно быть числом',
                         'min' => 'Поле ":attribute" должно быть больше 0',
                     ]),
-                Forms\Components\TextInput::make('final_price')
+                TextInput::make('final_price')
                     ->label('Общая стоимость')
                     ->numeric()
                     ->minValue(1)
@@ -86,7 +90,7 @@ class BookingRelationManager extends RelationManager
                         'numeric' => 'Поле ":attribute" должно быть числом',
                         'min' => 'Поле ":attribute" должно быть больше 0',
                     ]),
-                Forms\Components\TextInput::make('comment')
+                TextInput::make('comment')
                     ->label('Комментарий')
                     ->maxLength(255)
             ]);
@@ -127,11 +131,11 @@ class BookingRelationManager extends RelationManager
                     ->label('Комментарий'),
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()
+                AttachAction::make()
                     ->modalHeading('Прикрепить заявку')
-                    ->form(fn(Tables\Actions\AttachAction $action) => [
+                    ->form(fn(AttachAction $action) => [
                         $action->getRecordSelect()->placeholder('Введите ID заявки'),
-                        Forms\Components\TextInput::make('count_participants')
+                        TextInput::make('count_participants')
                             ->label('Количество участников')
                             ->numeric()
                             ->minValue(1)
@@ -141,7 +145,7 @@ class BookingRelationManager extends RelationManager
                                 'numeric' => 'Поле ":attribute" должно быть числом',
                                 'min' => 'Поле ":attribute" должно быть больше 0',
                             ]),
-                        Forms\Components\TextInput::make('final_price')
+                        TextInput::make('final_price')
                             ->label('Общая стоимость')
                             ->numeric()
                             ->minValue(1)
@@ -151,19 +155,21 @@ class BookingRelationManager extends RelationManager
                                 'numeric' => 'Поле ":attribute" должно быть числом',
                                 'min' => 'Поле ":attribute" должно быть больше 0',
                             ]),
-                        Forms\Components\TextInput::make('comment')
+                        TextInput::make('comment')
                             ->label('Комментарий')
                             ->maxLength(255)
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
-                        ->where('type', BookingType::QUEST->value))
+                        ->where('type', BookingType::QUEST->value)
+                        ->whereDoesntHave('timeslots'))
                     ->recordSelectSearchColumns(['id'])
                     ->after(function (RelationManager $livewire, Booking $booking) {
                         $livewire->ownerRecord->update(['is_active' => false]);
                         resolve(SendMessageBookingAction::class)->execute($booking);
                     })
                     ->attachAnother(false),
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
+                    ->modalHeading('Создание заявки')
                     ->after(function (RelationManager $livewire, Booking $booking) {
                         $livewire->ownerRecord->update(['is_active' => false]);
                         resolve(SendMessageBookingAction::class)->execute($booking);
@@ -171,8 +177,8 @@ class BookingRelationManager extends RelationManager
                     ->createAnother(false),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()->modalHeading('Удалить заявку'),
+                EditAction::make()->modalHeading('Редактирование заявки'),
+                DeleteAction::make()->modalHeading('Удалить заявку'),
             ]);
     }
 }

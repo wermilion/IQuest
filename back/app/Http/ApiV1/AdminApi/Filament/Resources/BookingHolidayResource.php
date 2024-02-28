@@ -19,6 +19,7 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class BookingHolidayResource extends Resource
 {
@@ -40,10 +41,11 @@ class BookingHolidayResource extends Resource
             ->schema([
                 Select::make('booking_id')
                     ->label('ID бронирования')
-                    ->options(fn() => Booking::query()
-                        ->where('type', BookingType::HOLIDAY->getLabel())
-                        ->withoutTrashed()
-                        ->pluck('id', 'id'))
+                    ->relationship('booking',
+                        'id',
+                        fn(Builder $query): Builder => $query
+                            ->where('type', BookingType::HOLIDAY->value)
+                            ->whereDoesntHave('bookingHoliday'))
                     ->searchable()
                     ->native(false),
                 TextInput::make('comment')

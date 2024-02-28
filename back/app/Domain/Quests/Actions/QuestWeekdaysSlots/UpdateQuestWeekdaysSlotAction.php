@@ -2,11 +2,11 @@
 
 namespace App\Domain\Quests\Actions\QuestWeekdaysSlots;
 
-use App\Domain\Quests\Models\QuestWeekendSlot;
+use App\Domain\Quests\Models\QuestWeekdaysSlot;
 
 class UpdateQuestWeekdaysSlotAction
 {
-    public function execute(QuestWeekendSlot $slot): void
+    public function execute(QuestWeekdaysSlot $slot): void
     {
         $scheduleQuests = $slot->quest->scheduleQuests;
         $dirtyFields = array_keys($slot->getDirty());

@@ -14,7 +14,7 @@ class QuestImagesResource extends BaseJsonResource
     public function toArray($request): array
     {
         return [
-            'image' => $this->image ? config('app.url') . '/' . Storage::url($this->image) : null,
+            'image' => $this->image ? config('app.url') . Storage::url($this->image) : null,
         ];
     }
 }

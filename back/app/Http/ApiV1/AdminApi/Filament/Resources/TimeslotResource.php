@@ -108,9 +108,6 @@ class TimeslotResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                $query->orderBy('date')->orderBy('time');
-            })
             ->emptyStateHeading('Слоты не обнаружены')
             ->columns([
                 TextColumn::make('scheduleQuest.quest.room.filial.city.name')

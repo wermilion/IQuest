@@ -23,6 +23,8 @@ class BookingRelationManager extends RelationManager
 
     protected static ?string $label = 'заявку';
 
+    protected static bool $isLazy = false;
+
     public function form(Form $form): Form
     {
         return $form

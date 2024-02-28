@@ -24,6 +24,8 @@ class PackagesRelationManager extends RelationManager
 
     protected static ?string $pluralModelLabel = 'Пакеты';
 
+    protected static bool $isLazy = false;
+
     public function form(Form $form): Form
     {
         return $form

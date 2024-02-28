@@ -24,12 +24,6 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .bg-black {
   display: flex;
   flex-direction: column;

@@ -6,16 +6,23 @@ import QuestCardGrid from '#/components/shared/quest-card-grid.vue'
 
 const route = useRoute()
 
-const questStore = setupStore('quest')
-questStore.fetchQuest(`${route.params.id}`)
+const stores = setupStore(['quest', 'services'])
+stores.quest.fetchQuest(`${route.params.id}`)
+
+onMounted(() => {
+  stores.services.fetchServices()
+})
 </script>
 
 <template>
-  <section class="quest">
-    <QuestContainer v-if="questStore.quest" :quest="questStore.quest" />
-    <QuestBooking v-if="questStore.quest" :id-quest="questStore.quest.id" />
+  <section v-if="stores.quest.quest" class="quest">
+    <QuestContainer v-if="stores.quest.quest" :quest="stores.quest.quest" />
+    <QuestBooking v-if="stores.quest.quest" :id-quest="stores.quest.quest.id" />
     <AddServices />
     <QuestCardGrid />
+  </section>
+  <section v-else class="loading">
+    <h2>Я не придумал что вставить ;)</h2>
   </section>
 </template>
 

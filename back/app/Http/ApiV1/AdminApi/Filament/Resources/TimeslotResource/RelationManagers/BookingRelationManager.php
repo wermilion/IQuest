@@ -156,7 +156,10 @@ class BookingRelationManager extends RelationManager
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value))
                     ->recordSelectSearchColumns(['id'])
-                    ->after(fn(RelationManager $livewire) => $livewire->ownerRecord->update(['is_active' => false]))
+                    ->after(function (RelationManager $livewire, Booking $booking) {
+                        $livewire->ownerRecord->update(['is_active' => false]);
+                        resolve(SendMessageBookingAction::class)->execute($booking);
+                    })
                     ->attachAnother(false),
                 Tables\Actions\CreateAction::make()
                     ->after(function (RelationManager $livewire, Booking $booking) {

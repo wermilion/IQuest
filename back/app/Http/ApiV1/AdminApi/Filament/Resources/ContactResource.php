@@ -13,6 +13,8 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class ContactResource extends Resource
@@ -67,6 +69,12 @@ class ContactResource extends Resource
                 TextColumn::make('contactType.name')
                     ->label('Тип контакта'),
             ])
+            ->filters([
+                SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('city', 'name')
+                    ->native(false),
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make()->modalHeading('Редактирование контакта'),
                 ViewAction::make()->modalHeading('Просмотр контакта'),

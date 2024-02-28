@@ -36,6 +36,13 @@ class Package extends Model
         'is_active' => 'boolean',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function (self $package) {
+            $package->holidays()->detach();
+        });
+    }
+
     public function holidays(): BelongsToMany
     {
         return $this->belongsToMany(Holiday::class, 'holiday_packages');

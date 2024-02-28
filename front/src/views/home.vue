@@ -2,17 +2,33 @@
 import AddServicesVue from '#/components/shared/add-services.vue'
 import QuestCardGrid from '#/components/shared/quest-card-grid.vue'
 import BanerSwiper from '#/components/stocks-swiper/baner-swiper.vue'
+
+const stores = setupStore(['stocks', 'questList'])
+
+onMounted(() => {
+  stores.stocks.fetchStocks()
+  stores.questList.fetchQuests()
+})
 </script>
 
 <template>
-  <section class="bg-black">
+  <section v-if="stores.stocks.stocks" class="bg-black">
     <BanerSwiper />
     <QuestCardGrid />
     <AddServicesVue />
   </section>
+  <section v-else class="loading">
+    <h2>Я не придумал что вставить ;)</h2>
+  </section>
 </template>
 
 <style scoped lang="scss">
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .bg-black {
   display: flex;
   flex-direction: column;

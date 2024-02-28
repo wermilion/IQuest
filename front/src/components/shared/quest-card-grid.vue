@@ -4,10 +4,6 @@ import Card from '#/components/quest-card/card-component.vue'
 const questStore = setupStore('questList')
 
 const route = useRoute()
-
-onMounted(() => {
-  questStore.fetchQuests()
-})
 </script>
 
 <template>

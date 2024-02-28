@@ -1,21 +1,25 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { Stocks } from '#/types/models/stocks'
+
+defineProps<{ salse: Stocks }>()
+</script>
 
 <template>
   <div class="baner-swiper">
     <div class="baner-swiper__body">
       <div class="baner-swiper__body-text">
-        <h1>скидка 1000₽ на игру вдвоём</h1>
+        <h1>{{ salse.name }}</h1>
         <p class="body">
-          Забронируйте квест на 2 человека и скажите оператору про скидку
+          {{ salse.description }}
         </p>
       </div>
     </div>
     <div class="baner-swiper__image">
       <div class="baner-front">
-        <img v-lazy-src="'/quest-photo/photo.png'" alt=" ">
+        <img :src="salse.front_image" alt=" ">
       </div>
       <div class="baner-back">
-        <img v-lazy-src="'/quest-photo/photo.png'" alt="baner">
+        <img :src="salse.back_image" alt="baner">
       </div>
     </div>
   </div>
@@ -65,6 +69,7 @@
     border: 0.5px solid $color-shade-5;
     background: $color-shade-1;
   }
+
   &-back {
     margin-top: 71px;
     width: 321px;

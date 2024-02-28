@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Storage;
  * @property int $id - Идентификатор квеста
  * @property string $name - Название квеста
  * @property string $slug - Сокращенное название квеста
+ * @property string $short_description - Краткое описание квеста
  * @property string $description - Описание квеста
  * @property string $cover - Обложка квеста
  * @property int $min_people - Минимальное количество участников

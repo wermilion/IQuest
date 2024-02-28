@@ -17,8 +17,8 @@ class SalesResource extends BaseJsonResource
             'id' => $this->id,
             'name' => $this->header,
             'description' => $this->description,
-            'front_image' => $this->front_image ? Storage::url($this->front_image) : null,
-            'back_image' => $this->back_image ? Storage::url($this->back_image) : null,
+            'front_image' => $this->front_image ? config('app.url') . '/' . Storage::url($this->front_image) : null,
+            'back_image' => $this->back_image ? config('app.url') . '/' . Storage::url($this->back_image) : null,
         ];
     }
 }

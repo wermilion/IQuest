@@ -4,6 +4,7 @@ import { useQuestListStore } from './module/quest-list.store'
 import { useScheduleQuestStore } from './module/schedule.store'
 import { useChipStore } from './common/booking.store'
 import { useStocksStore } from './module/stocks.store'
+import { useServicesStore } from './module/services.store'
 
 type ExtractStoreId<T> = T extends { $id: infer U } ? U : never
 
@@ -14,6 +15,7 @@ interface IStoreTypes {
   scheduleQuest: ReturnType<typeof useScheduleQuestStore>
   chip: ReturnType<typeof useChipStore>
   stocks: ReturnType<typeof useStocksStore>
+  services: ReturnType<typeof useServicesStore>
 }
 
 type StoreKeys = ExtractStoreId<IStoreTypes[keyof IStoreTypes]>
@@ -25,6 +27,7 @@ export const stores: Readonly<{ [K in StoreKeys]: () => IStoreTypes[K] }> = Obje
   scheduleQuest: useScheduleQuestStore,
   chip: useChipStore,
   stocks: useStocksStore,
+  services: useServicesStore,
 })
 
 function setupStore<T extends StoreKeys>(key: T): Readonly<IStoreTypes[T]>

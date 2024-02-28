@@ -2,6 +2,7 @@ import axios from 'axios'
 import QuestApi from './services/quest/quest'
 import SharedApi from './services/shared/shared'
 import StocksApi from './services/stocks/stocks'
+import ServicesApi from './services/services/services'
 import { RequestErrorInterceptor } from './interceptors/request-error'
 
 const instance = axios.create({
@@ -14,4 +15,5 @@ export const api = {
   shared: SharedApi(instance),
   quest: QuestApi(instance),
   stocks: StocksApi(instance),
+  services: ServicesApi(instance),
 }

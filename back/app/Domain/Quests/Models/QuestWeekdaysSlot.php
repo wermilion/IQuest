@@ -2,9 +2,9 @@
 
 namespace App\Domain\Quests\Models;
 
-use App\Domain\Quests\Actions\QuestWeekendSlots\CreateQuestWeekdaysSlot;
-use App\Domain\Quests\Actions\QuestWeekendSlots\DeleteQuestWeekdaysSlot;
-use App\Domain\Quests\Actions\QuestWeekendSlots\UpdateQuestWeekdaysSlot;
+use App\Domain\Quests\Actions\QuestWeekdaysSlots\CreateQuestWeekdaysSlotAction;
+use App\Domain\Quests\Actions\QuestWeekdaysSlots\DeleteQuestWeekdaysSlotAction;
+use App\Domain\Quests\Actions\QuestWeekdaysSlots\UpdateQuestWeekdaysSlotAction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,15 +32,15 @@ class QuestWeekdaysSlot extends Model
     protected static function booted(): void
     {
         static::created(function (self $model) {
-            resolve(CreateQuestWeekdaysSlot::class)->execute($model);
+            resolve(CreateQuestWeekdaysSlotAction::class)->execute($model);
         });
 
         static::updating(function (self $model) {
-            resolve(UpdateQuestWeekdaysSlot::class)->execute($model);
+            resolve(UpdateQuestWeekdaysSlotAction::class)->execute($model);
         });
 
         static::deleted(function (self $model) {
-            resolve(DeleteQuestWeekdaysSlot::class)->execute($model);
+            resolve(DeleteQuestWeekdaysSlotAction::class)->execute($model);
         });
     }
 

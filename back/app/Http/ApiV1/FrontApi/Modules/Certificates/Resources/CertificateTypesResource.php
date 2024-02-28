@@ -18,7 +18,7 @@ class CertificateTypesResource extends BaseJsonResource
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->price,
-            'cover' => $this->cover ? config('app.url') . '/' . Storage::url($this->cover) : null,
+            'cover' => $this->cover ? config('app.url') . Storage::url($this->cover) : null,
         ];
     }
 }

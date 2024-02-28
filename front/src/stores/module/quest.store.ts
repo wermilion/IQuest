@@ -18,7 +18,7 @@ export const useQuestStore = defineStore('quest', {
     async fetchQuest(id: string) {
       try {
         const response = await api.quest.getQuest(id, {
-          include: ['type', 'genre', 'room.filial', 'images', 'age_limit', 'level', 'scheduleQuests'],
+          include: ['type', 'genre', 'room.filial', 'images', 'age_limit'],
           filter: {
             city: 'Томск',
             is_active: true,
@@ -31,5 +31,4 @@ export const useQuestStore = defineStore('quest', {
       }
     },
   },
-
 })

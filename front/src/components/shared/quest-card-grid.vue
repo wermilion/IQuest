@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import card from '#/components/quest-card/card-component.vue'
-import { setupStore } from '#/stores/combine-stores'
+import Card from '#/components/quest-card/card-component.vue'
 
 const questStore = setupStore('questList')
+
+const route = useRoute()
 
 onMounted(() => {
   questStore.fetchQuests()
@@ -14,12 +14,9 @@ onMounted(() => {
   <section class="cards container">
     <h2>Наши квесты</h2>
     <div class="d-flex cards-grid">
-      <card
-        v-for="quest in questStore.questList"
-        :key="quest.id"
-        :is-hover="true"
-        :quest="quest"
-      />
+      <template v-for="quest in questStore.questList" :key="quest.id">
+        <Card v-if="quest.id !== +route.params.id" :is-hover="true" :quest="quest" />
+      </template>
     </div>
   </section>
 </template>
@@ -28,6 +25,7 @@ onMounted(() => {
 h2 {
   color: $color-base2;
 }
+
 .cards {
   display: flex;
   flex-direction: column;

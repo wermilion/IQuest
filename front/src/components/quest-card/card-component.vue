@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import Tag from './tag-component.vue'
 import { EAppRouteNames } from '#/types/routes'
 import type { Quest } from '#/types/models/quest'
@@ -20,19 +19,11 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 <template>
   <div class="hover-container poineter" :class="{ 'hover-active': hoverActive }">
     <div v-if="hoverActive" class="hover">
-      <svg
-        width="32"
-        height="400"
-        viewBox="0 0 32 400"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg width="32" height="400" viewBox="0 0 32 400" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fill-rule="evenodd" clip-rule="evenodd"
           d="M0 9.45274C0 4.23213 4.12441 0 9.21212 0H28.1212V2.98507H9.21212C5.73105 2.98507 2.90909 5.88074 2.90909 9.45274V390.547C2.90909 394.119 5.73105 397.015 9.21212 397.015H32V400H9.21212C4.12441 400 0 395.768 0 390.547V9.45274Z"
-          fill="white"
-          fill-opacity="0.75"
+          fill="white" fill-opacity="0.75"
         />
       </svg>
       <span class="hover-before footnote">
@@ -40,46 +31,30 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
       </span>
     </div>
     <div
-      class="card"
-      :class="{ hoverActive }"
+      class="card" :class="{ hoverActive }"
       @click="router.push({ name: EAppRouteNames.Quest, params: { id: quest.id } })"
     >
       <div class="card-image">
-        <img
-          loading="lazy"
-          :src="`/quest-photo/${quest.cover}.png`"
-          :alt="quest.cover"
-        >
+        <img loading="lazy" :src="quest.cover" :alt="quest.cover">
       </div>
 
       <div class="card-body">
         <span class="bodyBold">{{ quest.name }}</span>
         <div class="card-body__tags">
-          <Tag v-for="tag in tags" :key="tag" :name="tag" />
+          <Tag v-for=" tag in tags " :key="tag" :name="tag" />
         </div>
-        <p
-          v-if="quest.short_description"
-          class="card-body__description footnote"
-        >
+        <p v-if="quest.short_description" class="card-body__description footnote">
           {{ quest.short_description }}
         </p>
       </div>
     </div>
     <div v-if="hoverActive" class="hover">
       <span class="hover-after footnote"> {{ quest.duration }} мин </span>
-      <svg
-        width="32"
-        height="400"
-        viewBox="0 0 32 400"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg width="32" height="400" viewBox="0 0 32 400" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fill-rule="evenodd" clip-rule="evenodd"
           d="M32 9.45274C32 4.23213 27.8756 0 22.7879 0H3.87879V2.98507H22.7879C26.2689 2.98507 29.0909 5.88074 29.0909 9.45274V390.547C29.0909 394.119 26.2689 397.015 22.7879 397.015H0V400H22.7879C27.8756 400 32 395.768 32 390.547V9.45274Z"
-          fill="white"
-          fill-opacity="0.6"
+          fill="white" fill-opacity="0.6"
         />
       </svg>
     </div>
@@ -170,6 +145,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
       position: absolute;
       transition: $hover-animation;
       top: 1px;
+
       &:last-child {
         right: 1px;
       }
@@ -180,6 +156,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 .hover-active {
   &:hover {
     .hover {
+
       &-before,
       &-after {
         opacity: 1;

@@ -7,7 +7,9 @@ export interface Quest {
   min_people: number
   max_people: number
   duration: number
-  imgaes?: []
+  images?: {
+    image: string
+  }[]
   type: {
     id: number
     name: string
@@ -20,10 +22,7 @@ export interface Quest {
     id: number
     name: string
   }
-  level?: {
-    id: number
-    name: string
-  }
+  level?: number
   room?: {
     id: number
     name: string

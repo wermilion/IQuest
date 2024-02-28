@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
 import QuestContainer from '#/components/quest-view/quest/quest-container.vue'
 import QuestBooking from '#/components/quest-view/booking/booking.vue'
-import { setupStore } from '#/stores/combine-stores'
+import AddServices from '#/components/shared/add-services.vue'
+import QuestCardGrid from '#/components/shared/quest-card-grid.vue'
 
 const route = useRoute()
 
@@ -13,7 +13,9 @@ questStore.fetchQuest(`${route.params.id}`)
 <template>
   <section class="quest">
     <QuestContainer v-if="questStore.quest" :quest="questStore.quest" />
-    <QuestBooking v-if="questStore.quest" />
+    <QuestBooking v-if="questStore.quest" :id-quest="questStore.quest.id" />
+    <AddServices />
+    <QuestCardGrid />
   </section>
 </template>
 
@@ -22,5 +24,9 @@ questStore.fetchQuest(`${route.params.id}`)
   display: flex;
   flex-direction: column;
   gap: 108px;
+
+  section:last-child {
+    margin-bottom: 108px;
+  }
 }
 </style>

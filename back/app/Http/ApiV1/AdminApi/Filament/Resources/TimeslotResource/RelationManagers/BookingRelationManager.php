@@ -38,9 +38,10 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 TextInput::make('phone')
                     ->label('Телефон')
@@ -92,7 +93,10 @@ class BookingRelationManager extends RelationManager
                     ]),
                 TextInput::make('comment')
                     ->label('Комментарий')
-                    ->maxLength(255)
+                    ->maxLength(125)
+                    ->validationMessages([
+                        'max' => 'Поле ":attribute" не должно превышать :max символов.',
+                    ])
             ]);
     }
 
@@ -152,12 +156,14 @@ class BookingRelationManager extends RelationManager
                             ->required()
                             ->validationMessages([
                                 'required' => 'Поле ":attribute" обязательно.',
-                                'numeric' => 'Поле ":attribute" должно быть числом',
                                 'min' => 'Поле ":attribute" должно быть больше 0',
                             ]),
                         TextInput::make('comment')
                             ->label('Комментарий')
-                            ->maxLength(255)
+                            ->maxLength(125)
+                            ->validationMessages([
+                                'max' => 'Поле ":attribute" не должно превышать :max символов.',
+                            ]),
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value)

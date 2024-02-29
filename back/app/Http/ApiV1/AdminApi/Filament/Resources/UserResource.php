@@ -61,12 +61,16 @@ class UserResource extends Resource
                     ->maxLength(40)
                     ->rules([new CyrillicRule])
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 TextInput::make('surname')
                     ->label('Фамилия')
                     ->rules([new CyrillicRule])
-                    ->maxLength(40),
+                    ->maxLength(40)
+                    ->validationMessages([
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
+                    ]),
                 TextInput::make('login')
                     ->label('Логин')
                     ->unique(ignoreRecord: true)
@@ -76,6 +80,7 @@ class UserResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 Select::make('role')
                     ->label('Роль')
@@ -95,10 +100,11 @@ class UserResource extends Resource
                     ->hiddenOn('edit')
                     ->minLength(8)
                     ->maxLength(32)
+                    ->rules([new LatinRule()])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно содержать не менее 8 символов.',
-                        'max' => 'Поле ":attribute" должно содержать не более 32 символов.',
+                        'min' => 'Поле ":attribute" должно содержать не менее :min символов.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                         'same' => 'Поле ":attribute" должно совпадать с полем "Подтверждение пароля".',
                     ]),
                 TextInput::make('password_confirmation')

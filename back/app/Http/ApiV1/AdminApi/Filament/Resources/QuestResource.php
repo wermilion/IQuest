@@ -182,7 +182,7 @@ class QuestResource extends Resource
                     ->label('Обложка')
                     ->columnSpanFull()
                     ->image()
-                    //->required()
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.'

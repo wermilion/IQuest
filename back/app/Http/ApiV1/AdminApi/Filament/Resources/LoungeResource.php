@@ -64,30 +64,41 @@ class LoungeResource extends Resource
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(30)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ]),
-                Textarea::make('description')
-                    ->label('Описание')
-                    ->columnSpanFull()
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 TextInput::make('max_people')
                     ->label('Макс. кол-во человек')
                     ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->numeric(),
-                TextInput::make('min_price')
-                    ->label('Мин. цена')
-                    ->required()
                     ->numeric()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
+                    ]),
+                Textarea::make('description')
+                    ->autosize()
+                    ->label('Описание')
+                    ->columnSpanFull()
+                    ->required()
+                    ->maxLength(1000)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
+                    ]),
+                TextInput::make('price_per_half_hour')
+                    ->label('Цена за половину часа')
+                    ->required()
+                    ->numeric()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
+                TextInput::make('price_per_hour')
+                    ->label('Цена за час')
+                    ->required()
+                    ->numeric()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 Toggle::make('is_active')
                     ->label('Отображение на сайте')
@@ -99,7 +110,7 @@ class LoungeResource extends Resource
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
-                    //->required()
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

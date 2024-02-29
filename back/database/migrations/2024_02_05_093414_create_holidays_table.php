@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->string('type')->unique()->comment('Тип праздника');
+            $table->boolean('is_active')->default(true)->comment('Статус активности');
 
             $table->timestamps();
         });

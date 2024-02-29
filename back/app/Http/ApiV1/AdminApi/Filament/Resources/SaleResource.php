@@ -51,14 +51,18 @@ class SaleResource extends Resource
                 TextInput::make('header')
                     ->label('Заголовок')
                     ->required()
+                    ->maxLength(32)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 TextInput::make('description')
                     ->label('Описание')
                     ->required()
+                    ->maxLength(75)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 FileUpload::make('front_image')
                     ->directory('sales')

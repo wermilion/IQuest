@@ -10,7 +10,7 @@ const loundge = {
   <div class="hover-container pointer">
     <div class="card">
       <div class="card-image">
-        <img loading="lazy" :src="`/public/loundge/${loundge.img}.jpg`" :alt="loundge.img">
+        <img loading="lazy" :src="`/loundge/${loundge.img}.jpg`" :alt="loundge.img">
       </div>
       <div class="card-body">
         <span class="bodyBold">{{ loundge.name }}</span>

@@ -17,7 +17,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 </script>
 
 <template>
-  <div class="hover-container poineter" :class="{ 'hover-active': hoverActive }">
+  <div class="hover-container pointer" :class="{ 'hover-active': hoverActive }">
     <div v-if="hoverActive" class="hover">
       <svg width="32" height="400" viewBox="0 0 32 400" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path

@@ -6,7 +6,7 @@ const price = props.price.replace(/.00$/, '')
 </script>
 
 <template>
-  <button :class="{ selected: !isActive }" class="booking pointer">
+  <button :class="{ 'selected ': !isActive, 'pointer': isActive }" class="booking ">
     <span class="body">{{ time }}</span>
     <span class="footnote">{{ price }}₽</span>
   </button>
@@ -34,10 +34,7 @@ button {
 }
 
 .selected {
-  background-color: $color-primary;
-
-  &:hover {
-    background-color: $color-light-primary;
-  }
+  background-color: $color-opacity004;
+  opacity: 0.5;
 }
 </style>

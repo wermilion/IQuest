@@ -30,10 +30,6 @@ class ScheduleQuest extends Model
         'quest_id'
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean'
-    ];
-
     public function quest(): BelongsTo
     {
         return $this->belongsTo(Quest::class);

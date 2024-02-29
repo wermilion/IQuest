@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { type WritableComputedRef, computed } from 'vue'
-import { setupStore } from './stores/combine-stores'
 import HeaderComponent from '#/components/header-component.vue'
 import FooterComponent from '#/components/footer-component.vue'
 

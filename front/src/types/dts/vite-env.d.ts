@@ -1,6 +1,4 @@
 /// <reference types="vite/client" />
-
-/// <reference types="vite/client" />
 /// <reference types="vite-svg-loader" />
 
 interface ImportMetaEnv {

@@ -20,7 +20,7 @@ defineProps<{
     </div>
     <div class="main-container">
       <div class="photo-description">
-        <QuestImages :images="quest.imgaes" />
+        <QuestImages :images="quest.images" />
         <QuestDescription :description="quest.description" />
       </div>
       <QuestInfo class="info-main" :info="quest" />
@@ -36,11 +36,17 @@ defineProps<{
   gap: $cover-16;
   width: 100%;
 }
+
 .photo-description {
   max-width: 616px;
   display: flex;
   flex-direction: column;
   gap: $cover-32;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .main-container {
@@ -48,6 +54,7 @@ defineProps<{
   display: flex;
   justify-content: space-between;
 }
+
 .back {
   width: max-content;
   display: flex;
@@ -61,7 +68,8 @@ defineProps<{
     span {
       color: $color-base2;
     }
-    :deep(path){
+
+    :deep(path) {
       stroke-opacity: 1;
     }
   }

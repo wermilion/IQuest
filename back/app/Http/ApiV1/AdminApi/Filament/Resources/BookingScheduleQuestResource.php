@@ -6,14 +6,19 @@ use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Models\BookingScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleQuestResource\Pages\ListBookingScheduleQuests;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class BookingScheduleQuestResource extends Resource
 {
@@ -54,7 +59,8 @@ class BookingScheduleQuestResource extends Resource
             ->columns([
                 TextColumn::make('booking.id')
                     ->label('ID')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('booking.name')
                     ->label('Имя')
                     ->numeric(),
@@ -99,6 +105,26 @@ class BookingScheduleQuestResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->filters([
+                SelectFilter::make('city_id')
+                    ->label('Город')
+                    ->relationship('timeslot.scheduleQuest.quest.filial.city', 'name')
+                    ->native(false),
+                Filter::make('date')
+                    ->form([DatePicker::make('date')->label('Дата')])
+                    ->query(function (Builder $query, array $data) {
+                        return $query->when($data['date'], function ($query, $date) {
+                            $query->whereHas('timeslot.scheduleQuest', function (Builder $query) use ($date) {
+                                $query->whereDate('date', Carbon::parse($date));
+                            });
+                        });
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        $data['date'] && $indicators[] = 'Дата: ' . Carbon::parse($data['date'])->translatedFormat('M j, Y');
+                        return $indicators;
+                    }),
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 DeleteAction::make()->modalHeading('Удаление заявки'),
             ]);

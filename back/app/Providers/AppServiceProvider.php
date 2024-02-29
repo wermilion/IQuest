@@ -49,6 +49,9 @@ class AppServiceProvider extends ServiceProvider
                 FilamentNavigationGroup::make()
                     ->label(NavigationGroup::LOCATIONS->value)
                     ->icon('heroicon-o-building-office-2'),
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::CONTACTS->value)
+                    ->icon('heroicon-o-phone'),
             ]);
         });
     }

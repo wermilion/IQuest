@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->text('description')->comment('Описание лаундж-зоны');
             $table->string('cover')->comment('Обложка');
             $table->integer('max_people')->comment('Максимальное кол-во человек');
-            $table->decimal('min_price')->comment('Минимальная цена');
+            $table->decimal('price_per_half_hour')->comment('Цена за половину часа');
+            $table->decimal('price_per_hour')->comment('Цена за час');
             $table->boolean('is_active')->comment('Статус активности на сайте');
 
             $table->foreignId('filial_id')->comment('Филиал лаундж-зоны')->constrained(table: 'filials');

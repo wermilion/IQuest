@@ -40,7 +40,7 @@ class BookingCertificate extends Model
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class)->withTrashed();
+        return $this->belongsTo(Booking::class);
     }
 
     public function certificateType(): BelongsTo

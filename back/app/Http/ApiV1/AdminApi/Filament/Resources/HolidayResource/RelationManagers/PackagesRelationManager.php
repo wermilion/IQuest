@@ -24,6 +24,8 @@ class PackagesRelationManager extends RelationManager
 
     protected static ?string $pluralModelLabel = 'Пакеты';
 
+    protected static bool $isLazy = false;
+
     public function form(Form $form): Form
     {
         return $form
@@ -88,7 +90,8 @@ class PackagesRelationManager extends RelationManager
             ])
             ->defaultSort('sequence_number')
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->createAnother(false),
             ])
             ->actions([
                 EditAction::make()->modalHeading('Редактирование пакета'),

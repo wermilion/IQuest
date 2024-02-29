@@ -182,7 +182,7 @@ class QuestResource extends Resource
                     ->label('Обложка')
                     ->columnSpanFull()
                     ->image()
-                    //->required()
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.'
@@ -292,6 +292,14 @@ class QuestResource extends Resource
                                 fn(Builder $query, $filial_id): Builder => $query
                                     ->whereHas('room', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
                             );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        $data['city_id'] && $indicators[] = 'Город: ' . City::where('id', $data['city_id'])
+                                ->first()->name;
+                        $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::where('id', $data['filial_id'])
+                                ->first()->address;
+                        return $indicators;
                     }),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([

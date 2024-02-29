@@ -2,6 +2,7 @@
 
 use App\Http\ApiV1\FrontApi\Modules\Bookings\Controllers\BookingsController;
 use App\Http\ApiV1\FrontApi\Modules\Certificates\Controllers\CertificateTypesController;
+use App\Http\ApiV1\FrontApi\Modules\Contacts\Controllers\ContactsController;
 use App\Http\ApiV1\FrontApi\Modules\Holidays\Controllers\HolidaysController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\CitiesController;
 use App\Http\ApiV1\FrontApi\Modules\Locations\Controllers\FilialsController;
@@ -56,3 +57,6 @@ Route::post('sales:search', [SalesController::class, 'search']);
 
 Route::get('services/{id}', [ServicesController::class, 'get']);
 Route::post('services:search', [ServicesController::class, 'search']);
+
+Route::get('contacts/{id}', [ContactsController::class, 'get']);
+Route::post('contacts:search', [ContactsController::class, 'search']);

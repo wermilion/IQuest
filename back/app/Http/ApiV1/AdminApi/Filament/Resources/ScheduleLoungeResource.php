@@ -157,6 +157,14 @@ class ScheduleLoungeResource extends Resource
                                 fn(Builder $query, $filial_id): Builder => $query
                                     ->whereHas('lounge.filial', fn(Builder $query): Builder => $query->where('id', $filial_id)),
                             );
+                    })
+                    ->indicateUsing(function (array $data) {
+                        $indicators = [];
+                        $data['city_id'] && $indicators[] = 'Город: ' . City::where('id', $data['city_id'])
+                                ->first()->name;
+                        $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::where('id', $data['filial_id'])
+                                ->first()->address;
+                        return $indicators;
                     }),
                 SelectFilter::make('lounge')
                     ->relationship('lounge', 'name')
@@ -172,9 +180,7 @@ class ScheduleLoungeResource extends Resource
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
-                        if ($data['date']) {
-                            $indicators[] = 'Дата: ' . Carbon::parse($data['date'])->locale('ru')->format('M j, Y');
-                        }
+                        $data['date'] && $indicators[] = 'Дата: ' . Carbon::parse($data['date'])->translatedFormat('M j, Y');
                         return $indicators;
                     }),
             ], layout: FiltersLayout::AboveContentCollapsible)

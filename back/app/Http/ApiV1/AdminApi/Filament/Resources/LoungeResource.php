@@ -24,8 +24,10 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 class LoungeResource extends Resource
 {
@@ -62,30 +64,41 @@ class LoungeResource extends Resource
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLength(30)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ]),
-                Textarea::make('description')
-                    ->label('Описание')
-                    ->columnSpanFull()
-                    ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 TextInput::make('max_people')
                     ->label('Макс. кол-во человек')
                     ->required()
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ])
-                    ->numeric(),
-                TextInput::make('min_price')
-                    ->label('Мин. цена')
-                    ->required()
                     ->numeric()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
+                    ]),
+                Textarea::make('description')
+                    ->autosize()
+                    ->label('Описание')
+                    ->columnSpanFull()
+                    ->required()
+                    ->maxLength(1000)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
+                    ]),
+                TextInput::make('price_per_half_hour')
+                    ->label('Цена за половину часа')
+                    ->required()
+                    ->numeric()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
+                TextInput::make('price_per_hour')
+                    ->label('Цена за час')
+                    ->required()
+                    ->numeric()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 Toggle::make('is_active')
                     ->label('Отображение на сайте')
@@ -97,7 +110,7 @@ class LoungeResource extends Resource
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
-                    //->required()
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -133,10 +146,43 @@ class LoungeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('city')
-                    ->label('Город')
-                    ->relationship('filial.city', 'name')
-                    ->native(false),
+                Filter::make('location')
+                    ->form([
+                        Select::make('city_id')
+                            ->label('Город')
+                            ->placeholder('Выберите город')
+                            ->relationship('filial.city', 'name')
+                            ->native(false),
+                        Select::make('filial_id')
+                            ->label('Филиал')
+                            ->placeholder('Выберите филиал')
+                            ->live()
+                            ->options(fn(Get $get): Collection => Filial::query()
+                                ->where('city_id', $get('city_id'))
+                                ->pluck('address', 'id'))
+                            ->native(false),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['city_id'],
+                                fn(Builder $query, $city_id): Builder => $query
+                                    ->whereHas('filial', fn(Builder $query): Builder => $query->where('city_id', $city_id)),
+                            )
+                            ->when(
+                                $data['filial_id'],
+                                fn(Builder $query, $filial_id): Builder => $query
+                                    ->where('filial_id', $filial_id),
+                            );
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        $data['city_id'] && $indicators[] = 'Город: ' . City::where('id', $data['city_id'])
+                                ->first()->name;
+                        $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::where('id', $data['filial_id'])
+                                ->first()->address;
+                        return $indicators;
+                    }),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),

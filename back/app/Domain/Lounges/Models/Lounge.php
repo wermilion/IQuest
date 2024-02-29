@@ -18,7 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
  * @property string $description Описание лаунджа
  * @property string $cover Обложка лаунджа
  * @property int $max_people Максимальное количество людей
- * @property int $min_price Минимальная цена
+ * @property int $price_per_half_hour Цена за половину часа
+ * @property int $price_per_hour Цена за час
  * @property bool $is_active Статус отображения
  * @property int $filial_id Идентификатор филиала
  *
@@ -33,7 +34,8 @@ class Lounge extends Model
         'description',
         'cover',
         'max_people',
-        'min_price',
+        'price_per_half_hour',
+        'price_per_hour',
         'is_active',
         'filial_id',
     ];

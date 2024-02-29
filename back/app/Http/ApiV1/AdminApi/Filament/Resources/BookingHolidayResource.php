@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Domain\Bookings\Models\BookingHoliday;
+use App\Domain\Holidays\Enums\HolidayType;
 use App\Domain\Holidays\Models\Holiday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\CreateBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
@@ -18,7 +19,11 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class BookingHolidayResource extends Resource
 {
@@ -40,10 +45,11 @@ class BookingHolidayResource extends Resource
             ->schema([
                 Select::make('booking_id')
                     ->label('ID бронирования')
-                    ->options(fn() => Booking::query()
-                        ->where('type', BookingType::HOLIDAY->getLabel())
-                        ->withoutTrashed()
-                        ->pluck('id', 'id'))
+                    ->relationship('booking',
+                        'id',
+                        fn(Builder $query): Builder => $query
+                            ->where('type', BookingType::HOLIDAY->value)
+                            ->whereDoesntHave('bookingHoliday'))
                     ->searchable()
                     ->native(false),
                 TextInput::make('comment')
@@ -78,15 +84,19 @@ class BookingHolidayResource extends Resource
             ->emptyStateHeading('Заявок на праздники не обнаружено')
             ->columns([
                 TextColumn::make('booking.id')
-                    ->label('ID'),
+                    ->label('ID')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('booking.name')
                     ->label('Имя'),
                 TextColumn::make('booking.phone')
                     ->label('Телефон'),
                 TextColumn::make('holidayPackage.holiday.type')
-                    ->label('Тип праздника'),
+                    ->label('Тип праздника')
+                    ->sortable(),
                 TextColumn::make('holidayPackage.package.name')
-                    ->label('Пакет'),
+                    ->label('Пакет')
+                    ->sortable(),
                 TextColumn::make('comment')
                     ->label('Комментарий')
                     ->toggleable(isToggledHiddenByDefault: true),

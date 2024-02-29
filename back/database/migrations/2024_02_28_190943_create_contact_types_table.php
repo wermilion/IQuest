@@ -10,11 +10,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('holidays', function (Blueprint $table) {
+        Schema::create('contact_types', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('type')->unique()->comment('Тип праздника');
-            $table->boolean('is_active')->default(true)->comment('Статус активности');
+            $table->string('name')->comment('Название типа контакта');
+            $table->boolean('is_social')->comment('Проверка на соц. сеть');
 
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('holidays');
+        Schema::dropIfExists('contact_types');
     }
 };

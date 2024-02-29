@@ -8,8 +8,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
 use Filament\Tables\Actions\AttachAction;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\SelectColumn;
@@ -22,6 +22,8 @@ class BookingRelationManager extends RelationManager
     protected static string $relationship = 'booking';
 
     protected static ?string $label = 'заявку';
+
+    protected static bool $isLazy = false;
 
     public function form(Form $form): Form
     {
@@ -110,14 +112,15 @@ class BookingRelationManager extends RelationManager
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::LOUNGE->value)
-                        ->withoutTrashed())
+                        ->whereDoesntHave('scheduleLounges'))
                     ->attachAnother(false)
                     ->recordSelectSearchColumns(['id']),
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
+                    ->modalHeading('Создание заявки')
                     ->createAnother(false),
             ])
             ->actions([
-                EditAction::make(),
+                EditAction::make()->modalHeading('Редактирование заявки'),
                 DeleteAction::make()->modalHeading('Удалить заявку'),
             ]);
     }

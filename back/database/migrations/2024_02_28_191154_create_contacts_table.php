@@ -10,11 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('holidays', function (Blueprint $table) {
+        Schema::create('contacts', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('type')->unique()->comment('Тип праздника');
-            $table->boolean('is_active')->default(true)->comment('Статус активности');
+            $table->foreignId('city_id')->constrained(table: 'cities')
+                ->cascadeOnDelete();;
+            $table->foreignId('contact_type_id')->constrained(table: 'contact_types')
+                ->cascadeOnDelete();
+            $table->string('value')->comment('Значение');
 
             $table->timestamps();
         });
@@ -25,6 +28,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('holidays');
+        Schema::dropIfExists('contacts');
     }
 };

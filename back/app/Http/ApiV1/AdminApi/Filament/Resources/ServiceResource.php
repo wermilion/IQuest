@@ -6,6 +6,7 @@ use App\Domain\Services\Models\Service;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\CreateService;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\EditService;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\ListServices;
+use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -47,10 +48,10 @@ class ServiceResource extends Resource
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(40)
+                    ->maxLength(20)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'max' => 'Поле ":attribute" должно содержать не более :max символов.',
+                        'max' => 'Поле ":attribute" не должно превышать :max символов.',
                     ]),
                 TextInput::make('price')
                     ->label('Цена')
@@ -62,6 +63,7 @@ class ServiceResource extends Resource
                 TextInput::make('unit')
                     ->label('Единица измерения')
                     ->required()
+                    ->rules([new CyrillicRule()])
                     ->maxLength(20)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',

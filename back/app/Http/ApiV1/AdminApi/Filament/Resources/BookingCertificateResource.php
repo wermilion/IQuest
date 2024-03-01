@@ -64,11 +64,14 @@ class BookingCertificateResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->emptyStateHeading('Заявки на сертификаты не обнаружены')
+            ->emptyStateHeading('Заявок на сертификаты не обнаружено')
             ->columns([
                 TextColumn::make('booking.id')
                     ->label('ID')
                     ->searchable()
+                    ->sortable(),
+                TextColumn::make('booking.city.name')
+                    ->label('Город')
                     ->sortable(),
                 TextColumn::make('booking.name')
                     ->label('Имя'),
@@ -85,6 +88,10 @@ class BookingCertificateResource extends Resource
                     ->selectablePlaceholder(false),
             ])
             ->filters([
+                SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('booking.city', 'name')
+                    ->native(false),
                 SelectFilter::make('type')
                     ->label('Тип сертификата')
                     ->relationship('certificateType', 'name')

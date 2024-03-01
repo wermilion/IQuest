@@ -7,7 +7,7 @@ use App\Domain\Users\Enums\Role;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -24,7 +24,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Role $role Роль пользователя
  * @property string $vk_id Идентификатор пользователя во ВКонтакте
  *
- * @property Filial $filial Филиал
+ * @property-read Filial $filials Филиалы пользователя
  */
 class User extends Authenticatable implements FilamentUser
 {
@@ -40,7 +40,6 @@ class User extends Authenticatable implements FilamentUser
         'surname',
         'login',
         'password',
-        'filial_id',
         'role',
         'vk_id'
     ];
@@ -70,13 +69,8 @@ class User extends Authenticatable implements FilamentUser
         return static::query()->where('login', $this->login)->exists();
     }
 
-    public function getFilamentName(): string
+    public function filials(): BelongsToMany
     {
-        return "{$this->surname} {$this->name}";
-    }
-
-    public function filial(): BelongsTo
-    {
-        return $this->belongsTo(Filial::class);
+        return $this->belongsToMany(Filial::class, 'filial_users');
     }
 }

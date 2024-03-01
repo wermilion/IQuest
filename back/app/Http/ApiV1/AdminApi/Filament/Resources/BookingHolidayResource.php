@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
+use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Domain\Bookings\Models\BookingHoliday;
@@ -18,6 +19,7 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
@@ -44,7 +46,7 @@ class BookingHolidayResource extends Resource
         return $form
             ->schema([
                 Select::make('booking_id')
-                    ->label('ID бронирования')
+                    ->label('ID заявки')
                     ->relationship('booking',
                         'id',
                         fn(Builder $query): Builder => $query
@@ -87,6 +89,9 @@ class BookingHolidayResource extends Resource
                     ->label('ID')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('booking.city.name')
+                    ->label('Город')
+                    ->sortable(),
                 TextColumn::make('booking.name')
                     ->label('Имя'),
                 TextColumn::make('booking.phone')
@@ -97,10 +102,23 @@ class BookingHolidayResource extends Resource
                 TextColumn::make('holidayPackage.package.name')
                     ->label('Пакет')
                     ->sortable(),
+                TextColumn::make('created_at')
+                    ->label('Дата заявки')
+                    ->date(),
+                SelectColumn::make('booking.status')
+                    ->label('Статус')
+                    ->options(BookingStatus::class)
+                    ->selectablePlaceholder(false),
                 TextColumn::make('comment')
                     ->label('Комментарий')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->filters([
+                SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('booking.city', 'name')
+                    ->native(false),
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
                 DeleteAction::make()->modalHeading('Удаление заявки'),

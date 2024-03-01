@@ -5,11 +5,13 @@ namespace App\Domain\Bookings\Models;
 use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
+use App\Domain\Locations\Models\City;
 use App\Domain\Schedules\Models\ScheduleLounge;
 use App\Domain\Schedules\Models\ScheduleQuest;
 use App\Domain\Schedules\Models\Timeslot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,11 +21,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property int $id Идентификатор бронирования
  * @property string $name Имя клиента
- * @property string $phone Номер телефона клиента
- * @property string $email Электронная почта клиента
- * @property BookingType $type Тип бронирования
- * @property BookingStatus $status Статус бронирования
+ * @property string $phone Номер клиента
+ * @property BookingType $type Тип
+ * @property BookingStatus $status Статус
+ * @property int $city_id Идентификатор Города
  *
+ * @property-read  City $city
  * @property-read  BookingScheduleQuest $bookingScheduleQuest
  * @property-read  BookingScheduleLounge $bookingScheduleLounge
  * @property-read  ScheduleQuest $scheduleQuests
@@ -41,6 +44,7 @@ class Booking extends Model
         'phone',
         'type',
         'status',
+        'city_id'
     ];
 
     protected $casts = [
@@ -77,6 +81,11 @@ class Booking extends Model
                 $model->bookingCertificate()->delete();
             }
         });
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 
     public function bookingScheduleQuest(): HasOne

@@ -10,7 +10,7 @@ class CreateBookingHoliday extends CreateRecord
 {
     protected static string $resource = BookingHolidayResource::class;
 
-    protected ?string $heading = 'Создание заявки на праздник';
+    protected ?string $heading = 'Прикрепление заявки на праздник';
 
     protected function getRedirectUrl(): string
     {

@@ -61,6 +61,9 @@ class BookingScheduleQuestResource extends Resource
                     ->label('ID')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('booking.city.name')
+                    ->label('Город')
+                    ->sortable(),
                 TextColumn::make('booking.name')
                     ->label('Имя')
                     ->numeric(),
@@ -73,7 +76,7 @@ class BookingScheduleQuestResource extends Resource
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('timeslot.scheduleQuest.quest.filial.address')
-                    ->label('Адрес')
+                    ->label('Филиал')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('timeslot.scheduleQuest.quest.name')
@@ -106,9 +109,9 @@ class BookingScheduleQuestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('city_id')
+                SelectFilter::make('city')
                     ->label('Город')
-                    ->relationship('timeslot.scheduleQuest.quest.filial.city', 'name')
+                    ->relationship('booking.city', 'name')
                     ->native(false),
                 Filter::make('date')
                     ->form([DatePicker::make('date')->label('Дата')])

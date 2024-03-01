@@ -15,14 +15,13 @@ class EditTimeslot extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $scheduleQuest = ScheduleQuest::query()
-            ->with(['quest', 'quest.room', 'quest.room.filial', 'quest.room.filial.city'])
+            ->with(['quest', 'quest.filial', 'quest.filial.city'])
             ->find($data['schedule_quest_id']);
 
         $data['date'] = $scheduleQuest->date;
         $data['quest'] = $scheduleQuest->quest->id;
-        $data['room'] = $scheduleQuest->quest->room->id;
-        $data['filial'] = $scheduleQuest->quest->room->filial->id;
-        $data['city'] = $scheduleQuest->quest->room->filial->city->id;
+        $data['filial'] = $scheduleQuest->quest->filial->id;
+        $data['city'] = $scheduleQuest->quest->filial->city->id;
 
         return $data;
     }

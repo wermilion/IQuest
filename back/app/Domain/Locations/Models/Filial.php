@@ -2,7 +2,7 @@
 
 namespace App\Domain\Locations\Models;
 
-use App\Domain\Users\Models\User;
+use App\Domain\Users\Models\FilialUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $city_id - Идентификатор города
  *
  * @property City $city
+ * @property-read FilialUser $filialUser
  */
 class Filial extends Model
 {
@@ -31,15 +32,5 @@ class Filial extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
-    }
-
-    protected function rooms(): HasMany
-    {
-        return $this->hasMany(Room::class);
-    }
-
-    public function users(): HasMany
-    {
-        return $this->hasMany(User::class);
     }
 }

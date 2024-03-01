@@ -59,23 +59,14 @@ class QuestResource extends Resource
                     ->options(fn() => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
                     ->native(false),
-                Select::make('filial')
+                Select::make('filial_id')
                     ->label('Филиал')
-                    ->live()
                     ->options(fn(Get $get) => Filial::query()
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
-                    ->hiddenOn('')
-                    ->native(false),
-                Select::make('room_id')
-                    ->label('Комната')
-                    ->columnSpanFull()
-                    ->options(fn(Get $get) => Room::query()
-                        ->where('filial_id', $get('filial'))
-                        ->pluck('name', 'id'))
                     ->required()
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->native(false),
                 Select::make('type_id')
@@ -197,11 +188,11 @@ class QuestResource extends Resource
         return $table
             ->emptyStateHeading('Квесты не обнаружены')
             ->columns([
-                TextColumn::make('room.filial.city.name')
+                TextColumn::make('filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('room.filial.address')
+                TextColumn::make('filial.address')
                     ->label('Филиал')
                     ->numeric()
                     ->sortable(),

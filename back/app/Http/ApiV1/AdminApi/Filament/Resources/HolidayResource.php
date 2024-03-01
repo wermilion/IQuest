@@ -17,6 +17,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class HolidayResource extends Resource
 {
@@ -54,6 +55,11 @@ class HolidayResource extends Resource
     public static function canCreate(): bool
     {
         return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return $record->type != HolidayType::CORPORATE;
     }
 
     public static function table(Table $table): Table

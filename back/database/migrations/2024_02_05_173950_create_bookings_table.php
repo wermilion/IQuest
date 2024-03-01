@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('type')->comment('Тип заявки');
             $table->string('status')->comment('Статус заявки');
 
+            $table->foreignId('city_id')->comment('Город')->constrained(table: 'cities');
+
             $table->timestamps();
             $table->softDeletes();
         });

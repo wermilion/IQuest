@@ -38,6 +38,13 @@ class CityResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                     ]),
+                TextInput::make('timezone')
+                    ->label('Тайм-зона')
+                    ->required()
+                    ->maxLength(255)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
             ]);
     }
 

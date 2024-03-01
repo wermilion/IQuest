@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->string('name')->unique()->comment('Название города');
+            $table->string('timezone')->comment('Таймзона');
 
             $table->timestamps();
         });

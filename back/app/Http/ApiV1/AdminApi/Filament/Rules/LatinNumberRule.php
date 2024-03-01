@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class CyrillicRule implements ValidationRule
+class LatinNumberRule implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -15,8 +15,8 @@ class CyrillicRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/^[а-яА-Я\.\-_@!#$%^&*(){}?><,;:\'"\/\\\|`~]+$/iu', $value)) {
-            $fail('Поле ":attribute" должно содержать только кириллицу и спец. символы.');
+        if (!preg_match('/^[a-zA-Z0-9\.\-_@!#$%^&*(){}?><,;:\'"\/\\\|`~]+$/iu', $value)) {
+            $fail('Поле ":attribute" должно содержать только латиницу, цифры и спец. символы.');
         }
     }
 }

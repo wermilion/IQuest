@@ -4,11 +4,13 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import vue from '@vitejs/plugin-vue'
 import autoImport from 'unplugin-auto-import/vite'
 import svgLoader from 'vite-svg-loader'
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({ template: { transformAssetUrls } }),
     svgLoader(),
+    vuetify({ autoImport: true }),
     visualizer(),
     autoImport({
       imports: ['vue', 'vue-router', 'pinia'],

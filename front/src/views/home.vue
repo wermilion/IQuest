@@ -7,13 +7,12 @@ const stores = setupStore(['stocks', 'questList', 'services'])
 
 onMounted(() => {
   stores.stocks.fetchStocks()
-  stores.questList.fetchQuests()
   stores.services.fetchServices()
 })
 </script>
 
 <template>
-  <section v-if="stores.stocks.stocks" class="bg-black">
+  <section v-if="stores.stocks.stocks" class="bag-black">
     <BanerSwiper />
     <QuestCardGrid />
     <AddServicesVue />
@@ -24,7 +23,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.bg-black {
+.bag-black {
   display: flex;
   flex-direction: column;
   gap: 108px;

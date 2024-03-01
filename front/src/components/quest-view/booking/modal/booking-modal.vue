@@ -1,40 +1,82 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import QuestRules from './quest-rules.vue'
+import Close from '#/assets/svg/shared/close.svg?component'
+import Plus from '#/assets/svg/shared/plus.svg?component'
+import Minus from '#/assets/svg/shared/minus.svg?component'
+import type { TimeSlots } from '#/types/models/schedule'
 
-const showModal = ref(false)
+import '#/assets/scss/normalize.scss'
+import Button from '#/components/shared/button.vue'
+
+const props = defineProps<{
+  showModal: boolean
+  date: string | null
+  item: TimeSlots | null
+}>()
+
+const emit = defineEmits(['close'])
+const stores = setupStore('quest')
+
+const people = ref(stores.quest?.min_people || 0)
+const fullName = ref('')
+const phoneNumber = ref('')
+const addLoudge = ref(false)
+const privatePolice = ref(false)
+const totalPrice = computed(() => {
+  const basePrice = props.item?.price ? Number.parseFloat(props.item.price) : 0
+  const additionalPeople = Math.max(people.value - 4, 0)
+  const additionalCost = additionalPeople * 500
+  return basePrice + additionalCost
+})
+
+function addPeople(): void {
+  if (people.value !== undefined && stores.quest?.max_people !== undefined) {
+    if (people.value < stores.quest?.max_people)
+      people.value++
+  }
+}
+
+function removePeople(): void {
+  if (people.value !== undefined && stores.quest?.min_people !== undefined) {
+    if (people.value > stores.quest?.min_people)
+      people.value--
+  }
+}
 </script>
 
 <template>
-  <div>
-    <button @click="showModal = true">
-      Открыть модальное окно
-    </button>
-
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="nodal-header__title">
-            <h2>Бронирование</h2>
-            <span class="footnote">Кутёж в ирландском пабе • 17 февраля, сб • 11:30</span>
-          </div>
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              fill-rule="evenodd" clip-rule="evenodd"
-              d="M22.5845 23.9979L12.0014 13.4146L13.4156 12.0004L23.9987 22.5837L34.5821 12L35.9963 13.4142L25.4129 23.9979L35.9977 34.5829L34.5835 35.9971L23.9987 25.4121L13.4142 35.9968L12 34.5825L22.5845 23.9979Z"
-              fill="white" fill-opacity="0.25"
-            />
-          </svg>
+  <div v-if="showModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header__title">
+          <h2>Бронирование</h2>
+          <span class="footnote">{{ stores.quest?.name }} • {{ date }} • {{ item?.time.replace(/:00$/, '') }}</span>
         </div>
-        <div class="modal-form">
-          <input class="modal-input footnote" placeholder="Имя" type="text">
-          <input class="modal-input footnote" placeholder="Имя" type="text">
-
-          <div class="modal-count">
-            <span class="smallFootnote">Кол-во человек</span>
-            <div class="count" />
-            <span>если игроков больше 4 — доплата 500₽ за каждого</span>
+        <Close class="pointer close" @click="emit('close')" />
+      </div>
+      <div class="modal-form">
+        <form class="form">
+          <v-text-field v-model="fullName" variant="underlined" label="Имя" />
+          <v-text-field v-model="phoneNumber" type="tel" variant="underlined" label="Мобильный телефон" />
+        </form>
+        <div class="modal-count">
+          <span class="smallFootnote">Кол-во человек</span>
+          <div class="count">
+            <Minus class="btn pointer" @click="removePeople" />
+            <span class="body">{{ people }}</span>
+            <Plus class="btn pointer" @click="addPeople" />
           </div>
+          <span v-if="people > 4" class="verySmallFootnot">
+            если игроков больше 4 — доплата 500₽ за каждого
+          </span>
         </div>
+        <h3>Итого за квест: {{ totalPrice }}₽</h3>
+      </div>
+      <QuestRules />
+      <div class="modal-checkbox">
+        <v-checkbox v-model="addLoudge" label="Хочу лаунж зону" />
+        <v-checkbox v-model="privatePolice" label="Я даю согласие на обработку персональных данных" />
+        <Button name="Забронировать" :button-ligh="true" @click="emit('close')" />
       </div>
     </div>
   </div>
@@ -49,20 +91,8 @@ const showModal = ref(false)
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   background-color: rgba(0, 0, 0, 0.4);
-
-  &-content {
-    overflow: hidden;
-    background-color: $color-base1;
-    padding: $cover-32;
-    border-radius: $cover-12;
-    width: 100%;
-    max-width: 624px;
-    display: flex;
-    flex-direction: column;
-    gap: $cover-40;
-  }
 
   &-header {
     display: flex;
@@ -74,28 +104,82 @@ const showModal = ref(false)
       gap: $cover-8;
       max-width: 472px;
     }
+
+    .close {
+      :deep() {
+        transition: all 0.15s ease-out;
+        border-radius: 100%;
+      }
+
+      &:hover {
+        background-color: $color-red-opacity05;
+      }
+    }
+  }
+
+  &-content {
+    overflow: auto;
+    background-color: $color-base1;
+    padding: $cover-32;
+    border-radius: $cover-12;
+    width: 100%;
+    max-width: 624px;
+    display: flex;
+    flex-direction: column;
+    gap: $cover-40;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &-count {
+    display: flex;
+    flex-direction: column;
+    gap: $cover-8;
+
+    .count {
+      display: flex;
+      align-items: center;
+      gap: $cover-12;
+
+      .btn {
+        :deep() {
+          rect {
+            transition: all 0.15s ease-in-out;
+          }
+        }
+
+        &:hover {
+          :deep() {
+            rect {
+              fill-opacity: 0.25;
+            }
+          }
+        }
+      }
+    }
+
   }
 
   &-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: $cover-32
   }
 
-  &-input {
-    height: 60px;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid $color-opacity025;
-    width: 100%;
-    outline: none;
-    color: $color-base2;
-    padding: 0px;
+  &-checkbox {
+    display: flex;
+    flex-direction: column;
+    gap: $cover-12;
   }
 }
 
-h2 {
+input h2 {
   color: $color-opacity06;
+}
+
+h3 {
+  color: $color-base2;
 }
 </style>

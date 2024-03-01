@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import BookingButton from './booking-button.vue'
-import type { Schedule } from '#/types/models/schedule'
+import BookingModal from './modal/booking-modal.vue'
+import type { Schedule, TimeSlots } from '#/types/models/schedule'
 
 const props = defineProps<{ dateTimes: Schedule }>()
 const { dateTimes } = props
@@ -14,21 +15,29 @@ function formatDateAndWeekday(date: Date) {
   return `${formattedDate}, ${formattedWeekday}`
 }
 
-function openModal() {
+const open = ref(false)
+const dayDate = ref<string | null>(null)
+const dayItem = ref<TimeSlots | null>(null)
 
+function openModal(date: Date, item: TimeSlots) {
+  if (item.is_active === true) {
+    dayDate.value = formatDateAndWeekday(new Date(date))
+    dayItem.value = item
+    open.value = true
+  }
+}
+
+function closeModal() {
+  open.value = false
 }
 
 const sortedTimeslots = computed(() => {
-  // Создаем копию массива timeslots, чтобы не мутировать оригинал
   const timeslotsCopy = [...dateTimes.timeslots]
   return timeslotsCopy.sort((a, b) => {
-    // Сравниваем строки времени
     if (a.time < b.time)
       return -1
-
     if (a.time > b.time)
       return 1
-
     return 0
   })
 })
@@ -40,10 +49,10 @@ const sortedTimeslots = computed(() => {
     <div class="schedule-items">
       <BookingButton
         v-for="item in sortedTimeslots" :key="item.id" :price="item.price" :time="item.time"
-        :is-active="item.is_active" @click="openModal()"
+        :is-active="item.is_active" @click="openModal(dateTimes.date, item)"
       />
     </div>
-    <!-- <BookingModal /> -->
+    <BookingModal :show-modal="open" :item="dayItem" :date="dayDate" @close="closeModal" />
   </div>
 </template>
 

@@ -1,4 +1,48 @@
-// Исправление default стилей
-input {
-  
+// стили для модального окана
+.v-field {
+  color: $color-opacity025;
+
+  &--dirty {
+    color: $color-base2;
+
+    .v-field__outline {
+      --v-field-border-opacity: 1;
+    }
+  }
+
+  // &--focused {
+  //   color: $color-primary;
+
+  //   .v-field__input {
+  //     color: $color-base2;
+  //   }
+
+  //   .v-label {
+  //     color: $color-opacity06;
+  //   }
+  // }
+
+  .v-field__outline {
+    --v-field-border-opacity: 0.38;
+  }
+
+  &:hover .v-field__outline {
+    --v-field-border-opacity: 0.38;
+  }
+}
+
+.v-checkbox {
+  color: $color-opacity06;
+  max-height: 32px;
+
+  .v-selection-control--density-default {
+    --v-selection-control-size: 32px;
+  }
+  .v-selection-control {
+    min-height: 0 !important;
+  }
+}
+
+.v-label {
+  top: 18px !important;
 }

@@ -55,7 +55,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bg-secondary">
+  <section class="bag-secondary">
     <div ref="slider" class="swiper-container container">
       <div class="swiper-wrapper">
         <SliderComponent v-for="item in stores.stocks" :key="item.id" :salse="item" class="swiper-slide" />
@@ -83,7 +83,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.bg-secondary {
+.bag-secondary {
   background-image: url(/gradient/baner-gradient.svg);
   background-repeat: no-repeat;
   background-position: center;

@@ -1,6 +1,6 @@
-@import "./normalize.scss";
 @import "../css/fonts/NEXT-ART/next_art.css";
 @import "../css/fonts/onest/onest.css";
+@import "@mdi/font/css/materialdesignicons.min.css";
 
 html {
   background-color: $color-base1;
@@ -100,7 +100,8 @@ h3 {
 .bodyBold,
 .body,
 .footnote,
-.smallFootnote {
+.smallFootnote,
+.verySmallFootnot {
   font-family: Onest;
 }
 
@@ -132,6 +133,20 @@ h3 {
   color: $color-opacity06;
 }
 
+.smallFootnote {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  color: $color-opacity06;
+}
+
+.verySmallFootnot {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: $color-opacity06;
+}
+
 .container,
 .container-header {
   display: flex;
@@ -146,11 +161,7 @@ h3 {
   padding-inline: 88px;
 }
 
-.d-flex {
-  display: flex;
-}
-
-.bg-secondary {
+.bag-secondary {
   padding-top: 80px;
   background-color: $color-secondary;
 }

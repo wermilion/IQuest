@@ -9,6 +9,14 @@ const loading: WritableComputedRef<boolean> = computed({
   get: () => store.loading,
   set: v => store.setLoading(v),
 })
+
+const stores = setupStore(['stocks', 'questList', 'services'])
+
+onMounted(() => {
+  stores.stocks.fetchStocks()
+  stores.questList.fetchQuests()
+  stores.services.fetchServices()
+})
 </script>
 
 <template>

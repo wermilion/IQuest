@@ -17,15 +17,18 @@
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^8.1.1",
+    "animate.css": "^4.1.1",
     "axios": "^1.6.7",
     "pinia": "^2.1.7",
     "swiper": "^11.0.6",
     "unplugin-auto-import": "^0.17.5",
     "vue": "^3.4.19",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vuetify": "^3.5.6"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.4",
+    "@mdi/font": "^7.4.47",
     "@tsconfig/node20": "^20.1.2",
     "@types/node": "^20.11.20",
     "@vitejs/plugin-vue": "^5.0.4",
@@ -36,6 +39,7 @@
     "simple-git-hooks": "^2.9.0",
     "typescript": "^5.3.3",
     "vite": "^5.1.4",
+    "vite-plugin-vuetify": "^2.0.2",
     "vite-svg-loader": "^5.1.0",
     "vue-tsc": "^1.8.27"
   },

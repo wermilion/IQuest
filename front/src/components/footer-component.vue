@@ -33,17 +33,12 @@ const emainAddress = {
         <div class="footer-links__contacts">
           <PhoneNumber />
           <span class="body">
-            <img :src="`/icons/${emainAddress.img}`" :alt="emainAddress.img">
+            <img :src="`/icons/share/${emainAddress.img}`" :alt="emainAddress.img">
             {{ emainAddress.text }}
           </span>
         </div>
         <div class="footer-links__social">
-          <a
-            v-for="link in linksSocial"
-            :key="link.img"
-            target="_blank"
-            :href="link.link"
-          >
+          <a v-for="link in linksSocial" :key="link.img" target="_blank" :href="link.link">
             <img :src="`/icons/social/${link.img}`" :alt="link.img">
           </a>
         </div>
@@ -65,12 +60,12 @@ const emainAddress = {
 
 <style scoped lang="scss">
 .border {
-  border-top: 2px solid $color-shade-6;
-
+  border-top: 2px solid $color-shade-6 !important;
   background-image: url("/gradient/footer-gradient.svg");
   background-repeat: no-repeat;
   background-position: center top;
 }
+
 .footer {
   height: 100%;
   margin-inline: auto;

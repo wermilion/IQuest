@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 
 import App from './app.vue'
 import router from './router'
+import vuetify from './plugins/vuetify'
 import { initCustomDirectives } from '#/derectives'
 
 const pinia = createPinia()
@@ -13,5 +14,6 @@ initCustomDirectives(app)
 
 app.use(router)
 app.use(pinia)
+app.use(vuetify)
 
 router.isReady().then(() => app.mount('#app'))

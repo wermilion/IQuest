@@ -26,7 +26,7 @@ const isSelected = computed(() => stores.chip.selectedChip === props.chip.name)
   align-items: center;
   border-radius: 120px;
   background-color: $color-opacity004;
-  padding: $cover-16 $cover-24;
+  padding: $cover-16 $cover-48;
 
   &:hover {
     background-color: $color-opacity012;

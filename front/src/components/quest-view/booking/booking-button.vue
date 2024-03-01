@@ -23,7 +23,7 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: $cover-12 $cover-24;
+  padding: $cover-16 $cover-32;
   gap: $cover-12;
   background-color: $color-opacity004;
   border-radius: $cover-16;

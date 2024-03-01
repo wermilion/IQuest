@@ -27,7 +27,7 @@ class EditUser extends EditRecord
     protected function mutateFormDataBeforeFill(array $data): array
     {
         $user = User::query()->findOrFail($data['id']);
-        $city = $user->filials->first()->city->id;
+        $city = $user->filials->first()?->city->id;
 
         $data['city'] = $city;
         $data['filials'] = $user->filials->pluck('id')->toArray();

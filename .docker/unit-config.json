@@ -30,8 +30,8 @@
       "script": "index.php",
       "options": {
         "admin": {
-          "post_max_size": "20M",
-          "upload_max_filesize": "20M"
+          "post_max_size": "30M",
+          "upload_max_filesize": "30M"
         }
       }
     }

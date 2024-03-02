@@ -13,7 +13,7 @@ server {
     ssl_certificate /tmp/tls/$DOMAIN.pem;
     ssl_certificate_key /tmp/tls/$DOMAIN-key.pem;
 
-    client_max_body_size 20M;
+    client_max_body_size 30M;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

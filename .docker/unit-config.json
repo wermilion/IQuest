@@ -27,7 +27,13 @@
     "laravel": {
       "type": "php",
       "root": "/app/public/",
-      "script": "index.php"
+      "script": "index.php",
+      "options": {
+        "admin": {
+          "post_max_size": "20M",
+          "upload_max_filesize": "20M"
+        }
+      }
     }
   }
 }

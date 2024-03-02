@@ -3,7 +3,7 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Quests\Resources;
 
 use App\Domain\Quests\Models\Quest;
-use App\Http\ApiV1\FrontApi\Modules\Locations\Resources\RoomsResource;
+use App\Http\ApiV1\FrontApi\Modules\Locations\Resources\FilialsResource;
 use App\Http\ApiV1\FrontApi\Support\Resources\BaseJsonResource;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,7 +17,6 @@ class QuestsResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'slug' => $this->slug,
             'short_description' => $this->short_description,
             'description' => $this->description,
             'cover' => $this->cover ? config('app.url') . Storage::url($this->cover) : null,
@@ -30,7 +29,7 @@ class QuestsResource extends BaseJsonResource
             'genre' => new GenresResource($this->whenLoaded('genre')),
             'age_limit' => new AgeLimitsResource($this->whenLoaded('age_limit')),
             'images' => QuestImagesResource::collection($this->whenLoaded('images')),
-            'room' => new RoomsResource($this->whenLoaded('room')),
+            'filial' => new FilialsResource($this->whenLoaded('filial')),
         ];
     }
 }

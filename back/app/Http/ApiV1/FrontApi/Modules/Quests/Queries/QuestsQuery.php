@@ -17,12 +17,12 @@ class QuestsQuery extends QueryBuilder
             'type',
             'genre',
             'age_limit',
-            'room.filial',
+            'filial',
             'images',
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::exact('city', 'room.filial.city.name'),
+            AllowedFilter::exact('city', 'filial.city.name'),
             AllowedFilter::callback('is_active', fn($query, $value) => $query->where('is_active', $value)),
         ]);
 

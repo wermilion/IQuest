@@ -94,7 +94,7 @@ class QuestResource extends Resource
                     ])
                     ->native(false),
                 Select::make('level')
-                    ->label('Уровень сложность')
+                    ->label('Уровень сложности')
                     ->options(LevelEnum::class)
                     ->required()
                     ->validationMessages([
@@ -153,7 +153,7 @@ class QuestResource extends Resource
                     ->minValue(fn(Get $get) => $get('min_people'))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во человек".'
+                        'min' => 'Поле ":attribute" должно быть больше или равно полю "мин. кол-во человек".'
                     ]),
                 TextInput::make('duration')
                     ->label('Продолжительность (в мин)')
@@ -176,7 +176,7 @@ class QuestResource extends Resource
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'image' => 'Поле ":attribute" должно быть изображением.'
+                        'image' => 'Поле ":attribute" должно быть изображением.',
                     ]),
                 Toggle::make('is_active')
                     ->label('Отображение на сайте'),

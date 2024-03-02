@@ -6,6 +6,7 @@ use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
+use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -47,6 +48,7 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
+                    ->rules([new CyrillicRule()])
                     ->maxLength(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
@@ -87,7 +89,6 @@ class BookingRelationManager extends RelationManager
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'numeric' => 'Поле ":attribute" должно быть числом',
                         'min' => 'Поле ":attribute" должно быть больше 0',
                     ]),
                 TextInput::make('final_price')
@@ -97,7 +98,6 @@ class BookingRelationManager extends RelationManager
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'numeric' => 'Поле ":attribute" должно быть числом',
                         'min' => 'Поле ":attribute" должно быть больше 0',
                     ]),
                 TextInput::make('comment')
@@ -105,7 +105,7 @@ class BookingRelationManager extends RelationManager
                     ->maxLength(125)
                     ->validationMessages([
                         'max' => 'Поле ":attribute" не должно превышать :max символов.',
-                    ])
+                    ]),
             ]);
     }
 
@@ -155,7 +155,6 @@ class BookingRelationManager extends RelationManager
                             ->required()
                             ->validationMessages([
                                 'required' => 'Поле ":attribute" обязательно.',
-                                'numeric' => 'Поле ":attribute" должно быть числом',
                                 'min' => 'Поле ":attribute" должно быть больше 0',
                             ]),
                         TextInput::make('final_price')

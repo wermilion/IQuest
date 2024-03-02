@@ -40,6 +40,8 @@ class CityResource extends Resource
                     ]),
                 TextInput::make('timezone')
                     ->label('Тайм-зона')
+                    ->prefix('UTC')
+                    ->hint('В формате UTC+3, UTC-2 и т.д.')
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([

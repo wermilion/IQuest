@@ -31,6 +31,7 @@ class QuestImagesRelationManager extends RelationManager
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'image' => 'Поле ":attribute" должно быть изображением.',
                     ]),
             ]);
     }

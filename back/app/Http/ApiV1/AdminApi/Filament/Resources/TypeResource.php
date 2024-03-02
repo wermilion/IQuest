@@ -35,10 +35,10 @@ class TypeResource extends Resource
                     ->label('Название')
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLength(255)
+                    ->maxLengthWithHint(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'unique' => 'Поле ":attribute" должно быть уникальным.'
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                     ]),
             ]);
     }

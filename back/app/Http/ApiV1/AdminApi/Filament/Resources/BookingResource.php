@@ -53,7 +53,7 @@ class BookingResource extends Resource
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLengthWithHint(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),

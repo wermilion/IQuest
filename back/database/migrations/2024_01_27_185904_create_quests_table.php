@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->boolean('is_active')->comment('Статус активности отображения на сайте');
             $table->integer('sequence_number')->comment('Порядковый номер квеста');
 
-            $table->foreignId('room_id')->comment('Адрес квеста')->constrained(table: 'rooms');
+            $table->foreignId('filial_id')->comment('Адрес квеста')->constrained(table: 'filials');
             $table->foreignId('type_id')->comment('Тип квеста')->constrained(table: 'types');
             $table->foreignId('genre_id')->comment('Жанр квеста')->constrained(table: 'genres');
             $table->foreignId('age_limit_id')->comment('Возрастное ограничение квеста')->constrained(table: 'age_limits');

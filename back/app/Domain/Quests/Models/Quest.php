@@ -3,7 +3,6 @@
 namespace App\Domain\Quests\Models;
 
 use App\Domain\Locations\Models\Filial;
-use App\Domain\Locations\Models\Room;
 use App\Domain\Quests\Enums\LevelEnum;
 use App\Domain\Schedules\Models\ScheduleQuest;
 use App\Traits\HasCover;
@@ -11,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -29,13 +27,12 @@ use Illuminate\Support\Facades\Storage;
  * @property LevelEnum $level - Уровень сложности
  * @property bool $is_active - Активность на клиентской части
  * @property int $sequence_number - Порядковый номер
- * @property int $room_id - Идентификатор комнаты
+ * @property int $filial_id - Идентификатор филиала
  * @property int $type_id - Идентификатор типа
  * @property int $genre_id - Идентификатор жанра
  * @property int $age_limit_id - Идентификатор возрастного ограничения
  *
  * @property-read Filial $filial
- * @property-read Room $room
  * @property-read Type $type
  * @property-read Genre $genre
  * @property-read AgeLimit $age_limit
@@ -57,7 +54,7 @@ class Quest extends Model
         'level',
         'is_active',
         'sequence_number',
-        'room_id',
+        'filial_id',
         'type_id',
         'genre_id',
         'age_limit_id',
@@ -93,20 +90,9 @@ class Quest extends Model
         return $this->hasMany(QuestWeekendSlot::class);
     }
 
-    public function room(): BelongsTo
+    public function filial(): BelongsTo
     {
-        return $this->belongsTo(Room::class);
-    }
-
-    public function filial(): HasOneThrough
-    {
-        return $this->hasOneThrough(
-            Filial::class,
-            Room::class,
-            'id',
-            'id',
-            'room_id',
-            'filial_id');
+        return $this->belongsTo(Filial::class);
     }
 
     public function type(): BelongsTo

@@ -67,8 +67,8 @@ class QuestWeekendSlotsRelationManager extends RelationManager
                     ->createAnother(false),
             ])
             ->actions([
-                EditAction::make()->modalHeading('Изменить слот'),
-                DeleteAction::make()->modalHeading('Удалить слот'),
+                EditAction::make()->modalHeading('Изменение слота'),
+                DeleteAction::make()->modalHeading('Удаление слота'),
             ]);
     }
 }

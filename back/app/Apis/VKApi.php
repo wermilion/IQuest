@@ -3,7 +3,7 @@
 namespace App\Apis;
 
 use Exception;
-use Log;
+use Illuminate\Support\Facades\Log;
 use VK\Client\VKApiClient;
 
 /**
@@ -27,16 +27,11 @@ class VKApi
                 'user_id' => $userId,
             ]);
         } catch (Exception $e) {
-            Log::error('Ошибка при отправке сообщения пользователю в ВКонтакте')
-                ->withContext(['message' => $e->getMessage()]);
+            Log::error('Ошибка при проверке разрешения на отправку сообщений группе из ВКонтакте', ['message' => $e->getMessage()]);
             return false;
         }
 
-        if (isset($result['is_allowed'])) {
-            return $result['is_allowed'];
-        }
-
-        return false;
+        return isset($result['is_allowed']) && $result['is_allowed'];
     }
 
     public function sendMessage($userId, $message): void
@@ -48,7 +43,6 @@ class VKApi
                 'message' => $message,
             ]);
         } catch (Exception $e) {
-
         }
     }
 }

@@ -41,6 +41,15 @@ class BookingResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('city_id')
+                    ->label('Город')
+                    ->placeholder('Выберите город')
+                    ->required()
+                    ->relationship('city', 'name')
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательно.',
+                    ])
+                    ->native(false),
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
@@ -58,7 +67,7 @@ class BookingResource extends Resource
                         'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
                 Select::make('type')
-                    ->label('Тип заявки')
+                    ->label('Тип')
                     ->options(BookingType::class)
                     ->required()
                     ->validationMessages([
@@ -67,7 +76,7 @@ class BookingResource extends Resource
                     ->native(false)
                     ->disabledOn('edit'),
                 Select::make('status')
-                    ->label('Статус заявки')
+                    ->label('Статус')
                     ->options(BookingStatus::class)
                     ->default(BookingStatus::NEW->getLabel())
                     ->required()
@@ -86,16 +95,19 @@ class BookingResource extends Resource
                 TextColumn::make('id')
                     ->label('ID')
                     ->searchable(),
+                TextColumn::make('city.name')
+                    ->label('Город')
+                    ->sortable(),
                 TextColumn::make('name')
                     ->label('Имя'),
                 TextColumn::make('phone')
                     ->label('Телефон')
                     ->searchable(),
                 TextColumn::make('type')
-                    ->label('Тип заявки'),
+                    ->label('Тип'),
                 SelectColumn::make('status')
                     ->options(BookingStatus::class)
-                    ->label('Статус заявки')
+                    ->label('Статус')
                     ->selectablePlaceholder(false),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
@@ -116,12 +128,16 @@ class BookingResource extends Resource
             ->filters([
                 TrashedFilter::make()
                     ->native(false),
+                SelectFilter::make('city')
+                    ->label('Город')
+                    ->relationship('city', 'name')
+                    ->native(false),
                 SelectFilter::make('type')
-                    ->label('Тип заявки')
+                    ->label('Тип')
                     ->options(BookingType::class)
                     ->native(false),
                 SelectFilter::make('status')
-                    ->label('Статус заявки')
+                    ->label('Статус')
                     ->options(BookingStatus::class)
                     ->native(false),
             ], layout: FiltersLayout::AboveContentCollapsible)

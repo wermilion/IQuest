@@ -55,7 +55,7 @@ class ScheduleLoungeResource extends Resource
                     ->hiddenOn('')
                     ->native(false),
                 Select::make('filial')
-                    ->label('Адрес')
+                    ->label('Филиал')
                     ->live()
                     ->options(fn(Get $get): Collection => Filial::query()
                         ->where('city_id', $get('city'))

@@ -10,11 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('filial_users', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->string('name')->comment('Название комнаты');
-            $table->foreignId('filial_id')->comment('Ключ филиала')->constrained(table: 'filials');
+            $table->foreignId('filial_id')->comment('Филиал')->constrained(table: 'filials')
+                ->cascadeOnDelete();
+            $table->foreignId('user_id')->comment('Пользователь')->constrained(table: 'users')
+                ->cascadeOnDelete();
 
             $table->timestamps();
         });
@@ -25,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('filial_users');
     }
 };

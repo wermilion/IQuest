@@ -29,6 +29,15 @@ class BookingRelationManager extends RelationManager
     {
         return $form
             ->schema([
+                Select::make('city_id')
+                    ->label('Город')
+                    ->placeholder('Выберите город')
+                    ->required()
+                    ->relationship('city', 'name')
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательно.',
+                    ])
+                    ->native(false),
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
@@ -121,7 +130,7 @@ class BookingRelationManager extends RelationManager
             ])
             ->actions([
                 EditAction::make()->modalHeading('Редактирование заявки'),
-                DeleteAction::make()->modalHeading('Удалить заявку'),
+                DeleteAction::make()->modalHeading('Удаление заявки'),
             ]);
     }
 }

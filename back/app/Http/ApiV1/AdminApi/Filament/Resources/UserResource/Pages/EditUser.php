@@ -3,6 +3,7 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages;
 
 use App\Domain\Locations\Models\Filial;
+use App\Domain\Users\Models\User;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource;
 use Filament\Actions;
 use Filament\Actions\Action;
@@ -17,19 +18,20 @@ class EditUser extends EditRecord
 
     protected ?string $heading = 'Редактирование пользователя';
 
-    protected function mutateFormDataBeforeFill(array $data): array
-    {
-        $filial = Filial::query()->with('city')->find($data['filial_id']);
-
-        $data['city'] = $filial?->city->id;
-
-        return $data;
-    }
-
     protected function getCancelFormAction(): Action
     {
         return parent::getCancelFormAction()
             ->url(static::getResource()::getUrl());
+    }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $user = User::query()->findOrFail($data['id']);
+        $city = $user->filials->first()?->city->id;
+
+        $data['city'] = $city;
+        $data['filials'] = $user->filials->pluck('id')->toArray();
+        return $data;
     }
 
     protected function getHeaderActions(): array

@@ -10,7 +10,7 @@ class CreateBookingCertificate extends CreateRecord
 {
     protected static string $resource = BookingCertificateResource::class;
 
-    protected ?string $heading = 'Создание заявки на сертификат';
+    protected ?string $heading = 'Прикрепление заявки на сертификат';
 
     protected function getRedirectUrl(): string
     {

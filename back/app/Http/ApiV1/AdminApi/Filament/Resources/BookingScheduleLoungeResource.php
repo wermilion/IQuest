@@ -24,11 +24,11 @@ class BookingScheduleLoungeResource extends Resource
 {
     protected static ?string $model = BookingScheduleLounge::class;
 
-    protected static ?string $modelLabel = 'Заявка на лаунж-зону';
+    protected static ?string $modelLabel = 'Заявка на лаунж';
 
-    protected static ?string $pluralModelLabel = 'Заявки на лаунж-зоны';
+    protected static ?string $pluralModelLabel = 'Заявки на лаунжи';
 
-    protected static ?string $navigationLabel = 'Заявки на лаунж-зоны';
+    protected static ?string $navigationLabel = 'Заявки на лаунжи';
 
     protected static ?string $navigationGroup = NavigationGroup::BOOKING->value;
 
@@ -55,11 +55,14 @@ class BookingScheduleLoungeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->emptyStateHeading('Заявок на лаунж-зоны не обнаружено')
+            ->emptyStateHeading('Заявок на лаунжи не обнаружено')
             ->columns([
                 TextColumn::make('booking.id')
                     ->label('ID')
                     ->searchable()
+                    ->sortable(),
+                TextColumn::make('booking.city.name')
+                    ->label('Город')
                     ->sortable(),
                 TextColumn::make('booking.name')
                     ->label('Имя')
@@ -73,11 +76,11 @@ class BookingScheduleLoungeResource extends Resource
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('scheduleLounge.lounge.filial.address')
-                    ->label('Адрес')
+                    ->label('Филила')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('scheduleLounge.lounge.name')
-                    ->label('Лаунж-зона')
+                    ->label('Лаунж')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('scheduleLounge.date')
@@ -108,9 +111,9 @@ class BookingScheduleLoungeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('city_id')
+                SelectFilter::make('city')
                     ->label('Город')
-                    ->relationship('scheduleLounge.lounge.filial.city', 'name')
+                    ->relationship('booking.city', 'name')
                     ->native(false),
                 Filter::make('date')
                     ->form([DatePicker::make('date')->label('Дата')])

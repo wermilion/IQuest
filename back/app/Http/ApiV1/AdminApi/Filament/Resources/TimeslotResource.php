@@ -52,7 +52,7 @@ class TimeslotResource extends Resource
             ->schema([
                 Select::make('city')
                     ->label('Город')
-                    ->options(fn() => City::all()->pluck('name', 'id'))
+                    ->options(fn(): Collection => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
                     ->disabledOn('edit'),
                 Select::make('filial')
@@ -62,18 +62,11 @@ class TimeslotResource extends Resource
                         ->pluck('address', 'id'))
                     ->hiddenOn('')
                     ->disabledOn('edit'),
-                Select::make('room')
-                    ->label('Комната')
-                    ->options(fn(Get $get): Collection => Room::query()
-                        ->where('filial_id', $get('filial'))
-                        ->pluck('name', 'id'))
-                    ->hiddenOn('')
-                    ->disabledOn('edit'),
                 Select::make('quest')
                     ->label('Квест')
                     ->placeholder('Выберите квест')
                     ->options(fn(Get $get) => Quest::query()
-                        ->where('room_id', $get('room'))
+                        ->where('filial_id', $get('filial'))
                         ->pluck('name', 'id'))
                     ->required()
                     ->validationMessages([
@@ -96,6 +89,7 @@ class TimeslotResource extends Resource
                     ->disabledOn('edit'),
                 Toggle::make('is_active')
                     ->label('Активность слота')
+                    ->columnSpanFull()
                     ->disabled(Auth::user()->role !== Role::ADMIN)
             ]);
     }
@@ -110,11 +104,11 @@ class TimeslotResource extends Resource
         return $table
             ->emptyStateHeading('Слоты не обнаружены')
             ->columns([
-                TextColumn::make('scheduleQuest.quest.room.filial.city.name')
+                TextColumn::make('scheduleQuest.quest.filial.city.name')
                     ->label('Город')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('scheduleQuest.quest.room.filial.address')
+                TextColumn::make('scheduleQuest.quest.filial.address')
                     ->label('Филиал')
                     ->numeric()
                     ->sortable(),
@@ -162,7 +156,7 @@ class TimeslotResource extends Resource
                             ->when(
                                 $data['filial_id'],
                                 fn(Builder $query, $filial_id): Builder => $query
-                                    ->whereHas('scheduleQuest.quest.room', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
+                                    ->whereHas('scheduleQuest.quest.filial', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
                             );
                     })
                     ->indicateUsing(function (array $data) {

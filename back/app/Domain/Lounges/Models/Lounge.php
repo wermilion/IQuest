@@ -44,16 +44,4 @@ class Lounge extends Model
     {
         return $this->belongsTo(Filial::class);
     }
-
-    public function city(): HasOneThrough
-    {
-        return $this->hasOneThrough(
-            City::class,
-            Filial::class,
-            'id',
-            'id',
-            'filial_id',
-            'city_id'
-        );
-    }
 }

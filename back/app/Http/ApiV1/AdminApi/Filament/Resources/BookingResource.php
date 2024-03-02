@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
+use App\Domain\Locations\Models\City;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\CreateBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\EditBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\ListBookings;
@@ -49,11 +50,14 @@ class BookingResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ])
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Лаунжи не обнаружены. Сначала создайте лаунж.';
+                    })
                     ->native(false),
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
-                    ->maxLengthWithHint(255)
+                    ->maxLengthWithHint(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),
@@ -68,6 +72,7 @@ class BookingResource extends Resource
                     ]),
                 Select::make('type')
                     ->label('Тип')
+                    ->placeholder('Выберите тип')
                     ->options(BookingType::class)
                     ->required()
                     ->validationMessages([
@@ -77,6 +82,7 @@ class BookingResource extends Resource
                     ->disabledOn('edit'),
                 Select::make('status')
                     ->label('Статус')
+                    ->placeholder('Выберите статус')
                     ->options(BookingStatus::class)
                     ->default(BookingStatus::NEW->getLabel())
                     ->required()

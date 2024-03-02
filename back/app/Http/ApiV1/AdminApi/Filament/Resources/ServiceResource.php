@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
+use App\Domain\Locations\Models\City;
 use App\Domain\Services\Models\Service;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\CreateService;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\EditService;
@@ -44,6 +45,9 @@ class ServiceResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
                 TextInput::make('name')
                     ->label('Название')

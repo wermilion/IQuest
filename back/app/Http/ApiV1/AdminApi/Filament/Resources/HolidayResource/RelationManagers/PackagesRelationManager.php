@@ -33,7 +33,7 @@ class PackagesRelationManager extends RelationManager
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(40)
+                    ->maxLengthWithHint(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -59,6 +59,7 @@ class PackagesRelationManager extends RelationManager
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
+                    ->maxLengthWithHint(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

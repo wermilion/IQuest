@@ -2,12 +2,15 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
+use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\CreateFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\EditFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\ListFilials;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\EditAction;
@@ -30,7 +33,7 @@ class FilialResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('city_id')
+                Select::make('city_id')
                     ->label('Город')
                     ->placeholder('Выберите город')
                     ->relationship('city', 'name')
@@ -38,15 +41,18 @@ class FilialResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
-                Forms\Components\TextInput::make('address')
+                TextInput::make('address')
                     ->label('Адрес')
                     ->required()
                     ->maxLength(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Forms\Components\TextInput::make('yandex_mark')
+                TextInput::make('yandex_mark')
                     ->label('Яндекс метка')
                     ->required()
                     ->maxLength(255)

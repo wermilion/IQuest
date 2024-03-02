@@ -2,27 +2,21 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages;
 
-use App\Domain\Locations\Models\Filial;
 use App\Domain\Users\Models\User;
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseEditRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource;
-use Filament\Actions;
+use App\Http\ApiV1\AdminApi\Filament\Rules\LatinNumberRule;
 use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Hash;
 
-class EditUser extends EditRecord
+class EditUser extends BaseEditRecord
 {
     protected static string $resource = UserResource::class;
 
     protected ?string $heading = 'Редактирование пользователя';
-
-    protected function getCancelFormAction(): Action
-    {
-        return parent::getCancelFormAction()
-            ->url(static::getResource()::getUrl());
-    }
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
@@ -37,26 +31,35 @@ class EditUser extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('change-password')
+            Action::make('change-password')
                 ->label('Сменить пароль')
                 ->modalHeading('Смена пароля')
                 ->form([
                     TextInput::make('password')
-                        ->autofocus()
-                        ->label('Новый пароль')
+                        ->label('Пароль')
                         ->password()
-                        ->same('password_confirmation')
-                        ->required()
                         ->revealable()
+                        ->required()
+                        ->hiddenOn('edit')
+                        ->minLength(8)
+                        ->maxLengthWithHint(32)
+                        ->rules([new LatinNumberRule()])
                         ->validationMessages([
                             'required' => 'Поле ":attribute" обязательное.',
-                            'same' => 'Пароли должны совпадать',
+                            'min' => 'Поле ":attribute" должно содержать не менее :min символов.',
+                            'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                         ]),
                     TextInput::make('password_confirmation')
                         ->label('Подтверждение пароля')
                         ->password()
+                        ->same('password')
                         ->revealable()
-                        ->required(),
+                        ->required()
+                        ->hiddenOn('edit')
+                        ->validationMessages([
+                            'required' => 'Поле ":attribute" обязательное.',
+                            'same' => 'Поле ":attribute" должно совпадать с полем "пароль".',
+                        ]),
                 ])
                 ->action(function ($record, array $data) {
                     $record->update([
@@ -67,7 +70,7 @@ class EditUser extends EditRecord
                         ->success()
                         ->send();
                 }),
-            Actions\DeleteAction::make()->modalHeading('Удаление пользователя'),
+            DeleteAction::make()->modalHeading('Удаление пользователя'),
         ];
     }
 }

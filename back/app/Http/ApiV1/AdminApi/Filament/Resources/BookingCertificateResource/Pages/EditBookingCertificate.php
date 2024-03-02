@@ -2,22 +2,15 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages;
 
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseEditRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource;
-use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
-use Filament\Resources\Pages\EditRecord;
 
-class EditBookingCertificate extends EditRecord
+class EditBookingCertificate extends BaseEditRecord
 {
     protected static string $resource = BookingCertificateResource::class;
 
     protected ?string $heading = 'Редактирование заявки на сертификат';
-
-    protected function getCancelFormAction(): Action
-    {
-        return parent::getCancelFormAction()
-            ->url(static::getResource()::getUrl());
-    }
 
     protected function getHeaderActions(): array
     {

@@ -2,18 +2,12 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages;
 
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseCreateRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource;
-use Filament\Actions;
-use Filament\Resources\Pages\CreateRecord;
 
-class CreateService extends CreateRecord
+class CreateService extends BaseCreateRecord
 {
     protected static string $resource = ServiceResource::class;
 
     protected ?string $heading = 'Создание услуги';
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }

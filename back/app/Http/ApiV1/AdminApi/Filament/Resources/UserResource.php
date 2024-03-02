@@ -12,6 +12,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinNumberRule;
 use Auth;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -37,7 +38,7 @@ class UserResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    private const MAX_VK_ID_VALUE = '9223372036854775807';
+    private const MAX_VK_ID_VALUE = 9223372036854775807;
 
     public static function form(Form $form): Form
     {
@@ -54,19 +55,23 @@ class UserResource extends Resource
                         ->relationship('filials', 'address'))
                     ->hidden(Auth::user()->role !== Role::ADMIN)
                     ->hiddenOn('')
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
                 Select::make('filials')
                     ->label('Филиалы')
                     ->placeholder('Выберите филиалы')
                     ->multiple()
                     ->live()
-                    ->searchable(false)
                     ->relationship('filials', 'address', fn(Builder $query, Get $get) => $query->where('city_id', $get('city')))
                     ->hidden(Auth::user()->role !== Role::ADMIN)
                     ->key('filials')
+                    ->helperText(function () {
+                        return Filial::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
+                    })
                     ->native(false),
                 TextInput::make('name')
-                    ->autofocus()
                     ->label('Имя')
                     ->required()
                     ->maxLengthWithHint(40)
@@ -130,15 +135,14 @@ class UserResource extends Resource
                 TextInput::make('vk_id')
                     ->label('VK ID')
                     ->unique(ignoreRecord: true)
-                    ->numeric()
-                    ->maxValue(self::MAX_VK_ID_VALUE)
+                    ->maxLengthWithHint(19)
                     ->hint('Идентификатор пользователя во ВКонтакте')
                     ->rules([
-                        'digits_between:1,19'
+                        'digits_between:1,19',
                     ])
                     ->validationMessages([
                         'unique' => 'Поле ":Attribute" должно быть уникальным.',
-                        'digits_between' => 'Поле ":Attribute" должно содержать не менее :min и не более :max цифр.',
+                        'digits_between' => 'Поле ":Attribute" должно содержать только цифры.',
                     ]),
             ]);
     }
@@ -184,14 +188,21 @@ class UserResource extends Resource
                     ->form([
                         Select::make('city_id')
                             ->label('Город')
-                            ->live()
                             ->placeholder('Выберите город')
-                            ->options(City::pluck('name', 'id'))
+                            ->live()
+                            ->relationship('filials.city', 'name')
+                            ->afterStateUpdated(function ($state, Select $component) {
+                                $component->getContainer()
+                                    ->getComponent('filial')
+                                    ->state(null)
+                                    ->options(fn(Get $get) => Filial::where('city_id', $state)->pluck('address', 'id'));
+                            })
                             ->native(false),
                         Select::make('filial_id')
+                            ->key('filial')
                             ->label('Филиал')
                             ->placeholder('Выберите филиал')
-                            ->options(fn(Get $get): Collection => Filial::where('city_id', $get('city_id'))
+                            ->options(fn(Get $get) => Filial::where('city_id', $get('city_id'))
                                 ->pluck('address', 'id'))
                             ->native(false),
                     ])
@@ -215,7 +226,8 @@ class UserResource extends Resource
                         $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::where('id', $data['filial_id'])
                                 ->first()->address;
                         return $indicators;
-                    }),
+                    })
+                    ->columnSpan(2)->columns(2),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),

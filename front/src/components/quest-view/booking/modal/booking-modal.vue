@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vMaska } from 'maska'
 import QuestRules from './quest-rules.vue'
 import Modal from '#/components/shared/modal.vue'
 import Plus from '#/assets/svg/shared/plus.svg?component'
@@ -29,7 +30,10 @@ const checkboxRules = [
   (v: boolean) => !!v || 'Необходимо дать согласие на обработку персональных данных',
 ]
 
-const mask = 'phone'
+const options = reactive({
+  mask: '+7(###)-###-##-##',
+  eager: true,
+})
 
 const formData = reactive({
   people: stores.quest?.min_people || 0,
@@ -97,12 +101,13 @@ const modalProps = computed(() => ({
             color="primary"
             variant="underlined"
             label="Имя"
+
             required
           />
           <v-text-field
-            v-model.lazy.trim="formData.phoneNumber"
+            v-model="formData.phoneNumber"
+            v-maska:[options]
             :rules="phoneRules"
-            :mask="mask"
             required
             color="primary"
             variant="underlined"

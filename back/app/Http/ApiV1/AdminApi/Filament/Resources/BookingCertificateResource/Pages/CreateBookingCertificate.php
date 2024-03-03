@@ -2,18 +2,12 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages;
 
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseCreateRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource;
-use Filament\Actions;
-use Filament\Resources\Pages\CreateRecord;
 
-class CreateBookingCertificate extends CreateRecord
+class CreateBookingCertificate extends BaseCreateRecord
 {
     protected static string $resource = BookingCertificateResource::class;
 
     protected ?string $heading = 'Прикрепление заявки на сертификат';
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }

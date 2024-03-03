@@ -2,17 +2,12 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages;
 
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseCreateRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource;
-use Filament\Resources\Pages\CreateRecord;
 
-class CreateBooking extends CreateRecord
+class CreateBooking extends BaseCreateRecord
 {
     protected static string $resource = BookingResource::class;
 
     protected ?string $heading = 'Создание заявки';
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }

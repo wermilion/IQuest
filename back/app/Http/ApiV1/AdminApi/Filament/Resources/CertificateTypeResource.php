@@ -37,7 +37,7 @@ class CertificateTypeResource extends Resource
                     ->autofocus()
                     ->label('Название')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLengthWithHint(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -53,7 +53,7 @@ class CertificateTypeResource extends Resource
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
-                    ->maxLength(255)
+                    ->maxLengthWithHint(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

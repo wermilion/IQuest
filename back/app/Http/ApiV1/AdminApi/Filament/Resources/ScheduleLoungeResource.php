@@ -23,7 +23,6 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -53,6 +52,9 @@ class ScheduleLoungeResource extends Resource
                     ->live()
                     ->options(fn(): Collection => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
                 Select::make('filial')
                     ->label('Филиал')
@@ -61,6 +63,9 @@ class ScheduleLoungeResource extends Resource
                         ->where('city_id', $get('city'))
                         ->pluck('address', 'id'))
                     ->hiddenOn('')
+                    ->helperText(function () {
+                        return Filial::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
+                    })
                     ->native(false),
                 Select::make('lounge_id')
                     ->label('Лаунж')
@@ -71,6 +76,9 @@ class ScheduleLoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Лаунжи не обнаружены. Сначала создайте лаунжи.';
+                    })
                     ->native(false),
                 DatePicker::make('date')
                     ->label('Дата')
@@ -136,13 +144,33 @@ class ScheduleLoungeResource extends Resource
                             ->placeholder('Выберите город')
                             ->live()
                             ->relationship('lounge.filial.city', 'name')
+                            ->afterStateUpdated(function ($state, Select $component) {
+                                $component->getContainer()
+                                    ->getComponent('filial')
+                                    ->state(null)
+                                    ->options(fn() => Filial::where('city_id', $state)->pluck('address', 'id'));
+                            })
                             ->native(false),
                         Select::make('filial_id')
+                            ->key('filial')
                             ->label('Филиал')
                             ->placeholder('Выберите филиал')
-                            ->options(fn(Get $get): Collection => Filial::query()
-                                ->where('city_id', $get('city_id'))
+                            ->live()
+                            ->options(fn(Get $get) => Filial::where('city_id', $get('city_id'))
                                 ->pluck('address', 'id'))
+                            ->afterStateUpdated(function ($state, Select $component) {
+                                $component->getContainer()
+                                    ->getComponent('lounge')
+                                    ->state(null)
+                                    ->options(fn() => Lounge::where('filial_id', $state)->pluck('name', 'id'));
+                            })
+                            ->native(false),
+                        Select::make('lounge_id')
+                            ->key('lounge')
+                            ->label('Лаунж')
+                            ->placeholder('Выберите лаунж')
+                            ->options(fn(Get $get) => Lounge::where('filial_id', $get('filial_id'))
+                                ->pluck('name', 'id'))
                             ->native(false),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -156,20 +184,21 @@ class ScheduleLoungeResource extends Resource
                                 $data['filial_id'],
                                 fn(Builder $query, $filial_id): Builder => $query
                                     ->whereHas('lounge.filial', fn(Builder $query): Builder => $query->where('id', $filial_id)),
+                            )
+                            ->when(
+                                $data['lounge_id'],
+                                fn(Builder $query, $lounge_id): Builder => $query
+                                    ->where('lounge_id', $lounge_id),
                             );
                     })
                     ->indicateUsing(function (array $data) {
                         $indicators = [];
-                        $data['city_id'] && $indicators[] = 'Город: ' . City::where('id', $data['city_id'])
-                                ->first()->name;
-                        $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::where('id', $data['filial_id'])
-                                ->first()->address;
+                        $data['city_id'] && $indicators[] = 'Город: ' . City::find($data['city_id'])->name;
+                        $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::find($data['filial_id'])->address;
+                        $data['lounge_id'] && $indicators[] = 'Лаунж: ' . Lounge::find($data['lounge_id'])->name;
                         return $indicators;
-                    }),
-                SelectFilter::make('lounge')
-                    ->relationship('lounge', 'name')
-                    ->label('Лаунж')
-                    ->native(false),
+                    })
+                    ->columnSpan(3)->columns(3),
                 Filter::make('date')
                     ->form([DatePicker::make('date')->label('Дата')])
                     ->query(function (Builder $query, array $data): Builder {

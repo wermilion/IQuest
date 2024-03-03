@@ -27,7 +27,6 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 
 class LoungeResource extends Resource
 {
@@ -47,24 +46,38 @@ class LoungeResource extends Resource
             ->schema([
                 Select::make('city')
                     ->label('Город')
+                    ->placeholder('Выберите город')
                     ->live()
-                    ->options(fn() => City::all()->pluck('name', 'id'))
+                    ->relationship('filial.city', 'name')
+                    ->afterStateUpdated(function ($state, Select $component) {
+                        $component->getContainer()
+                            ->getComponent('filial')
+                            ->state(null)
+                            ->options(fn() => Filial::where('city_id', $state)->pluck('address', 'id'));
+                    })
                     ->hiddenOn('')
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
                 Select::make('filial_id')
+                    ->key('filial')
                     ->label('Филиал')
-                    ->options(fn(Get $get) => Filial::query()
-                        ->where('city_id', $get('city'))
+                    ->placeholder('Выберите филиал')
+                    ->options(fn(Get $get) => Filial::where('city_id', $get('city'))
                         ->pluck('address', 'id'))
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
+                    })
                     ->native(false),
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(30)
+                    ->maxLengthWithHint(30)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -81,7 +94,7 @@ class LoungeResource extends Resource
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
-                    ->maxLength(1000)
+                    ->maxLengthWithHint(1000)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -100,11 +113,6 @@ class LoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                Toggle::make('is_active')
-                    ->label('Отображение на сайте')
-                    ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
-                    ]),
                 FileUpload::make('cover')
                     ->directory('lounge_images')
                     ->label('Изображение')
@@ -114,6 +122,8 @@ class LoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
+                Toggle::make('is_active')
+                    ->label('Отображение на сайте'),
             ]);
     }
 
@@ -151,14 +161,20 @@ class LoungeResource extends Resource
                         Select::make('city_id')
                             ->label('Город')
                             ->placeholder('Выберите город')
+                            ->live()
                             ->relationship('filial.city', 'name')
+                            ->afterStateUpdated(function ($state, Select $component) {
+                                $component->getContainer()
+                                    ->getComponent('filial')
+                                    ->state(null)
+                                    ->options(fn() => Filial::where('city_id', $state)->pluck('address', 'id'));
+                            })
                             ->native(false),
                         Select::make('filial_id')
+                            ->key('filial')
                             ->label('Филиал')
                             ->placeholder('Выберите филиал')
-                            ->live()
-                            ->options(fn(Get $get): Collection => Filial::query()
-                                ->where('city_id', $get('city_id'))
+                            ->options(fn(Get $get) => Filial::where('city_id', $get('city_id'))
                                 ->pluck('address', 'id'))
                             ->native(false),
                     ])
@@ -182,7 +198,8 @@ class LoungeResource extends Resource
                         $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::where('id', $data['filial_id'])
                                 ->first()->address;
                         return $indicators;
-                    }),
+                    })
+                    ->columnSpan(2)->columns(2),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),

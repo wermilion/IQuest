@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\BookingCertificate;
+use App\Domain\Certificates\Models\CertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\CreateBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\EditBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\ListBookingCertificates;
@@ -57,6 +58,9 @@ class BookingCertificateResource extends Resource
                     ->label('Тип сертификата')
                     ->placeholder('Выберите тип сертификата')
                     ->relationship('certificateType', 'name')
+                    ->helperText(function () {
+                        return CertificateType::exists() ? '' : 'Типы не обнаружены. Сначала создайте типы.';
+                    })
                     ->native(false),
             ]);
     }

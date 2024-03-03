@@ -5,7 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Contacts\Models\ContactType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ContactTypeResource\Pages\ListContactTypes;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -32,20 +31,15 @@ class ContactTypeResource extends Resource
     {
         return $form
             ->schema([
-                Grid::make()
-                    ->schema([
-                        TextInput::make('name')
-                            ->label('Название')
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'Поле ":attribute" обязательное.',
-                            ])
-                            ->columnSpan(1),
-                        Toggle::make('is_social')
-                            ->label('Соц. сеть')
-                            ->default(false)
-                            ->columnSpan(2),
+                TextInput::make('name')
+                    ->label('Название')
+                    ->required()
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
                     ]),
+                Toggle::make('is_social')
+                    ->label('Соц. сеть')
+                    ->columnSpanFull()
             ]);
     }
 

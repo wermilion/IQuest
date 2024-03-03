@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
+use App\Domain\Locations\Models\City;
 use App\Domain\Sales\Models\Sale;
 use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages;
@@ -47,11 +48,14 @@ class SaleResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
                 TextInput::make('header')
                     ->label('Заголовок')
                     ->required()
-                    ->maxLength(32)
+                    ->maxLengthWithHint(32)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -59,7 +63,7 @@ class SaleResource extends Resource
                 TextInput::make('description')
                     ->label('Описание')
                     ->required()
-                    ->maxLength(75)
+                    ->maxLengthWithHint(75)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',

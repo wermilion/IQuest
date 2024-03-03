@@ -3,6 +3,8 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Contacts\Models\Contact;
+use App\Domain\Contacts\Models\ContactType;
+use App\Domain\Locations\Models\City;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ContactResource\Pages\ListContacts;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\Select;
@@ -39,15 +41,21 @@ class ContactResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
                 Select::make('contact_type_id')
-                    ->label('Тип контакта')
+                    ->label('Тип')
                     ->placeholder('Выберите тип контакта')
                     ->relationship('contactType', 'name')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return ContactType::exists() ? '' : 'Типы не обнаружены. Сначала создайте типы.';
+                    })
                     ->native(false),
                 TextInput::make('value')
                     ->label('Значение')
@@ -67,7 +75,7 @@ class ContactResource extends Resource
                     ->label('Город')
                     ->sortable(),
                 TextColumn::make('contactType.name')
-                    ->label('Тип контакта'),
+                    ->label('Тип'),
             ])
             ->filters([
                 SelectFilter::make('city')

@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
+use App\Domain\Locations\Models\City;
 use App\Domain\Services\Models\Service;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\CreateService;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\EditService;
@@ -44,11 +45,14 @@ class ServiceResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(20)
+                    ->maxLengthWithHint(20)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.',
@@ -64,7 +68,7 @@ class ServiceResource extends Resource
                     ->label('Единица измерения')
                     ->required()
                     ->rules([new CyrillicRule()])
-                    ->maxLength(20)
+                    ->maxLengthWithHint(20)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',

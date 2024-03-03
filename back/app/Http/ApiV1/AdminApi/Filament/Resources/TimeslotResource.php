@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Locations\Models\Room;
+use App\Domain\Lounges\Models\Lounge;
 use App\Domain\Quests\Models\Quest;
 use App\Domain\Schedules\Models\Timeslot;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\CreateTimeslot;
@@ -134,16 +135,35 @@ class TimeslotResource extends Resource
                     ->form([
                         Select::make('city_id')
                             ->label('Город')
-                            ->live()
                             ->placeholder('Выберите город')
+                            ->live()
                             ->relationship('scheduleQuest.quest.filial.city', 'name')
+                            ->afterStateUpdated(function ($state, Select $component) {
+                                $component->getContainer()
+                                    ->getComponent('filial')
+                                    ->state(null)
+                                    ->options(fn() => Filial::where('city_id', $state)->pluck('address', 'id'));
+                            })
                             ->native(false),
                         Select::make('filial_id')
+                            ->key('filial')
                             ->label('Филиал')
                             ->placeholder('Выберите филиал')
-                            ->options(fn(Get $get): Collection => Filial::query()
-                                ->where('city_id', $get('city_id'))
+                            ->live()
+                            ->options(fn(Get $get) => Filial::where('city_id', $get('city_id'))
                                 ->pluck('address', 'id'))
+                            ->afterStateUpdated(function ($state, Select $component) {
+                                $component->getContainer()
+                                    ->getComponent('quest')
+                                    ->state(null)
+                                    ->options(fn() => Quest::where('filial_id', $state)->pluck('slug', 'id'));
+                            })
+                            ->native(false),
+                        Select::make('quest_id')
+                            ->key('quest')
+                            ->label('Квест')
+                            ->options(fn(Get $get) => Quest::where('filial_id', $get('filial_id'))
+                                ->pluck('slug', 'id'))
                             ->native(false),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -157,20 +177,21 @@ class TimeslotResource extends Resource
                                 $data['filial_id'],
                                 fn(Builder $query, $filial_id): Builder => $query
                                     ->whereHas('scheduleQuest.quest.filial', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
+                            )
+                            ->when(
+                                $data['quest_id'],
+                                fn(Builder $query, $quest_id): Builder => $query
+                                    ->whereHas('scheduleQuest', fn(Builder $query): Builder => $query->where('quest_id', $quest_id)),
                             );
                     })
                     ->indicateUsing(function (array $data) {
                         $indicators = [];
-                        $data['city_id'] && $indicators[] = 'Город: ' . City::where('id', $data['city_id'])
-                                ->first()->name;
-                        $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::where('id', $data['filial_id'])
-                                ->first()->address;
+                        $data['city_id'] && $indicators[] = 'Город: ' . City::find($data['city_id'])->name;
+                        $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::find($data['filial_id'])->address;
+                        $data['quest_id'] && $indicators[] = 'Филиал: ' . Quest::find($data['quest_id'])->slug;
                         return $indicators;
-                    }),
-                SelectFilter::make('slug')
-                    ->relationship('scheduleQuest.quest', 'slug')
-                    ->label('Квест')
-                    ->native(false),
+                    })
+                    ->columnSpan(3)->columns(3),
                 Filter::make('date')
                     ->form([DatePicker::make('date')->label('Дата')])
                     ->query(function (Builder $query, array $data): Builder {

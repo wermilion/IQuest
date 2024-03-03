@@ -4,9 +4,11 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
-use App\Domain\Locations\Models\Room;
 use App\Domain\Quests\Enums\LevelEnum;
+use App\Domain\Quests\Models\AgeLimit;
+use App\Domain\Quests\Models\Genre;
 use App\Domain\Quests\Models\Quest;
+use App\Domain\Quests\Models\Type;
 use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\EditQuest;
@@ -34,8 +36,6 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 class QuestResource extends Resource
 {
@@ -52,12 +52,15 @@ class QuestResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(components: [
+            ->schema([
                 Select::make('city')
                     ->label('Город')
                     ->live()
                     ->options(fn() => City::all()->pluck('name', 'id'))
                     ->hiddenOn('')
+                    ->helperText(function () {
+                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
+                    })
                     ->native(false),
                 Select::make('filial_id')
                     ->label('Филиал')
@@ -68,6 +71,9 @@ class QuestResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return Filial::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
+                    })
                     ->native(false),
                 Select::make('type_id')
                     ->label('Тип')
@@ -76,6 +82,9 @@ class QuestResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
+                    ->helperText(function () {
+                        return Type::exists() ? '' : 'Типы не обнаружены. Сначала создайте типы.';
+                    })
                     ->native(false),
                 Select::make('genre_id')
                     ->label('Жанр')
@@ -84,6 +93,9 @@ class QuestResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
+                    ->helperText(function () {
+                        return Genre::exists() ? '' : 'Жанры не обнаружены. Сначала создайте жанры.';
+                    })
                     ->native(false),
                 Select::make('age_limit_id')
                     ->label('Ограничение')
@@ -92,9 +104,12 @@ class QuestResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
+                    ->helperText(function () {
+                        return AgeLimit::exists() ? '' : 'Ограничения не обнаружены. Сначала создайте ограничения.';
+                    })
                     ->native(false),
                 Select::make('level')
-                    ->label('Уровень сложность')
+                    ->label('Уровень сложности')
                     ->options(LevelEnum::class)
                     ->required()
                     ->validationMessages([
@@ -104,7 +119,7 @@ class QuestResource extends Resource
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLength(30)
+                    ->maxLengthWithHint(30)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -112,7 +127,7 @@ class QuestResource extends Resource
                 TextInput::make('slug')
                     ->label('Сокращ. название')
                     ->required()
-                    ->maxLength(10)
+                    ->maxLengthWithHint(10)
                     ->rules([new LatinRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -122,7 +137,7 @@ class QuestResource extends Resource
                     ->autosize()
                     ->label('Описание')
                     ->required()
-                    ->maxLength(1000)
+                    ->maxLengthWithHint(1000)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -131,7 +146,7 @@ class QuestResource extends Resource
                     ->autosize()
                     ->label('Краткое описание')
                     ->required()
-                    ->maxLength(125)
+                    ->maxLengthWithHint(125)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -153,7 +168,7 @@ class QuestResource extends Resource
                     ->minValue(fn(Get $get) => $get('min_people'))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно полю "Мин. кол-во человек".'
+                        'min' => 'Поле ":attribute" должно быть больше или равно полю "мин. кол-во человек".'
                     ]),
                 TextInput::make('duration')
                     ->label('Продолжительность (в мин)')
@@ -176,7 +191,7 @@ class QuestResource extends Resource
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'image' => 'Поле ":attribute" должно быть изображением.'
+                        'image' => 'Поле ":attribute" должно быть изображением.',
                     ]),
                 Toggle::make('is_active')
                     ->label('Отображение на сайте'),
@@ -260,14 +275,20 @@ class QuestResource extends Resource
                         Select::make('city_id')
                             ->label('Город')
                             ->placeholder('Выберите город')
+                            ->live()
                             ->relationship('filial.city', 'name')
+                            ->afterStateUpdated(function ($state, Select $component) {
+                                $component->getContainer()
+                                    ->getComponent('filial')
+                                    ->state(null)
+                                    ->options(fn(Get $get) => Filial::where('city_id', $state)->pluck('address', 'id'));
+                            })
                             ->native(false),
                         Select::make('filial_id')
+                            ->key('filial')
                             ->label('Филиал')
                             ->placeholder('Выберите филиал')
-                            ->live()
-                            ->options(fn(Get $get): Collection => Filial::query()
-                                ->where('city_id', $get('city_id'))
+                            ->options(fn(Get $get) => Filial::where('city_id', $get('city_id'))
                                 ->pluck('address', 'id'))
                             ->native(false),
                     ])
@@ -281,7 +302,7 @@ class QuestResource extends Resource
                             ->when(
                                 $data['filial_id'],
                                 fn(Builder $query, $filial_id): Builder => $query
-                                    ->whereHas('room', fn(Builder $query): Builder => $query->where('filial_id', $filial_id)),
+                                    ->where('filial_id', $filial_id),
                             );
                     })
                     ->indicateUsing(function (array $data): array {
@@ -291,7 +312,8 @@ class QuestResource extends Resource
                         $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::where('id', $data['filial_id'])
                                 ->first()->address;
                         return $indicators;
-                    }),
+                    })
+                    ->columnSpan(2)->columns(2),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),

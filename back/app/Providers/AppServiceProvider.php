@@ -5,9 +5,12 @@ namespace App\Providers;
 use App\Apis\VKApi;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Contracts\CanBeLengthConstrained;
+use Filament\Forms\Components\Field;
 use Filament\Navigation\NavigationGroup as FilamentNavigationGroup;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use VK\Client\VKApiClient;
 
 class AppServiceProvider extends ServiceProvider
@@ -53,6 +56,14 @@ class AppServiceProvider extends ServiceProvider
                     ->label(NavigationGroup::CONTACTS->value)
                     ->icon('heroicon-o-phone'),
             ]);
+        });
+
+        Field::macro('maxLengthWithHint', function (int $maxLength) {
+            return $this
+                ->when($this instanceof CanBeLengthConstrained, fn(CanBeLengthConstrained $field) => $field->maxLength($maxLength))
+                ->hint(fn($state) => Str::length($state) . '/' . $maxLength)
+                ->afterStateUpdated(fn(Field $component, $state) => $component->hint(Str::length($state) . '/' . $maxLength . ' символов'))
+                ->live();
         });
     }
 }

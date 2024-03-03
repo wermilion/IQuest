@@ -4,14 +4,14 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
-use App\Domain\Bookings\Models\Booking;
 use App\Domain\Bookings\Models\BookingHoliday;
-use App\Domain\Holidays\Enums\HolidayType;
-use App\Domain\Holidays\Models\Holiday;
+use App\Domain\Holidays\Models\Package;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\CreateBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\ListBookingHolidays;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -47,6 +47,7 @@ class BookingHolidayResource extends Resource
             ->schema([
                 Select::make('booking_id')
                     ->label('ID заявки')
+                    ->placeholder('Выберите ID заявки')
                     ->relationship('booking',
                         'id',
                         fn(Builder $query): Builder => $query
@@ -56,26 +57,41 @@ class BookingHolidayResource extends Resource
                     ->native(false),
                 TextInput::make('comment')
                     ->label('Комментарий')
-                    ->maxLength(255),
+                    ->maxLengthWithHint(255),
                 Select::make('holiday')
                     ->label('Тип праздника')
+                    ->placeholder('Выберите тип праздника')
                     ->live()
-                    ->options(fn() => Holiday::all()->pluck('type.value', 'id'))
+                    ->relationship(
+                        'holidayPackage.holiday',
+                        'type',
+                        fn(Builder $query): Builder => $query->where('is_active', true)
+                    )
+                    ->afterStateUpdated(function ($state, Select $component) {
+                        $component->getContainer()
+                            ->getComponent('package')
+                            ->state(null)
+                            ->options(fn() => Package::whereHas('holidayPackages', fn(Builder $query) => $query->where('holiday_id', $state))
+                                ->pluck('name', 'id'));
+                    })
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->native(false),
                 Select::make('package')
+                    ->key('package')
                     ->label('Пакет')
-                    ->options(fn(Get $get) => Holiday::query()
-                        ->find($get('holiday'))
-                        ?->packages
+                    ->placeholder('Выберите пакет')
+                    ->options(fn(Get $get) => Package::whereHas('holidayPackages', fn(Builder $query) => $query->where('holiday_id', $get('holiday')))
                         ->pluck('name', 'id'))
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->helperText(function () {
+                        return Package::exists() ? '' : 'Пакеты не обнаружены. Сначала создайте пакеты.';
+                    })
                     ->native(false),
             ]);
     }
@@ -118,6 +134,17 @@ class BookingHolidayResource extends Resource
                     ->label('Город')
                     ->relationship('booking.city', 'name')
                     ->native(false),
+                Filter::make('date')
+                    ->form([DatePicker::make('date')->label('Дата')])
+                    ->query(function (Builder $query, array $data) {
+                        return $query->when($data['date'], fn($query, $date) => $query
+                            ->whereDate('created_at', $date));
+                    })
+                    ->indicateUsing(function (array $data) {
+                        $indicators = [];
+                        $data['date'] && $indicators[] = 'Дата: ' . Carbon::parse($data['date'])->translatedFormat('M j, y');
+                        return $indicators;
+                    })
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),

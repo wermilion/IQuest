@@ -2,17 +2,12 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages;
 
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseCreateRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource;
-use Filament\Resources\Pages\CreateRecord;
 
-class CreateCertificateType extends CreateRecord
+class CreateCertificateType extends BaseCreateRecord
 {
     protected static string $resource = CertificateTypeResource::class;
 
     protected ?string $heading = 'Создание сертификата';
-
-    protected function getRedirectUrl(): string
-    {
-        return $this->getResource()::getUrl('index');
-    }
 }

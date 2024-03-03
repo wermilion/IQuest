@@ -33,17 +33,23 @@ class CityResource extends Resource
                     ->label('Название')
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLength(255)
+                    ->maxLength(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
+                        'max' => 'Поле ":attribute" не должно превышать :max символов.',
                     ]),
                 TextInput::make('timezone')
                     ->label('Тайм-зона')
+                    ->prefix('UTC')
+                    ->hint('В формате UTC+3, UTC-2 и т.д.')
                     ->required()
-                    ->maxLength(255)
+                    ->rules([
+                        'regex: /^[+-][0-9]{1,2}?$/'
+                    ])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'regex' => 'Поле ":attribute" должно быть в формате UTC (+7, +2 и т.д.)',
                     ]),
             ]);
     }
@@ -55,6 +61,9 @@ class CityResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('Название'),
+                TextColumn::make('timezone')
+                    ->label('Тайм-зона')
+                    ->prefix('UTC'),
                 TextColumn::make('created_at')
                     ->label('Дата создания')
                     ->dateTime()

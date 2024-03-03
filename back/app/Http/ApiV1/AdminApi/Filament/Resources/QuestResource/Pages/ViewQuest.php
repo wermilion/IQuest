@@ -2,7 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages;
 
-use App\Domain\Locations\Models\Room;
+use App\Domain\Locations\Models\Filial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -14,10 +14,10 @@ class ViewQuest extends ViewRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $room = Room::query()->with(['filial', 'filial.city'])->find($data['room_id']);
+        $filial = Filial::query()->with(['city'])->find($data['filial_id']);
 
-        $data['filial'] = $room?->filial->id;
-        $data['city'] = $room?->filial->city->id;
+        $data['filial'] = $filial->id;
+        $data['city'] = $filial->city->id;
 
         return $data;
     }

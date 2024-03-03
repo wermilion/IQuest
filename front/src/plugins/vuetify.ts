@@ -9,6 +9,17 @@ const vuetify = createVuetify({
     fallback: 'ru',
     messages: { ru },
   },
+  theme: {
+    themes: {
+      light: {
+        dark: false,
+        colors: {
+          primary: '#7422d4',
+          secondary: '#333682',
+        },
+      },
+    },
+  },
 })
 
 export default vuetify

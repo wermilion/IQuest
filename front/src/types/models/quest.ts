@@ -23,12 +23,8 @@ export interface Quest {
     name: string
   }
   level?: number
-  room?: {
+  filial: {
     id: number
-    name: string
-    filial: {
-      id: number
-      address: string
-    }
+    address: string
   }
 }

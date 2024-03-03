@@ -1,16 +1,15 @@
 import { defineStore } from 'pinia'
-import { api } from '#/utils/api'
 import type { Stocks } from '#/types/models/stocks'
 
 //* --- State ----------------------------------------------- *//
-interface StockstState {
+interface StocksState {
   stocks: Stocks[] | null
   error: unknown
 }
 
 //* --- Store ----------------------------------------------- *//
 export const useStocksStore = defineStore('stocks', {
-  state: (): StockstState => ({
+  state: (): StocksState => ({
     stocks: null,
     error: {},
   }),

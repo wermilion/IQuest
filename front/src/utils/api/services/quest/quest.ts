@@ -10,7 +10,7 @@ export default (instance: AxiosInstance) => ({
   getQuest(id: string, params: SearchQuestsRequest): AxiosPromise<{ data: Quest }> {
     return instance.get(`/quests/${id}`, { params })
   },
-  getScheduleQuest(payload: SearchScheduleQuestsRequest): AxiosPromise<{ data: any }> {
-    return instance.post('/schedule_quests:search', payload)
+  getScheduleQuest(payload: SearchScheduleQuestsRequest, signal?: AbortController['signal']): AxiosPromise<{ data: any }> {
+    return instance.post('/schedule_quests:search', payload, { signal })
   },
 })

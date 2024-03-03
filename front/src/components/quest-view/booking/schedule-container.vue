@@ -15,20 +15,16 @@ function formatDateAndWeekday(date: Date) {
   return `${formattedDate}, ${formattedWeekday}`
 }
 
-const open = ref(false)
+const modal = ref(false)
 const dayDate = ref<string | null>(null)
-const dayItem = ref<TimeSlots | null>(null)
+const dayItem = ref<TimeSlots>({} as TimeSlots)
 
 function openModal(date: Date, item: TimeSlots) {
   if (item.is_active === true) {
     dayDate.value = formatDateAndWeekday(new Date(date))
     dayItem.value = item
-    open.value = true
+    modal.value = true
   }
-}
-
-function closeModal() {
-  open.value = false
 }
 
 const sortedTimeslots = computed(() => {
@@ -52,7 +48,7 @@ const sortedTimeslots = computed(() => {
         :is-active="item.is_active" @click="openModal(dateTimes.date, item)"
       />
     </div>
-    <BookingModal :show-modal="open" :item="dayItem" :date="dayDate" @close="closeModal" />
+    <BookingModal v-model="modal" :item="dayItem" :date="dayDate" />
   </div>
 </template>
 

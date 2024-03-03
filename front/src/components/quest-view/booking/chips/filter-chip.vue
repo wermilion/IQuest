@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import '@vuepic/vue-datepicker/dist/main.css'
+interface Props {
+  isSelected: boolean
+}
 
-const props = defineProps<{
-  chip: {
-    name: string
-  }
-  id: number
-}>()
-const stores = setupStore(['chip', 'scheduleQuest'])
-
-const isSelected = computed(() => stores.chip.selectedChip === props.chip.name)
+defineProps<Props>()
 </script>
 
 <template>
   <div class="chip pointer" :class="{ isSelected }">
-    <span v-if="chip.name !== 'Выбрать даты'" class="body">{{ chip.name }}</span>
-    <slot />
+    <span class="body">
+      <slot />
+    </span>
   </div>
 </template>
 

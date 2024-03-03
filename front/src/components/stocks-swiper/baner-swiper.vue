@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import 'swiper/css/bundle'
-import '#/assets/scss/swiper.scss'
 import Swiper from 'swiper'
 import {
   Autoplay,
@@ -58,21 +56,46 @@ onMounted(() => {
   <section class="bag-secondary">
     <div ref="slider" class="swiper-container container">
       <div class="swiper-wrapper">
-        <SliderComponent v-for="item in stores.stocks" :key="item.id" :salse="item" class="swiper-slide" />
+        <SliderComponent
+          v-for="item in stores.stocks"
+          :key="item.id"
+          :salse="item"
+          class="swiper-slide"
+        />
       </div>
 
       <button class="swiper-button-prev swiper-button">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
-            d="M16 28L8 20L16 12" stroke="white" stroke-opacity="0.75" stroke-width="2" stroke-linecap="square"
+            d="M16 28L8 20L16 12"
+            stroke="white"
+            stroke-opacity="0.75"
+            stroke-width="2"
+            stroke-linecap="square"
             stroke-linejoin="round"
           />
         </svg>
       </button>
       <button class="swiper-button-next swiper-button">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
-            d="M24 12L32 20L24 28" stroke="white" stroke-opacity="0.75" stroke-width="2" stroke-linecap="square"
+            d="M24 12L32 20L24 28"
+            stroke="white"
+            stroke-opacity="0.75"
+            stroke-width="2"
+            stroke-linecap="square"
             stroke-linejoin="round"
           />
         </svg>

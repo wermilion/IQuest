@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import type { Quest } from '#/types/models/quest'
-import { api } from '#/utils/api'
 
 //* --- State ----------------------------------------------- *//
 interface QuestState {
@@ -18,7 +17,7 @@ export const useQuestStore = defineStore('quest', {
     async fetchQuest(id: string) {
       try {
         const response = await api.quest.getQuest(id, {
-          include: ['type', 'genre', 'room.filial', 'images', 'age_limit'],
+          include: ['type', 'genre', 'filial', 'images', 'age_limit'],
           filter: {
             city: 'Томск',
             is_active: true,

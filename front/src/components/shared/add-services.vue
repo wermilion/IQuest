@@ -15,9 +15,15 @@ const stores = setupStore('services')
           <span class="footnote">подробности у нашего оператора</span>
         </div>
         <div class="add-services__info-list">
-          <div v-for="item in stores.services" :key="item.name" class="add-services__info-item">
+          <div
+            v-for="item in stores.services"
+            :key="item.name"
+            class="add-services__info-item"
+          >
             <span class="body">{{ item.name }}</span>
-            <span class="footnote">{{ item.price.replace(/.00$/, '') }}₽/{{ item.unit }}</span>
+            <span class="footnote">
+              {{ item.price.replace(/.00$/, "") }}₽/{{ item.unit }}
+            </span>
           </div>
         </div>
       </div>

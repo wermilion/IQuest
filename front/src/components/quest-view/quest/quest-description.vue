@@ -15,7 +15,7 @@ function toggleExpand() {
   <div class="description">
     <span class="bodyBold">Описание</span>
     <div class="description-content">
-      <p class="footnote " :class="{ extend: isExpanded }">
+      <p class="footnoteText" :class="{ extend: isExpanded }">
         {{ description }}
       </p>
       <div class="read-more body pointer" :class="{ active: isExpanded }" @click="toggleExpand">
@@ -70,14 +70,14 @@ function toggleExpand() {
   &-content {
     display: flex;
     flex-direction: column;
-    gap: $cover-6;
+    gap: $cover-8;
 
     p {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       overflow: hidden;
       transition: all 0.25s ease-in-out;
-      max-height: 72px;
+      max-height: 84px;
     }
 
     p.extend {

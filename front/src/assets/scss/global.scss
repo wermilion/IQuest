@@ -1,6 +1,10 @@
-@import "../css/fonts/NEXT-ART/next_art.css";
-@import "../css/fonts/onest/onest.css";
 @import "@mdi/font/css/materialdesignicons.min.css";
+@import "@vuepic/vue-datepicker/dist/main.css";
+
+@import "./fonts.scss";
+@import "./normalize.scss";
+@import "./swiper.scss";
+@import "./datepicker.scss";
 
 html {
   background-color: $color-base1;
@@ -14,15 +18,10 @@ html {
 body {
   margin: 0;
   text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  -webkit-overflow-scrolling: touch;
-  text-rendering: optimizeLegibility;
 
   overscroll-behavior: none;
   box-sizing: border-box;
+
   *,
   *::before,
   *::after {
@@ -72,7 +71,7 @@ body {
 h1 {
   font-family: NEXT-ART;
   font-size: 52px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 56px;
   text-transform: lowercase;
   color: $color-base2;
@@ -81,7 +80,7 @@ h1 {
 h2 {
   font-family: NEXT-ART;
   font-size: 40px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 44px;
   text-transform: lowercase;
   text-overflow: ellipsis;
@@ -101,7 +100,8 @@ h3 {
 .body,
 .footnote,
 .smallFootnote,
-.verySmallFootnot {
+.verySmallFootnot,
+.footnoteText {
   font-family: Onest;
 }
 
@@ -123,6 +123,13 @@ h3 {
   font-size: 20px;
   font-weight: 400;
   line-height: 24px;
+  color: $color-opacity06;
+}
+
+.footnoteText {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
   color: $color-opacity06;
 }
 

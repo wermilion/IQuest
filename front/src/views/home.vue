@@ -3,12 +3,10 @@ import AddServicesVue from '#/components/shared/add-services.vue'
 import QuestCardGrid from '#/components/shared/quest-card-grid.vue'
 import BanerSwiper from '#/components/stocks-swiper/baner-swiper.vue'
 
-const stores = setupStore(['stocks', 'questList', 'services'])
+const stores = setupStore(['stocks', 'services'])
 
-onMounted(() => {
-  stores.stocks.fetchStocks()
-  stores.services.fetchServices()
-})
+stores.stocks.fetchStocks()
+stores.services.fetchServices()
 </script>
 
 <template>
@@ -27,13 +25,9 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 108px;
-}
 
-section:nth-child(3) {
-  margin-top: 108px;
-}
-
-section:last-child {
-  margin-bottom: 108px;
+  &:nth-child(3) {
+    margin-top: 108px;
+  }
 }
 </style>

@@ -6,8 +6,11 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const abort: typeof import('../../utils/api/index')['abort']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
+  const api: typeof import('../../utils/api/index')['api']
   const computed: typeof import('vue')['computed']
+  const controller: typeof import('../../utils/api/index')['controller']
   const createApp: typeof import('vue')['createApp']
   const createPinia: typeof import('pinia')['createPinia']
   const customRef: typeof import('vue')['customRef']
@@ -58,6 +61,7 @@ declare global {
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const source: typeof import('../../utils/api/index')['source']
   const storeToRefs: typeof import('pinia')['storeToRefs']
   const stores: typeof import('../../stores/combine-stores')['stores']
   const toRaw: typeof import('vue')['toRaw']

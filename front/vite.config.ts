@@ -10,13 +10,17 @@ export default defineConfig({
   plugins: [
     vue({ template: { transformAssetUrls } }),
     svgLoader(),
-    vuetify({ autoImport: true }),
+    vuetify({
+      autoImport: true,
+      styles: { configFile: './src/assets/scss/_vuetify.scss' },
+    }),
     visualizer(),
     autoImport({
       imports: ['vue', 'vue-router', 'pinia'],
       dts: './src/types/dts/auto-imports.d.ts',
       dirs: [
         './src/stores/',
+        './src/utils/api/',
       ],
     }),
   ],
@@ -26,7 +30,6 @@ export default defineConfig({
     },
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue', '.store'],
   },
-
   css: {
     preprocessorOptions: {
       scss: {

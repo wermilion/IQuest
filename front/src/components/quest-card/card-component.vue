@@ -11,14 +11,23 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const hoverActive = ref(props.isHover)
+const convertDuration = computed(() => {
+  if (props.quest.duration >= 60) {
+    const hours = Math.floor(props.quest.duration / 60)
+    const minutes = props.quest.duration % 60
+    return `${hours} ч ${minutes} мин`
+  }
+  else {
+    return `${props.quest.duration} мин`
+  }
+})
 
 const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 </script>
 
 <template>
-  <div class="hover-container pointer" :class="{ 'hover-active': hoverActive }">
-    <div v-if="hoverActive" class="hover">
+  <div class="hover-container pointer" :class="{ isHover }">
+    <div v-if="isHover" class="hover">
       <svg width="32" height="400" viewBox="0 0 32 400" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd" clip-rule="evenodd"
@@ -31,8 +40,9 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
       </span>
     </div>
     <div
-      class="card" :class="{ hoverActive }"
-      @click="router.push({ name: EAppRouteNames.Quest, params: { id: quest.id } })"
+      class="card"
+      :class="{ isHover }"
+      @click="router.push({ name: EAppRouteNames.Quest, params: { id: 1 } })"
     >
       <div class="card-image">
         <img loading="lazy" :src="quest.cover" :alt="quest.cover">
@@ -41,15 +51,19 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
       <div class="card-body">
         <span class="bodyBold">{{ quest.name }}</span>
         <div class="card-body__tags">
-          <Tag v-for=" tag in tags " :key="tag" :name="tag" />
+          <Tag
+            v-for="tag in tags"
+            :key="tag"
+            :name="tag"
+          />
         </div>
         <p v-if="quest.short_description" class="card-body__description footnote">
           {{ quest.short_description }}
         </p>
       </div>
     </div>
-    <div v-if="hoverActive" class="hover">
-      <span class="hover-after footnote"> {{ quest.duration }} мин </span>
+    <div v-if="isHover" class="hover">
+      <span class="hover-after footnote"> {{ convertDuration }}</span>
       <svg width="32" height="400" viewBox="0 0 32 400" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd" clip-rule="evenodd"
@@ -90,7 +104,6 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
   &-body {
     max-height: 152px;
     background: $color-opacity004;
-    backdrop-filter: blur(50px);
     padding: $cover-24;
     display: flex;
     flex-direction: column;
@@ -153,7 +166,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
   }
 }
 
-.hover-active {
+.isHover {
   &:hover {
     .hover {
 

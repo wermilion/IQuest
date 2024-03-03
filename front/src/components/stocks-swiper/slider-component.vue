@@ -16,10 +16,10 @@ defineProps<{ salse: Stocks }>()
     </div>
     <div class="baner-swiper__image">
       <div class="baner-front">
-        <img :src="salse.front_image" alt=" ">
+        <img v-lazy-src="salse.front_image" alt=" ">
       </div>
       <div class="baner-back">
-        <img :src="salse.back_image" alt="baner">
+        <img v-lazy-src="salse.back_image" alt="baner">
       </div>
     </div>
   </div>

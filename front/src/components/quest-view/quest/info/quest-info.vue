@@ -12,12 +12,22 @@ import type { Quest } from '#/types/models/quest'
 const props = defineProps<{ info: Quest }>()
 const button = 'Оставить заявку'
 
+const convertDuration = computed(() => {
+  if (props.info.duration >= 60) {
+    const hours = Math.floor(props.info.duration / 60)
+    const minutes = props.info.duration % 60
+    return `${hours} ч ${minutes} мин`
+  }
+  else {
+    return `${props.info.duration} мин`
+  }
+})
+
 const chips = computed(() => {
   const {
     type,
     genre,
     age_limit,
-    duration,
     level,
     min_people,
     max_people,
@@ -35,7 +45,7 @@ const chips = computed(() => {
       },
     },
     { title: `${min_people} - ${max_people} игроков` },
-    { title: `${duration} мин` },
+    { title: `${convertDuration.value}` },
   ]
 })
 </script>
@@ -46,7 +56,7 @@ const chips = computed(() => {
       <h1>{{ info.name }}</h1>
       <div class="info-contacts d-flex">
         <PhoneNumber />
-        <Address :address="info.room?.filial.address" />
+        <Address :address="info.filial.address" />
       </div>
       <div class="info-details">
         <Chip v-for="item in chips" :key="item.title" :name="item.title">
@@ -57,7 +67,7 @@ const chips = computed(() => {
         </Chip>
       </div>
     </div>
-    <Button :name="button" :button-ligh="true" />
+    <Button :name="button" :button-light="true" />
   </div>
 </template>
 

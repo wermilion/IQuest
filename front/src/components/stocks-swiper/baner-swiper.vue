@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import Swiper from 'swiper'
+
+import '#/assets/scss/swiper.scss'
+
 import {
   Autoplay,
   EffectCreative,

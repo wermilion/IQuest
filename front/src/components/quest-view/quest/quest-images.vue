@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import 'swiper/css/bundle'
-import '#/assets/scss/swiper.scss'
 
 import Swiper from 'swiper'
 import { onMounted, ref } from 'vue'

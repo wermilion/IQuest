@@ -4,17 +4,23 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import vue from '@vitejs/plugin-vue'
 import autoImport from 'unplugin-auto-import/vite'
 import svgLoader from 'vite-svg-loader'
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({ template: { transformAssetUrls } }),
     svgLoader(),
+    vuetify({
+      autoImport: true,
+      styles: { configFile: './src/assets/scss/_vuetify.scss' },
+    }),
     visualizer(),
     autoImport({
       imports: ['vue', 'vue-router', 'pinia'],
       dts: './src/types/dts/auto-imports.d.ts',
       dirs: [
         './src/stores/',
+        './src/utils/api/',
       ],
     }),
   ],
@@ -24,7 +30,6 @@ export default defineConfig({
     },
     extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue', '.store'],
   },
-
   css: {
     preprocessorOptions: {
       scss: {

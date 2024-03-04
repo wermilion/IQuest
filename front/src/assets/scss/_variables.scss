@@ -1,5 +1,5 @@
 $color-primary: #7422d4;
-$color-light-primary: #8B41DE;
+$color-light-primary: #8b41de;
 $color-secondary: #333682;
 $color-gradient: linear-gradient(88deg, #7422d4 0%, #d641dd 99.91%);
 
@@ -8,6 +8,7 @@ $color-shade-5: #5a4c6a;
 $color-shade-6: #2e2a32;
 
 $color-red: #f5123b;
+$color-red-opacity05: #f5123b;
 $color-green: #18cd76;
 $color-black: #000000;
 
@@ -17,15 +18,15 @@ $color-opacity025: #ffffff40;
 
 $color-base2: #ffffff;
 $color-opacity06: #ffffff99;
-$color-opacity012: #FFFFFF1F;
+$color-opacity012: #ffffff1f;
 $color-opacity004: #ffffff0a;
 
-
 $hover-animation: all 0.3s cubic-bezier(0, 0, 0.58, 1);
-$hover-anim-btn: all 0.150s ease-in-out;
+$hover-anim-btn: all 0.15s ease-in-out;
 
 $cover-2: 2px;
 $cover-4: 4px;
+$cover-6: 6px;
 $cover-8: 8px;
 $cover-12: 12px;
 $cover-16: 16px;

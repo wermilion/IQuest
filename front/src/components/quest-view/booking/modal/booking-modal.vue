@@ -1,101 +1,214 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { vMaska } from 'maska'
+import QuestRules from './quest-rules.vue'
+import Modal from '#/components/shared/modal.vue'
+import Plus from '#/assets/svg/shared/plus.svg?component'
+import Minus from '#/assets/svg/shared/minus.svg?component'
+import type { TimeSlots } from '#/types/models/schedule'
 
-const showModal = ref(false)
+import Button from '#/components/shared/button.vue'
+
+interface Props {
+  date: string | null
+  item: TimeSlots
+}
+
+const props = defineProps<Props>()
+const modal = defineModel<boolean>()
+const stores = setupStore('quest')
+
+const nameRules = [
+  (v: string) => !!v || 'Имя обязательно для заполнения',
+]
+
+const phoneRules = [
+  (v: string) => !!v || 'Номер телефона обязателен для заполнения',
+  (v: string) => /^\+7\(\d{3}\)-\d{3}-\d{2}-\d{2}$/.test(v) || 'Номер телефона должен быть в формате +7(XXX)-XXX-XX-XX',
+]
+
+const checkboxRules = [
+  (v: boolean) => !!v || 'Необходимо дать согласие на обработку персональных данных',
+]
+
+const options = reactive({
+  mask: '+7(###)-###-##-##',
+  eager: true,
+})
+
+const formData = reactive({
+  people: stores.quest?.min_people || 0,
+  fullName: '',
+  phoneNumber: '',
+  addLoudge: false,
+  privatePolice: false,
+})
+
+const totalPrice = computed(() => {
+  const { price = '0' } = props.item
+  const basePrice = Number.parseFloat(price)
+  const additionalPeople = Math.max(formData.people - 4, 0)
+  const additionalCost = additionalPeople * 500
+
+  return basePrice + additionalCost
+})
+
+function addPeople(): void {
+  if (stores.quest?.max_people !== undefined
+    && formData.people < stores.quest?.max_people)
+    formData.people++
+}
+
+function removePeople(): void {
+  if (stores.quest?.min_people !== undefined
+    && formData.people > stores.quest?.min_people)
+    formData.people--
+}
+
+function submitForm() {
+  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
+    return
+
+  api.booking.postBooking({
+    booking: {
+      name: formData.fullName,
+      phone: formData.phoneNumber,
+      type: 'Квест',
+      city_id: 1,
+    },
+    schedule_quest: {
+      timeslot_id: props.item?.id,
+      count_participants: formData.people,
+      final_price: totalPrice.value,
+      comment: formData.addLoudge ? 'Хочу лаунж' : '',
+    },
+  })
+}
+
+const modalProps = computed(() => ({
+  title: 'Бронирование',
+  subTitle: `${stores.quest?.name} • ${props.date} • ${props.item?.time?.replace(/:00$/, '') ?? ''}`,
+}))
 </script>
 
 <template>
-  <div>
-    <button @click="showModal = true">
-      Открыть модальное окно
-    </button>
+  <Modal v-model="modal" persistent v-bind="modalProps">
+    <template #content>
+      <div class="content-wrapper">
+        <v-form class="form">
+          <v-text-field
+            v-model.lazy.trim="formData.fullName"
+            :rules="nameRules"
+            color="primary"
+            variant="underlined"
+            label="Имя"
 
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="nodal-header__title">
-            <h2>Бронирование</h2>
-            <span class="footnote">Кутёж в ирландском пабе • 17 февраля, сб • 11:30</span>
+            required
+          />
+          <v-text-field
+            v-model="formData.phoneNumber"
+            v-maska:[options]
+            :rules="phoneRules"
+            required
+            color="primary"
+            variant="underlined"
+            label="Мобильный телефон"
+          />
+        </v-form>
+        <div class="count-wrapper">
+          <span class="smallFootnote">Кол-во человек</span>
+          <div class="count">
+            <Minus class="btn pointer" @click="removePeople" />
+            <span class="body">{{ formData.people }}</span>
+            <Plus class="btn pointer" @click="addPeople" />
           </div>
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              fill-rule="evenodd" clip-rule="evenodd"
-              d="M22.5845 23.9979L12.0014 13.4146L13.4156 12.0004L23.9987 22.5837L34.5821 12L35.9963 13.4142L25.4129 23.9979L35.9977 34.5829L34.5835 35.9971L23.9987 25.4121L13.4142 35.9968L12 34.5825L22.5845 23.9979Z"
-              fill="white" fill-opacity="0.25"
-            />
-          </svg>
+          <span v-if="formData.people > 4" class="verySmallFootnot">
+            если игроков больше 4 — доплата 500₽ за каждого
+          </span>
         </div>
-        <div class="modal-form">
-          <input class="modal-input footnote" placeholder="Имя" type="text">
-          <input class="modal-input footnote" placeholder="Имя" type="text">
-
-          <div class="modal-count">
-            <span class="smallFootnote">Кол-во человек</span>
-            <div class="count" />
-            <span>если игроков больше 4 — доплата 500₽ за каждого</span>
-          </div>
-        </div>
+        <h3>Итого за квест: {{ totalPrice }}₽</h3>
       </div>
-    </div>
-  </div>
+      <QuestRules />
+    </template>
+    <template #footer>
+      <div class="footer-checkbox">
+        <v-checkbox
+          v-model="formData.addLoudge"
+          :class="{ active: formData.addLoudge }"
+          class="loudge"
+          label="Хочу лаунж зону"
+        />
+        <v-checkbox
+          v-model="formData.privatePolice"
+          :class="{ active: formData.privatePolice }"
+          :rules="checkboxRules"
+          required
+          label="Я даю согласие на обработку персональных данных"
+        />
+        <Button name="Забронировать" type="submit" :button-light="true" @click="submitForm" />
+      </div>
+    </template>
+  </Modal>
 </template>
 
 <style scoped lang="scss">
-.modal {
-  display: block;
-  position: fixed;
-  z-index: 100;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-
-  &-content {
-    overflow: hidden;
-    background-color: $color-base1;
-    padding: $cover-32;
-    border-radius: $cover-12;
-    width: 100%;
-    max-width: 624px;
+.count-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $cover-8;
+  .count {
     display: flex;
-    flex-direction: column;
-    gap: $cover-40;
-  }
-
-  &-header {
-    display: flex;
-    justify-content: space-between;
-
-    &__title {
-      display: flex;
-      flex-direction: column;
-      gap: $cover-8;
-      max-width: 472px;
-    }
-  }
-
-  &-form {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: $cover-32
-  }
+    gap: $cover-12;
 
-  &-input {
-    height: 60px;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid $color-opacity025;
-    width: 100%;
-    outline: none;
-    color: $color-base2;
-    padding: 0px;
+    .btn {
+      :deep() {
+        rect {
+          transition: all 0.15s ease-in-out;
+        }
+      }
+
+      &:hover {
+        :deep() {
+          rect {
+            fill-opacity: 0.25;
+          }
+        }
+      }
+    }
   }
 }
 
-h2 {
+.loudge {
+  max-height: 32px;
+}
+
+.active {
+  color: $color-base2;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $cover-12;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $cover-32
+}
+
+.footer-checkbox {
+  display: flex;
+  flex-direction: column;
+  gap: $cover-12;
+}
+
+input h2 {
   color: $color-opacity06;
+}
+
+h3 {
+  color: $color-base2;
 }
 </style>

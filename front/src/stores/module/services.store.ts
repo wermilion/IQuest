@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { api } from '#/utils/api'
 import type { Services } from '#/types/models/services'
 
 //* --- State ----------------------------------------------- *//

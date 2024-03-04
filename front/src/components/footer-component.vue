@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import PhoneNumber from './shared/phone-number.vue'
 
-const linksSocial = ref([
+const linksSocial = [
   {
     link: 'https://vk.com/iquest',
     img: 'vk.svg',
@@ -15,9 +14,9 @@ const linksSocial = ref([
     link: 'https://www.youtube.com/channel/UCiEXe3D9fy8GX9X73lpxOxA?disable_polymer=true',
     img: 'youtube.svg',
   },
-])
+]
 
-const linkASAP = ref('https://asapeducation.ru/?utm_course=iquest_site')
+const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
 
 const emainAddress = {
   text: 'iquest.tsk@gmail.com',
@@ -33,7 +32,10 @@ const emainAddress = {
         <div class="footer-links__contacts">
           <PhoneNumber />
           <span class="body">
-            <img :src="`/icons/${emainAddress.img}`" :alt="emainAddress.img">
+            <img
+              :src="`/icons/share/${emainAddress.img}`"
+              :alt="emainAddress.img"
+            >
             {{ emainAddress.text }}
           </span>
         </div>
@@ -65,12 +67,13 @@ const emainAddress = {
 
 <style scoped lang="scss">
 .border {
-  border-top: 2px solid $color-shade-6;
-
+  border-top: 2px solid $color-shade-6 !important;
   background-image: url("/gradient/footer-gradient.svg");
   background-repeat: no-repeat;
   background-position: center top;
+  margin-top: 108px;
 }
+
 .footer {
   height: 100%;
   margin-inline: auto;

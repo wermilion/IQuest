@@ -42,7 +42,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
     <div
       class="card"
       :class="{ isHover }"
-      @click="router.push({ name: EAppRouteNames.Quest, params: { id: 1 } })"
+      @click="router.push({ name: EAppRouteNames.Quest, params: { id: quest.id } })"
     >
       <div class="card-image">
         <img loading="lazy" :src="quest.cover" :alt="quest.cover">

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import Cover from '#/components/holidays-view/cover.vue'
+import Packages from '#/components/holidays-view/packages/packege-container.vue'
+import DetailsContainer from '#/components/holidays-view/details/datails-container.vue'
+
 const route = useRoute()
 const stores = setupStore(['holiday'])
 
@@ -25,11 +29,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <section v-if="stores.holiday.holiday">
-    <h1>{{ stores.holiday.holiday.type }}</h1>
+  <section v-if="stores.holiday.holiday" class="wrapper">
+    <Cover :type="stores.holiday.holiday.type" />
     <Packages />
+    <DetailsContainer />
   </section>
   <section v-else class="loading">
     <h2>Я не придумал что вставить ;)</h2>
   </section>
 </template>
+
+<style scoped lang="scss">
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 108px;
+}
+</style>

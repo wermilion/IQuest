@@ -11,6 +11,8 @@ class CreateBookingAction
 {
     public function execute(array $data): Booking
     {
+        resolve(CheckBookingAction::class)->execute($data);
+
         $booking = Booking::create([...$data['booking'], 'status' => BookingStatus::NEW->value]);
 
         if ($booking->type->value == BookingType::QUEST->value && $data['schedule_quest']) {

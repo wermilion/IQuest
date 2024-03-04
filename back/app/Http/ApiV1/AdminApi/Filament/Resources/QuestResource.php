@@ -56,17 +56,25 @@ class QuestResource extends Resource
                 Select::make('city')
                     ->label('Город')
                     ->live()
-                    ->options(fn() => City::all()->pluck('name', 'id'))
+                    ->relationship('filial.city', 'name')
+                    ->afterStateUpdated(function ($state, Select $component) {
+                        $component->getContainer()
+                            ->getComponent('filial_id')
+                            ->state(null)
+                            ->relationship(
+                                'filial',
+                                'address',
+                            );
+                    })
                     ->hiddenOn('')
                     ->helperText(function () {
                         return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
                     })
                     ->native(false),
                 Select::make('filial_id')
+                    ->key('filial_id')
                     ->label('Филиал')
-                    ->options(fn(Get $get) => Filial::query()
-                        ->where('city_id', $get('city'))
-                        ->pluck('address', 'id'))
+                    ->options(fn($get) => Filial::where('city_id', $get('city'))->pluck('address', 'id'))
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -181,8 +189,10 @@ class QuestResource extends Resource
                     ->label('Порядковый номер')
                     ->required()
                     ->numeric()
+                    ->minValue('1')
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно 1.'
                     ]),
                 FileUpload::make('cover')
                     ->label('Обложка')

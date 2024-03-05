@@ -63,13 +63,14 @@ class BookingCertificateResource extends BaseResource
                                         'required' => 'Поле ":attribute" обязательно.',
                                     ])
                                     ->helperText(function () {
-                                        return City::exists() ? '' : 'Лаунжи не обнаружены. Сначала создайте лаунж.';
+                                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте лаунж.';
                                     })
                                     ->native(false),
                                 TextInput::make('name')
                                     ->label('Имя')
                                     ->required()
                                     ->maxLengthWithHint(40)
+                                    ->dehydrateStateUsing(fn ($state) => trim($state))
                                     ->validationMessages([
                                         'required' => 'Поле ":attribute" обязательно.',
                                     ]),
@@ -116,6 +117,9 @@ class BookingCertificateResource extends BaseResource
                                     ->validationMessages([
                                         'required' => 'Поле ":attribute" обязательное.',
                                     ])
+                                    ->helperText(function () {
+                                        return CertificateType::exists() ? '' : 'Типы не обнаружены. Сначала создайте лаунж.';
+                                    })
                                     ->native(false),
                             ])
                             ->disableItemDeletion()

@@ -103,6 +103,7 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('comment')
                     ->label('Комментарий')
                     ->maxLengthWithHint(125)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'max' => 'Поле ":attribute" не должно превышать :max символов.',
                     ]),
@@ -169,7 +170,8 @@ class BookingRelationManager extends RelationManager
                             ]),
                         TextInput::make('comment')
                             ->label('Комментарий')
-                            ->maxLength(125)
+                            ->maxLengthWithHint(125)
+                            ->dehydrateStateUsing(fn ($state) => trim($state))
                             ->validationMessages([
                                 'max' => 'Поле ":attribute" не должно превышать :max символов.',
                             ]),

@@ -15,7 +15,7 @@ class ScheduleQuestCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:schedule-quest';
+    protected $signature = 'app:schedule-quest {cityId} {timezone}';
 
     /**
      * The console command description.
@@ -29,8 +29,9 @@ class ScheduleQuestCommand extends Command
      */
     public function handle(): void
     {
-        $quests = Quest::all();
-        $currentDate = Carbon::today();
+        $timezone = $this->argument('timezone');
+        $quests = Quest::whereHas('filial.city', fn($query) => $query->where('timezone', $timezone));
+        $currentDate = Carbon::today($timezone);
 
         $this->deleteSlotsForYesterday($currentDate);
 

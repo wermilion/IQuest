@@ -39,6 +39,7 @@ class PackagesRelationManager extends RelationManager
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(40)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -65,6 +66,7 @@ class PackagesRelationManager extends RelationManager
                     ->columnSpanFull()
                     ->required()
                     ->maxLengthWithHint(255)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

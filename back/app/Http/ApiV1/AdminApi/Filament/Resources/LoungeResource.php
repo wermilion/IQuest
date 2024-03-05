@@ -78,6 +78,7 @@ class LoungeResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(30)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -95,6 +96,7 @@ class LoungeResource extends Resource
                     ->columnSpanFull()
                     ->required()
                     ->maxLengthWithHint(1000)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',

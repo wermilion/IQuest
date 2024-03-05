@@ -39,6 +39,7 @@ class AgeLimitResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLengthWithHint(5)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.'

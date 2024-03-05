@@ -15,7 +15,7 @@ class ListBookingCertificates extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()->label('Прикрепить заявку'),
+            Actions\CreateAction::make()->label('Создать'),
         ];
     }
 }

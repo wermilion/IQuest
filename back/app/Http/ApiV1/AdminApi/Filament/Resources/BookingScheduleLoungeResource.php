@@ -110,6 +110,7 @@ class BookingScheduleLoungeResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 SelectFilter::make('city')
                     ->label('Город')
@@ -129,10 +130,7 @@ class BookingScheduleLoungeResource extends Resource
                         $data['date'] && $indicators[] = 'Дата: ' . Carbon::parse($data['date'])->translatedFormat('M j, Y');
                         return $indicators;
                     }),
-            ], layout: FiltersLayout::AboveContentCollapsible)
-            ->actions([
-                DeleteAction::make()->modalHeading('Удаление заявки'),
-            ]);
+            ], layout: FiltersLayout::AboveContentCollapsible);
     }
 
     public static function getPages(): array

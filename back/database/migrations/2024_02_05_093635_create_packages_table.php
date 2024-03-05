@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->unsignedInteger('sequence_number')->comment('Порядковый номер пакета');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

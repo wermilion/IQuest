@@ -6,6 +6,7 @@ use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\BookingHoliday;
 use App\Domain\Holidays\Models\Package;
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\CreateBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\ListBookingHolidays;
@@ -16,18 +17,19 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
-use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class BookingHolidayResource extends Resource
+class BookingHolidayResource extends BaseResource
 {
     protected static ?string $model = BookingHoliday::class;
 
@@ -129,7 +131,10 @@ class BookingHolidayResource extends Resource
                     ->label('Комментарий')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
+                TrashedFilter::make()
+                    ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')
                     ->relationship('booking.city', 'name')
@@ -148,7 +153,8 @@ class BookingHolidayResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
-                DeleteAction::make()->modalHeading('Удаление заявки'),
+                RestoreAction::make()->modalHeading('Восстановление заявки'),
+                ForceDeleteAction::make()->modalHeading('Полное удаление заявки'),
             ]);
     }
 

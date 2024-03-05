@@ -9,12 +9,17 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class PackagesRelationManager extends RelationManager
 {
@@ -68,6 +73,11 @@ class PackagesRelationManager extends RelationManager
             ]);
     }
 
+    protected function canEdit(Model $record): bool
+    {
+        return false;
+    }
+
     public function table(Table $table): Table
     {
         return $table
@@ -75,21 +85,25 @@ class PackagesRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->emptyStateHeading('Пакеты не обнаружены')
             ->columns([
-                Tables\Columns\TextColumn::make('sequence_number')
+                TextColumn::make('sequence_number')
                     ->label('Порядковый номер')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->label('Название'),
-                Tables\Columns\TextColumn::make('price')
+                TextColumn::make('price')
                     ->label('Цена')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('is_active')
+                ToggleColumn::make('is_active')
                     ->label('Отображение на сайте')
                     ->disabled(Auth::user()->role !== Role::ADMIN)
                     ->sortable(),
             ])
             ->defaultSort('sequence_number')
+            ->filters([
+                TrashedFilter::make()
+                    ->native(false),
+            ])
             ->headerActions([
                 CreateAction::make()
                     ->createAnother(false),
@@ -97,7 +111,8 @@ class PackagesRelationManager extends RelationManager
             ->actions([
                 EditAction::make()->modalHeading('Редактирование пакета'),
                 ViewAction::make()->modalHeading('Просмотр пакета'),
-                DeleteAction::make(),
+                DeleteAction::make()->modalHeading('Удаление пакета'),
+                RestoreAction::make()->modalHeading('Восстановление пакета'),
             ]);
     }
 }

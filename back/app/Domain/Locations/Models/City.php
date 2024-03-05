@@ -2,6 +2,9 @@
 
 namespace App\Domain\Locations\Models;
 
+use App\Domain\Contacts\Models\Contact;
+use App\Domain\Sales\Models\Sale;
+use App\Domain\Services\Models\Service;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +15,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $id - Идентификатор города
  * @property string $name - Название города
  *
- * @property Filial[] $filials
+ * @property-read Filial $filials
+ * @property-read Contact $contacts
+ * @property-read Sale $sales
+ * @property-read Service $services
  */
 class City extends Model
 {
@@ -26,5 +32,20 @@ class City extends Model
     public function filials(): HasMany
     {
         return $this->hasMany(Filial::class);
+    }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function services(): HasMany
+    {
+        return $this->hasMany(Service::class);
     }
 }

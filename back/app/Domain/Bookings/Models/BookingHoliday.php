@@ -7,6 +7,7 @@ use App\Domain\Holidays\Models\HolidayPackage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class BookingHoliday
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class BookingHoliday extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'booking_id',
@@ -38,15 +39,23 @@ class BookingHoliday extends Model
         static::deleting(function (self $model) {
             $model->booking()->delete();
         });
+
+        static::forceDeleting(function (self $model) {
+            $model->booking()->forceDelete();
+        });
+
+        static::restoring(function (self $model) {
+            $model->booking()->restore();
+        });
     }
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class)->withTrashed();
     }
 
     public function holidayPackage(): BelongsTo
     {
-        return $this->belongsTo(HolidayPackage::class);
+        return $this->belongsTo(HolidayPackage::class)->withTrashed();
     }
 }

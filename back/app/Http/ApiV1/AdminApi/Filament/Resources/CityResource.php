@@ -10,9 +10,11 @@ use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class CityResource extends Resource
 {
@@ -54,6 +56,14 @@ class CityResource extends Resource
             ]);
     }
 
+    public static function canDelete(Model $record): bool
+    {
+        return $record->filials()->doesntExist()
+            && $record->contacts()->doesntExist()
+            && $record->sales()->doesntExist()
+            && $record->services()->doesntExist();
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -77,6 +87,7 @@ class CityResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление города'),
             ]);
     }
 

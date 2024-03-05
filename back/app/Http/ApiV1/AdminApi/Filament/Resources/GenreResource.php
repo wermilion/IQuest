@@ -10,9 +10,11 @@ use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class GenreResource extends Resource
 {
@@ -43,6 +45,11 @@ class GenreResource extends Resource
             ]);
     }
 
+    public static function canDelete(Model $record): bool
+    {
+        return $record->quests()->doesntExist();
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -63,6 +70,7 @@ class GenreResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление жанра'),
             ]);
     }
 

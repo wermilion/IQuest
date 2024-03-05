@@ -2,10 +2,12 @@
 
 namespace App\Domain\Holidays\Models;
 
+use App\Domain\Bookings\Models\BookingHoliday;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Package
@@ -22,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Package extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -38,8 +40,18 @@ class Package extends Model
 
     protected static function booted(): void
     {
-        static::deleting(function (self $package) {
-            $package->holidays()->detach();
+        static::deleting(function (self $model) {
+            $model->holidayPackages()->each(function (HolidayPackage $holidayPackage) {
+                $holidayPackage->bookingHolidays()->each(function (BookingHoliday $bookingHoliday) {
+                    $bookingHoliday->booking()->delete();
+                    $bookingHoliday->delete();
+                });
+                $holidayPackage->delete();
+            });
+        });
+
+        static::restoring(function (self $model) {
+            $model->holidayPackages()->restore();
         });
     }
 

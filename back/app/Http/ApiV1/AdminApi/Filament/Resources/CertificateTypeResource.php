@@ -3,6 +3,7 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Certificates\Models\CertificateType;
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ListCertificateTypes;
@@ -10,14 +11,17 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
-class CertificateTypeResource extends Resource
+class CertificateTypeResource extends BaseResource
 {
     protected static ?string $model = CertificateType::class;
 
@@ -92,10 +96,15 @@ class CertificateTypeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('price')
+            ->filters([
+                TrashedFilter::make()
+                ->native(false),
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
                 ViewAction::make()->modalHeading('Просмотр сертификата'),
                 DeleteAction::make()->modalHeading('Удаление сертификата'),
+                RestoreAction::make()->modalHeading('Восстановление сертификата'),
             ]);
     }
 

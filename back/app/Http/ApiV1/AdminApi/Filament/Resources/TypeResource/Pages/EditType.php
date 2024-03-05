@@ -4,18 +4,10 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource\Pages;
 
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseEditRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TypeResource;
-use Filament\Actions\DeleteAction;
 
 class EditType extends BaseEditRecord
 {
     protected static string $resource = TypeResource::class;
 
     protected ?string $heading = 'Редактирование типа';
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            DeleteAction::make()->modalHeading('Удаление типа'),
-        ];
-    }
 }

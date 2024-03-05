@@ -13,12 +13,15 @@ return new class extends Migration {
         Schema::create('booking_holidays', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignId('booking_id')->comment('Бронирование')->constrained(table: 'bookings');
-            $table->foreignId('holiday_package_id')->comment('Тип праздника и пакет')->constrained(table: 'holiday_packages');
+            $table->foreignId('booking_id')->comment('Бронирование')
+                ->constrained(table: 'bookings');
+            $table->foreignId('holiday_package_id')->comment('Тип праздника и пакет')
+                ->constrained(table: 'holiday_packages');
 
             $table->string('comment')->nullable()->comment('Комментарий');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -8,16 +8,17 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\CreateFilial
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\EditFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\ListFilials;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class FilialResource extends Resource
 {
@@ -48,18 +49,23 @@ class FilialResource extends Resource
                 TextInput::make('address')
                     ->label('Адрес')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLengthWithHint(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 TextInput::make('yandex_mark')
                     ->label('Яндекс метка')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLengthWithHint(255)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
             ]);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return $record->quests()->doesntExist() && $record->lounges()->doesntExist();
     }
 
     public static function table(Table $table): Table
@@ -93,6 +99,7 @@ class FilialResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление филиала'),
             ]);
     }
 

@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
-import QuestRules from './quest-rules.vue'
+import type { Packages } from '../../types/models/holiday'
+import infoPopUpVue from '../shared/info-pop-up.vue'
+import QuestRules from '#/components/quest-view/booking/modal/quest-rules.vue'
 import Modal from '#/components/shared/modal.vue'
-import Plus from '#/assets/svg/shared/plus.svg?component'
-import Minus from '#/assets/svg/shared/minus.svg?component'
-import InfoPopUpVue from '#/components/shared/info-pop-up.vue'
-import type { TimeSlots } from '#/types/models/schedule'
+import Info from '#/assets/svg/shared/info.svg?component'
 
 import Button from '#/components/shared/button.vue'
 
 interface Props {
-  date: string | null
-  item: TimeSlots
+  package: Packages
 }
 
 const props = defineProps<Props>()
 const modal = defineModel<boolean>()
-const stores = setupStore('quest')
+const stores = setupStore('holiday')
 
 const nameRules = [
   (v: string) => !!v || 'Имя обязательно для заполнения',
@@ -38,33 +36,10 @@ const options = reactive({
 })
 
 const formData = reactive({
-  people: stores.quest?.min_people || 0,
   fullName: '',
   phoneNumber: '',
-  addLoudge: false,
   privatePolice: false,
 })
-
-const totalPrice = computed(() => {
-  const { price = '0' } = props.item
-  const basePrice = Number.parseFloat(price)
-  const additionalPeople = Math.max(formData.people - 4, 0)
-  const additionalCost = additionalPeople * 500
-
-  return basePrice + additionalCost
-})
-
-function addPeople(): void {
-  if (stores.quest?.max_people !== undefined
-    && formData.people < stores.quest?.max_people)
-    formData.people++
-}
-
-function removePeople(): void {
-  if (stores.quest?.min_people !== undefined
-    && formData.people > stores.quest?.min_people)
-    formData.people--
-}
 
 function submitForm() {
   if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
@@ -74,22 +49,24 @@ function submitForm() {
     booking: {
       name: formData.fullName,
       phone: formData.phoneNumber,
-      type: 'Квест',
+      type: 'Праздник',
       city_id: 1,
     },
-    schedule_quest: {
-      timeslot_id: props.item?.id,
-      count_participants: formData.people,
-      final_price: totalPrice.value,
-      comment: formData.addLoudge ? 'Хочу лаунж' : '',
+    holiday: {
+      holiday_id: stores.holiday?.id || 0,
+      package_id: props.package?.id || 0,
     },
   })
+
+  formData.fullName = ''
+  formData.phoneNumber = ''
+  formData.privatePolice = false
   modal.value = false
 }
 
 const modalProps = computed(() => ({
-  title: 'Бронирование',
-  subTitle: `${stores.quest?.name} • ${props.date} • ${props.item?.time?.replace(/:00$/, '') ?? ''}`,
+  title: 'Оформление',
+  subTitle: `${stores.holiday?.type} • ${props.package.name}`,
 }))
 </script>
 
@@ -116,34 +93,15 @@ const modalProps = computed(() => ({
             variant="underlined"
             label="Мобильный телефон"
           />
-        </v-form>
-        <div class="count-wrapper">
-          <span class="smallFootnote">Кол-во человек</span>
-          <div class="count">
-            <Minus class="btn pointer" @click="removePeople" />
-            <span class="body">{{ formData.people }}</span>
-            <Plus class="btn pointer" @click="addPeople" />
+          <div class="price-info">
+            <h3>От {{ props.package?.price }}₽</h3><infoPopUpVue name="Если игроков больше 6 — будет доплата" />
           </div>
-          <span v-if="formData.people > 4" class="verySmallFootnot">
-            если игроков больше 4 — доплата 500₽ за каждого
-          </span>
-        </div>
-        <h3>Итого за квест: {{ totalPrice }}₽</h3>
+        </v-form>
       </div>
       <QuestRules />
     </template>
     <template #footer>
       <div class="footer-checkbox">
-        <div class="footer-checkbox__lounge">
-          <v-checkbox
-            v-model="formData.addLoudge"
-            :class="{ active: formData.addLoudge }"
-            class="loudge"
-            label="Хочу лаунж зону"
-          />
-          <InfoPopUpVue name="Отдохните и обсудите квест после игры" />
-        </div>
-
         <v-checkbox
           v-model="formData.privatePolice"
           :class="{ active: formData.privatePolice }"
@@ -151,44 +109,20 @@ const modalProps = computed(() => ({
           required
           label="Я даю согласие на обработку персональных данных"
         />
-        <Button name="Забронировать" type="submit" :button-light="true" @click="submitForm" />
+        <Button
+          name="Забронировать"
+          type="submit"
+          :button-light="true"
+          :disabled="!formData.fullName || !formData.phoneNumber || !formData.privatePolice"
+
+          @click="submitForm"
+        />
       </div>
     </template>
   </Modal>
 </template>
 
 <style scoped lang="scss">
-.count-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: $cover-8;
-  .count {
-    display: flex;
-    align-items: center;
-    gap: $cover-12;
-
-    .btn {
-      :deep() {
-        rect {
-          transition: all 0.15s ease-in-out;
-        }
-      }
-
-      &:hover {
-        :deep() {
-          rect {
-            fill-opacity: 0.25;
-          }
-        }
-      }
-    }
-  }
-}
-
-.loudge {
-  max-height: 32px;
-}
-
 .active {
   color: $color-base2;
 }
@@ -205,16 +139,15 @@ const modalProps = computed(() => ({
   gap: $cover-32
 }
 
+.price-info {
+  display: flex;
+  align-items: center;
+  gap: $cover-8;
+}
 .footer-checkbox {
   display: flex;
   flex-direction: column;
   gap: $cover-12;
-
-  &__lounge {
-    display: flex;
-    align-items: center;
-    gap: $cover-4;
-  }
 }
 
 input h2 {

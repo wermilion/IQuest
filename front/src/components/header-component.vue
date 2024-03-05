@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import DropList from './shared/drop-list.vue'
+import Arrow from '#/assets/svg/shared/arrow=default.svg'
+
+const stores = setupStore('holidaysList')
+
 const links = [
   { name: 'Квесты', link: '/' },
   { name: 'Праздники', link: '' },
@@ -27,38 +32,8 @@ const isHoverActive = ref(false)
             <span>[</span>
             {{ link.name }}
             <div v-if="index === 1" class="select">
-              <svg
-                v-show="!isHoverActive"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.00006 10L12.0001 16L18.0001 10"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="square"
-                  stroke-linejoin="bevel"
-                />
-              </svg>
-              <svg
-                v-show="isHoverActive"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6 16L12 10L18 16"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="square"
-                  stroke-linejoin="bevel"
-                />
-              </svg>
+              <Arrow v-show="!isHoverActive" />
+              <DropList :item="stores.holidaysList" />
             </div>
             <span>]</span>
           </div>
@@ -71,40 +46,7 @@ const isHoverActive = ref(false)
       >
         <span>[</span>
         Томск
-        <div class="d-flex">
-          <svg
-            v-show="!isActive"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6.00006 10L12.0001 16L18.0001 10"
-              stroke="white"
-              stroke-width="2"
-              stroke-linecap="square"
-              stroke-linejoin="bevel"
-            />
-          </svg>
-          <svg
-            v-show="isActive"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6 16L12 10L18 16"
-              stroke="white"
-              stroke-width="2"
-              stroke-linecap="square"
-              stroke-linejoin="bevel"
-            />
-          </svg>
-        </div>
+        <Arrow />
         <span>]</span>
       </div>
     </div>

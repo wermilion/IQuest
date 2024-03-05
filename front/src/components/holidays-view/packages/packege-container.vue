@@ -1,22 +1,34 @@
 <script setup lang="ts">
+import BookingModal from '../booking-modal.vue'
+import type { Packages } from '../../../types/models/holiday'
 import PackageIncludes from './package-includes.vue'
 import FilterChip from '#/components/quest-view/booking/chips/filter-chip.vue'
 import Button from '#/components/shared/button.vue'
 
 const stores = setupStore(['holiday'])
 
-const defaultChip = stores.holiday.holiday?.packages[0]?.name
-const defaultDesc = stores.holiday.holiday?.packages[0]?.description
-const defaultPrice = stores.holiday.holiday?.packages[0]?.price
+const defaultPackage = computed(() => stores.holiday.holiday?.packages[0])
 
-const selectedChip = ref(defaultChip)
-const selectedDesc = ref(defaultDesc)
-const selectedPrice = ref(defaultPrice)
+const activePackege = reactive({
+  name: ref(defaultPackage.value?.name || ''),
+  description: ref(defaultPackage.value?.description || ''),
+  price: ref(defaultPackage.value?.price || ''),
+  id: ref(defaultPackage.value?.id || 0),
+  sequence_number: ref(defaultPackage.value?.sequence_number || 0),
+})
 
-async function select(name: string, description: string, price: number) {
-  selectedChip.value = name
-  selectedDesc.value = description
-  selectedPrice.value = price
+async function select(item: Packages) {
+  activePackege.name = item.name
+  activePackege.description = item.description
+  activePackege.price = item.price
+  activePackege.id = item.id
+  activePackege.sequence_number = item.sequence_number
+}
+
+const modal = ref(false)
+
+function openModal() {
+  modal.value = true
 }
 </script>
 
@@ -29,19 +41,23 @@ async function select(name: string, description: string, price: number) {
           <FilterChip
             v-for="item in stores.holiday.holiday?.packages"
             :key="item.name"
-            :is-selected="selectedChip === item.name"
-            @click="select(item.name, item.description, item.price)"
+            :is-selected="activePackege.name === item.name"
+            @click="select(item)"
           >
             {{ item.name }}
           </FilterChip>
         </div>
-        <PackageIncludes :description="selectedDesc" />
+        <PackageIncludes :description="activePackege.description" />
         <div class="booking-footer">
-          <Button :button-light="true" name="Забронировать" />
-          <span class="body">От {{ selectedPrice?.toString().replace(/.00$/, '') }}₽</span>
+          <Button :button-light="true" name="Забронировать" @click="openModal()" />
+          <span class="body">От {{ activePackege.price?.toString().replace(/.00$/, '') }}₽</span>
         </div>
       </div>
     </div>
+    <BookingModal
+      v-model="modal"
+      :package="activePackege"
+    />
   </section>
 </template>
 

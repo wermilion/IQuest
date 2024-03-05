@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Swiper from 'swiper'
 
+import 'swiper/css/bundle'
 import '#/assets/scss/swiper.scss'
 
 import {

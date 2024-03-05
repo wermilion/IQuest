@@ -8,6 +8,6 @@ export interface Packages {
   id: number
   name: string
   description: string
-  price: number
+  price: number | string
   sequence_number: number
 }

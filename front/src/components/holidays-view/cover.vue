@@ -1,5 +1,12 @@
 <script setup lang="ts">
-defineProps<{ type: string }>()
+import Button from '#/components/shared/button.vue'
+
+export interface Props {
+  type: string
+  corpInfo?: boolean
+}
+
+defineProps<Props>()
 </script>
 
 <template>
@@ -9,10 +16,15 @@ defineProps<{ type: string }>()
       :class="{
         man: type === 'Взрослый праздник',
         child: type === 'Детский праздник',
+        corp: type === 'Корпоратив',
       }"
     >
-      <div class="container">
-        <h2>{{ type }}</h2>
+      <div class="container cover-info" :class="{ corpInfo }">
+        <h1>{{ type }}</h1>
+        <div v-if="corpInfo" class="cover-info__btn">
+          <Button :button-light="true" name="Оставить заявку" />
+          <span class="body">От 600₽ с человека</span>
+        </div>
       </div>
     </div>
   </div>
@@ -24,7 +36,7 @@ defineProps<{ type: string }>()
   height: 555px;
   position: relative;
 
-  &-container, .man, .child {
+  &-container, .man, .child, .corp {
     width: 100%;
     height: 100%;
     background-size: cover;
@@ -35,11 +47,29 @@ defineProps<{ type: string }>()
     align-items: flex-end;
   }
 
-  .container {
+  &-info {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: $cover-32;
     z-index: 2;
     margin-bottom: 108px;
+
+    &__btn {
+      display: flex;
+      max-width: 545px;
+      align-items: center;
+      gap: $cover-16;
+
+      a {
+        max-width: 295px;
+      }
+    }
   }
+}
+
+.corpInfo {
+  margin-bottom: 52px;
 }
 
 .man {
@@ -52,5 +82,11 @@ defineProps<{ type: string }>()
   background:
     linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0.00) 49%, #151116 96%),
     url('/holidays/child.jpg'), lightgray 50% / cover no-repeat;
+}
+
+.corp {
+  background:
+    linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0.00) 49%, #151116 96%),
+    url('/holidays/coop.jpg'), lightgray 50% / cover no-repeat;
 }
 </style>

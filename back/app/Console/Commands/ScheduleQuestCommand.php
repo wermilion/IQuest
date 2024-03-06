@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Domain\Quests\Models\Quest;
 use App\Domain\Schedules\Models\ScheduleQuest;
-use App\Domain\Schedules\Models\Timeslot;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -35,6 +34,8 @@ class ScheduleQuestCommand extends Command
 
         $this->deleteSlotsForYesterday($currentDate);
 
+        $currentDate->addMonth();
+
         if ($currentDate->isWeekday()) {
             $this->createScheduleQuests($quests, $currentDate, 'questWeekdaysSlots');
         } else {
@@ -44,14 +45,18 @@ class ScheduleQuestCommand extends Command
 
     private function deleteSlotsForYesterday(Carbon $currentDate): void
     {
-        $scheduleQuest = ScheduleQuest::whereDate('date', $currentDate->subDay())->first()->id;
-
-        Timeslot::where('schedule_quest_id', $scheduleQuest)
-            ->whereDoesntHave('booking')
-            ->delete();
+        $scheduleQuests = ScheduleQuest::query()->whereDate('date', $currentDate->subDay());
+        $scheduleQuests->each(function ($scheduleQuest) {
+            $scheduleQuest->timeslots()
+                ->whereDoesntHave('booking')
+                ->delete();
+            if ($scheduleQuest->timeslots()->doesntExist()) {
+                $scheduleQuest->delete();
+            }
+        });
     }
 
-    private function createScheduleQuests($quests, $currentDate, $slotType): void
+    private function createScheduleQuests($quests, Carbon $currentDate, $slotType): void
     {
         $quests->each(function ($quest) use ($currentDate, $slotType) {
             $scheduleQuest = $quest->scheduleQuests()->create([

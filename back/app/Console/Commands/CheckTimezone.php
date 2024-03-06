@@ -31,7 +31,7 @@ class CheckTimezone extends Command
         $cities = City::pluck('timezone', 'id');
 
         $cities->each(function ($timezone, $id) {
-            if (Carbon::now($timezone)->hour == 23) {
+            if (Carbon::now($timezone)->hour == 0) {
                 Artisan::call(ScheduleQuestCommand::class, ['cityId' => $id, 'timezone' => $timezone]);
             }
         });

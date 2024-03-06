@@ -53,7 +53,7 @@ class ServiceResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(20)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.',
@@ -70,7 +70,7 @@ class ServiceResource extends Resource
                     ->required()
                     ->rules([new CyrillicRule()])
                     ->maxLengthWithHint(20)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',

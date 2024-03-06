@@ -12,7 +12,6 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -39,7 +38,7 @@ class PackagesRelationManager extends RelationManager
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(40)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -65,8 +64,8 @@ class PackagesRelationManager extends RelationManager
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
-                    ->maxLengthWithHint(255)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->maxLengthWithHint(1000)
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

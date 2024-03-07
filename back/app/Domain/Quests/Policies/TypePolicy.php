@@ -37,6 +37,6 @@ class TypePolicy
      */
     public function delete(User $user, Type $type): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN && $type->quests()->doesntExist();
     }
 }

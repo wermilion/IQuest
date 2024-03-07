@@ -13,7 +13,6 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\Edit
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\ListBookingHolidays;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Carbon\Carbon;
-use Filament\Forms\Components\Component;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -31,7 +30,6 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 class BookingHolidayResource extends BaseResource
 {

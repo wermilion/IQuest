@@ -37,6 +37,6 @@ class GenrePolicy
      */
     public function delete(User $user, Genre $genre): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN && $genre->quests()->doesntExist();
     }
 }

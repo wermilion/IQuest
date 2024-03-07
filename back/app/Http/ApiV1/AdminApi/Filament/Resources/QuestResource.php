@@ -28,6 +28,7 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -128,7 +129,7 @@ class QuestResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(30)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -137,7 +138,7 @@ class QuestResource extends Resource
                     ->label('Сокращ. название')
                     ->required()
                     ->maxLengthWithHint(10)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->rules([new LatinRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -148,7 +149,7 @@ class QuestResource extends Resource
                     ->label('Описание')
                     ->required()
                     ->maxLengthWithHint(1000)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -158,7 +159,7 @@ class QuestResource extends Resource
                     ->label('Краткое описание')
                     ->required()
                     ->maxLengthWithHint(125)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -331,6 +332,7 @@ class QuestResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление квеста'),
                 ViewAction::make(),
             ]);
     }

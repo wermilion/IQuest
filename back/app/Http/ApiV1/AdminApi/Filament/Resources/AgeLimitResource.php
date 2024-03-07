@@ -13,7 +13,6 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class AgeLimitResource extends Resource
 {
@@ -45,11 +44,6 @@ class AgeLimitResource extends Resource
                         'unique' => 'Поле ":attribute" должно быть уникальным.'
                     ]),
             ]);
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return $record->quests()->doesntExist();
     }
 
     public static function table(Table $table): Table

@@ -5,7 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages;
 use App\Domain\Lounges\Models\Lounge;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseEditRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource;
-use Filament\Actions\DeleteAction;
 
 class EditLounge extends BaseEditRecord
 {
@@ -18,12 +17,5 @@ class EditLounge extends BaseEditRecord
         $lounge = Lounge::find($data['id'])->load('filial.city');
         $data['city'] = $lounge->filial->city->id ?? null;
         return $data;
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            DeleteAction::make()->modalHeading('Удаление лаунжа'),
-        ];
     }
 }

@@ -29,7 +29,7 @@ class CertificateType extends Model
         'cover',
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
         static::deleting(function (self $model) {
             $model->bookingCertificates()->each(function (BookingCertificate $bookingCertificate) {

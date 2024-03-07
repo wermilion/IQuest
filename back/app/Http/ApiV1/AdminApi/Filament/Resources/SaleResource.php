@@ -56,7 +56,7 @@ class SaleResource extends Resource
                     ->label('Заголовок')
                     ->required()
                     ->maxLengthWithHint(32)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -65,7 +65,7 @@ class SaleResource extends Resource
                     ->label('Описание')
                     ->required()
                     ->maxLengthWithHint(75)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -128,8 +128,8 @@ class SaleResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление акции'),
                 ViewAction::make()->modalHeading('Просмотр акции'),
-                DeleteAction::make()->modalHeading('Удаление акции')
             ]);
     }
 

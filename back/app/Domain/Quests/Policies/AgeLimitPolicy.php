@@ -3,7 +3,6 @@
 namespace App\Domain\Quests\Policies;
 
 use App\Domain\Quests\Models\AgeLimit;
-use App\Domain\Quests\Models\Genre;
 use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
 
@@ -38,6 +37,6 @@ class AgeLimitPolicy
      */
     public function delete(User $user, AgeLimit $ageLimit): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN && $ageLimit->quests()->doesntExist();
     }
 }

@@ -107,7 +107,7 @@ class ScheduleLoungeResource extends Resource
 
     public static function canDelete(Model $record): bool
     {
-        return !($record->booking()->exists());
+        return $record->booking()->doesntExist();
     }
 
     public static function table(Table $table): Table

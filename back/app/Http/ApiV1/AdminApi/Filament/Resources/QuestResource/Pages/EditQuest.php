@@ -5,7 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages;
 use App\Domain\Locations\Models\Filial;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseEditRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource;
-use Filament\Actions\DeleteAction;
 
 class EditQuest extends BaseEditRecord
 {
@@ -18,12 +17,5 @@ class EditQuest extends BaseEditRecord
         $filial = Filial::find($data['filial_id'])->load('city');
         $data['city'] = $filial?->city->id ?? null;
         return $data;
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            DeleteAction::make()->modalHeading('Удаление квеста'),
-        ];
     }
 }

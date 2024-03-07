@@ -14,7 +14,6 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class CityResource extends Resource
 {
@@ -55,14 +54,6 @@ class CityResource extends Resource
                         'regex' => 'Поле ":attribute" должно быть в формате UTC (+7, +2 и т.д.)',
                     ]),
             ]);
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return $record->filials()->doesntExist()
-            && $record->contacts()->doesntExist()
-            && $record->sales()->doesntExist()
-            && $record->services()->doesntExist();
     }
 
     public static function table(Table $table): Table

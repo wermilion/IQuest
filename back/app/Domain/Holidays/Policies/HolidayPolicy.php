@@ -2,6 +2,7 @@
 
 namespace App\Domain\Holidays\Policies;
 
+use App\Domain\Holidays\Enums\HolidayType;
 use App\Domain\Holidays\Models\Holiday;
 use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
@@ -21,7 +22,7 @@ class HolidayPolicy
      */
     public function view(User $user, Holiday $holiday): bool
     {
-        return $user->role !== Role::ADMIN;
+        return $user->role !== Role::ADMIN && $holiday->type !== HolidayType::CORPORATE;
     }
 
     /**
@@ -29,7 +30,7 @@ class HolidayPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === Role::ADMIN;
+        return false;
     }
 
     /**
@@ -37,7 +38,7 @@ class HolidayPolicy
      */
     public function update(User $user, Holiday $holiday): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN && $holiday->type !== HolidayType::CORPORATE;
     }
 
     /**

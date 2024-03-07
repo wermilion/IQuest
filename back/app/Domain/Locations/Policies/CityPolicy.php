@@ -37,6 +37,10 @@ class CityPolicy
      */
     public function delete(User $user, City $city): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN
+            && $city->filials()->doesntExist()
+            && $city->contacts()->doesntExist()
+            && $city->sales()->doesntExist()
+            && $city->services()->doesntExist();
     }
 }

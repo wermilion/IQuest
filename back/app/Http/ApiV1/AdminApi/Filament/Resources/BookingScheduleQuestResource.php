@@ -7,9 +7,7 @@ use App\Domain\Bookings\Models\BookingScheduleQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleQuestResource\Pages\ListBookingScheduleQuests;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
@@ -17,7 +15,6 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 class BookingScheduleQuestResource extends Resource
@@ -34,24 +31,6 @@ class BookingScheduleQuestResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                //
-            ]);
-    }
-
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return false;
-    }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -61,16 +40,6 @@ class BookingScheduleQuestResource extends Resource
                     ->label('ID')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('booking.city.name')
-                    ->label('Город')
-                    ->sortable(),
-                TextColumn::make('booking.name')
-                    ->label('Имя')
-                    ->numeric(),
-                TextColumn::make('booking.phone')
-                    ->label('Телефон')
-                    ->numeric()
-                    ->searchable(),
                 TextColumn::make('timeslot.scheduleQuest.quest.filial.city.name')
                     ->label('Город')
                     ->numeric()
@@ -79,13 +48,20 @@ class BookingScheduleQuestResource extends Resource
                     ->label('Филиал')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('booking.name')
+                    ->label('Имя')
+                    ->numeric(),
+                TextColumn::make('booking.phone')
+                    ->label('Телефон')
+                    ->numeric()
+                    ->searchable(),
                 TextColumn::make('timeslot.scheduleQuest.quest.name')
                     ->label('Квест')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('timeslot.scheduleQuest.date')
                     ->label('Дата')
-                    ->numeric()
+                    ->date()
                     ->sortable(),
                 TextColumn::make('timeslot.time')
                     ->label('Время')

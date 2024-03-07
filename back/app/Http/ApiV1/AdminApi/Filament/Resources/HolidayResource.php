@@ -53,16 +53,6 @@ class HolidayResource extends Resource
             ]);
     }
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return $record->type != HolidayType::CORPORATE;
-    }
-
     public static function table(Table $table): Table
     {
         return $table

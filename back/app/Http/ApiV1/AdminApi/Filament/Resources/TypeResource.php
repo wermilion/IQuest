@@ -38,6 +38,7 @@ class TypeResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLengthWithHint(40)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',

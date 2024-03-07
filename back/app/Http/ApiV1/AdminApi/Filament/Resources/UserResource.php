@@ -50,7 +50,6 @@ class UserResource extends Resource
                         ->state(null)
                         ->relationship('filials', 'address'))
                     ->hidden(Auth::user()->role !== Role::ADMIN)
-                    ->hiddenOn('')
                     ->helperText(function () {
                         return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
                     })
@@ -124,6 +123,7 @@ class UserResource extends Resource
                     ->revealable()
                     ->required()
                     ->hiddenOn('edit')
+                    ->dehydrated(false)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'same' => 'Поле ":attribute" должно совпадать с полем "пароль".',

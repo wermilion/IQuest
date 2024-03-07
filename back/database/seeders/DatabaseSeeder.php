@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             HolidaySeeder::class,
+            CorporatePackagesSeeder::class,
         ]);
 
         User::query()->firstOrCreate([

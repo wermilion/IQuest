@@ -41,6 +41,7 @@ class HolidayResource extends Resource
                     ->options(HolidayType::class)
                     ->required()
                     ->unique(ignoreRecord: true)
+                    ->maxLengthWithHint(20)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.'

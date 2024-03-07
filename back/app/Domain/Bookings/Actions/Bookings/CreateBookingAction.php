@@ -7,11 +7,16 @@ use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Domain\Holidays\Models\HolidayPackage;
 
-class CreateBookingAction
+readonly class CreateBookingAction
 {
+    public function __construct(private CheckBookingAction $checkBookingAction)
+    {
+
+    }
+
     public function execute(array $data): Booking
     {
-        resolve(CheckBookingAction::class)->execute($data);
+        $this->checkBookingAction->execute($data);
 
         $booking = Booking::create([...$data['booking'], 'status' => BookingStatus::NEW->value]);
 

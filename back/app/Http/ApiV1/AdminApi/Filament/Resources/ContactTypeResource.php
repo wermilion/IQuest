@@ -34,6 +34,7 @@ class ContactTypeResource extends Resource
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

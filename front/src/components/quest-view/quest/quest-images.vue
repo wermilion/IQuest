@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import 'swiper/css/bundle'
-import '#/assets/scss/swiper.scss'
 
 import Swiper from 'swiper'
 import { onMounted, ref } from 'vue'
@@ -11,13 +10,14 @@ import {
 } from 'swiper/modules'
 import type { SwiperOptions } from 'swiper/types'
 
-defineProps<{ imgase?: string[] }>()
+defineProps<{ images?: { image: string }[] }>()
 
 const slider = ref<HTMLElement | null>(null)
 const swiperOptions: SwiperOptions = {
   direction: 'horizontal',
   slidesPerView: 1,
   speed: 850,
+  spaceBetween: 10,
   loop: true,
 
   navigation: {
@@ -42,44 +42,21 @@ onMounted(() => {
 <template>
   <div ref="slider" class="swiper-container">
     <div class="swiper-wrapper">
-      <img class="swiper-slide" src="/quest-photo/photo.png" alt="">
-      <img class="swiper-slide" src="/quest-photo/photo.png" alt="">
-      <img class="swiper-slide" src="/quest-photo/photo.png" alt="">
-      <img class="swiper-slide" src="/quest-photo/photo.png" alt="">
+      <img v-for="img in images" :key="img.image" loading="lazy" class="swiper-slide" :src="img.image" :alt="img.image">
     </div>
 
     <button class="swiper-button-prev swiper-button">
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-          d="M16 28L8 20L16 12"
-          stroke="white"
-          stroke-opacity="0.75"
-          stroke-width="2"
-          stroke-linecap="square"
+          d="M16 28L8 20L16 12" stroke="white" stroke-opacity="0.75" stroke-width="2" stroke-linecap="square"
           stroke-linejoin="round"
         />
       </svg>
     </button>
     <button class="swiper-button-next swiper-button">
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
-          d="M24 12L32 20L24 28"
-          stroke="white"
-          stroke-opacity="0.75"
-          stroke-width="2"
-          stroke-linecap="square"
+          d="M24 12L32 20L24 28" stroke="white" stroke-opacity="0.75" stroke-width="2" stroke-linecap="square"
           stroke-linejoin="round"
         />
       </svg>
@@ -93,6 +70,7 @@ onMounted(() => {
   overflow: hidden;
   position: relative;
   max-width: 616px;
+  max-height: 411px;
   border-radius: $cover-8;
 }
 
@@ -104,7 +82,7 @@ onMounted(() => {
   right: auto;
 }
 
-img {
-  width: 100%;
+.swiper-wrapper {
+  backdrop-filter: blur(8px);
 }
 </style>

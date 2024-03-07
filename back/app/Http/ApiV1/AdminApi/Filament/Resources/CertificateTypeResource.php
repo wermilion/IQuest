@@ -42,6 +42,7 @@ class CertificateTypeResource extends BaseResource
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(255)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -58,6 +59,7 @@ class CertificateTypeResource extends BaseResource
                     ->columnSpanFull()
                     ->required()
                     ->maxLengthWithHint(255)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

@@ -1,33 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import PhoneNumber from '#/components/shared/phone-number.vue'
+import CardLoundge from '#/components/shared/card-lounge.vue'
 
-const items = ref([
-  {
-    name: 'Мастер-класс',
-    price: '450₽/чел',
-  },
-  {
-    name: 'Настольные игры в лаунж',
-    price: '500₽/60 мин',
-  },
-  {
-    name: 'Снимок на Polaroid',
-    price: '500₽/шт',
-  },
-  {
-    name: 'Игра «Угадай кто?»',
-    price: '450₽/30 мин',
-  },
-  {
-    name: 'Игротека на выезд',
-    price: '3000₽/3 часа',
-  },
-  {
-    name: 'Съемка в локации квеста',
-    price: '3000₽/60 мин',
-  },
-])
+const stores = setupStore('services')
 </script>
 
 <template>
@@ -41,17 +16,19 @@ const items = ref([
         </div>
         <div class="add-services__info-list">
           <div
-            v-for="item in items"
+            v-for="item in stores.services"
             :key="item.name"
             class="add-services__info-item"
           >
             <span class="body">{{ item.name }}</span>
-            <span class="footnote">{{ item.price }}</span>
+            <span class="footnote">
+              {{ item.price.replace(/.00$/, "") }}₽/{{ item.unit }}
+            </span>
           </div>
         </div>
       </div>
     </div>
-    <!-- <Card v-bind="lounge" /> -->
+    <CardLoundge />
   </section>
 </template>
 
@@ -73,7 +50,6 @@ const items = ref([
   &__body {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 
     width: 100%;
     gap: $cover-32;

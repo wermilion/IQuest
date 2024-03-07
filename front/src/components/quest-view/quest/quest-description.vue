@@ -13,13 +13,14 @@ function toggleExpand() {
 
 <template>
   <div class="description">
-    <h3>Описание</h3>
+    <span class="bodyBold">Описание</span>
     <div class="description-content">
-      <p class="body" :class="{ extend: isExpanded }">
+      <p class="footnoteText" :class="{ extend: isExpanded }">
         {{ description }}
       </p>
       <div class="read-more body pointer" :class="{ active: isExpanded }" @click="toggleExpand">
-        {{ isExpanded ? 'Свернуть' : 'Читать дальше' }} <Arrow />
+        {{ isExpanded ? 'Свернуть' : 'Читать дальше' }}
+        <Arrow />
       </div>
     </div>
   </div>
@@ -31,9 +32,15 @@ function toggleExpand() {
 }
 
 @keyframes textChange {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
+
 .read-more {
   width: max-content;
   display: flex;
@@ -42,16 +49,16 @@ function toggleExpand() {
   transition: all 0.25s ease-in-out;
   color: $color-opacity06;
 
-  :deep(svg){
+  :deep(svg) {
     transform: rotate(0);
     transition: all 0.1s ease-in-out;
-    stroke-opacity:0.6;
+    stroke-opacity: 0.6;
   }
 
   &.active {
-    :deep(svg){
-    transform: rotate(180deg);
-  }
+    :deep(svg) {
+      transform: rotate(180deg);
+    }
   }
 }
 
@@ -61,6 +68,10 @@ function toggleExpand() {
   gap: $cover-12;
 
   &-content {
+    display: flex;
+    flex-direction: column;
+    gap: $cover-8;
+
     p {
       display: -webkit-box;
       -webkit-box-orient: vertical;
@@ -68,6 +79,7 @@ function toggleExpand() {
       transition: all 0.25s ease-in-out;
       max-height: 84px;
     }
+
     p.extend {
       max-height: 100%;
     }

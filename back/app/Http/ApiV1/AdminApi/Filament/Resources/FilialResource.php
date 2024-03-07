@@ -50,6 +50,7 @@ class FilialResource extends Resource
                     ->label('Адрес')
                     ->required()
                     ->maxLengthWithHint(255)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

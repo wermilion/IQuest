@@ -18,7 +18,7 @@ defineProps<Props>()
   display: flex;
   padding: $cover-12 $cover-20;
   justify-content: space-between;
-
+  gap: $cover-16;
   border-radius: 120px;
   border: 1px solid $color-opacity012;
 }

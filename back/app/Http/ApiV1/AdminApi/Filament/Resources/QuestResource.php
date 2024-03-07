@@ -128,6 +128,7 @@ class QuestResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(30)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -136,6 +137,7 @@ class QuestResource extends Resource
                     ->label('Сокращ. название')
                     ->required()
                     ->maxLengthWithHint(10)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->rules([new LatinRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -146,6 +148,7 @@ class QuestResource extends Resource
                     ->label('Описание')
                     ->required()
                     ->maxLengthWithHint(1000)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -155,6 +158,7 @@ class QuestResource extends Resource
                     ->label('Краткое описание')
                     ->required()
                     ->maxLengthWithHint(125)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'

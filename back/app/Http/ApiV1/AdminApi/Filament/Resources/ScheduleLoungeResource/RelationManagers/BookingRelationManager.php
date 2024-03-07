@@ -42,6 +42,7 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя')
                     ->required()
                     ->maxLengthWithHint(40)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),
@@ -76,6 +77,7 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('comment')
                     ->label('Комментарий')
                     ->maxLengthWithHint(125)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
             ]);
     }
 
@@ -118,7 +120,8 @@ class BookingRelationManager extends RelationManager
                         $action->getRecordSelect()->placeholder('Введите ID заявки'),
                         TextInput::make('comment')
                             ->label('Комментарий')
-                            ->maxLength(255)
+                            ->maxLengthWithHint(125)
+                            ->dehydrateStateUsing(fn ($state) => trim($state))
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::LOUNGE->value)

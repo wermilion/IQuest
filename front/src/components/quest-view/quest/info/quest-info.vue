@@ -1,34 +1,26 @@
 <script setup lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed } from 'vue'
 
 import Chip from './assist-chip.vue'
+import Difficulty from './difficulty-chip.vue'
 
 import Address from '#/components/shared/address.vue'
 import PhoneNumber from '#/components/shared/phone-number.vue'
 import Button from '#/components/shared/button.vue'
 import type { Quest } from '#/types/models/quest'
 
-import IconFilled from '#/assets/svg/shared/IconFilled.svg?component'
-import IconNoneFilled from '#/assets/svg/shared/IconNoneFilled.svg?component'
-
 const props = defineProps<{ info: Quest }>()
 const button = 'Оставить заявку'
 
-const Component = defineComponent({
-  components: {
-    IconFilled,
-    IconNoneFilled,
-  },
-  props: {
-    max: Number,
-  },
-  template: `
-     <component
-          :is="i > max ? IconNoneFilled : IconFilled"
-          v-for="i in 3"
-          :key="i"
-        />
-  `,
+const convertDuration = computed(() => {
+  if (props.info.duration >= 60) {
+    const hours = Math.floor(props.info.duration / 60)
+    const minutes = props.info.duration % 60
+    return `${hours} ч ${minutes} мин`
+  }
+  else {
+    return `${props.info.duration} мин`
+  }
 })
 
 const chips = computed(() => {
@@ -36,7 +28,6 @@ const chips = computed(() => {
     type,
     genre,
     age_limit,
-    duration,
     level,
     min_people,
     max_people,
@@ -47,14 +38,14 @@ const chips = computed(() => {
     { title: `${genre.name}` },
     { title: `${age_limit?.name}` },
     {
-      title: `Сложность ${level?.id}`,
+      title: `Сложность `,
       slot: {
-        is: Component,
-        props: { max: level?.id },
+        is: Difficulty,
+        props: { max: level },
       },
     },
     { title: `${min_people} - ${max_people} игроков` },
-    { title: `${duration} мин` },
+    { title: `${convertDuration.value}` },
   ]
 })
 </script>
@@ -65,7 +56,7 @@ const chips = computed(() => {
       <h1>{{ info.name }}</h1>
       <div class="info-contacts d-flex">
         <PhoneNumber />
-        <Address :address="info.room?.filial.address" />
+        <Address :address="info.filial.address" />
       </div>
       <div class="info-details">
         <Chip v-for="item in chips" :key="item.title" :name="item.title">
@@ -76,7 +67,7 @@ const chips = computed(() => {
         </Chip>
       </div>
     </div>
-    <Button :name="button" :button-ligh="true" />
+    <Button :name="button" :button-light="true" />
   </div>
 </template>
 

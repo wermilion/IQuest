@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import type { Quest } from '#/types/models/quest'
-import { api } from '#/utils/api'
 
 //* --- State ----------------------------------------------- *//
 interface QuestListState {

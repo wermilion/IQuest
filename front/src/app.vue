@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { type WritableComputedRef, computed } from 'vue'
-import { setupStore } from './stores/combine-stores'
 import HeaderComponent from '#/components/header-component.vue'
 import FooterComponent from '#/components/footer-component.vue'
 
@@ -10,6 +9,11 @@ const loading: WritableComputedRef<boolean> = computed({
   get: () => store.loading,
   set: v => store.setLoading(v),
 })
+
+const stores = setupStore(['questList', 'services', 'holidaysList'])
+
+stores.questList.fetchQuests()
+stores.holidaysList.fetchHolidaysList()
 </script>
 
 <template>

@@ -1,24 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
-const links = ref([
-  {
-    name: 'Квесты',
-    link: '/',
-  },
-  {
-    name: 'Праздники',
-    link: '#',
-  },
-  {
-    name: 'Сертификат',
-    link: '/',
-  },
-  {
-    name: 'Контакты',
-    link: 'contacts',
-  },
-])
+const links = [
+  { name: 'Квесты', link: '/' },
+  { name: 'Праздники', link: '' },
+  { name: 'Сертификат', link: '/certificates' },
+  { name: 'Контакты', link: '/contacts' },
+]
 
 const isActive = ref(false)
 const isHoverActive = ref(false)

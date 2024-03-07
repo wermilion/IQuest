@@ -13,10 +13,9 @@ dist-ssr
 *.local
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
 .idea
 .DS_Store
+*.suo
 *.suo
 *.ntvs*
 *.njsproj
@@ -24,3 +23,4 @@ dist-ssr
 *.sw?
 tsconfig.app.tsbuildinfo
 .env
+stats.html

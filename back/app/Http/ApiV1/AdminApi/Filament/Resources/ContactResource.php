@@ -60,6 +60,7 @@ class ContactResource extends Resource
                 TextInput::make('value')
                     ->label('Значение')
                     ->required()
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

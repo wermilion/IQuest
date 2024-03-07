@@ -1,7 +1,7 @@
 <script setup lang="ts">
 interface Button {
   name: string
-  buttonLigh?: boolean
+  buttonLight?: boolean
 }
 
 defineProps<Button>()
@@ -10,7 +10,8 @@ defineProps<Button>()
 <template>
   <router-link
     class="btn-container button"
-    :class="{ 'button-light': buttonLigh }" to=""
+    :class="{ buttonLight }"
+    to=""
   >
     <span class="bodyBold">{{ name }}</span>
   </router-link>
@@ -28,7 +29,7 @@ defineProps<Button>()
   }
 }
 
-.button-light {
+.buttonLight {
   background-color: $color-primary;
 
   &:hover {

@@ -56,17 +56,25 @@ class QuestResource extends Resource
                 Select::make('city')
                     ->label('Город')
                     ->live()
-                    ->options(fn() => City::all()->pluck('name', 'id'))
+                    ->relationship('filial.city', 'name')
+                    ->afterStateUpdated(function ($state, Select $component) {
+                        $component->getContainer()
+                            ->getComponent('filial_id')
+                            ->state(null)
+                            ->relationship(
+                                'filial',
+                                'address',
+                            );
+                    })
                     ->hiddenOn('')
                     ->helperText(function () {
                         return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
                     })
                     ->native(false),
                 Select::make('filial_id')
+                    ->key('filial_id')
                     ->label('Филиал')
-                    ->options(fn(Get $get) => Filial::query()
-                        ->where('city_id', $get('city'))
-                        ->pluck('address', 'id'))
+                    ->options(fn($get) => Filial::where('city_id', $get('city'))->pluck('address', 'id'))
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -120,6 +128,7 @@ class QuestResource extends Resource
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(30)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -128,6 +137,7 @@ class QuestResource extends Resource
                     ->label('Сокращ. название')
                     ->required()
                     ->maxLengthWithHint(10)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->rules([new LatinRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -138,6 +148,7 @@ class QuestResource extends Resource
                     ->label('Описание')
                     ->required()
                     ->maxLengthWithHint(1000)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -147,6 +158,7 @@ class QuestResource extends Resource
                     ->label('Краткое описание')
                     ->required()
                     ->maxLengthWithHint(125)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
@@ -181,8 +193,10 @@ class QuestResource extends Resource
                     ->label('Порядковый номер')
                     ->required()
                     ->numeric()
+                    ->minValue('1')
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно 1.'
                     ]),
                 FileUpload::make('cover')
                     ->label('Обложка')

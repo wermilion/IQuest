@@ -7,6 +7,7 @@ use App\Domain\Certificates\Models\CertificateType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class BookingCertificate
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class BookingCertificate extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'booking_id',
@@ -36,15 +37,23 @@ class BookingCertificate extends Model
         static::deleting(function (self $model) {
             $model->booking()->delete();
         });
+
+        static::forceDeleting(function (self $model) {
+            $model->booking()->forceDelete();
+        });
+
+        static::restoring(function (self $model) {
+            $model->booking()->restore();
+        });
     }
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class)->withTrashed();
     }
 
     public function certificateType(): BelongsTo
     {
-        return $this->belongsTo(CertificateType::class);
+        return $this->belongsTo(CertificateType::class)->withTrashed();
     }
 }

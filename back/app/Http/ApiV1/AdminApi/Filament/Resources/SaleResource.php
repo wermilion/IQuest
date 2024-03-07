@@ -56,6 +56,7 @@ class SaleResource extends Resource
                     ->label('Заголовок')
                     ->required()
                     ->maxLengthWithHint(32)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -64,6 +65,7 @@ class SaleResource extends Resource
                     ->label('Описание')
                     ->required()
                     ->maxLengthWithHint(75)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',

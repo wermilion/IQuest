@@ -49,7 +49,7 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя')
                     ->required()
                     ->rules([new CyrillicRule()])
-                    ->maxLength(40)
+                    ->maxLengthWithHint(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -102,7 +102,8 @@ class BookingRelationManager extends RelationManager
                     ]),
                 TextInput::make('comment')
                     ->label('Комментарий')
-                    ->maxLength(125)
+                    ->maxLengthWithHint(125)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'max' => 'Поле ":attribute" не должно превышать :max символов.',
                     ]),
@@ -133,15 +134,16 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя'),
                 TextColumn::make('phone')
                     ->label('Телефон'),
-                SelectColumn::make('status')
-                    ->label('Статус заявки')
-                    ->options(BookingStatus::class),
                 TextColumn::make('count_participants')
                     ->label('Кол-во человек'),
                 TextColumn::make('final_price')
                     ->label('Общая стоимость'),
                 TextColumn::make('comment')
                     ->label('Комментарий'),
+                SelectColumn::make('status')
+                    ->label('Статус заявки')
+                    ->options(BookingStatus::class)
+                    ->selectablePlaceholder(false),
             ])
             ->headerActions([
                 AttachAction::make()
@@ -168,7 +170,8 @@ class BookingRelationManager extends RelationManager
                             ]),
                         TextInput::make('comment')
                             ->label('Комментарий')
-                            ->maxLength(125)
+                            ->maxLengthWithHint(125)
+                            ->dehydrateStateUsing(fn ($state) => trim($state))
                             ->validationMessages([
                                 'max' => 'Поле ":attribute" не должно превышать :max символов.',
                             ]),
@@ -192,7 +195,6 @@ class BookingRelationManager extends RelationManager
             ])
             ->actions(actions: [
                 EditAction::make()->modalHeading('Редактирование заявки'),
-                DeleteAction::make()->modalHeading('Удаление заявки'),
             ]);
     }
 }

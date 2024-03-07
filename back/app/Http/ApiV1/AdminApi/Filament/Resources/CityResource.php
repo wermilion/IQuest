@@ -10,9 +10,11 @@ use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class CityResource extends Resource
 {
@@ -33,7 +35,8 @@ class CityResource extends Resource
                     ->label('Название')
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLength(40)
+                    ->maxLengthWithHint(40)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
@@ -52,6 +55,14 @@ class CityResource extends Resource
                         'regex' => 'Поле ":attribute" должно быть в формате UTC (+7, +2 и т.д.)',
                     ]),
             ]);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return $record->filials()->doesntExist()
+            && $record->contacts()->doesntExist()
+            && $record->sales()->doesntExist()
+            && $record->services()->doesntExist();
     }
 
     public static function table(Table $table): Table
@@ -77,6 +88,7 @@ class CityResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление города'),
             ]);
     }
 

@@ -13,12 +13,13 @@ return new class extends Migration {
         Schema::create('booking_certificates', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignId('booking_id')->comment('Идентификатор бронирования')->constrained(table: 'bookings')
-                ->cascadeOnDelete();
+            $table->foreignId('booking_id')->comment('Идентификатор бронирования')
+                ->constrained(table: 'bookings');
             $table->foreignId('certificate_type_id')->comment('Идентификатор типа сертификата')
                 ->constrained(table: 'certificate_types');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -10,9 +10,11 @@ use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class GenreResource extends Resource
 {
@@ -35,12 +37,18 @@ class GenreResource extends Resource
                     ->label('Название')
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLength(40)
+                    ->maxLengthWithHint(40)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.'
                     ]),
             ]);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return $record->quests()->doesntExist();
     }
 
     public static function table(Table $table): Table
@@ -63,6 +71,7 @@ class GenreResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление жанра'),
             ]);
     }
 

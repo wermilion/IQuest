@@ -13,11 +13,11 @@ return new class extends Migration {
         Schema::create('booking_schedule_quests', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignId('booking_id')->comment('Идентификатор бронирования')->constrained(table: 'bookings')
-                ->cascadeOnDelete();
-            $table->foreignId('schedule_quest_id')->comment('Идентификатор квеста')->constrained(table: 'schedule_quests')
-                ->cascadeOnDelete();
-            
+            $table->foreignId('booking_id')->comment('Идентификатор бронирования')
+                ->constrained(table: 'bookings');
+            $table->foreignId('schedule_quest_id')->comment('Идентификатор квеста')
+                ->constrained(table: 'schedule_quests');
+
             $table->tinyInteger('count_participants')->comment('Количество участников');
             $table->decimal('final_price')->comment('Конечная цена');
             $table->string('comment')->nullable()->comment('Комментарий');

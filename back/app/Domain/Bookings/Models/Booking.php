@@ -81,6 +81,24 @@ class Booking extends Model
                 $model->bookingCertificate()->delete();
             }
         });
+
+        static::forceDeleting(function (self $model) {
+            match ($model->type->value) {
+                BookingType::QUEST->value => $model->timeslots()->forceDelete(),
+                BookingType::LOUNGE->value => $model->bookingScheduleLounge()->forceDelete(),
+                BookingType::HOLIDAY->value => $model->bookingHoliday()->forceDelete(),
+                BookingType::CERTIFICATE->value => $model->bookingCertificate()->forceDelete(),
+            };
+        });
+
+        static::restoring(function (self $model) {
+            match ($model->type->value) {
+                BookingType::QUEST->value => $model->timeslots()->restore(),
+                BookingType::LOUNGE->value => $model->bookingScheduleLounge()->restore(),
+                BookingType::HOLIDAY->value => $model->bookingHoliday()->restore(),
+                BookingType::CERTIFICATE->value => $model->bookingCertificate()->restore(),
+            };
+        });
     }
 
     public function city(): BelongsTo

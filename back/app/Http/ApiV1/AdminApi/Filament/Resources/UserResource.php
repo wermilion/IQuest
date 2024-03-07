@@ -12,7 +12,6 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinNumberRule;
 use Auth;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -24,7 +23,6 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 
 class UserResource extends Resource
 {
@@ -37,8 +35,6 @@ class UserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?int $navigationSort = 1;
-
-    private const MAX_VK_ID_VALUE = 9223372036854775807;
 
     public static function form(Form $form): Form
     {
@@ -54,7 +50,6 @@ class UserResource extends Resource
                         ->state(null)
                         ->relationship('filials', 'address'))
                     ->hidden(Auth::user()->role !== Role::ADMIN)
-                    ->hiddenOn('')
                     ->helperText(function () {
                         return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
                     })
@@ -128,6 +123,7 @@ class UserResource extends Resource
                     ->revealable()
                     ->required()
                     ->hiddenOn('edit')
+                    ->dehydrated(false)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'same' => 'Поле ":attribute" должно совпадать с полем "пароль".',

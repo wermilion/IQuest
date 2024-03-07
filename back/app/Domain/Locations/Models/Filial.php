@@ -2,10 +2,13 @@
 
 namespace App\Domain\Locations\Models;
 
+use App\Domain\Lounges\Models\Lounge;
+use App\Domain\Quests\Models\Quest;
 use App\Domain\Users\Models\FilialUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Filial
@@ -16,7 +19,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $city_id - Идентификатор города
  *
  * @property City $city
- * @property-read FilialUser $filialUser
+ * @property Quest $quests
+ * @property Lounge $lounges
  */
 class Filial extends Model
 {
@@ -31,5 +35,15 @@ class Filial extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function quests(): HasMany
+    {
+        return $this->hasMany(Quest::class);
+    }
+
+    public function lounges(): HasMany
+    {
+        return $this->hasMany(Lounge::class);
     }
 }

@@ -6,26 +6,32 @@ use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\BookingCertificate;
 use App\Domain\Certificates\Models\CertificateType;
+use App\Domain\Locations\Models\City;
+use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\CreateBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\EditBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\ListBookingCertificates;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class BookingCertificateResource extends Resource
+class BookingCertificateResource extends BaseResource
 {
     protected static ?string $model = BookingCertificate::class;
 
@@ -43,25 +49,83 @@ class BookingCertificateResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('booking_id')
-                    ->label('ID заявки')
-                    ->placeholder('Выберите ID заявки')
-                    ->live()
-                    ->relationship('booking',
-                        'id',
-                        fn(Builder $query): Builder => $query
-                            ->where('type', BookingType::CERTIFICATE->value)
-                            ->whereDoesntHave('bookingCertificate'))
-                    ->searchable()
-                    ->native(false),
-                Select::make('certificate_type_id')
-                    ->label('Тип сертификата')
-                    ->placeholder('Выберите тип сертификата')
-                    ->relationship('certificateType', 'name')
-                    ->helperText(function () {
-                        return CertificateType::exists() ? '' : 'Типы не обнаружены. Сначала создайте типы.';
-                    })
-                    ->native(false),
+                Grid::make(2)
+                    ->schema([
+                        Repeater::make('booking')
+                            ->label('Заявка')
+                            ->schema([
+                                Select::make('city_id')
+                                    ->label('Город')
+                                    ->placeholder('Выберите город')
+                                    ->required()
+                                    ->relationship('booking.city', 'name')
+                                    ->validationMessages([
+                                        'required' => 'Поле ":attribute" обязательно.',
+                                    ])
+                                    ->helperText(function () {
+                                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте лаунж.';
+                                    })
+                                    ->native(false),
+                                TextInput::make('name')
+                                    ->label('Имя')
+                                    ->required()
+                                    ->maxLengthWithHint(40)
+                                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                                    ->validationMessages([
+                                        'required' => 'Поле ":attribute" обязательно.',
+                                    ]),
+                                TextInput::make('phone')
+                                    ->label('Телефон')
+                                    ->required()
+                                    ->rules(['size:18'])
+                                    ->mask('+7 (999) 999-99-99')
+                                    ->validationMessages([
+                                        'required' => 'Поле ":attribute" обязательно.',
+                                        'size' => 'Поле ":attribute" должно содержать 18 символов.',
+                                    ]),
+                                TextInput::make('type')
+                                    ->label('Тип')
+                                    ->default(BookingType::CERTIFICATE->getLabel())
+                                    ->placeholder('Выберите тип')
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Поле ":attribute" обязательно.',
+                                    ])
+                                    ->readOnly(),
+                                Select::make('status')
+                                    ->label('Статус заявки')
+                                    ->options(BookingStatus::class)
+                                    ->default(BookingStatus::NEW->getLabel())
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Поле ":attribute" обязательно.',
+                                    ])
+                                    ->native(false),
+                            ])
+                            ->columns(3)
+                            ->disableItemDeletion()
+                            ->disableItemCreation()
+                            ->disableItemMovement(),
+                        Repeater::make('certificateType')
+                            ->label('Тип сертификата')
+                            ->schema([
+                                Select::make('certificate_type_id')
+                                    ->label('Тип')
+                                    ->placeholder('Выберите тип')
+                                    ->relationship('certificateType', 'name')
+                                    ->required()
+                                    ->validationMessages([
+                                        'required' => 'Поле ":attribute" обязательное.',
+                                    ])
+                                    ->helperText(function () {
+                                        return CertificateType::exists() ? '' : 'Типы не обнаружены. Сначала создайте лаунж.';
+                                    })
+                                    ->native(false),
+                            ])
+                            ->disableItemDeletion()
+                            ->disableItemCreation()
+                            ->disableItemMovement(),
+                    ]),
             ]);
     }
 
@@ -91,7 +155,10 @@ class BookingCertificateResource extends Resource
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
+                TrashedFilter::make()
+                    ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')
                     ->relationship('booking.city', 'name')
@@ -114,7 +181,8 @@ class BookingCertificateResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
-                DeleteAction::make()->modalHeading('Удаление заявки'),
+                RestoreAction::make()->modalHeading('Восстановление заявки'),
+                ForceDeleteAction::make()->modalHeading('Полное удаление заявки'),
             ]);
     }
 

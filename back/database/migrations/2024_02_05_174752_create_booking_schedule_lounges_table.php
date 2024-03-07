@@ -15,9 +15,10 @@ return new class extends Migration {
         Schema::create('booking_schedule_lounges', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->foreignId('booking_id')->comment('Идентификатор бронирования')->constrained(table: 'bookings')
-                ->cascadeOnDelete();
-            $table->foreignId('schedule_lounge_id')->comment('Идентификатор лаунжа')->constrained(table: 'schedule_lounges');
+            $table->foreignId('booking_id')->comment('Идентификатор бронирования')
+                ->constrained(table: 'bookings');
+            $table->foreignId('schedule_lounge_id')->comment('Идентификатор лаунжа')
+                ->constrained(table: 'schedule_lounges');
 
             $table->string('comment')->nullable()->comment('Комментарий к заявке');
 

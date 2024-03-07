@@ -20,7 +20,8 @@ class LoungesResource extends BaseJsonResource
             'description' => $this->description,
             'cover' => $this->cover ? config('app.url') . Storage::url($this->cover) : null,
             'max_people' => $this->max_people,
-            'min_price' => $this->min_price,
+            'price_per_half_hour' => (int)$this->price_per_hour,
+            'price_per_hour' => (int)$this->price_per_hour,
             'filial' => new FilialsResource($this->whenLoaded('filial')),
         ];
     }

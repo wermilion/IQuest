@@ -41,7 +41,8 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
-                    ->maxLength(255)
+                    ->maxLengthWithHint(40)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),
@@ -75,7 +76,8 @@ class BookingRelationManager extends RelationManager
                     ->native(false),
                 TextInput::make('comment')
                     ->label('Комментарий')
-                    ->maxLength(255)
+                    ->maxLengthWithHint(125)
+                    ->dehydrateStateUsing(fn ($state) => trim($state))
             ]);
     }
 
@@ -107,7 +109,8 @@ class BookingRelationManager extends RelationManager
                     ->label('Комментарий'),
                 SelectColumn::make('status')
                     ->label('Статус заявки')
-                    ->options(BookingStatus::class),
+                    ->options(BookingStatus::class)
+                    ->selectablePlaceholder(false),
             ])
             ->paginated(false)
             ->headerActions([
@@ -117,7 +120,8 @@ class BookingRelationManager extends RelationManager
                         $action->getRecordSelect()->placeholder('Введите ID заявки'),
                         TextInput::make('comment')
                             ->label('Комментарий')
-                            ->maxLength(255)
+                            ->maxLengthWithHint(125)
+                            ->dehydrateStateUsing(fn ($state) => trim($state))
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::LOUNGE->value)
@@ -130,7 +134,6 @@ class BookingRelationManager extends RelationManager
             ])
             ->actions([
                 EditAction::make()->modalHeading('Редактирование заявки'),
-                DeleteAction::make()->modalHeading('Удаление заявки'),
             ]);
     }
 }

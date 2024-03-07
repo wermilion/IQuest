@@ -7,6 +7,11 @@ use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Domain\Holidays\Models\HolidayPackage;
 
+/**
+ * Class CreateBookingAction
+ *
+ * @property CheckBookingAction $checkBookingAction
+ */
 readonly class CreateBookingAction
 {
     public function __construct(private CheckBookingAction $checkBookingAction)

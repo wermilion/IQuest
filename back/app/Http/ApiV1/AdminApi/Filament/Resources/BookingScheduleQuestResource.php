@@ -34,7 +34,7 @@ class BookingScheduleQuestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->emptyStateHeading('Заявки на квесты не обнаружены')
+            ->emptyStateHeading('Заявок на квесты не обнаружены')
             ->columns([
                 TextColumn::make('booking.id')
                     ->label('ID')

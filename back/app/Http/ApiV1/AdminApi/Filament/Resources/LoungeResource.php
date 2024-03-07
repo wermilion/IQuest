@@ -72,7 +72,7 @@ class LoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->helperText(function () {
-                        return City::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
+                        return Filial::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
                     })
                     ->native(false),
                 TextInput::make('name')

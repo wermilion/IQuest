@@ -21,10 +21,10 @@ const yandexMapUrl = computed(() => `https://yandex.ru/maps/?text=${props.addres
 
 <style scoped lang="scss">
   span {
-    display: flex;
-    gap: 8px;
-    a {
-      color: $color-base2;
-    }
+  display: flex;
+  gap: 8px;
+  a {
+    color: $color-base2;
   }
+}
 </style>

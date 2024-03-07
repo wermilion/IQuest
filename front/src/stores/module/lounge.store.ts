@@ -1,29 +1,29 @@
 import { defineStore } from 'pinia'
-import type { Quest } from '#/types/models/quest'
+import type { Lounge } from '#/types/models/lounge'
 
 //* --- State ----------------------------------------------- *//
-interface QuestListState {
-  questList: Quest[]
+interface LoungeListState {
+  loungeList: Lounge[]
   error: unknown
 }
 
 //* --- Store ----------------------------------------------- *//
-export const useQuestListStore = defineStore('questList', {
-  state: (): QuestListState => ({
-    questList: [],
+export const useLoungeListStore = defineStore('loungeList', {
+  state: (): LoungeListState => ({
+    loungeList: [],
     error: {},
   }),
   actions: {
-    async fetchQuests() {
+    async fetchLounge() {
       try {
-        const response = await api.quest.getSearch({
-          include: ['type', 'genre'],
+        const response = await api.lounge.getLoungeList({
+          include: ['filial.city'],
           filter: {
             city_id: 1,
             is_active: true,
           },
         })
-        this.questList = response.data.data
+        this.loungeList = response.data.data
       }
       catch (error) {
         this.error = error

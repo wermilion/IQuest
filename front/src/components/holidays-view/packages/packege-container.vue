@@ -12,7 +12,7 @@ const defaultPackage = computed(() => stores.holiday.holiday?.packages[0])
 const activePackege = reactive({
   name: ref(defaultPackage.value?.name || ''),
   description: ref(defaultPackage.value?.description || ''),
-  price: ref(defaultPackage.value?.price || 0),
+  price: ref(defaultPackage.value?.price || ''),
   id: ref(defaultPackage.value?.id || 0),
   sequence_number: ref(defaultPackage.value?.sequence_number || 0),
 })

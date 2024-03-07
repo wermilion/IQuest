@@ -1,29 +1,11 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
 import Modal from '#/components/shared/modal.vue'
-
+import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
+import { options } from '#/utils/helpers/maska'
 import Button from '#/components/shared/button.vue'
 
 const modal = defineModel<boolean>()
-
-const nameRules = [
-  (v: string) => !!v || 'Имя обязательно для заполнения',
-  (v: string) => (v.length >= 3 && v.length <= 30) || 'Имя должно содержать от 3 до 30 символов',
-  (v: string) => /^[a-zA-Zа-яА-Я-]*$/.test(v) || 'Имя может содержать только латинские и/или кириллические буквы и дефисы',
-]
-
-const phoneRules = [
-  (v: string) => !!v || 'Номер телефона обязателен для заполнения',
-]
-
-const checkboxRules = [
-  (v: boolean) => !!v || 'Необходимо дать согласие на обработку персональных данных',
-]
-
-const options = reactive({
-  mask: '+7(###)-###-##-##',
-  eager: true,
-})
 
 const formData = reactive({
   fullName: '',
@@ -125,7 +107,7 @@ const modalProps = computed(() => ({
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: $cover-32
+  gap: $cover-32;
 }
 
 .price-info {

@@ -19,7 +19,7 @@ export const useServicesStore = defineStore('services', {
         const response = await api.services.getServices({
           include: [],
           filter: {
-            city: 'Томск',
+            city_id: 1,
           },
         })
         this.services = response.data.data

@@ -83,7 +83,11 @@ function openModal() {
       left: 0;
       width: 100%;
       height: 100%;
-      background-image:linear-gradient(0deg, rgba(139, 65, 222, 0.40) 0%,  rgba(139, 65, 222, 0.40) 100%);
+      background-image: linear-gradient(
+        0deg,
+        rgba(139, 65, 222, 0.4) 0%,
+        rgba(139, 65, 222, 0.4) 100%
+      );
       opacity: 0.85;
       z-index: 2;
     }
@@ -96,7 +100,7 @@ function openModal() {
       position: relative;
       z-index: 1;
     }
-}
+  }
 
   &-main {
     display: flex;

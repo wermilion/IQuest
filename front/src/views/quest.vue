@@ -10,12 +10,14 @@ const stores = setupStore(['quest', 'services'])
 
 stores.quest.fetchQuest(`${route.params.id}`)
 stores.services.fetchServices()
+
+const { questBookingEl } = storeToRefs(stores.quest)
 </script>
 
 <template>
   <section v-if="stores.quest.quest && stores.services.services " class="quest">
     <QuestContainer :quest="stores.quest.quest" />
-    <QuestBooking :id-quest="stores.quest.quest.id" />
+    <QuestBooking ref="questBookingEl" :id-quest="stores.quest.quest.id" />
     <AddServices />
     <QuestCardGrid />
   </section>

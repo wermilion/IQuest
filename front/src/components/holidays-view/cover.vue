@@ -45,7 +45,10 @@ function openModal() {
   height: 555px;
   position: relative;
 
-  &-container, .man, .child, .corp {
+  &-container,
+  .man,
+  .child,
+  .corp {
     width: 100%;
     height: 100%;
     background-size: cover;
@@ -83,19 +86,22 @@ function openModal() {
 
 .man {
   background:
-    linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0.00) 49%, #151116 96%),
-    url('/holidays/man.jpg'), lightgray 50% / cover no-repeat;
+    linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
+    url('/holidays/man.jpg'),
+    lightgray 50% / cover no-repeat;
 }
 
 .child {
   background:
-    linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0.00) 49%, #151116 96%),
-    url('/holidays/child.jpg'), lightgray 50% / cover no-repeat;
+    linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
+    url('/holidays/child.jpg'),
+    lightgray 50% / cover no-repeat;
 }
 
 .corp {
   background:
-    linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0.00) 49%, #151116 96%),
-    url('/holidays/coop.jpg'), lightgray 50% / cover no-repeat;
+    linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
+    url('/holidays/coop.jpg'),
+    lightgray 50% / cover no-repeat;
 }
 </style>

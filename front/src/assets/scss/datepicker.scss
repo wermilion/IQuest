@@ -60,7 +60,12 @@
 
   /*Transitions*/
   --dp-animation-duration: 0.1s; /*Transition duration*/
-  --dp-menu-appear-transition-timing: cubic-bezier(0.4, 0, 1, 1); /*Timing on menu appear animation*/
+  --dp-menu-appear-transition-timing: cubic-bezier(
+    0.4,
+    0,
+    1,
+    1
+  ); /*Timing on menu appear animation*/
   --dp-transition-timing: ease-out; /*Timing on slide animations*/
 }
 

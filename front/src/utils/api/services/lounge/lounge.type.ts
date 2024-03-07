@@ -1,4 +1,4 @@
-export interface SearchStocksRequest {
+export interface SearchLoungeRequest {
   include: string[]
   filter: {
     city_id: number

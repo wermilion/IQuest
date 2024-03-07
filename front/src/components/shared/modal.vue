@@ -65,7 +65,6 @@ const model = defineModel<boolean>()
       :deep() {
         transition: all 0.15s ease-out;
         border-radius: 100%;
-
       }
 
       &:hover {
@@ -84,7 +83,7 @@ const model = defineModel<boolean>()
   &-content {
     display: flex;
     flex-direction: column;
-    gap: $cover-32
+    gap: $cover-32;
   }
 }
 </style>

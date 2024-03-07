@@ -169,7 +169,6 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 .isHover {
   &:hover {
     .hover {
-
       &-before,
       &-after {
         opacity: 1;

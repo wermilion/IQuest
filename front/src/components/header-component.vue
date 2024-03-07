@@ -90,7 +90,6 @@ const isActive = ref(false)
     path {
       stroke: $color-base2;
     }
-
   }
 
   .link {
@@ -120,9 +119,9 @@ const isActive = ref(false)
 }
 
 .holiday {
-  transition: all .1s ease-in-out;
+  transition: all 0.1s ease-in-out;
   .drop-down {
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     top: 60px;
     right: 670px;
     position: absolute;
@@ -131,7 +130,7 @@ const isActive = ref(false)
   }
 
   .arrow {
-    transition: all .1s ease-in-out;
+    transition: all 0.1s ease-in-out;
     transform: rotate(0);
   }
 
@@ -141,7 +140,6 @@ const isActive = ref(false)
       transform: rotate(180deg);
     }
     span {
-
       color: $color-base2;
     }
     .drop-down {

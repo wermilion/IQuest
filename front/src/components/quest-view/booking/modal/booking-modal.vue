@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
 import QuestRules from './quest-rules.vue'
+import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
+import { options } from '#/utils/helpers/maska'
 import Modal from '#/components/shared/modal.vue'
 import Plus from '#/assets/svg/shared/plus.svg?component'
 import Minus from '#/assets/svg/shared/minus.svg?component'
@@ -18,25 +20,6 @@ const props = defineProps<Props>()
 const modal = defineModel<boolean>()
 const stores = setupStore('quest')
 
-const nameRules = [
-  (v: string) => !!v || 'Имя обязательно для заполнения',
-  (v: string) => (v.length >= 3 && v.length <= 30) || 'Имя должно содержать от 3 до 30 символов',
-  (v: string) => /^[a-zA-Zа-яА-Я-]*$/.test(v) || 'Имя может содержать только латинские и/или кириллические буквы и дефисы',
-]
-
-const phoneRules = [
-  (v: string) => !!v || 'Номер телефона обязателен для заполнения',
-]
-
-const checkboxRules = [
-  (v: boolean) => !!v || 'Необходимо дать согласие на обработку персональных данных',
-]
-
-const options = reactive({
-  mask: '+7(###)-###-##-##',
-  eager: true,
-})
-
 const formData = reactive({
   people: stores.quest?.min_people || 0,
   fullName: '',
@@ -46,8 +29,8 @@ const formData = reactive({
 })
 
 const totalPrice = computed(() => {
-  const { price = 0 } = props.item
-  const basePrice = price
+  const { price = '0' } = props.item
+  const basePrice = Number.parseFloat(price)
   const additionalPeople = Math.max(formData.people - 4, 0)
   const additionalCost = additionalPeople * 500
 
@@ -80,7 +63,7 @@ function submitForm() {
     schedule_quest: {
       timeslot_id: props.item?.id,
       count_participants: formData.people,
-      final_price: totalPrice.value,
+      final_price: totalPrice.value.toString(),
       comment: formData.addLoudge ? 'Хочу лаунж' : '',
     },
   })
@@ -202,7 +185,7 @@ const modalProps = computed(() => ({
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: $cover-32
+  gap: $cover-32;
 }
 
 .footer-checkbox {

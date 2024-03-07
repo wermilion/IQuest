@@ -23,10 +23,12 @@ defineProps<Props>()
 
 <style scoped lang="scss">
 .info {
+  display: flex;
+  align-items: center;
   width: max-content;
   height: max-content;
 }
-:deep(.v-overlay__content ) {
+:deep(.v-overlay__content) {
   border-radius: 120px !important;
   padding: 12px 20px !important;
   background: $color-shade-6 !important;

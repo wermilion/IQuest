@@ -42,6 +42,5 @@ import PlotList from '#/utils/mock/plot-list'
   display: flex;
   flex-direction: column;
   gap: 108px;
-
 }
 </style>

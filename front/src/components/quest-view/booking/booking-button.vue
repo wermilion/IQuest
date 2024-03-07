@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ price: number, time: string, isActive: boolean }>()
+const props = defineProps<{ price: string, time: string, isActive: boolean }>()
 
 const time = props.time.replace(/:00$/, '')
 </script>

@@ -22,6 +22,7 @@ export default defineConfig({
       dirs: [
         './src/stores/',
         './src/utils/api/',
+        './src/utils/helpers/',
       ],
     }),
     purgeCss({
@@ -53,6 +54,9 @@ export default defineConfig({
     }),
 
   ],
+  optimizeDeps: {
+    exclude: ['vuetify'],
+  },
   resolve: {
     alias: {
       '#': fileURLToPath(new URL('./src', import.meta.url)),

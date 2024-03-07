@@ -19,7 +19,7 @@ export const useStocksStore = defineStore('stocks', {
         const response = await api.stocks.getStocks({
           include: [],
           filter: {
-            city: 'Томск',
+            city_id: 1,
             is_active: true,
           },
         })

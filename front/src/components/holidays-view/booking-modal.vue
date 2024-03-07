@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
-import type { Packages } from '../../types/models/holiday'
 import infoPopUpVue from '../shared/info-pop-up.vue'
+import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
+import { options } from '#/utils/helpers/maska'
+import type { Packages } from '#/types/models/holiday'
 import QuestRules from '#/components/quest-view/booking/modal/quest-rules.vue'
 import Modal from '#/components/shared/modal.vue'
-import Info from '#/assets/svg/shared/info.svg?component'
-
 import Button from '#/components/shared/button.vue'
 
 interface Props {
@@ -15,25 +15,6 @@ interface Props {
 const props = defineProps<Props>()
 const modal = defineModel<boolean>()
 const stores = setupStore('holiday')
-
-const nameRules = [
-  (v: string) => !!v || 'Имя обязательно для заполнения',
-  (v: string) => (v.length >= 3 && v.length <= 30) || 'Имя должно содержать от 3 до 30 символов',
-  (v: string) => /^[a-zA-Zа-яА-Я-]*$/.test(v) || 'Имя может содержать только латинские и/или кириллические буквы и дефисы',
-]
-
-const phoneRules = [
-  (v: string) => !!v || 'Номер телефона обязателен для заполнения',
-]
-
-const checkboxRules = [
-  (v: boolean) => !!v || 'Необходимо дать согласие на обработку персональных данных',
-]
-
-const options = reactive({
-  mask: '+7(###)-###-##-##',
-  eager: true,
-})
 
 const formData = reactive({
   fullName: '',
@@ -63,7 +44,6 @@ function submitForm() {
   formData.privatePolice = false
   modal.value = false
 }
-
 const modalProps = computed(() => ({
   title: 'Оформление',
   subTitle: `${stores.holiday?.type} • ${props.package.name}`,
@@ -76,12 +56,11 @@ const modalProps = computed(() => ({
       <div class="content-wrapper">
         <v-form class="form">
           <v-text-field
-            v-model.lazy.trim="formData.fullName"
+            v-model="formData.fullName"
             :rules="nameRules"
             color="primary"
             variant="underlined"
             label="Имя"
-
             required
           />
           <v-text-field
@@ -89,12 +68,11 @@ const modalProps = computed(() => ({
             v-maska:[options]
             :rules="phoneRules"
             required
-            color="primary"
             variant="underlined"
             label="Мобильный телефон"
           />
           <div class="price-info">
-            <h3>От {{ props.package?.price }}₽</h3><infoPopUpVue name="Если игроков больше 6 — будет доплата" />
+            <h3>От {{ package?.price }}₽</h3><infoPopUpVue name="Если игроков больше 6 — будет доплата" />
           </div>
         </v-form>
       </div>
@@ -136,7 +114,7 @@ const modalProps = computed(() => ({
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: $cover-32
+  gap: $cover-32;
 }
 
 .price-info {

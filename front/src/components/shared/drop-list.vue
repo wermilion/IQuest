@@ -30,7 +30,7 @@ defineProps<{ item: Holiday[] }>()
     display: flex;
     padding: $cover-12;
     align-items: center;
-    transition: all .2s ease-out;
+    transition: all 0.2s ease-out;
 
     &:hover {
       color: $color-base2;

@@ -8,6 +8,6 @@ export interface Schedule {
 export interface TimeSlots {
   id: number
   time: string
-  price: number
+  price: string
   is_active: boolean
 }

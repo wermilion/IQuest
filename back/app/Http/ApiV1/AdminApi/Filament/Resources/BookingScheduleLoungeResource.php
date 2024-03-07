@@ -7,9 +7,7 @@ use App\Domain\Bookings\Models\BookingScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleLoungeResource\Pages\ListBookingScheduleLounges;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
@@ -17,7 +15,6 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 class BookingScheduleLoungeResource extends Resource
@@ -34,24 +31,6 @@ class BookingScheduleLoungeResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                //
-            ]);
-    }
-
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return false;
-    }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -61,8 +40,13 @@ class BookingScheduleLoungeResource extends Resource
                     ->label('ID')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('booking.city.name')
+                TextColumn::make('scheduleLounge.lounge.filial.city.name')
                     ->label('Город')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('scheduleLounge.lounge.filial.address')
+                    ->label('Филиал')
+                    ->numeric()
                     ->sortable(),
                 TextColumn::make('booking.name')
                     ->label('Имя')
@@ -71,21 +55,13 @@ class BookingScheduleLoungeResource extends Resource
                     ->label('Телефон')
                     ->numeric()
                     ->searchable(),
-                TextColumn::make('scheduleLounge.lounge.filial.city.name')
-                    ->label('Город')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('scheduleLounge.lounge.filial.address')
-                    ->label('Филила')
-                    ->numeric()
-                    ->sortable(),
                 TextColumn::make('scheduleLounge.lounge.name')
                     ->label('Лаунж')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('scheduleLounge.date')
                     ->label('Дата')
-                    ->numeric()
+                    ->date()
                     ->sortable(),
                 TextColumn::make('scheduleLounge.time_from')
                     ->label('Время начала')

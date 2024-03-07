@@ -15,7 +15,7 @@ class ServicesResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'price' => (int)$this->price,
+            'price' => price_format($this->price),
             'unit' => $this->unit,
         ];
     }

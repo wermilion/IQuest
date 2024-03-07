@@ -13,7 +13,7 @@ class ServicesQuery extends QueryBuilder
         parent::__construct(Service::query());
 
         $this->allowedFilters([
-            AllowedFilter::exact('city', 'city.name'),
+            AllowedFilter::exact('city_id', 'city_id'),
         ]);
 
         $this->allowedSorts([

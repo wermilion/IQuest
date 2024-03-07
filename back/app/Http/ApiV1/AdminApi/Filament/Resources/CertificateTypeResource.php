@@ -3,23 +3,25 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Certificates\Models\CertificateType;
+use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ListCertificateTypes;
+use Auth;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class CertificateTypeResource extends BaseResource
 {
@@ -42,7 +44,7 @@ class CertificateTypeResource extends BaseResource
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(255)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -59,7 +61,7 @@ class CertificateTypeResource extends BaseResource
                     ->columnSpanFull()
                     ->required()
                     ->maxLengthWithHint(255)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -74,6 +76,11 @@ class CertificateTypeResource extends BaseResource
                         'image' => 'Поле ":attribute" должно быть изображением.',
                     ]),
             ]);
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        return Auth::user()->role === Role::ADMIN;
     }
 
     public static function table(Table $table): Table
@@ -100,7 +107,7 @@ class CertificateTypeResource extends BaseResource
             ->defaultSort('price')
             ->filters([
                 TrashedFilter::make()
-                ->native(false),
+                    ->native(false),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),

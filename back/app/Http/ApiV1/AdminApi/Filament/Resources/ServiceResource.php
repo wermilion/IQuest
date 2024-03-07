@@ -110,8 +110,8 @@ class ServiceResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
-                ViewAction::make()->modalHeading('Просмотр услуги'),
                 DeleteAction::make()->modalHeading('Удаление услуги'),
+                ViewAction::make()->modalHeading('Просмотр услуги'),
             ]);
     }
 

@@ -14,11 +14,11 @@ class ScheduleQuestsQuery extends QueryBuilder
         parent::__construct(ScheduleQuest::query());
 
         $this->allowedIncludes([
-            'timeslots'
+            'timeslots',
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::exact('quest', "quest_id"),
+            AllowedFilter::exact('quest_id', 'quest_id'),
             AllowedFilter::callback('today', fn($query, $value) => $query
                 ->when($value, fn($query) => $query->whereDate('date', Carbon::today()))),
             AllowedFilter::callback('tomorrow', fn($query, $value) => $query
@@ -26,12 +26,7 @@ class ScheduleQuestsQuery extends QueryBuilder
             AllowedFilter::callback('weekend', function ($query, $value) {
                 $sunday = Carbon::now()->endOfWeek();
                 $saturday = $sunday->copy()->subDay();
-
-                if (Carbon::today()->isWeekend()) {
-                    $query->when($value, fn($query) => $query->whereIn('date', [$saturday->addWeek(), $sunday->addWeek()]));
-                } else {
-                    $query->when($value, fn($query) => $query->whereIn('date', [$saturday, $sunday]));
-                }
+                $query->when($value, fn($query) => $query->whereIn('date', [$saturday, $sunday]));
             }),
             AllowedFilter::callback('between', function ($query, $value) {
                 $query->whereBetween('date', $value);

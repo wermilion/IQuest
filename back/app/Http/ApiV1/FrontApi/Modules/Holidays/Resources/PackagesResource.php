@@ -16,7 +16,7 @@ class PackagesResource extends BaseJsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'price' => (int)$this->price,
+            'price' => price_format($this->price),
             'sequence_number' => $this->sequence_number,
         ];
     }

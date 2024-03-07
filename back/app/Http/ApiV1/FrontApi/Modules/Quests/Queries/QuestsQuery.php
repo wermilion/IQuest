@@ -22,7 +22,7 @@ class QuestsQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::exact('city', 'filial.city.name'),
+            AllowedFilter::exact('city_id', 'filial.city_id'),
             AllowedFilter::callback('is_active', fn($query, $value) => $query->where('is_active', $value)),
         ]);
 

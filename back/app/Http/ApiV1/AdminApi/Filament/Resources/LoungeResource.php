@@ -19,6 +19,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -71,14 +72,14 @@ class LoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->helperText(function () {
-                        return City::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
+                        return Filial::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
                     })
                     ->native(false),
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
                     ->maxLengthWithHint(30)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -96,7 +97,7 @@ class LoungeResource extends Resource
                     ->columnSpanFull()
                     ->required()
                     ->maxLengthWithHint(1000)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
@@ -205,6 +206,7 @@ class LoungeResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
+                DeleteAction::make()->modalHeading('Удаление лаунжа'),
                 ViewAction::make(),
             ]);
     }

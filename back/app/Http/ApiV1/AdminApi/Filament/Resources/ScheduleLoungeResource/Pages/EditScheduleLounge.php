@@ -5,7 +5,6 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Page
 use App\Domain\Lounges\Models\Lounge;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseEditRecord;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource;
-use Filament\Actions\DeleteAction;
 
 class EditScheduleLounge extends BaseEditRecord
 {
@@ -21,12 +20,5 @@ class EditScheduleLounge extends BaseEditRecord
         $data['city'] = $lounge?->filial->city->id;
 
         return $data;
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            DeleteAction::make()->modalHeading('Удаление слота'),
-        ];
     }
 }

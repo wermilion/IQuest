@@ -18,8 +18,8 @@ class ContactsQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::exact('city', 'city.name'),
-            AllowedFilter::exact('type', 'contactType.name'),
+            AllowedFilter::exact('city_id', 'city_id'),
+            AllowedFilter::exact('contact_type_id', 'contact_type_id'),
             AllowedFilter::exact('is_social', 'contactType.is_social'),
         ]);
     }

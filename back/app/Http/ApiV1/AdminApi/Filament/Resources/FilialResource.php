@@ -64,11 +64,6 @@ class FilialResource extends Resource
             ]);
     }
 
-    public static function canDelete(Model $record): bool
-    {
-        return $record->quests()->doesntExist() && $record->lounges()->doesntExist();
-    }
-
     public static function table(Table $table): Table
     {
         return $table

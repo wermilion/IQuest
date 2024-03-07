@@ -15,7 +15,7 @@ class TimeslotsResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'time' => $this->time,
-            'price' => (int)$this->price,
+            'price' => price_format($this->price),
             'is_active' => $this->is_active,
         ];
     }

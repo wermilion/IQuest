@@ -18,7 +18,7 @@ class ScheduleQuestsQuery extends QueryBuilder
         ]);
 
         $this->allowedFilters([
-            AllowedFilter::exact('quest', "quest_id"),
+            AllowedFilter::exact('quest_id', 'quest_id'),
             AllowedFilter::callback('today', fn($query, $value) => $query
                 ->when($value, fn($query) => $query->whereDate('date', Carbon::today()))),
             AllowedFilter::callback('tomorrow', fn($query, $value) => $query

@@ -14,7 +14,7 @@ class SalesQuery extends QueryBuilder
         parent::__construct(Sale::query());
 
         $this->allowedFilters([
-            AllowedFilter::exact('city', 'city.name'),
+            AllowedFilter::exact('city_id', 'city_id'),
             AllowedFilter::callback('is_active', fn($query, $value) => $query->where('is_active', $value)),
         ]);
 

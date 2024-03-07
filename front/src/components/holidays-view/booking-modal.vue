@@ -13,36 +13,42 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const emits = defineEmits<{ submit: [isSuccessBooking: boolean] }>()
 const modal = defineModel<boolean>()
 const stores = setupStore('holiday')
-
 const formData = reactive({
   fullName: '',
   phoneNumber: '',
   privatePolice: false,
 })
 
-function submitForm() {
+async function submitForm() {
   if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
     return
-
-  api.booking.postBooking({
-    booking: {
-      name: formData.fullName,
-      phone: formData.phoneNumber,
-      type: 'Праздник',
-      city_id: 1,
-    },
-    holiday: {
-      holiday_id: stores.holiday?.id || 0,
-      package_id: props.package?.id || 0,
-    },
-  })
-
-  formData.fullName = ''
-  formData.phoneNumber = ''
-  formData.privatePolice = false
-  modal.value = false
+  try {
+    await api.booking.postBooking({
+      booking: {
+        name: formData.fullName,
+        phone: formData.phoneNumber,
+        type: 'Праздник',
+        city_id: 1,
+      },
+      holiday: {
+        holiday_id: stores.holiday?.id || 0,
+        package_id: props.package?.id || 0,
+      },
+    })
+    emits('submit', true)
+  }
+  catch (e) {
+    emits('submit', false)
+  }
+  finally {
+    formData.fullName = ''
+    formData.phoneNumber = ''
+    formData.privatePolice = false
+    modal.value = false
+  }
 }
 const modalProps = computed(() => ({
   title: 'Оформление',

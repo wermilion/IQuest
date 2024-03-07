@@ -1,38 +1,31 @@
 <script setup lang="ts">
 import BookingModal from '../booking-modal.vue'
-import type { Packages } from '../../../types/models/holiday'
 import PackageIncludes from './package-includes.vue'
+import type { Packages } from '#/types/models/holiday'
 import FilterChip from '#/components/quest-view/booking/chips/filter-chip.vue'
 import Button from '#/components/shared/button.vue'
+import ResultModal from '#/components/shared/result-modal.vue'
 
 const stores = setupStore(['holiday'])
 
-const defaultPackage = computed(() => stores.holiday.holiday?.packages[0])
+const activePackegeId = ref(stores.holiday.getFirstPackegs?.id)
 
-const activePackege = reactive({
-  name: ref(defaultPackage.value?.name || ''),
-  description: ref(defaultPackage.value?.description || ''),
-  price: ref(defaultPackage.value?.price || ''),
-  id: ref(defaultPackage.value?.id || 0),
-  sequence_number: ref(defaultPackage.value?.sequence_number || 0),
+const activePackege = computed(() => {
+  return stores.holiday.holiday?.packages
+    .find(item => item.id === activePackegeId.value) as Packages
 })
 
-async function select(item: Packages) {
-  activePackege.name = item.name
-  activePackege.description = item.description
-  activePackege.price = item.price
-  activePackege.id = item.id
-  activePackege.sequence_number = item.sequence_number
+const bookingModal = ref(false)
+const resultModal = ref(false)
+const isSuccessBooking = ref({})
+
+function openBookingModal() {
+  bookingModal.value = true
 }
 
-const modal = ref(false)
-
-onMounted(() => {
-  defaultPackage.value && select(defaultPackage.value)
-})
-
-function openModal() {
-  modal.value = true
+function openResultModal(isSuccess: boolean) {
+  isSuccessBooking.value = isSuccess
+  resultModal.value = true
 }
 </script>
 
@@ -45,22 +38,27 @@ function openModal() {
           <FilterChip
             v-for="item in stores.holiday.holiday?.packages"
             :key="item.name"
-            :is-selected="activePackege.name === item.name"
-            @click="select(item)"
+            :is-selected="activePackegeId === item.id"
+            @click="activePackegeId = item.id"
           >
             {{ item.name }}
           </FilterChip>
         </div>
         <PackageIncludes :description="activePackege.description" />
         <div class="booking-footer">
-          <Button :button-light="true" name="Забронировать" @click="openModal()" />
+          <Button :button-light="true" name="Забронировать" @click="openBookingModal" />
           <span class="body">От {{ activePackege.price }}₽</span>
         </div>
       </div>
     </div>
     <BookingModal
-      v-model="modal"
+      v-model="bookingModal"
       :package="activePackege"
+      @submit="openResultModal"
+    />
+    <ResultModal
+      v-model="resultModal"
+      :is-success="isSuccessBooking"
     />
   </section>
 </template>
@@ -101,8 +99,8 @@ function openModal() {
     display: flex;
     gap: $cover-24;
 
-    a {
-      max-width: 308px;
+    div {
+      max-width: 309px;
     }
   }
 }

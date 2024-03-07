@@ -21,7 +21,7 @@ if (route.params.id === '3')
   <section v-if="stores.holiday.holiday">
     <Cover :type="stores.holiday.holiday.type" :corp-info="corp" />
     <section v-if="!corp" class="wrapper">
-      <Packages />
+      <Packages :key="stores.holiday.getFirstPackegs?.id" />
       <DetailsContainer />
     </section>
     <section v-else class="wrapper">

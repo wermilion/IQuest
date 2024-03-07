@@ -18,9 +18,15 @@
 .swiper-button {
   background: none;
   border: none;
-  width: 50px;
+  width: 40px;
 
   &::after {
     display: none;
+  }
+
+  &:hover {
+    path {
+      stroke-opacity: 1;
+    }
   }
 }

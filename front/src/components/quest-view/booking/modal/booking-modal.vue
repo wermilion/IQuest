@@ -46,8 +46,8 @@ const formData = reactive({
 })
 
 const totalPrice = computed(() => {
-  const { price = '0' } = props.item
-  const basePrice = Number.parseFloat(price)
+  const { price = 0 } = props.item
+  const basePrice = price
   const additionalPeople = Math.max(formData.people - 4, 0)
   const additionalCost = additionalPeople * 500
 

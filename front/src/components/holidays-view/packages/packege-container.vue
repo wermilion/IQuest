@@ -12,7 +12,7 @@ const defaultPackage = computed(() => stores.holiday.holiday?.packages[0])
 const activePackege = reactive({
   name: ref(defaultPackage.value?.name || ''),
   description: ref(defaultPackage.value?.description || ''),
-  price: ref(defaultPackage.value?.price || ''),
+  price: ref(defaultPackage.value?.price || 0),
   id: ref(defaultPackage.value?.id || 0),
   sequence_number: ref(defaultPackage.value?.sequence_number || 0),
 })
@@ -26,6 +26,10 @@ async function select(item: Packages) {
 }
 
 const modal = ref(false)
+
+onMounted(() => {
+  defaultPackage.value && select(defaultPackage.value)
+})
 
 function openModal() {
   modal.value = true
@@ -50,7 +54,7 @@ function openModal() {
         <PackageIncludes :description="activePackege.description" />
         <div class="booking-footer">
           <Button :button-light="true" name="Забронировать" @click="openModal()" />
-          <span class="body">От {{ activePackege.price?.toString().replace(/.00$/, '') }}₽</span>
+          <span class="body">От {{ activePackege.price }}₽</span>
         </div>
       </div>
     </div>

@@ -1,20 +1,10 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
-import type { Packages } from '../../types/models/holiday'
-import infoPopUpVue from '../shared/info-pop-up.vue'
-import QuestRules from '#/components/quest-view/booking/modal/quest-rules.vue'
 import Modal from '#/components/shared/modal.vue'
-import Info from '#/assets/svg/shared/info.svg?component'
 
 import Button from '#/components/shared/button.vue'
 
-interface Props {
-  package: Packages
-}
-
-const props = defineProps<Props>()
 const modal = defineModel<boolean>()
-const stores = setupStore('holiday')
 
 const nameRules = [
   (v: string) => !!v || 'Имя обязательно для заполнения',
@@ -53,8 +43,8 @@ function submitForm() {
       city_id: 1,
     },
     holiday: {
-      holiday_id: stores.holiday?.id || 0,
-      package_id: props.package?.id || 0,
+      holiday_id: 3,
+      package_id: 3,
     },
   })
 
@@ -66,7 +56,7 @@ function submitForm() {
 
 const modalProps = computed(() => ({
   title: 'Оформление',
-  subTitle: `${stores.holiday?.type} • ${props.package.name}`,
+  subTitle: `Корпоратив`,
 }))
 </script>
 
@@ -94,11 +84,10 @@ const modalProps = computed(() => ({
             label="Мобильный телефон"
           />
           <div class="price-info">
-            <h3>От {{ props.package?.price }}₽</h3><infoPopUpVue name="Если игроков больше 6 — будет доплата" />
+            <h3>От 600₽ с человека</h3>
           </div>
         </v-form>
       </div>
-      <QuestRules />
     </template>
     <template #footer>
       <div class="footer-checkbox">

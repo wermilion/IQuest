@@ -1,6 +1,6 @@
 export interface Services {
   id: number
   name: string
-  price: string
+  price: number
   unit: string
 }

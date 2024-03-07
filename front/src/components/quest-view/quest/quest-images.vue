@@ -10,8 +10,16 @@ import {
   Pagination,
 } from 'swiper/modules'
 import type { SwiperOptions } from 'swiper/types'
+import Next from '#/assets/svg/shared/swiper-next.svg?component'
+import Prev from '#/assets/svg/shared/swiper-prev.svg?component'
 
-defineProps<{ images?: { image: string }[] }>()
+defineProps<{
+  images?: {
+    image: string
+  }[]
+}>()
+
+const stores = setupStore('quest')
 
 const slider = ref<HTMLElement | null>(null)
 const swiperOptions: SwiperOptions = {
@@ -43,24 +51,26 @@ onMounted(() => {
 <template>
   <div ref="slider" class="swiper-container">
     <div class="swiper-wrapper">
-      <img v-for="img in images" :key="img.image" loading="lazy" class="swiper-slide" :src="img.image" :alt="img.image">
+      <template v-if="images && images.length > 0">
+        <img
+          v-for="img in images"
+          :key="img.image"
+          v-lazy-src="img.image"
+          loading="lazy"
+          class="swiper-slide loading-lazy"
+          :alt="img.image"
+        >
+      </template>
+      <template v-else>
+        <img v-lazy-src="stores.quest?.cover" :alt="stores.quest?.cover">
+      </template>
     </div>
 
     <button class="swiper-button-prev swiper-button">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M16 28L8 20L16 12" stroke="white" stroke-opacity="0.75" stroke-width="2" stroke-linecap="square"
-          stroke-linejoin="round"
-        />
-      </svg>
+      <Prev />
     </button>
     <button class="swiper-button-next swiper-button">
-      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M24 12L32 20L24 28" stroke="white" stroke-opacity="0.75" stroke-width="2" stroke-linecap="square"
-          stroke-linejoin="round"
-        />
-      </svg>
+      <Next />
     </button>
     <div class="swiper-pagination" />
   </div>
@@ -72,9 +82,12 @@ onMounted(() => {
   position: relative;
   max-width: 616px;
   max-height: 411px;
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide {
   border-radius: $cover-8;
 }
-
 .swiper-pagination {
   max-width: 272px;
   display: flex;

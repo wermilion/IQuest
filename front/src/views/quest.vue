@@ -13,7 +13,7 @@ stores.services.fetchServices()
 </script>
 
 <template>
-  <section v-if="stores.quest.quest" class="quest">
+  <section v-if="stores.quest.quest && stores.services.services " class="quest">
     <QuestContainer :quest="stores.quest.quest" />
     <QuestBooking :id-quest="stores.quest.quest.id" />
     <AddServices />

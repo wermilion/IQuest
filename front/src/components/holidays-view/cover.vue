@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import BookingModal from '#/components/holidays-view/corporative/modal/booking-modal.vue'
 import Button from '#/components/shared/button.vue'
 
 export interface Props {
   type: string
   corpInfo?: boolean
 }
-
 defineProps<Props>()
+
+const modal = ref(false)
+
+function openModal() {
+  modal.value = true
+}
 </script>
 
 <template>
@@ -22,9 +28,12 @@ defineProps<Props>()
       <div class="container cover-info" :class="{ corpInfo }">
         <h1>{{ type }}</h1>
         <div v-if="corpInfo" class="cover-info__btn">
-          <Button :button-light="true" name="Оставить заявку" />
+          <Button :button-light="true" name="Оставить заявку" @click="openModal()" />
           <span class="body">От 600₽ с человека</span>
         </div>
+        <BookingModal
+          v-model="modal"
+        />
       </div>
     </div>
   </div>

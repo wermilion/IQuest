@@ -9,7 +9,7 @@ const phoneNumber = {
 
 <template>
   <span class="body">
-    <img v-if="isActiveIng" :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
+    <img v-if="!isActiveIng" :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
     <a :href="phoneNumber.link">{{ phoneNumber.text }}</a>
   </span>
 </template>

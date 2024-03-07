@@ -90,7 +90,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
   border: 1px solid $color-opacity004;
 
   &-image {
-    width: 100%;
+    width: 398px;
     height: 100%;
     overflow: hidden;
   }

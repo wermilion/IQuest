@@ -6,7 +6,12 @@ defineProps<{ item: Holiday[] }>()
 
 <template>
   <div class="dorp-list">
-    <router-link v-for="element in item" :key="element.id" class="footnote" :to="`/holidays/${element.id}`">
+    <router-link
+      v-for="element in item"
+      :key="element.id"
+      class="footnote"
+      :to="`/holidays/${element.id}`"
+    >
       {{ element.type }}
     </router-link>
   </div>
@@ -25,6 +30,11 @@ defineProps<{ item: Holiday[] }>()
     display: flex;
     padding: $cover-12;
     align-items: center;
+    transition: all .2s ease-out;
+
+    &:hover {
+      color: $color-base2;
+    }
   }
 }
 </style>

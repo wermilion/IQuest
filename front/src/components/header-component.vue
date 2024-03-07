@@ -12,7 +12,6 @@ const links = [
 ]
 
 const isActive = ref(false)
-const isHoverActive = ref(false)
 </script>
 
 <template>
@@ -28,12 +27,15 @@ const isHoverActive = ref(false)
           :to="link.link"
           class="footnote"
         >
-          <div class="link" :class="{ selected: $route.path === link.link }">
+          <div
+            class="link"
+            :class="{ selected: $route.path === link.link, holiday: index === 1 }"
+          >
             <span>[</span>
             {{ link.name }}
             <div v-if="index === 1" class="select">
-              <Arrow v-show="!isHoverActive" />
-              <DropList :item="stores.holidaysList" />
+              <Arrow class="arrow" />
+              <DropList class="drop-down" :item="stores.holidaysList" />
             </div>
             <span>]</span>
           </div>
@@ -78,6 +80,7 @@ const isHoverActive = ref(false)
   }
 
   .selected {
+    position: relative;
     color: $color-base2;
 
     span {
@@ -87,6 +90,7 @@ const isHoverActive = ref(false)
     path {
       stroke: $color-base2;
     }
+
   }
 
   .link {
@@ -112,6 +116,37 @@ const isHoverActive = ref(false)
   &-select {
     color: $color-opacity06;
     cursor: pointer;
+  }
+}
+
+.holiday {
+  transition: all .1s ease-in-out;
+  .drop-down {
+    transition: all .3s ease-in-out;
+    top: 60px;
+    right: 670px;
+    position: absolute;
+    display: none;
+    z-index: 10;
+  }
+
+  .arrow {
+    transition: all .1s ease-in-out;
+    transform: rotate(0);
+  }
+
+  &:hover {
+    color: $color-base2;
+    .arrow {
+      transform: rotate(180deg);
+    }
+    span {
+
+      color: $color-base2;
+    }
+    .drop-down {
+      display: block;
+    }
   }
 }
 

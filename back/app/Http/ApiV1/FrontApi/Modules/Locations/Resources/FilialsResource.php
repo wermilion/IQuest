@@ -3,6 +3,7 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Locations\Resources;
 
 use App\Domain\Locations\Models\Filial;
+use App\Http\ApiV1\FrontApi\Modules\Lounges\Resources\LoungesResource;
 use App\Http\ApiV1\FrontApi\Support\Resources\BaseJsonResource;
 
 /**
@@ -17,6 +18,7 @@ class FilialsResource extends BaseJsonResource
             'address' => $this->address,
             'yandex_mark' => $this->yandex_mark,
             'city' => new CitiesResource($this->whenLoaded('city')),
+            'lounges' => LoungesResource::collection($this->whenLoaded('lounges'))
         ];
     }
 }

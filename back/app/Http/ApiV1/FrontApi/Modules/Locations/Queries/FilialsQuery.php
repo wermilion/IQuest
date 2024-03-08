@@ -13,7 +13,8 @@ class FilialsQuery extends QueryBuilder
         parent::__construct(Filial::query());
 
         $this->allowedIncludes([
-            'city'
+            'city',
+            'lounges',
         ]);
 
         $this->allowedFilters([

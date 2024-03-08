@@ -92,6 +92,7 @@ class ScheduleLoungeResource extends Resource
                     ->mask('99:99')
                     ->placeholder('00:00')
                     ->rules([new TimeRule])
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -100,6 +101,7 @@ class ScheduleLoungeResource extends Resource
                     ->mask('99:99')
                     ->placeholder('00:00')
                     ->rules([new TimeRule])
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

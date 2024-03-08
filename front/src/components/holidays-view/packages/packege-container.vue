@@ -4,7 +4,8 @@ import PackageIncludes from './package-includes.vue'
 import type { Packages } from '#/types/models/holiday'
 import FilterChip from '#/components/quest-view/booking/chips/filter-chip.vue'
 import Button from '#/components/shared/button.vue'
-import ResultModal from '#/components/shared/result-modal.vue'
+import ResultModalDialog from '#/components/shared/result-modal.vue'
+import type { ResultModal } from '#/types/shared/common'
 
 const stores = setupStore(['holiday'])
 
@@ -17,13 +18,13 @@ const activePackege = computed(() => {
 
 const bookingModal = ref(false)
 const resultModal = ref(false)
-const isSuccessBooking = ref({})
+const isSuccessBooking = ref()
 
 function openBookingModal() {
   bookingModal.value = true
 }
 
-function openResultModal(isSuccess: boolean) {
+function openResultModal(isSuccess: ResultModal) {
   isSuccessBooking.value = isSuccess
   resultModal.value = true
 }
@@ -46,7 +47,11 @@ function openResultModal(isSuccess: boolean) {
         </div>
         <PackageIncludes :description="activePackege.description" />
         <div class="booking-footer">
-          <Button :button-light="true" name="Забронировать" @click="openBookingModal" />
+          <Button
+            :button-light="true"
+            name="Забронировать"
+            @click="openBookingModal"
+          />
           <span class="body">От {{ activePackege.price }}₽</span>
         </div>
       </div>
@@ -56,7 +61,7 @@ function openResultModal(isSuccess: boolean) {
       :package="activePackege"
       @submit="openResultModal"
     />
-    <ResultModal
+    <ResultModalDialog
       v-model="resultModal"
       :is-success="isSuccessBooking"
     />

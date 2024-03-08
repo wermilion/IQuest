@@ -4,42 +4,49 @@ import Modal from '#/components/shared/modal.vue'
 import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
 import { options } from '#/utils/helpers/maska'
 import Button from '#/components/shared/button.vue'
+import type { ResultModal } from '#/types/shared/common'
 
+const emits = defineEmits<{ submit: [ResultModal] }>()
 const modal = defineModel<boolean>()
-
 const formData = reactive({
   fullName: '',
   phoneNumber: '',
   privatePolice: false,
 })
 
-function submitForm() {
-  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
-    return
-
-  api.booking.postBooking({
-    booking: {
-      name: formData.fullName,
-      phone: formData.phoneNumber,
-      type: 'Праздник',
-      city_id: 1,
-    },
-    holiday: {
-      holiday_id: 3,
-      package_id: 3,
-    },
-  })
-
-  formData.fullName = ''
-  formData.phoneNumber = ''
-  formData.privatePolice = false
-  modal.value = false
-}
-
 const modalProps = computed(() => ({
   title: 'Оформление',
   subTitle: `Корпоратив`,
 }))
+
+async function submitForm() {
+  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
+    return
+  try {
+    await api.booking.postBooking({
+      booking: {
+        name: formData.fullName,
+        phone: formData.phoneNumber,
+        type: 'Праздник',
+        city_id: 1,
+      },
+      holiday: {
+        holiday_id: 3,
+        package_id: 1,
+      },
+    })
+    emits('submit', { status: 'success', info: modalProps.value })
+  }
+  catch (e) {
+    emits('submit', { status: 'failed', info: modalProps.value })
+  }
+  finally {
+    formData.fullName = ''
+    formData.phoneNumber = ''
+    formData.privatePolice = false
+    modal.value = false
+  }
+}
 </script>
 
 <template>

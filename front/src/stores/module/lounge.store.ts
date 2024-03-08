@@ -17,7 +17,7 @@ export const useLoungeListStore = defineStore('loungeList', {
     async fetchLounge() {
       try {
         const response = await api.lounge.getLoungeList({
-          include: ['filial.city'],
+          include: [],
           filter: {
             city_id: 1,
             is_active: true,

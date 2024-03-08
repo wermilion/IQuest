@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import BookingModal from '#/components/holidays-view/corporative/modal/booking-modal.vue'
+import ResultModalDialog from '#/components/shared/result-modal.vue'
+
 import Button from '#/components/shared/button.vue'
+import type { ResultModal } from '#/types/shared/common'
 
 export interface Props {
   type: string
@@ -8,10 +11,17 @@ export interface Props {
 }
 defineProps<Props>()
 
-const modal = ref(false)
+const bookingModal = ref(false)
+const resultModal = ref(false)
+const isSuccessBooking = ref()
 
-function openModal() {
-  modal.value = true
+function openBookingModal() {
+  bookingModal.value = true
+}
+
+function openResultModal(isSuccess: ResultModal) {
+  isSuccessBooking.value = isSuccess
+  resultModal.value = true
 }
 </script>
 
@@ -22,17 +32,22 @@ function openModal() {
       :class="{
         man: type === 'Взрослый праздник',
         child: type === 'Детский праздник',
-        corp: type === 'Корпоратив',
+        corp: type === 'Корпорастив',
       }"
     >
       <div class="container cover-info" :class="{ corpInfo }">
         <h1>{{ type }}</h1>
         <div v-if="corpInfo" class="cover-info__btn">
-          <Button :button-light="true" name="Оставить заявку" @click="openModal()" />
+          <Button :button-light="true" name="Оставить заявку" @click="openBookingModal()" />
           <span class="body">От 600₽ с человека</span>
         </div>
         <BookingModal
-          v-model="modal"
+          v-model="bookingModal"
+          @submit="openResultModal"
+        />
+        <ResultModalDialog
+          v-model="resultModal"
+          :is-success="isSuccessBooking"
         />
       </div>
     </div>

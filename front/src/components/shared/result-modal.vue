@@ -1,37 +1,73 @@
 <script setup lang="ts">
 import Button from '#/components/shared/button.vue'
+import CustomerSupport from '#/assets/svg/shared/customer-support.svg?component'
+import Close from '#/assets/svg/shared/close.svg?component'
+import type { ResultModal } from '#/types/shared/common'
 
-const modal = defineModel<boolean>()
+defineProps<{ isSuccess: ResultModal }>()
+const model = defineModel<boolean>()
 </script>
 
 <template>
-  <v-dialog v-model="modal" persistent>
+  <v-dialog v-model="model" persistent>
     <div class="modal-wrapper">
-      <div class="modal-header">
-        <div class="modal-header__title">
-          <h2>Успешное</h2>
-          <h2>Title</h2>
+      <template v-if="isSuccess.status === 'success'">
+        <div class="modal-header">
+          <div class="modal-header__title">
+            <h2 class="success">
+              Успешное
+            </h2>
+            <h2 class="success">
+              {{ isSuccess.info.title }}
+            </h2>
+          </div>
+          <span class="footnote">{{ isSuccess.info.subTitle }}</span>
         </div>
-        <span class="footnote">Label</span>
-      </div>
-      <div class="modal-content">
-        <img src="/icons/share/customer-support.svg" alt="customer-support">
-        <div class="modal-content__text">
-          <span class="body">Оператор перезвонит вам для подтверждения заявки</span>
-          <span class="footnote">Будьте на связи:)</span>
+        <div class="modal-content">
+          <CustomerSupport />
+          <div class="modal-content__text">
+            <span class="body">Оператор перезвонит вам для подтверждения заявки</span>
+            <span class="footnote">Будьте на связи:)</span>
+          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <Button name="Закрыть" @click="modal = false" />
-        <Button :button-light="true" name="Доп услуги" @click="modal = false" />
-      </div>
+        <div class="modal-footer">
+          <Button name="Закрыть" @click="model = false" />
+        </div>
+      </template>
+      <template v-else>
+        <div class="modal-header__error">
+          <div class="modal-header__text">
+            <h2 class="error">
+              Ошибка
+            </h2>
+            <h2 class="error">
+              {{ isSuccess.info.title }}
+            </h2>
+          </div>
+          <Close class="pointer close" @click="model = false" />
+        </div>
+        <div class="modal-content__error">
+          <span class="footnote">Что то пошло не так...</span>
+          <span class="body">Пожалуйста, перезагрузите страницу и попробуйте еще раз</span>
+        </div>
+        <div class="modal-footer">
+          <Button
+            :button-light="true"
+            name="Перезагрузить страницу"
+            @click="$router.go(0)"
+          />
+        </div>
+      </template>
     </div>
   </v-dialog>
 </template>
 
 <style scoped lang="scss">
-h2 {
+.success {
   color: $color-green;
+}
+.error {
+  color: $color-red;
 }
 .modal {
   &-wrapper {
@@ -54,18 +90,41 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: $cover-8;
-  }
 
-  &-content {
-    display: flex;
-    gap: $cover-16;
-    align-items: center;
-    justify-content: center;
+    &__error {
+      display: flex;
+      justify-content: space-between;
+    }
 
     &__text {
       display: flex;
       flex-direction: column;
+    }
+  }
+
+  &-content {
+    display: flex;
+    height: 96px;
+    gap: $cover-16;
+    align-items: center;
+
+    svg {
+      width: 100%;
+      max-width: 83px;
+      height: 82px;
+    }
+
+    &__error {
+      display: flex;
+      flex-direction: column;
+      gap: $cover-8;
+    }
+
+    &__text {
+      height: 100%;
       justify-content: space-between;
+      display: flex;
+      flex-direction: column;
     }
   }
 

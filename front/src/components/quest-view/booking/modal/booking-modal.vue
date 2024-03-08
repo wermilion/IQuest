@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
 import QuestRules from './quest-rules.vue'
+import type { ResultModal } from '#/types/shared/common'
 import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
 import { options } from '#/utils/helpers/maska'
 import Modal from '#/components/shared/modal.vue'
@@ -15,8 +16,8 @@ interface Props {
   date: string | null
   item: TimeSlots
 }
-
 const props = defineProps<Props>()
+const emits = defineEmits<{ submit: [ResultModal] }>()
 const modal = defineModel<boolean>()
 const stores = setupStore('quest')
 
@@ -49,31 +50,41 @@ function removePeople(): void {
     formData.people--
 }
 
-function submitForm() {
-  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
-    return
-
-  api.booking.postBooking({
-    booking: {
-      name: formData.fullName,
-      phone: formData.phoneNumber,
-      type: 'Квест',
-      city_id: 1,
-    },
-    schedule_quest: {
-      timeslot_id: props.item?.id,
-      count_participants: formData.people,
-      final_price: totalPrice.value.toString(),
-      comment: formData.addLoudge ? 'Хочу лаунж' : '',
-    },
-  })
-  modal.value = false
-}
-
 const modalProps = computed(() => ({
   title: 'Бронирование',
   subTitle: `${stores.quest?.name} • ${props.date} • ${props.item?.time?.replace(/:00$/, '') ?? ''}`,
 }))
+
+async function submitForm() {
+  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
+    return
+  try {
+    await api.booking.postBooking({
+      booking: {
+        name: formData.fullName,
+        phone: formData.phoneNumber,
+        type: 'Квест',
+        city_id: 1,
+      },
+      schedule_quest: {
+        timeslot_id: props.item?.id,
+        count_participants: formData.people,
+        final_price: totalPrice.value.toString(),
+        comment: formData.addLoudge ? 'Хочу лаунж' : '',
+      },
+    })
+    emits('submit', { status: 'success', info: modalProps.value })
+  }
+  catch (e) {
+    emits('submit', { status: 'failed', info: modalProps.value })
+  }
+  finally {
+    formData.fullName = ''
+    formData.phoneNumber = ''
+    formData.privatePolice = false
+    modal.value = false
+  }
+}
 </script>
 
 <template>
@@ -124,9 +135,10 @@ const modalProps = computed(() => ({
             class="loudge"
             label="Хочу лаунж зону"
           />
-          <InfoPopUpVue name="Отдохните и обсудите квест после игры" />
+          <InfoPopUpVue
+            name="Отдохните и обсудите квест после игры"
+          />
         </div>
-
         <v-checkbox
           v-model="formData.privatePolice"
           :class="{ active: formData.privatePolice }"
@@ -134,7 +146,13 @@ const modalProps = computed(() => ({
           required
           label="Я даю согласие на обработку персональных данных"
         />
-        <Button name="Забронировать" type="submit" :button-light="true" @click="submitForm" />
+        <Button
+          name="Забронировать"
+          type="submit"
+          :disabled="!formData.fullName || !formData.phoneNumber || !formData.privatePolice"
+          :button-light="true"
+          @click="submitForm"
+        />
       </div>
     </template>
   </Modal>

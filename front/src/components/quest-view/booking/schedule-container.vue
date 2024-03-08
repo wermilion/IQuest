@@ -3,6 +3,8 @@ import { computed } from 'vue'
 import BookingButton from './booking-button.vue'
 import BookingModal from './modal/booking-modal.vue'
 import type { Schedule, TimeSlots } from '#/types/models/schedule'
+import ResultModalDialog from '#/components/shared/result-modal.vue'
+import type { ResultModal } from '#/types/shared/common'
 
 const props = defineProps<{ dateTimes: Schedule }>()
 const { dateTimes } = props
@@ -15,17 +17,8 @@ function formatDateAndWeekday(date: Date) {
   return `${formattedDate}, ${formattedWeekday}`
 }
 
-const modal = ref(false)
 const dayDate = ref<string | null>(null)
 const dayItem = ref<TimeSlots>({} as TimeSlots)
-
-function openModal(date: Date, item: TimeSlots) {
-  if (item.is_active === true) {
-    dayDate.value = formatDateAndWeekday(new Date(date))
-    dayItem.value = item
-    modal.value = true
-  }
-}
 
 const sortedTimeslots = computed(() => {
   const timeslotsCopy = [...dateTimes.timeslots]
@@ -37,6 +30,23 @@ const sortedTimeslots = computed(() => {
     return 0
   })
 })
+
+const bookingModal = ref(false)
+const resultModal = ref(false)
+const isSuccessBooking = ref()
+
+function openModal(date: Date, item: TimeSlots) {
+  if (item.is_active === true) {
+    dayDate.value = formatDateAndWeekday(new Date(date))
+    dayItem.value = item
+    bookingModal.value = true
+  }
+}
+
+function openResultModal(isSuccess: ResultModal) {
+  isSuccessBooking.value = isSuccess
+  resultModal.value = true
+}
 </script>
 
 <template>
@@ -48,7 +58,16 @@ const sortedTimeslots = computed(() => {
         :is-active="item.is_active" @click="openModal(dateTimes.date, item)"
       />
     </div>
-    <BookingModal v-model="modal" :item="dayItem" :date="dayDate" />
+    <BookingModal
+      v-model="bookingModal"
+      :item="dayItem"
+      :date="dayDate"
+      @submit="openResultModal"
+    />
+    <ResultModalDialog
+      v-model="resultModal"
+      :is-success="isSuccessBooking"
+    />
   </div>
 </template>
 

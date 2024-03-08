@@ -7,13 +7,14 @@ import type { Packages } from '#/types/models/holiday'
 import QuestRules from '#/components/quest-view/booking/modal/quest-rules.vue'
 import Modal from '#/components/shared/modal.vue'
 import Button from '#/components/shared/button.vue'
+import type { ResultModal } from '#/types/shared/common'
 
 interface Props {
   package: Packages
 }
 
 const props = defineProps<Props>()
-const emits = defineEmits<{ submit: [isSuccessBooking: boolean] }>()
+const emits = defineEmits<{ submit: [ResultModal] }>()
 const modal = defineModel<boolean>()
 const stores = setupStore('holiday')
 const formData = reactive({
@@ -21,6 +22,11 @@ const formData = reactive({
   phoneNumber: '',
   privatePolice: false,
 })
+
+const modalProps = computed(() => ({
+  title: 'Оформление',
+  subTitle: `${stores.holiday?.type} • ${props.package.name}`,
+}))
 
 async function submitForm() {
   if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
@@ -38,10 +44,10 @@ async function submitForm() {
         package_id: props.package?.id || 0,
       },
     })
-    emits('submit', true)
+    emits('submit', { status: 'success', info: modalProps.value })
   }
   catch (e) {
-    emits('submit', false)
+    emits('submit', { status: 'failed', info: modalProps.value })
   }
   finally {
     formData.fullName = ''
@@ -50,10 +56,6 @@ async function submitForm() {
     modal.value = false
   }
 }
-const modalProps = computed(() => ({
-  title: 'Оформление',
-  subTitle: `${stores.holiday?.type} • ${props.package.name}`,
-}))
 </script>
 
 <template>
@@ -74,6 +76,7 @@ const modalProps = computed(() => ({
             v-maska:[options]
             :rules="phoneRules"
             required
+            color="primary"
             variant="underlined"
             label="Мобильный телефон"
           />
@@ -98,7 +101,6 @@ const modalProps = computed(() => ({
           type="submit"
           :button-light="true"
           :disabled="!formData.fullName || !formData.phoneNumber || !formData.privatePolice"
-
           @click="submitForm"
         />
       </div>

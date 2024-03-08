@@ -60,24 +60,6 @@ const model = defineModel<boolean>()
       gap: $cover-8;
       max-width: 472px;
     }
-
-    .close {
-      :deep() {
-        transition: all 0.15s ease-out;
-        border-radius: 100%;
-      }
-
-      &:hover {
-        background-color: $color-red-opacity05;
-
-        :deep() {
-          path {
-            fill: $color-red-opacity05;
-            fill-opacity: 0.5;
-          }
-        }
-      }
-    }
   }
 
   &-content {

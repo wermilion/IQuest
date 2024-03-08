@@ -7,6 +7,7 @@ import ServicesApi from './services/services/services'
 import HolidaysApi from './services/holiday/holiday'
 import BookingApi from './services/booking/booking'
 import LoungeApi from './services/lounge/lounge'
+import CertificateApi from './services/certificate/certificate'
 
 import { RequestErrorInterceptor } from './interceptors/request-error'
 
@@ -24,4 +25,5 @@ export const api = {
   holidays: HolidaysApi(instance),
   booking: BookingApi(instance),
   lounge: LoungeApi(instance),
+  certificate: CertificateApi(instance),
 }

@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->foreignId('schedule_quest_id')->comment('Расписание')->constrained(table: 'schedule_quests');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

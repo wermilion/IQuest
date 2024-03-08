@@ -31,6 +31,7 @@ return new class extends Migration {
             $table->foreignId('age_limit_id')->comment('Возрастное ограничение квеста')->constrained(table: 'age_limits');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

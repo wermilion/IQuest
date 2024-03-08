@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Quest
@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Quest extends Model
 {
-    use HasFactory, HasCover;
+    use HasFactory, HasCover, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -68,16 +68,24 @@ class Quest extends Model
     protected static function booted(): void
     {
         static::deleting(function (self $model) {
-            foreach ($model->images as $image) {
-                Storage::delete('public/' . $image->image);
-            }
-            $model->images()->delete();
+            $model->questWeekdaysSlots()->delete();
+            $model->questWeekendSlots()->delete();
+
+            $model->scheduleQuests()->each(function (ScheduleQuest $scheduleQuest) {
+                $scheduleQuest->delete();
+            });
+        });
+
+        static::forceDeleting(function (self $model) {
+            $model->scheduleQuests()->each(function (ScheduleQuest $scheduleQuest) {
+                $scheduleQuest->forceDelete();
+            });
         });
     }
 
     public function scheduleQuests(): HasMany
     {
-        return $this->hasMany(ScheduleQuest::class);
+        return $this->hasMany(ScheduleQuest::class)->withTrashed();
     }
 
     public function questWeekdaysSlots(): HasMany

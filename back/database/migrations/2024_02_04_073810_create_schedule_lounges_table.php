@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->foreignId('lounge_id')->comment('Лаунж')->constrained(table: 'lounges');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

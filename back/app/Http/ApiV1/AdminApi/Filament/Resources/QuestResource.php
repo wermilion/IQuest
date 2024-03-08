@@ -30,13 +30,17 @@ use Filament\Resources\RelationManagers\RelationGroup;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class QuestResource extends Resource
 {
@@ -200,6 +204,7 @@ class QuestResource extends Resource
                         'min' => 'Поле ":attribute" должно быть больше или равно 1.'
                     ]),
                 FileUpload::make('cover')
+                    ->directory('quest_covers')
                     ->label('Обложка')
                     ->columnSpanFull()
                     ->image()
@@ -285,6 +290,8 @@ class QuestResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                TrashedFilter::make()
+                    ->native(false),
                 Filter::make('location')
                     ->form([
                         Select::make('city_id')
@@ -333,6 +340,8 @@ class QuestResource extends Resource
             ->actions([
                 EditAction::make(),
                 DeleteAction::make()->modalHeading('Удаление квеста'),
+                RestoreAction::make()->modalHeading('Восстановление квеста'),
+                ForceDeleteAction::make()->modalHeading('Удаление квеста'),
                 ViewAction::make(),
             ]);
     }

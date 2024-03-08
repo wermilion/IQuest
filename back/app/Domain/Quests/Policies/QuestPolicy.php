@@ -37,7 +37,7 @@ class QuestPolicy
      */
     public function update(User $user, Quest $quest): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN && !$quest->trashed();
     }
 
     /**

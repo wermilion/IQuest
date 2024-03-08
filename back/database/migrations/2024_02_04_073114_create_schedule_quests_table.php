@@ -14,12 +14,10 @@ return new class extends Migration {
             $table->bigIncrements('id');
 
             $table->date('date')->comment('Дата');
-            $table->time('time')->comment('Время');
-            $table->decimal('price')->comment('Цена');
-            $table->boolean('is_active')->comment('Статус активности');
             $table->foreignId('quest_id')->comment('Квест')->constrained(table: 'quests');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

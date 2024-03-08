@@ -33,7 +33,7 @@ class QuestImage extends Model
             }
         });
 
-        static::deleted(function (self $model) {
+        static::deleting(function (self $model) {
             Storage::delete('public/' . $model->image);
         });
     }

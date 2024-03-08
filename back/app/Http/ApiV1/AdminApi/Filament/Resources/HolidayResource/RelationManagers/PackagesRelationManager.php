@@ -74,11 +74,6 @@ class PackagesRelationManager extends RelationManager
             ]);
     }
 
-    protected function canEdit(Model $record): bool
-    {
-        return false;
-    }
-
     public function table(Table $table): Table
     {
         return $table

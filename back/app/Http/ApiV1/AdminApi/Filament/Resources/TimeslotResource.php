@@ -12,6 +12,8 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\ListTimesl
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\RelationManagers\BookingRelationManager;
 use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -92,11 +94,6 @@ class TimeslotResource extends Resource
             ]);
     }
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -128,6 +125,8 @@ class TimeslotResource extends Resource
             ])
             ->defaultSort('scheduleQuest.date')
             ->filters([
+                TrashedFilter::make()
+                    ->native(false),
                 Filter::make('location')
                     ->form([
                         Select::make('city_id')
@@ -207,6 +206,7 @@ class TimeslotResource extends Resource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
+                ForceDeleteAction::make()->modalHeading('Удаление слота'),
             ]);
     }
 

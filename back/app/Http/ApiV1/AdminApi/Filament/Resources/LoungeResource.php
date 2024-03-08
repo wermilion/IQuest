@@ -21,11 +21,14 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
+use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -76,7 +79,7 @@ class LoungeResource extends Resource
                     })
                     ->native(false),
                 TextInput::make('name')
-                    ->label('Название')
+                    ->label('Название комнаты')
                     ->required()
                     ->maxLengthWithHint(30)
                     ->dehydrateStateUsing(fn($state) => trim($state))
@@ -117,7 +120,7 @@ class LoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 FileUpload::make('cover')
-                    ->directory('lounge_images')
+                    ->directory('lounge_covers')
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
@@ -142,7 +145,7 @@ class LoungeResource extends Resource
                     ->label('Филиал')
                     ->sortable(),
                 TextColumn::make('name')
-                    ->label('Название')
+                    ->label('Название комнаты')
                     ->searchable(),
                 ToggleColumn::make('is_active')
                     ->label('Отображение на сайте')
@@ -159,6 +162,8 @@ class LoungeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                TrashedFilter::make()
+                    ->native(false),
                 Filter::make('location')
                     ->form([
                         Select::make('city_id')
@@ -207,6 +212,8 @@ class LoungeResource extends Resource
             ->actions([
                 EditAction::make(),
                 DeleteAction::make()->modalHeading('Удаление лаунжа'),
+                RestoreAction::make()->modalHeading('Восстановление лаунжа'),
+                ForceDeleteAction::make()->modalHeading('Удаление лаунжа'),
                 ViewAction::make(),
             ]);
     }

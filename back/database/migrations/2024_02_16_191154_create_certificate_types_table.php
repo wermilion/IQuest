@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('name')->comment('Название типа сертификата');
             $table->text('description')->comment('Описание типа сертификата');
             $table->decimal('price')->comment('Стоимость типа сертификата');
+            $table->string('cover')->comment('Изображение типа сертификата');
 
             $table->timestamps();
             $table->softDeletes();

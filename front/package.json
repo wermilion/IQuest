@@ -29,7 +29,6 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.8.0",
     "@mdi/font": "^7.4.47",
-    "@mojojoejo/vite-plugin-purgecss": "^1.1.0",
     "@tsconfig/node20": "^20.1.2",
     "@types/node": "^20.11.25",
     "@vitejs/plugin-vue": "^5.0.4",

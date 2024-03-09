@@ -4,6 +4,7 @@ export enum EAppRouteNames {
   Contacts = 'Contacts',
   Certificates = 'Certificates',
   Holidays = 'Holidays',
+  NotFound = 'NotFound',
 }
 
 export enum EAppRoutePaths {
@@ -12,4 +13,5 @@ export enum EAppRoutePaths {
   Contacts = '/contacts',
   Certificates = '/certificates',
   Holidays = '/holidays/:id',
+  NotFound = '/:pathMatch(.*)*',
 }

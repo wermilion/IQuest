@@ -10,8 +10,9 @@ const loading: WritableComputedRef<boolean> = computed({
   set: v => store.setLoading(v),
 })
 
-const stores = setupStore(['questList', 'services', 'holidaysList'])
+const stores = setupStore(['questList', 'services', 'holidaysList', 'city'])
 
+stores.city.fetchCity()
 stores.questList.fetchQuests()
 stores.holidaysList.fetchHolidaysList()
 </script>

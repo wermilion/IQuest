@@ -24,6 +24,7 @@
     "swiper": "^11.0.7",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
+    "vue-yandex-maps": "^2.0.1",
     "vuetify": "^3.5.8"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "@types/node": "^20.11.25",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/tsconfig": "^0.5.1",
+    "@yandex/ymaps3-types": "^0.0.22",
     "eslint": "^8.57.0",
     "eslint-plugin-format": "^0.1.0",
     "rollup-plugin-visualizer": "^5.12.0",

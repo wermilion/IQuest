@@ -29,6 +29,9 @@ dependencies:
   vue-router:
     specifier: ^4.3.0
     version: 4.3.0(vue@3.4.21)
+  vue-yandex-maps:
+    specifier: ^2.0.1
+    version: 2.0.1(vue@3.4.21)
   vuetify:
     specifier: ^3.5.8
     version: 3.5.8(typescript@5.4.2)(vite-plugin-vuetify@2.0.2)(vue@3.4.21)
@@ -40,9 +43,6 @@ devDependencies:
   '@mdi/font':
     specifier: ^7.4.47
     version: 7.4.47
-  '@mojojoejo/vite-plugin-purgecss':
-    specifier: ^1.1.0
-    version: 1.1.0(vite@5.1.5)
   '@tsconfig/node20':
     specifier: ^20.1.2
     version: 20.1.2
@@ -55,6 +55,9 @@ devDependencies:
   '@vue/tsconfig':
     specifier: ^0.5.1
     version: 0.5.1
+  '@yandex/ymaps3-types':
+    specifier: ^0.0.22
+    version: 0.0.22
   eslint:
     specifier: ^8.57.0
     version: 8.57.0
@@ -518,15 +521,6 @@ packages:
 
   /@mdi/font@7.4.47:
     resolution: {integrity: sha512-43MtGpd585SNzHZPcYowu/84Vz2a2g31TvPMTm9uTiCSWzaheQySUcSyUH/46fPnuPQWof2yd0pGBtzee/IQWw==}
-    dev: true
-
-  /@mojojoejo/vite-plugin-purgecss@1.1.0(vite@5.1.5):
-    resolution: {integrity: sha512-J9hgBEsvP5f1XvejZVynO1gVZn6ruin5dLjr3FSjtf7Z6f8A9VqOJr2pZVGzP6Nc9ih5HSTuw3cPAOg8DzgZTQ==}
-    peerDependencies:
-      vite: ^3 || ^4
-    dependencies:
-      purgecss: 5.0.0
-      vite: 5.1.5(@types/node@20.11.25)(sass@1.71.1)
     dev: true
 
   /@nodelib/fs.scandir@2.1.5:
@@ -1116,6 +1110,20 @@ packages:
       vue: 3.4.21(typescript@5.4.2)
       vuetify: 3.5.8(typescript@5.4.2)(vite-plugin-vuetify@2.0.2)(vue@3.4.21)
 
+  /@yandex/ymaps3-types@0.0.22:
+    resolution: {integrity: sha512-LHXbC3CcjDg7Kqch1YkV9bCzQkD7u6BDXftX5HSB/sMkbme04xorKcP++K8FAihSaNDgwIYlqn+JBqXA+G8+Tg==}
+    peerDependencies:
+      '@types/react': 16-18
+      '@types/react-dom': 16-18
+      '@vue/runtime-core': '3'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+      '@vue/runtime-core':
+        optional: true
+
   /acorn-jsx@5.3.2(acorn@8.11.3):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
@@ -1354,11 +1362,6 @@ packages:
   /commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
-    dev: true
-
-  /commander@9.5.0:
-    resolution: {integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==}
-    engines: {node: ^12.20.0 || >=14}
     dev: true
 
   /comment-parser@1.4.1:
@@ -2246,17 +2249,6 @@ packages:
       path-is-absolute: 1.0.1
     dev: true
 
-  /glob@8.1.0:
-    resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
-    engines: {node: '>=12'}
-    dependencies:
-      fs.realpath: 1.0.0
-      inflight: 1.0.6
-      inherits: 2.0.4
-      minimatch: 5.1.6
-      once: 1.4.0
-    dev: true
-
   /globals@13.24.0:
     resolution: {integrity: sha512-AhO5QUcj8llrbG09iWhPU2B204J1xnPeL8kQmVorSsy+Sjj1sk8gIyh6cUocGmH4L0UuhAJy+hJMRA4mgA4mFQ==}
     engines: {node: '>=8'}
@@ -2653,13 +2645,6 @@ packages:
       brace-expansion: 1.1.11
     dev: true
 
-  /minimatch@5.1.6:
-    resolution: {integrity: sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==}
-    engines: {node: '>=10'}
-    dependencies:
-      brace-expansion: 2.0.1
-    dev: true
-
   /minimatch@9.0.3:
     resolution: {integrity: sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==}
     engines: {node: '>=16 || 14 >=14.17'}
@@ -2978,16 +2963,6 @@ packages:
   /punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
-    dev: true
-
-  /purgecss@5.0.0:
-    resolution: {integrity: sha512-RAnuxrGuVyLLTr8uMbKaxDRGWMgK5CCYDfRyUNNcaz5P3kGgD2b7ymQGYEyo2ST7Tl/ScwFgf5l3slKMxHSbrw==}
-    hasBin: true
-    dependencies:
-      commander: 9.5.0
-      glob: 8.1.0
-      postcss: 8.4.35
-      postcss-selector-parser: 6.0.15
     dev: true
 
   /queue-microtask@1.2.3:
@@ -3584,6 +3559,27 @@ packages:
       semver: 7.6.0
       typescript: 5.4.2
     dev: true
+
+  /vue-yandex-maps@2.0.1(vue@3.4.21):
+    resolution: {integrity: sha512-tLP+3YZKazLNWsoYF2tMZCM4RCAUMspz5FOk2VnlPWaDFHi71PtHo8dfhTlf5Guy9YP2i11YjZGJfBfSUsEU4g==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@vue/composition-api': '>=1'
+      nuxt: ^2.16 || ^3
+      vue: ^2.7 || ^3.3
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      nuxt:
+        optional: true
+    dependencies:
+      '@yandex/ymaps3-types': 0.0.22
+      vue: 3.4.21(typescript@5.4.2)
+    transitivePeerDependencies:
+      - '@types/react'
+      - '@types/react-dom'
+      - '@vue/runtime-core'
+    dev: false
 
   /vue@3.4.21(typescript@5.4.2):
     resolution: {integrity: sha512-5hjyV/jLEIKD/jYl4cavMcnzKwjMKohureP8ejn3hhEjwhWIhWeuzL2kJAjzl/WyVsgPY56Sy4Z40C3lVshxXA==}

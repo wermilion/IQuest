@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import type { Holiday } from '#/types/models/holiday'
+import type { City } from '#/types/models/city'
 
-defineProps<{ item: Holiday[] }>()
+defineProps<{ item: City[] }>()
 </script>
 
 <template>
-  <div class="dorp-list">
-    <router-link
+  <div class="dorp-list pointer">
+    <div
       v-for="element in item"
       :key="element.id"
       class="footnote"
-      :to="`/holidays/${element.id}`"
     >
-      {{ element.type }}
-    </router-link>
+      {{ element.name }}
+    </div>
   </div>
 </template>
 
@@ -26,7 +25,7 @@ defineProps<{ item: Holiday[] }>()
   background-color: $color-base1;
   border: 1px solid $color-opacity012;
 
-  a {
+  div {
     display: flex;
     padding: $cover-12;
     align-items: center;

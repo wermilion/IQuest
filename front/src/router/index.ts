@@ -10,6 +10,7 @@ const Quest = () => import('#/views/quest.vue')
 const Contacts = () => import('#/views/contacts.vue')
 const Certificates = () => import('#/views/certificates.vue')
 const Holidays = () => import('#/views/holidays.vue')
+const Error = () => import('#/views/error.vue')
 
 const routes: RouteRecordRaw[] = [
   {
@@ -37,6 +38,11 @@ const routes: RouteRecordRaw[] = [
     name: EAppRouteNames.Certificates,
     component: Certificates,
   },
+  {
+    path: EAppRoutePaths.NotFound,
+    name: EAppRouteNames.NotFound,
+    component: Error,
+  },
 ]
 
 const router: Router = createRouter({
@@ -52,7 +58,10 @@ router.beforeEach(
   ) => {
     useGlobalStore().setLoading(true)
     await nextTick()
-    next()
+    if (_to.matched.length === 0)
+      next({ name: EAppRouteNames.NotFound })
+    else
+      next()
   },
 )
 

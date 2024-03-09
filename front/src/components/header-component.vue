@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import DropList from './shared/drop-list.vue'
+import City from '#/components/cities/cities.vue'
 import Arrow from '#/assets/svg/shared/arrow=default.svg'
 
-const stores = setupStore('holidaysList')
+const stores = setupStore(['holidaysList'])
 
 const links = [
   { name: 'Квесты', link: '/' },
@@ -10,8 +11,6 @@ const links = [
   { name: 'Сертификат', link: '/certificates' },
   { name: 'Контакты', link: '/contacts' },
 ]
-
-const isActive = ref(false)
 </script>
 
 <template>
@@ -35,22 +34,13 @@ const isActive = ref(false)
             {{ link.name }}
             <div v-if="index === 1" class="select">
               <Arrow class="arrow" />
-              <DropList class="drop-down" :item="stores.holidaysList" />
+              <DropList class="drop-down" :item="stores.holidaysList.holidaysList" />
             </div>
             <span>]</span>
           </div>
         </router-link>
       </div>
-      <div
-        class="header-select link footnote"
-        :class="{ selected: isActive === true }"
-        @click="isActive = !isActive"
-      >
-        <span>[</span>
-        Томск
-        <Arrow />
-        <span>]</span>
-      </div>
+      <City />
     </div>
   </header>
 </template>

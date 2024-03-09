@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { EAppRouteNames } from '#/types/routes'
+
 const loundge = {
   name: 'Лаунж зона',
   img: 'loundge',
@@ -7,7 +9,7 @@ const loundge = {
 </script>
 
 <template>
-  <div class="hover-container pointer">
+  <router-link :to="{ name: EAppRouteNames.Lounge }" class="hover-container">
     <div class="card">
       <div class="card-image">
         <img v-lazy-src="`/loundge/${loundge.img}.jpg`" :alt="loundge.img">
@@ -19,7 +21,7 @@ const loundge = {
         </div>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <style scoped lang="scss">

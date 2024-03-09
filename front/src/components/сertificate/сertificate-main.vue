@@ -35,7 +35,7 @@ function openResultModal(isSuccess: ResultModal) {
 <template>
   <div class="block">
     <div class="img-container">
-      <img :key="activePackege.cover" v-lazy-src="activePackege.cover" alt="">
+      <img :key="activePackege.cover" v-lazy-src="activePackege.cover" class="loading-lazy" alt="">
     </div>
     <div class="wrapper">
       <div class="wrapper-header">

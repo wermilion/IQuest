@@ -1,33 +1,43 @@
-import { defineStore } from 'pinia'
-import type { Lounge } from '#/types/models/lounge'
+import type { Filial } from '#/types/models/filial'
 
 //* --- State ----------------------------------------------- *//
-interface LoungeListState {
-  loungeList: Lounge[]
-  error: unknown
+interface FilialListState {
+  filialList: Filial[]
 }
 
 //* --- Store ----------------------------------------------- *//
-export const useLoungeListStore = defineStore('loungeList', {
-  state: (): LoungeListState => ({
-    loungeList: [],
-    error: {},
+export const useFilialListStore = defineStore('filialList', {
+  state: (): FilialListState => ({
+    filialList: [],
   }),
+  getters: {
+    requestWrapper: () => useRequestMeta().requestMetaWrapper,
+    isLoading: (): boolean => useRequestMeta().checkAnyIsLoading(['lounge']),
+    errors: () => useRequestMeta().getError(['lounge']),
+
+    getFirstFilial: state => state.filialList[0],
+    getFirstRoom: state => state.filialList[0]?.lounges[0],
+  },
   actions: {
-    async fetchLounge() {
-      try {
-        const response = await api.lounge.getLoungeList({
-          include: [],
-          filter: {
-            city_id: 1,
-            is_active: true,
-          },
-        })
-        this.loungeList = response.data.data
-      }
-      catch (error) {
-        this.error = error
-      }
+    async fetchFilial() {
+      this.requestWrapper({
+        key: 'lounge',
+
+        callback: () => {
+          return api.filial.getFilialList({
+            include: [
+              'city',
+              'lounges',
+            ],
+            filter: {
+              city_id: 1,
+            },
+          })
+        },
+        successCallback: ({ data }) => {
+          this.filialList = data.data.data
+        },
+      })
     },
   },
 

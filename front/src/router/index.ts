@@ -10,6 +10,7 @@ const Quest = () => import('#/views/quest.vue')
 const Contacts = () => import('#/views/contacts.vue')
 const Certificates = () => import('#/views/certificates.vue')
 const Holidays = () => import('#/views/holidays.vue')
+const Lounge = () => import('#/views/lounge.vue')
 const Error = () => import('#/views/error.vue')
 
 const routes: RouteRecordRaw[] = [
@@ -37,6 +38,11 @@ const routes: RouteRecordRaw[] = [
     path: EAppRoutePaths.Certificates,
     name: EAppRouteNames.Certificates,
     component: Certificates,
+  },
+  {
+    path: EAppRoutePaths.Lounge,
+    name: EAppRouteNames.Lounge,
+    component: Lounge,
   },
   {
     path: EAppRoutePaths.NotFound,

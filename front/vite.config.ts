@@ -22,6 +22,7 @@ export default defineConfig({
       dts: './src/types/dts/auto-imports.d.ts',
       dirs: [
         './src/stores/',
+        './src/stores/common/',
         './src/utils/api/',
         './src/utils/helpers/',
       ],
@@ -70,6 +71,21 @@ export default defineConfig({
         additionalData: `
             @import './src/assets/scss/_variables.scss';
           `,
+      },
+    },
+  },
+  server: {
+    cors: false,
+    proxy: {
+      '/api/filials:search': {
+        target: 'http://localhost:8080/',
+        secure: false,
+        changeOrigin: true,
+      },
+      '/api/': {
+        target: 'https://iquest-dev.tomsk-it.ru/',
+        secure: false,
+        changeOrigin: true,
       },
     },
   },

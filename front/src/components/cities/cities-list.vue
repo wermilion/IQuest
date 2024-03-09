@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { City } from '#/types/models/city'
 
-defineProps<{ item: City[] }>()
+defineProps<{ item?: City[] }>()
 </script>
 
 <template>

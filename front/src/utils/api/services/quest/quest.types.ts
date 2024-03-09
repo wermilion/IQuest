@@ -1,7 +1,7 @@
 export interface SearchQuestsRequest {
   include: string[]
   filter: {
-    city: string
+    city_id: number
     is_active: boolean
   }
 }
@@ -9,7 +9,7 @@ export interface SearchQuestsRequest {
 export interface SearchScheduleQuestsRequest {
   include: string[]
   filter: {
-    quest: string | number
+    quest_id: string | number
     today?: boolean
     tomorrow?: boolean
     weekend?: boolean

@@ -22,7 +22,7 @@ const stores = setupStore('services')
           >
             <span class="body">{{ item.name }}</span>
             <span class="footnote">
-              {{ item.price.replace(/.00$/, "") }}₽/{{ item.unit }}
+              {{ item.price }}₽/{{ item.unit }}
             </span>
           </div>
         </div>

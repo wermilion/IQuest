@@ -8,7 +8,7 @@ export interface BookingPayload {
   schedule_quest?: {
     timeslot_id: number
     count_participants: number
-    final_price: number
+    final_price: string
     comment: string
   }
   holiday?: {

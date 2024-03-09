@@ -13,6 +13,9 @@ export const useHolidayStore = defineStore('holiday', {
     holiday: null,
     error: {},
   }),
+  getters: {
+    getFirstPackegs: state => state.holiday?.packages[0],
+  },
   actions: {
     async fetchHoliday(id: string) {
       try {

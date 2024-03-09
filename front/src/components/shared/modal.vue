@@ -60,23 +60,12 @@ const model = defineModel<boolean>()
       gap: $cover-8;
       max-width: 472px;
     }
-
-    .close {
-      :deep() {
-        transition: all 0.15s ease-out;
-        border-radius: 100%;
-      }
-
-      &:hover {
-        background-color: $color-red-opacity05;
-      }
-    }
   }
 
   &-content {
     display: flex;
     flex-direction: column;
-    gap: $cover-32
+    gap: $cover-32;
   }
 }
 </style>

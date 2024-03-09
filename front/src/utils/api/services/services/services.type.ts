@@ -1,6 +1,6 @@
 export interface SearchServicesRequest {
   include: string[]
   filter: {
-    city: string
+    city_id: number
   }
 }

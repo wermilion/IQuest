@@ -1,22 +1,32 @@
 <script setup lang="ts">
+import BookingModal from '../booking-modal.vue'
 import PackageIncludes from './package-includes.vue'
+import type { Packages } from '#/types/models/holiday'
 import FilterChip from '#/components/quest-view/booking/chips/filter-chip.vue'
 import Button from '#/components/shared/button.vue'
+import ResultModalDialog from '#/components/shared/result-modal.vue'
+import type { ResultModal } from '#/types/shared/common'
 
 const stores = setupStore(['holiday'])
 
-const defaultChip = stores.holiday.holiday?.packages[0]?.name
-const defaultDesc = stores.holiday.holiday?.packages[0]?.description
-const defaultPrice = stores.holiday.holiday?.packages[0]?.price
+const activePackegeId = ref(stores.holiday.getFirstPackegs?.id)
 
-const selectedChip = ref(defaultChip)
-const selectedDesc = ref(defaultDesc)
-const selectedPrice = ref(defaultPrice)
+const activePackege = computed(() => {
+  return stores.holiday.holiday?.packages
+    .find(item => item.id === activePackegeId.value) as Packages
+})
 
-async function select(name: string, description: string, price: number) {
-  selectedChip.value = name
-  selectedDesc.value = description
-  selectedPrice.value = price
+const bookingModal = ref(false)
+const resultModal = ref(false)
+const isSuccessBooking = ref()
+
+function openBookingModal() {
+  bookingModal.value = true
+}
+
+function openResultModal(isSuccess: ResultModal) {
+  isSuccessBooking.value = isSuccess
+  resultModal.value = true
 }
 </script>
 
@@ -29,19 +39,32 @@ async function select(name: string, description: string, price: number) {
           <FilterChip
             v-for="item in stores.holiday.holiday?.packages"
             :key="item.name"
-            :is-selected="selectedChip === item.name"
-            @click="select(item.name, item.description, item.price)"
+            :is-selected="activePackegeId === item.id"
+            @click="activePackegeId = item.id"
           >
             {{ item.name }}
           </FilterChip>
         </div>
-        <PackageIncludes :description="selectedDesc" />
+        <PackageIncludes :description="activePackege.description" />
         <div class="booking-footer">
-          <Button :button-light="true" name="Забронировать" />
-          <span class="body">От {{ selectedPrice?.toString().replace(/.00$/, '') }}₽</span>
+          <Button
+            :button-light="true"
+            name="Забронировать"
+            @click="openBookingModal"
+          />
+          <span class="body">От {{ activePackege.price }}₽</span>
         </div>
       </div>
     </div>
+    <BookingModal
+      v-model="bookingModal"
+      :package="activePackege"
+      @submit="openResultModal"
+    />
+    <ResultModalDialog
+      v-model="resultModal"
+      :is-success="isSuccessBooking"
+    />
   </section>
 </template>
 
@@ -81,8 +104,8 @@ async function select(name: string, description: string, price: number) {
     display: flex;
     gap: $cover-24;
 
-    a {
-      max-width: 308px;
+    div {
+      max-width: 309px;
     }
   }
 }

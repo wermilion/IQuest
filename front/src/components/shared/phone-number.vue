@@ -9,17 +9,17 @@ const phoneNumber = {
 
 <template>
   <span class="body">
-    <img v-if="isActiveIng" :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
+    <img v-if="!isActiveIng" :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
     <a :href="phoneNumber.link">{{ phoneNumber.text }}</a>
   </span>
 </template>
 
 <style scoped lang="scss">
   span {
-    display: flex;
-    gap: 8px;
-    a {
-      color: $color-base2;
-    }
+  display: flex;
+  gap: 8px;
+  a {
+    color: $color-base2;
   }
+}
 </style>

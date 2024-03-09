@@ -19,7 +19,7 @@ export const useQuestListStore = defineStore('questList', {
         const response = await api.quest.getSearch({
           include: ['type', 'genre'],
           filter: {
-            city: 'Томск',
+            city_id: 1,
             is_active: true,
           },
         })

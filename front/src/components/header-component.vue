@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import DropList from './shared/drop-list.vue'
+import Arrow from '#/assets/svg/shared/arrow=default.svg'
+
+const stores = setupStore('holidaysList')
+
 const links = [
   { name: 'Квесты', link: '/' },
   { name: 'Праздники', link: '' },
@@ -7,7 +12,6 @@ const links = [
 ]
 
 const isActive = ref(false)
-const isHoverActive = ref(false)
 </script>
 
 <template>
@@ -23,42 +27,15 @@ const isHoverActive = ref(false)
           :to="link.link"
           class="footnote"
         >
-          <div class="link" :class="{ selected: $route.path === link.link }">
+          <div
+            class="link"
+            :class="{ selected: $route.path === link.link, holiday: index === 1 }"
+          >
             <span>[</span>
             {{ link.name }}
             <div v-if="index === 1" class="select">
-              <svg
-                v-show="!isHoverActive"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.00006 10L12.0001 16L18.0001 10"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="square"
-                  stroke-linejoin="bevel"
-                />
-              </svg>
-              <svg
-                v-show="isHoverActive"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6 16L12 10L18 16"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="square"
-                  stroke-linejoin="bevel"
-                />
-              </svg>
+              <Arrow class="arrow" />
+              <DropList class="drop-down" :item="stores.holidaysList" />
             </div>
             <span>]</span>
           </div>
@@ -71,40 +48,7 @@ const isHoverActive = ref(false)
       >
         <span>[</span>
         Томск
-        <div class="d-flex">
-          <svg
-            v-show="!isActive"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6.00006 10L12.0001 16L18.0001 10"
-              stroke="white"
-              stroke-width="2"
-              stroke-linecap="square"
-              stroke-linejoin="bevel"
-            />
-          </svg>
-          <svg
-            v-show="isActive"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6 16L12 10L18 16"
-              stroke="white"
-              stroke-width="2"
-              stroke-linecap="square"
-              stroke-linejoin="bevel"
-            />
-          </svg>
-        </div>
+        <Arrow />
         <span>]</span>
       </div>
     </div>
@@ -136,6 +80,7 @@ const isHoverActive = ref(false)
   }
 
   .selected {
+    position: relative;
     color: $color-base2;
 
     span {
@@ -170,6 +115,36 @@ const isHoverActive = ref(false)
   &-select {
     color: $color-opacity06;
     cursor: pointer;
+  }
+}
+
+.holiday {
+  transition: all 0.1s ease-in-out;
+  .drop-down {
+    transition: all 0.3s ease-in-out;
+    top: 60px;
+    right: 670px;
+    position: absolute;
+    display: none;
+    z-index: 10;
+  }
+
+  .arrow {
+    transition: all 0.1s ease-in-out;
+    transform: rotate(0);
+  }
+
+  &:hover {
+    color: $color-base2;
+    .arrow {
+      transform: rotate(180deg);
+    }
+    span {
+      color: $color-base2;
+    }
+    .drop-down {
+      display: block;
+    }
   }
 }
 

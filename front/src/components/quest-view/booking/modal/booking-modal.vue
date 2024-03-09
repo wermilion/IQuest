@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
 import QuestRules from './quest-rules.vue'
+import type { ResultModal } from '#/types/shared/common'
+import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
+import { options } from '#/utils/helpers/maska'
 import Modal from '#/components/shared/modal.vue'
 import Plus from '#/assets/svg/shared/plus.svg?component'
 import Minus from '#/assets/svg/shared/minus.svg?component'
+import InfoPopUpVue from '#/components/shared/info-pop-up.vue'
 import type { TimeSlots } from '#/types/models/schedule'
 
 import Button from '#/components/shared/button.vue'
@@ -12,28 +16,10 @@ interface Props {
   date: string | null
   item: TimeSlots
 }
-
 const props = defineProps<Props>()
+const emits = defineEmits<{ submit: [ResultModal] }>()
 const modal = defineModel<boolean>()
 const stores = setupStore('quest')
-
-const nameRules = [
-  (v: string) => !!v || 'Имя обязательно для заполнения',
-]
-
-const phoneRules = [
-  (v: string) => !!v || 'Номер телефона обязателен для заполнения',
-  (v: string) => /^\+7\(\d{3}\)-\d{3}-\d{2}-\d{2}$/.test(v) || 'Номер телефона должен быть в формате +7(XXX)-XXX-XX-XX',
-]
-
-const checkboxRules = [
-  (v: boolean) => !!v || 'Необходимо дать согласие на обработку персональных данных',
-]
-
-const options = reactive({
-  mask: '+7(###)-###-##-##',
-  eager: true,
-})
 
 const formData = reactive({
   people: stores.quest?.min_people || 0,
@@ -64,30 +50,41 @@ function removePeople(): void {
     formData.people--
 }
 
-function submitForm() {
-  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
-    return
-
-  api.booking.postBooking({
-    booking: {
-      name: formData.fullName,
-      phone: formData.phoneNumber,
-      type: 'Квест',
-      city_id: 1,
-    },
-    schedule_quest: {
-      timeslot_id: props.item?.id,
-      count_participants: formData.people,
-      final_price: totalPrice.value,
-      comment: formData.addLoudge ? 'Хочу лаунж' : '',
-    },
-  })
-}
-
 const modalProps = computed(() => ({
   title: 'Бронирование',
   subTitle: `${stores.quest?.name} • ${props.date} • ${props.item?.time?.replace(/:00$/, '') ?? ''}`,
 }))
+
+async function submitForm() {
+  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
+    return
+  try {
+    await api.booking.postBooking({
+      booking: {
+        name: formData.fullName,
+        phone: formData.phoneNumber,
+        type: 'Квест',
+        city_id: 1,
+      },
+      schedule_quest: {
+        timeslot_id: props.item?.id,
+        count_participants: formData.people,
+        final_price: totalPrice.value.toString(),
+        comment: formData.addLoudge ? 'Хочу лаунж' : '',
+      },
+    })
+    emits('submit', { status: 'success', info: modalProps.value })
+  }
+  catch (e) {
+    emits('submit', { status: 'failed', info: modalProps.value })
+  }
+  finally {
+    formData.fullName = ''
+    formData.phoneNumber = ''
+    formData.privatePolice = false
+    modal.value = false
+  }
+}
 </script>
 
 <template>
@@ -131,12 +128,17 @@ const modalProps = computed(() => ({
     </template>
     <template #footer>
       <div class="footer-checkbox">
-        <v-checkbox
-          v-model="formData.addLoudge"
-          :class="{ active: formData.addLoudge }"
-          class="loudge"
-          label="Хочу лаунж зону"
-        />
+        <div class="footer-checkbox__lounge">
+          <v-checkbox
+            v-model="formData.addLoudge"
+            :class="{ active: formData.addLoudge }"
+            class="loudge"
+            label="Хочу лаунж зону"
+          />
+          <InfoPopUpVue
+            name="Отдохните и обсудите квест после игры"
+          />
+        </div>
         <v-checkbox
           v-model="formData.privatePolice"
           :class="{ active: formData.privatePolice }"
@@ -144,7 +146,13 @@ const modalProps = computed(() => ({
           required
           label="Я даю согласие на обработку персональных данных"
         />
-        <Button name="Забронировать" type="submit" :button-light="true" @click="submitForm" />
+        <Button
+          name="Забронировать"
+          type="submit"
+          :disabled="!formData.fullName || !formData.phoneNumber || !formData.privatePolice"
+          :button-light="true"
+          @click="submitForm"
+        />
       </div>
     </template>
   </Modal>
@@ -195,13 +203,19 @@ const modalProps = computed(() => ({
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: $cover-32
+  gap: $cover-32;
 }
 
 .footer-checkbox {
   display: flex;
   flex-direction: column;
   gap: $cover-12;
+
+  &__lounge {
+    display: flex;
+    align-items: center;
+    gap: $cover-4;
+  }
 }
 
 input h2 {

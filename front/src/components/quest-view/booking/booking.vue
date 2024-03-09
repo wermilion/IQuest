@@ -16,7 +16,7 @@ enum Chip {
   SelectDate = 'Выбрать даты',
 }
 
-const stores = setupStore(['scheduleQuest'])
+const stores = setupStore(['scheduleQuest', 'quest'])
 
 const filters = [
   { name: Chip.Today, params: { today: true } },
@@ -27,10 +27,10 @@ const defaultChip = filters[0]
 
 const selectedChip = ref(defaultChip.name)
 
-async function select(name: Chip, params: Omit<Filter, 'quest'>) {
+async function select(name: Chip, params: Omit<Filter, 'quest_id'>) {
   selectedChip.value = name
 
-  const filter = { ...params, quest: props.idQuest } as Filter
+  const filter = { ...params, quest_id: props.idQuest } as Filter
 
   await stores.scheduleQuest.fetchScheduleQuest(filter)
 }
@@ -40,7 +40,7 @@ onMounted(() => select(defaultChip.name, defaultChip.params))
 
 <template>
   <section class="container">
-    <div class="booking">
+    <div class="booking" :class="{ toLight: stores.quest.toLight }">
       <div class="booking-header">
         <h2>Расписание</h2>
 
@@ -82,6 +82,7 @@ onMounted(() => select(defaultChip.name, defaultChip.params))
   border-radius: $cover-16;
   padding: $cover-48;
   background-color: $color-opacity004;
+  transition: background-color 0.3s ease;
 
   &-header {
     display: flex;
@@ -104,5 +105,9 @@ onMounted(() => select(defaultChip.name, defaultChip.params))
     flex-direction: column;
     gap: $cover-64;
   }
+}
+
+.toLight {
+  background-color: $color-opacity012;
 }
 </style>

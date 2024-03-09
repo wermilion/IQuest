@@ -2,6 +2,7 @@
 export interface Props {
   icon: string
   description: string
+  footnote?: boolean
 }
 
 defineProps<{ item: Props }>()
@@ -10,7 +11,7 @@ defineProps<{ item: Props }>()
 <template>
   <div class="item">
     <img :src="`/icons/details/${item.icon}.svg`" :alt="item.icon">
-    <p class="smallFootnote">
+    <p :class="{ footnote: item.footnote, smallFootnote: !item.footnote }">
       {{ item.description }}
     </p>
   </div>
@@ -29,7 +30,7 @@ defineProps<{ item: Props }>()
   border-radius: $cover-8;
   border: 1px solid $color-opacity012;
 
-  p {
+  .smallFootnote {
     color: $color-base2;
   }
 }

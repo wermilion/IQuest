@@ -18,7 +18,11 @@ function toggleExpand() {
       <p class="footnoteText" :class="{ extend: isExpanded }">
         {{ description }}
       </p>
-      <div class="read-more body pointer" :class="{ active: isExpanded }" @click="toggleExpand">
+      <div
+        class="read-more body pointer"
+        :class="{ active: isExpanded }"
+        @click="toggleExpand"
+      >
         {{ isExpanded ? 'Свернуть' : 'Читать дальше' }}
         <Arrow />
       </div>

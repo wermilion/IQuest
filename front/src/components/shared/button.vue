@@ -8,13 +8,12 @@ defineProps<Button>()
 </script>
 
 <template>
-  <router-link
-    class="btn-container button"
+  <div
+    class="btn-container button pointer"
     :class="{ buttonLight }"
-    to=""
   >
     <span class="bodyBold">{{ name }}</span>
-  </router-link>
+  </div>
 </template>
 
 <style scoped lang="scss">

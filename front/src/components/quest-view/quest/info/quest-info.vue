@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
 import Chip from './assist-chip.vue'
 import Difficulty from './difficulty-chip.vue'
 
@@ -11,6 +9,7 @@ import type { Quest } from '#/types/models/quest'
 
 const props = defineProps<{ info: Quest }>()
 const button = 'Оставить заявку'
+const stores = setupStore(['quest'])
 
 const convertDuration = computed(() => {
   if (props.info.duration >= 60) {
@@ -48,6 +47,8 @@ const chips = computed(() => {
     { title: `${convertDuration.value}` },
   ]
 })
+
+const { scrollToQuestBooking } = stores.quest
 </script>
 
 <template>
@@ -67,7 +68,7 @@ const chips = computed(() => {
         </Chip>
       </div>
     </div>
-    <Button :name="button" :button-light="true" />
+    <Button :name="button" :button-light="true" @click="scrollToQuestBooking" />
   </div>
 </template>
 

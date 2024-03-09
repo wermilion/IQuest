@@ -68,7 +68,7 @@ const emainAddress = {
 <style scoped lang="scss">
 .border {
   border-top: 2px solid $color-shade-6 !important;
-  background-image: url("/gradient/footer-gradient.svg");
+  background-image: url('/gradient/footer-gradient.svg');
   background-repeat: no-repeat;
   background-position: center top;
   margin-top: 108px;

@@ -2,15 +2,18 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\RelationManagers;
 
+use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
+use App\Domain\Bookings\Models\Booking;
+use App\Domain\Users\Enums\Role;
+use App\Domain\Users\Models\User;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions\AttachAction;
 use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -42,7 +45,7 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя')
                     ->required()
                     ->maxLengthWithHint(40)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ]),
@@ -77,7 +80,7 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('comment')
                     ->label('Комментарий')
                     ->maxLengthWithHint(125)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
             ]);
     }
 
@@ -121,19 +124,51 @@ class BookingRelationManager extends RelationManager
                         TextInput::make('comment')
                             ->label('Комментарий')
                             ->maxLengthWithHint(125)
-                            ->dehydrateStateUsing(fn ($state) => trim($state))
+                            ->dehydrateStateUsing(fn($state) => trim($state))
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::LOUNGE->value)
-                        ->whereDoesntHave('scheduleLounges'))
+                        ->whereDoesntHave('scheduleLounges')
+                        ->withoutTrashed())
                     ->attachAnother(false)
-                    ->recordSelectSearchColumns(['id']),
+                    ->recordSelectSearchColumns(['id'])
+                    ->after(function (RelationManager $livewire, Booking $booking) {
+                        $this->sendMessage($booking, $livewire->ownerRecord);
+                    }),
                 CreateAction::make()
                     ->modalHeading('Создание заявки')
-                    ->createAnother(false),
+                    ->createAnother(false)
+                    ->after(function (RelationManager $livewire, Booking $booking) {
+                        $this->sendMessage($booking, $livewire->ownerRecord);
+                    }),
             ])
             ->actions([
                 EditAction::make()->modalHeading('Редактирование заявки'),
             ]);
+    }
+
+    private function sendMessage(Booking $booking, $scheduleLounge): void
+    {
+        $adminFilials = $this->getAdminFilials($scheduleLounge->lounge->filial_id);
+        $message = [
+            'Новая заявка: ' . $booking->type->value,
+            'Комната: ' . $scheduleLounge->lounge->name,
+            'Дата и время: ' . $scheduleLounge->date . ' с ' . $scheduleLounge->time_from . ' по ' . $scheduleLounge->time_to,
+            'Имя клиента: ' . $booking->name,
+            'Телефон: ' . $booking->phone,
+        ];
+
+        resolve(SendMessageBookingAction::class)->sendMessageLounge($adminFilials, $message);
+    }
+
+    private function getAdminFilials($filialId): array
+    {
+        return User::query()
+            ->whereHas('filials', fn($query) => $query
+                ->where('filial_id', $filialId))
+            ->whereNotNull('vk_id')
+            ->where('role', Role::FILIAL_ADMIN->value)
+            ->pluck('vk_id')
+            ->toArray();
     }
 }

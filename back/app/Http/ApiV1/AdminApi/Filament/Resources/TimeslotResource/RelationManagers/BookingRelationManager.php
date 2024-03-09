@@ -103,7 +103,7 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('comment')
                     ->label('Комментарий')
                     ->maxLengthWithHint(125)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'max' => 'Поле ":attribute" не должно превышать :max символов.',
                     ]),
@@ -171,14 +171,15 @@ class BookingRelationManager extends RelationManager
                         TextInput::make('comment')
                             ->label('Комментарий')
                             ->maxLengthWithHint(125)
-                            ->dehydrateStateUsing(fn ($state) => trim($state))
+                            ->dehydrateStateUsing(fn($state) => trim($state))
                             ->validationMessages([
                                 'max' => 'Поле ":attribute" не должно превышать :max символов.',
                             ]),
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value)
-                        ->whereDoesntHave('timeslots'))
+                        ->whereDoesntHave('timeslots')
+                        ->withoutTrashed())
                     ->recordSelectSearchColumns(['id'])
                     ->after(function (RelationManager $livewire, Booking $booking) {
                         $livewire->ownerRecord->update(['is_active' => false]);

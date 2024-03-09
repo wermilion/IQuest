@@ -84,7 +84,7 @@ class SendMessageBookingAction
         }
     }
 
-    private function sendMessageLounge(array $userIds, array $message): void
+    public function sendMessageLounge(array $userIds, array $message): void
     {
         $messageString = implode('<br>', $message);
 

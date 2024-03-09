@@ -95,10 +95,11 @@ class Booking extends Model
         });
 
         static::restoring(function (self $model) {
-            match ($model->type->value) {
-                BookingType::HOLIDAY->value => $model->bookingHoliday()->restore(),
-                BookingType::CERTIFICATE->value => $model->bookingCertificate()->restore(),
-            };
+            if ($model->type->value == BookingType::HOLIDAY->value) {
+                $model->bookingHoliday()->restore();
+            } else if ($model->type->value == BookingType::CERTIFICATE->value) {
+                $model->bookingCertificate()->restore();
+            }
         });
     }
 

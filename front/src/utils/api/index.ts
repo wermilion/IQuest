@@ -6,7 +6,7 @@ import StocksApi from './services/stocks/stocks'
 import ServicesApi from './services/services/services'
 import HolidaysApi from './services/holiday/holiday'
 import BookingApi from './services/booking/booking'
-import LoungeApi from './services/lounge/lounge'
+import FilialApi from './services/filial/filial'
 import CertificateApi from './services/certificate/certificate'
 import CityApi from './services/city/city'
 
@@ -25,7 +25,7 @@ export const api = {
   services: ServicesApi(instance),
   holidays: HolidaysApi(instance),
   booking: BookingApi(instance),
-  lounge: LoungeApi(instance),
+  filial: FilialApi(instance),
   certificate: CertificateApi(instance),
   city: CityApi(instance),
 }

@@ -6,7 +6,7 @@ import { useStocksStore } from './module/stocks.store'
 import { useServicesStore } from './module/services.store'
 import { useHolidaysListStore } from './module/holidays-list.store'
 import { useHolidayStore } from './module/holiday.store'
-import { useLoungeListStore } from './module/lounge.store'
+import { useFilialListStore } from './module/lounge.store'
 import { useCertificateListStore } from './module/certificate.store'
 import { useCityStore } from './module/city.store'
 
@@ -21,7 +21,7 @@ interface IStoreTypes {
   services: ReturnType<typeof useServicesStore>
   holidaysList: ReturnType<typeof useHolidaysListStore>
   holiday: ReturnType<typeof useHolidayStore>
-  loungeList: ReturnType<typeof useLoungeListStore>
+  filialList: ReturnType<typeof useFilialListStore>
   сertificateList: ReturnType<typeof useCertificateListStore>
   city: ReturnType<typeof useCityStore >
 }
@@ -37,7 +37,7 @@ export const stores: Readonly<{ [K in StoreKeys]: () => IStoreTypes[K] }> = Obje
   services: useServicesStore,
   holidaysList: useHolidaysListStore,
   holiday: useHolidayStore,
-  loungeList: useLoungeListStore,
+  filialList: useFilialListStore,
   сertificateList: useCertificateListStore,
   city: useCityStore,
 })

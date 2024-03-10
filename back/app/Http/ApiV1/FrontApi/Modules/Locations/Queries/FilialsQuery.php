@@ -19,6 +19,7 @@ class FilialsQuery extends QueryBuilder
 
         $this->allowedFilters([
             AllowedFilter::exact('city_id', 'city_id'),
+            AllowedFilter::exact('lounge_is_active', 'lounges.is_active'),
         ]);
 
         $this->defaultSort('id');

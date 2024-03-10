@@ -7,7 +7,6 @@ use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
-use Carbon\Carbon;
 
 /**
  * Class SendMessageBookingAction
@@ -31,9 +30,9 @@ class SendMessageBookingAction
             ->toArray();
 
         $message = [
-            'Новая заявка: ' . $booking->type->value,
-            'Имя клиента: ' . $booking->name,
-            'Телефон: ' . $booking->phone,
+            "Новая заявка: {$booking->type->value}",
+            "Имя клиента: $booking->name",
+            "Телефон: $booking->phone",
         ];
 
         $userIds = array_filter($userIds, function ($userId) {
@@ -64,16 +63,15 @@ class SendMessageBookingAction
 
         $userIds = array_merge($userIds, $adminFilials);
 
-        $comment = $bookingScheduleQuest->comment ? 'Комментарий: ' . $bookingScheduleQuest->comment : '';
+        $comment = $bookingScheduleQuest->comment ? "Комментарий: $bookingScheduleQuest->comment" : "";
         $questMessage = [
-            'Новая заявка: ' . $booking->type->value,
-            'Квест: ' . $bookingScheduleQuest->timeslot->scheduleQuest->quest->slug,
-            'Дата и время: ' . Carbon::parse($bookingScheduleQuest->timeslot->scheduleQuest->date)
-                ->translatedFormat('d.m.Y') . ' ' . $bookingScheduleQuest->timeslot->time,
-            'Имя клиента: ' . $booking->name,
-            'Телефон: ' . $booking->phone,
-            'Кол-во участников: ' . $bookingScheduleQuest->count_participants,
-            'Цена: ' . $bookingScheduleQuest->final_price,
+            "Новая заявка: {$booking->type->value}",
+            "Квест: {$bookingScheduleQuest->timeslot->scheduleQuest->quest->slug}",
+            "Дата и время: {$bookingScheduleQuest->timeslot->scheduleQuest->date} {$bookingScheduleQuest->timeslot->time}",
+            "Имя клиента: $booking->name",
+            "Телефон: $booking->phone",
+            "Кол - во участников: $bookingScheduleQuest->count_participants",
+            "Цена: $bookingScheduleQuest->final_price",
             $comment
         ];
 
@@ -97,8 +95,8 @@ class SendMessageBookingAction
     {
         $holidayPackage = $booking->bookingHoliday->holidayPackage;
 
-        $message[] = 'Тип праздника: ' . $holidayPackage->holiday->type->value;
-        $message[] = 'Пакет: ' . $holidayPackage->package->name;
+        $message[] = "Тип праздника: {$holidayPackage->holiday->type->value}";
+        $message[] = "Пакет: {$holidayPackage->package->name}";
 
         $messageString = implode('<br>', $message);
 
@@ -111,7 +109,7 @@ class SendMessageBookingAction
     {
         $bookingCertificate = $booking->bookingCertificate;
 
-        $message[] = 'Тип сертификата: ' . $bookingCertificate->certificateType->name;
+        $message[] = "Тип сертификата: {$bookingCertificate->certificateType->name}";
 
         $messageString = implode('<br>', $message);
 

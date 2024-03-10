@@ -59,7 +59,6 @@ class BookingRelationManager extends RelationManager
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
                 Select::make('type')
                     ->label('Тип заявки')
@@ -154,11 +153,11 @@ class BookingRelationManager extends RelationManager
     {
         $adminFilials = $this->getAdminFilials($scheduleLounge->lounge->filial_id);
         $message = [
-            'Новая заявка: ' . $booking->type->value,
-            'Комната: ' . $scheduleLounge->lounge->name,
-            'Дата и время: ' . $scheduleLounge->date . ' с ' . $scheduleLounge->time_from . ' по ' . $scheduleLounge->time_to,
-            'Имя клиента: ' . $booking->name,
-            'Телефон: ' . $booking->phone,
+            "Новая заявка: {$booking->type->value}",
+            "Комната: {$scheduleLounge->lounge->name}",
+            "Дата и время: $scheduleLounge->date с $scheduleLounge->time_from по $scheduleLounge->time_to",
+            "Имя клиента: $booking->name",
+            "Телефон: $booking->phone",
         ];
 
         resolve(SendMessageBookingAction::class)->sendMessageLounge($adminFilials, $message);

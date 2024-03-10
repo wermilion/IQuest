@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->decimal('price_per_hour')->comment('Цена за час');
             $table->boolean('is_active')->comment('Статус активности на сайте');
 
-            $table->foreignId('filial_id')->comment('Филиал лаужа')->constrained(table: 'filials');
+            $table->foreignId('filial_id')->comment('Филиал лаунжа')->constrained(table: 'filials');
 
             $table->timestamps();
             $table->softDeletes();

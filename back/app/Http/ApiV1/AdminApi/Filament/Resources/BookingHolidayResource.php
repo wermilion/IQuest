@@ -11,7 +11,9 @@ use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\CreateBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\ListBookingHolidays;
+use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use App\Rules\PhoneRule;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
@@ -67,6 +69,7 @@ class BookingHolidayResource extends BaseResource
                         TextInput::make('name')
                             ->label('Имя')
                             ->required()
+                            ->rules([new CyrillicRule])
                             ->maxLengthWithHint(40)
                             ->dehydrateStateUsing(fn($state) => trim($state))
                             ->validationMessages([
@@ -75,11 +78,10 @@ class BookingHolidayResource extends BaseResource
                         TextInput::make('phone')
                             ->label('Телефон')
                             ->required()
-                            ->rules(['size:18'])
+                            ->rules([new PhoneRule])
                             ->mask('+7 (999) 999-99-99')
                             ->validationMessages([
                                 'required' => 'Поле ":attribute" обязательно.',
-                                'size' => 'Поле ":attribute" должно содержать 18 символов.',
                             ]),
                         TextInput::make('type')
                             ->label('Тип')

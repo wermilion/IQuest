@@ -11,6 +11,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\CreateBooki
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\EditBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\ListBookings;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use App\Rules\PhoneRule;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -64,11 +65,10 @@ class BookingResource extends BaseResource
                 TextInput::make('phone')
                     ->label('Телефон')
                     ->required()
-                    ->rules(['size:18'])
+                    ->rules([new PhoneRule])
                     ->mask('+7 (999) 999-99-99')
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
                 Select::make('type')
                     ->label('Тип')

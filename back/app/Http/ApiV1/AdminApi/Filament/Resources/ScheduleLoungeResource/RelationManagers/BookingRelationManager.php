@@ -8,6 +8,8 @@ use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
+use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
+use App\Rules\PhoneRule;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -43,6 +45,7 @@ class BookingRelationManager extends RelationManager
                     ->native(false),
                 TextInput::make('name')
                     ->label('Имя')
+                    ->rules([new CyrillicRule])
                     ->required()
                     ->maxLengthWithHint(40)
                     ->dehydrateStateUsing(fn($state) => trim($state))
@@ -51,7 +54,7 @@ class BookingRelationManager extends RelationManager
                     ]),
                 TextInput::make('phone')
                     ->label('Телефон')
-                    ->rules(['size:18'])
+                    ->rules([new PhoneRule])
                     ->mask('+7 (999) 999-99-99')
                     ->required()
                     ->validationMessages([

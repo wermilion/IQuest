@@ -7,6 +7,7 @@ use App\Domain\Schedules\Models\Timeslot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class BookingScheduleQuest
@@ -23,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class BookingScheduleQuest extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'booking_id',
@@ -41,18 +42,21 @@ class BookingScheduleQuest extends Model
         });
 
         static::deleting(function (self $model) {
-            $model->timeslot()->update(['is_active' => true]);
             $model->booking()->delete();
+        });
+
+        static::forceDeleting(function (self $model) {
+            $model->booking()->forceDelete();
         });
     }
 
     public function booking(): BelongsTo
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class)->withTrashed();
     }
 
     public function timeslot(): BelongsTo
     {
-        return $this->belongsTo(Timeslot::class);
+        return $this->belongsTo(Timeslot::class)->withTrashed();
     }
 }

@@ -13,6 +13,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -86,6 +87,8 @@ class BookingScheduleQuestResource extends Resource
             ])
             ->defaultSort('id', 'desc')
             ->filters([
+                TrashedFilter::make()
+                    ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')
                     ->relationship('booking.city', 'name')

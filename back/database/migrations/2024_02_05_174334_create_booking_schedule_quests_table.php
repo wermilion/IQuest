@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('comment')->nullable()->comment('Комментарий');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -49,7 +49,7 @@ class CertificateTypeResource extends BaseResource
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 TextInput::make('price')
-                    ->label('Стоимость')
+                    ->label('Стоимость упаковки')
                     ->required()
                     ->numeric()
                     ->validationMessages([
@@ -91,7 +91,7 @@ class CertificateTypeResource extends BaseResource
                 TextColumn::make('name')
                     ->label('Название'),
                 TextColumn::make('price')
-                    ->label('Стоимость')
+                    ->label('Стоимость упаковки')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->label('Дата создания')

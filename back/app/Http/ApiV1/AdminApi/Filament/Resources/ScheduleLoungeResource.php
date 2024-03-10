@@ -20,12 +20,13 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -50,7 +51,7 @@ class ScheduleLoungeResource extends Resource
                 Select::make('city')
                     ->label('Город')
                     ->live()
-                    ->options(fn(): Collection => City::all()->pluck('name', 'id'))
+                    ->relationship('lounge.filial.city', 'name')
                     ->hiddenOn('')
                     ->helperText(function () {
                         return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
@@ -77,7 +78,7 @@ class ScheduleLoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
                     ->helperText(function () {
-                        return City::exists() ? '' : 'Лаунжи не обнаружены. Сначала создайте лаунжи.';
+                        return Lounge::exists() ? '' : 'Лаунжи не обнаружены. Сначала создайте лаунжи.';
                     })
                     ->native(false),
                 DatePicker::make('date')
@@ -91,6 +92,7 @@ class ScheduleLoungeResource extends Resource
                     ->mask('99:99')
                     ->placeholder('00:00')
                     ->rules([new TimeRule])
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
@@ -99,15 +101,11 @@ class ScheduleLoungeResource extends Resource
                     ->mask('99:99')
                     ->placeholder('00:00')
                     ->rules([new TimeRule])
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
             ]);
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return $record->booking()->doesntExist();
     }
 
     public static function table(Table $table): Table
@@ -137,6 +135,8 @@ class ScheduleLoungeResource extends Resource
                     ->label('Время конца'),
             ])
             ->filters([
+                TrashedFilter::make()
+                    ->native(false),
                 Filter::make('location')
                     ->form([
                         Select::make('city_id')
@@ -216,6 +216,7 @@ class ScheduleLoungeResource extends Resource
             ->actions([
                 EditAction::make(),
                 DeleteAction::make()->modalHeading('Удаление слота'),
+                ForceDeleteAction::make()->modalHeading('Удаление слота'),
             ]);
     }
 

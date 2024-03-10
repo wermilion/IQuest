@@ -3,6 +3,7 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Bookings\Requests;
 
 use App\Domain\Bookings\Enums\BookingType;
+use App\Rules\PhoneRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -14,7 +15,7 @@ class CreateBookingRequest extends FormRequest
     {
         return [
             'booking.name' => ['required', 'string'],
-            'booking.phone' => ['required', 'string'],
+            'booking.phone' => ['required', 'string', new PhoneRule],
             'booking.type' => ['required', new Enum(BookingType::class)],
             'booking.city_id' => ['required', 'integer', Rule::exists('cities', 'id')],
 

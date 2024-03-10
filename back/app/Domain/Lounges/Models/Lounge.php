@@ -2,13 +2,14 @@
 
 namespace App\Domain\Lounges\Models;
 
-use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
+use App\Domain\Schedules\Models\ScheduleLounge;
 use App\Traits\HasCover;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Lounge
@@ -23,11 +24,12 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
  * @property bool $is_active Статус отображения
  * @property int $filial_id Идентификатор филиала
  *
- * @property Filial $filial Филиал
+ * @property-read ScheduleLounge[] $scheduleLounges Расписание лаунжей
+ * @property-read Filial $filial Филиал
  */
 class Lounge extends Model
 {
-    use HasFactory, HasCover;
+    use HasFactory, HasCover, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -39,6 +41,30 @@ class Lounge extends Model
         'is_active',
         'filial_id',
     ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function (self $model) {
+            $model->scheduleLounges()->each(function ($scheduleLounge) {
+                if ($scheduleLounge->booking()->exists()) {
+                    $scheduleLounge->delete();
+                } else {
+                    $scheduleLounge->forceDelete();
+                }
+            });
+        });
+
+        static::forceDeleting(function (self $model) {
+            $model->scheduleLounges()->each(function ($scheduleLounge) {
+                $scheduleLounge->forceDelete();
+            });
+        });
+    }
+
+    public function scheduleLounges(): HasMany
+    {
+        return $this->hasMany(ScheduleLounge::class)->withTrashed();
+    }
 
     public function filial(): BelongsTo
     {

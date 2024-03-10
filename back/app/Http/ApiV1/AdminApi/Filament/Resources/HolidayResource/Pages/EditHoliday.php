@@ -10,18 +10,4 @@ class EditHoliday extends EditRecord
     protected static string $resource = HolidayResource::class;
 
     protected ?string $heading = 'Редактирование праздника';
-
-    protected function getHeaderActions(): array
-    {
-        return [
-
-        ];
-    }
-
-//    protected function getFormActions(): array
-//    {
-//        return [
-//
-//        ];
-//    }
 }

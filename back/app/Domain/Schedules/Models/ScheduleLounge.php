@@ -3,11 +3,14 @@
 namespace App\Domain\Schedules\Models;
 
 use App\Domain\Bookings\Models\Booking;
+use App\Domain\Bookings\Models\BookingScheduleLounge;
 use App\Domain\Lounges\Models\Lounge;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class ScheduleLounge
@@ -18,11 +21,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $time_to Время окончания расписания лаунджа
  * @property int $lounge_id Идентификатор лаунджа
  *
- * @property Lounge $lounge Лаундж
+ * @property-read Lounge $lounge Лаунж
+ * @property-read BookingScheduleLounge[] $bookingScheduleLounge Расписание лаунжей
+ * @property-read Booking[] $booking Заявки
  */
 class ScheduleLounge extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'date',
@@ -31,14 +36,29 @@ class ScheduleLounge extends Model
         'lounge_id',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function (self $model) {
+            $model->booking()->each(function ($booking) {
+                $booking->delete();
+            });
+        });
+
+        static::forceDeleting(function (self $model) {
+            $model->booking()->each(function ($booking) {
+                $booking->forceDelete();
+            });
+        });
+    }
+
     public function lounge(): BelongsTo
     {
-        return $this->belongsTo(Lounge::class);
+        return $this->belongsTo(Lounge::class)->withTrashed();
     }
 
     public function booking(): BelongsToMany
     {
         return $this->belongsToMany(Booking::class, 'booking_schedule_lounges')
-            ->withPivot(['comment']);
+            ->withPivot(['comment'])->withTrashed();
     }
 }

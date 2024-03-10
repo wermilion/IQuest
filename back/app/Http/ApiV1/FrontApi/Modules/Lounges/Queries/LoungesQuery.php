@@ -3,7 +3,6 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Lounges\Queries;
 
 use App\Domain\Lounges\Models\Lounge;
-use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -20,6 +19,7 @@ class LoungesQuery extends QueryBuilder
 
         $this->allowedFilters([
             AllowedFilter::exact('city_id', 'filial.city_id'),
+            AllowedFilter::exact('filial_id', 'filial_id'),
             AllowedFilter::callback('is_active', fn($query, $value) => $query->where('is_active', $value)),
         ]);
 

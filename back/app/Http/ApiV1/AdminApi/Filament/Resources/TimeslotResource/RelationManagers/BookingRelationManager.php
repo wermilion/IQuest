@@ -7,13 +7,13 @@ use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
+use App\Rules\PhoneRule;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions\AttachAction;
 use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -48,7 +48,7 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
-                    ->rules([new CyrillicRule()])
+                    ->rules([new CyrillicRule])
                     ->maxLengthWithHint(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
@@ -56,12 +56,11 @@ class BookingRelationManager extends RelationManager
                     ]),
                 TextInput::make('phone')
                     ->label('Телефон')
-                    ->rules(['size:18'])
+                    ->rules([new PhoneRule])
                     ->mask('+7 (999) 999-99-99')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'size' => 'Поле ":attribute" должно содержать 18 символов.',
                     ]),
                 Select::make('type')
                     ->label('Тип заявки')
@@ -103,7 +102,7 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('comment')
                     ->label('Комментарий')
                     ->maxLengthWithHint(125)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'max' => 'Поле ":attribute" не должно превышать :max символов.',
                     ]),
@@ -171,14 +170,15 @@ class BookingRelationManager extends RelationManager
                         TextInput::make('comment')
                             ->label('Комментарий')
                             ->maxLengthWithHint(125)
-                            ->dehydrateStateUsing(fn ($state) => trim($state))
+                            ->dehydrateStateUsing(fn($state) => trim($state))
                             ->validationMessages([
                                 'max' => 'Поле ":attribute" не должно превышать :max символов.',
                             ]),
                     ])
                     ->recordSelectOptionsQuery(fn(Builder $query) => $query
                         ->where('type', BookingType::QUEST->value)
-                        ->whereDoesntHave('timeslots'))
+                        ->whereDoesntHave('timeslots')
+                        ->withoutTrashed())
                     ->recordSelectSearchColumns(['id'])
                     ->after(function (RelationManager $livewire, Booking $booking) {
                         $livewire->ownerRecord->update(['is_active' => false]);

@@ -7,8 +7,8 @@ use App\Domain\Quests\Models\Quest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class ScheduleQuest
@@ -23,26 +23,39 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class ScheduleQuest extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'date',
-        'quest_id'
+        'quest_id',
     ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function (self $model) {
+            $model->timeslots()->each(function (Timeslot $timeslot) {
+                if ($timeslot->booking()->doesntExist()) {
+                    $timeslot->forceDelete();
+                } else {
+                    $timeslot->delete();
+                }
+            });
+        });
+
+        static::forceDeleting(function (self $model) {
+            $model->timeslots()->each(function (Timeslot $timeslot) {
+                $timeslot->forceDelete();
+            });
+        });
+    }
 
     public function quest(): BelongsTo
     {
-        return $this->belongsTo(Quest::class);
+        return $this->belongsTo(Quest::class)->withTrashed();
     }
 
     public function timeslots(): HasMany
     {
-        return $this->hasMany(Timeslot::class);
-    }
-
-    public function booking(): BelongsToMany
-    {
-        return $this->belongsToMany(Booking::class, 'booking_schedule_quests')
-            ->withPivot(['count_participants', 'final_price', 'comment']);
+        return $this->hasMany(Timeslot::class)->withTrashed();
     }
 }

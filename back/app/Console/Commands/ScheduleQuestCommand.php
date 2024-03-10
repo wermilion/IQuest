@@ -46,12 +46,12 @@ class ScheduleQuestCommand extends Command
     private function deleteSlotsForYesterday(Carbon $currentDate): void
     {
         $scheduleQuests = ScheduleQuest::query()->whereDate('date', $currentDate->subDay());
-        $scheduleQuests->each(function ($scheduleQuest) {
+        $scheduleQuests->each(function (ScheduleQuest $scheduleQuest) {
             $scheduleQuest->timeslots()
                 ->whereDoesntHave('booking')
-                ->delete();
+                ->forceDelete();
             if ($scheduleQuest->timeslots()->doesntExist()) {
-                $scheduleQuest->delete();
+                $scheduleQuest->forceDelete();
             }
         });
     }

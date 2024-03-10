@@ -37,7 +37,7 @@ class LoungePolicy
      */
     public function update(User $user, Lounge $lounge): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN && !$lounge->trashed();
     }
 
     /**

@@ -44,7 +44,7 @@ class Booking extends Model
         'phone',
         'type',
         'status',
-        'city_id'
+        'city_id',
     ];
 
     protected $casts = [
@@ -64,6 +64,9 @@ class Booking extends Model
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
                 if ($model->type->value == BookingType::QUEST->value) {
                     $model->timeslots()->update(['is_active' => true]);
+                    $model->bookingScheduleQuest()->forceDelete();
+                } else if ($model->type->value == BookingType::LOUNGE->value) {
+                    $model->bookingScheduleLounge()->forceDelete();
                 }
                 $model->delete();
             }
@@ -84,7 +87,7 @@ class Booking extends Model
 
         static::forceDeleting(function (self $model) {
             match ($model->type->value) {
-                BookingType::QUEST->value => $model->timeslots()->forceDelete(),
+                BookingType::QUEST->value => $model->bookingScheduleQuest()->forceDelete(),
                 BookingType::LOUNGE->value => $model->bookingScheduleLounge()->forceDelete(),
                 BookingType::HOLIDAY->value => $model->bookingHoliday()->forceDelete(),
                 BookingType::CERTIFICATE->value => $model->bookingCertificate()->forceDelete(),
@@ -92,12 +95,11 @@ class Booking extends Model
         });
 
         static::restoring(function (self $model) {
-            match ($model->type->value) {
-                BookingType::QUEST->value => $model->timeslots()->restore(),
-                BookingType::LOUNGE->value => $model->bookingScheduleLounge()->restore(),
-                BookingType::HOLIDAY->value => $model->bookingHoliday()->restore(),
-                BookingType::CERTIFICATE->value => $model->bookingCertificate()->restore(),
-            };
+            if ($model->type->value == BookingType::HOLIDAY->value) {
+                $model->bookingHoliday()->restore();
+            } else if ($model->type->value == BookingType::CERTIFICATE->value) {
+                $model->bookingCertificate()->restore();
+            }
         });
     }
 
@@ -113,7 +115,7 @@ class Booking extends Model
 
     public function bookingScheduleLounge(): HasOne
     {
-        return $this->hasOne(BookingScheduleLounge::class);
+        return $this->hasOne(BookingScheduleLounge::class)->withTrashed();
     }
 
     public function bookingHoliday(): HasOne

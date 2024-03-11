@@ -70,6 +70,7 @@ class CertificateTypeResource extends BaseResource
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
+                    ->resize(50)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',

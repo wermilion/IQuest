@@ -15,7 +15,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id - Идентификатор филиала
  * @property string $address - Адрес филиала
- * @property string $yandex_mark - Яндекс метка
+ * @property float $width - Координата по ширине
+ * @property float $longitude - Координата по долготе
  * @property int $city_id - Идентификатор города
  *
  * @property City $city
@@ -28,7 +29,8 @@ class Filial extends Model
 
     protected $fillable = [
         'address',
-        'yandex_mark',
+        'width',
+        'longitude',
         'city_id',
     ];
 

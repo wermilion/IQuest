@@ -28,10 +28,10 @@ class QuestImagesRelationManager extends RelationManager
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
+                    ->resize(50)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'image' => 'Поле ":attribute" должно быть изображением.',
                     ]),
             ]);
     }

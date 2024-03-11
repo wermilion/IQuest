@@ -18,7 +18,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class FilialResource extends Resource
 {
@@ -50,14 +49,23 @@ class FilialResource extends Resource
                     ->label('Адрес')
                     ->required()
                     ->maxLengthWithHint(255)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                TextInput::make('yandex_mark')
-                    ->label('Яндекс метка')
+                TextInput::make('width')
+                    ->label('Ширина')
+                    ->hint('Координата по ширине')
+                    ->numeric()
                     ->required()
-                    ->maxLengthWithHint(255)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
+                TextInput::make('longitude')
+                    ->label('Долгота')
+                    ->hint('Координата по долготе')
+                    ->numeric()
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

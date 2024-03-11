@@ -9,7 +9,7 @@ import { useHolidayStore } from './module/holiday.store'
 import { useFilialListStore } from './module/lounge.store'
 import { useCertificateListStore } from './module/certificate.store'
 import { useCityStore } from './module/city.store'
-import { useContactStore } from './module/contscts.store'
+import { useContactStore } from './module/contacts.store'
 
 type ExtractStoreId<T> = T extends { $id: infer U } ? U : never
 

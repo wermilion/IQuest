@@ -36,6 +36,11 @@ class QuestImagesRelationManager extends RelationManager
             ]);
     }
 
+    protected function canCreate(): bool
+    {
+        return static::getOwnerRecord()->images()->count() < 10;
+    }
+
     public function table(Table $table): Table
     {
         return $table

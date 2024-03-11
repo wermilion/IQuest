@@ -20,25 +20,30 @@ const links = [
         <img src="/logo/logo.svg" alt="logo">
       </router-link>
       <div class="header-links">
-        <router-link
-          v-for="(link, index) in links"
-          :key="link.name"
-          :to="link.link"
-          class="footnote"
-        >
-          <div
-            class="link"
-            :class="{ selected: $route.path === link.link, holiday: index === 1 }"
+        <template v-for="(link, index) in links">
+          <router-link
+            v-if="stores.holidaysList.holidaysList.length || index !== 1"
+            :key="link.name"
+            :to="link.link"
+            class="footnote"
           >
-            <span>[</span>
-            {{ link.name }}
-            <div v-if="index === 1" class="select">
-              <Arrow class="arrow" />
-              <DropList class="drop-down" :item="stores.holidaysList.holidaysList" />
+            <div
+              class="link"
+              :class="{
+                selected: $route.path === link.link,
+                holiday: index === 1,
+              }"
+            >
+              <span>[</span>
+              {{ link.name }}
+              <div v-if="index === 1" class="select">
+                <Arrow class="arrow" />
+                <DropList class="drop-down" :item="stores.holidaysList.holidaysList" />
+              </div>
+              <span>]</span>
             </div>
-            <span>]</span>
-          </div>
-        </router-link>
+          </router-link>
+        </template>
       </div>
       <City />
     </div>

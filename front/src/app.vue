@@ -11,11 +11,13 @@ const loading: WritableComputedRef<boolean> = computed({
 })
 const stores = setupStore(['questList', 'holidaysList', 'city', 'contact'])
 
-stores.city.fetchCity()
-stores.questList.fetchQuests()
-stores.contact.fetchPhone()
-stores.contact.fetchEmail()
-stores.holidaysList.fetchHolidaysList()
+Promise.all([
+  stores.city.fetchCity(),
+  stores.questList.fetchQuests(),
+  stores.contact.fetchPhone(),
+  stores.contact.fetchEmail(),
+  stores.holidaysList.fetchHolidaysList(),
+])
 </script>
 
 <template>

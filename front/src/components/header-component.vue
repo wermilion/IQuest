@@ -109,11 +109,12 @@ const links = [
 }
 
 .holiday {
+  position: relative;
   transition: all 0.1s ease-in-out;
   .drop-down {
     transition: all 0.3s ease-in-out;
-    top: 60px;
-    right: 670px;
+    top: 40px;
+    right: -10px;
     position: absolute;
     display: none;
     z-index: 10;
@@ -121,6 +122,9 @@ const links = [
 
   .arrow {
     transition: all 0.1s ease-in-out;
+    :deep(path) {
+      stroke-opacity: 0.6;
+    }
     transform: rotate(0);
   }
 
@@ -128,6 +132,9 @@ const links = [
     color: $color-base2;
     .arrow {
       transform: rotate(180deg);
+      :deep(path) {
+        stroke-opacity: 1;
+      }
     }
     span {
       color: $color-base2;

@@ -37,7 +37,7 @@ const chips = computed(() => {
     { title: `${genre.name}` },
     { title: `${age_limit?.name}` },
     {
-      title: `Сложность `,
+      title: `Сложность`,
       slot: {
         is: Difficulty,
         props: { max: level },

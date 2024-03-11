@@ -54,17 +54,18 @@ function openResultModal(isSuccess: ResultModal) {
       <div class="img-container">
         <img :key="activeRoom?.cover" v-lazy-src="activeRoom?.cover" class="loading-lazy" alt="">
       </div>
+
       <div class="wrapper">
         <div class="wrapper-header">
           <h1>Лаунж зона</h1>
           <div class="filter">
             <FilterChip
               v-for="item in stores.filialList.filialList"
-              :key="item.city.name"
+              :key="item.address"
               :is-selected="activeFilialId === item.id"
               @click="activeFilialId = item.id"
             >
-              {{ item.city.name }}
+              {{ item.address }}
             </FilterChip>
           </div>
           <div class="wrapper-header__rooms">

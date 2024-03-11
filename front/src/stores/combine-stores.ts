@@ -9,6 +9,7 @@ import { useHolidayStore } from './module/holiday.store'
 import { useFilialListStore } from './module/lounge.store'
 import { useCertificateListStore } from './module/certificate.store'
 import { useCityStore } from './module/city.store'
+import { useContactStore } from './module/contscts.store'
 
 type ExtractStoreId<T> = T extends { $id: infer U } ? U : never
 
@@ -24,6 +25,7 @@ interface IStoreTypes {
   filialList: ReturnType<typeof useFilialListStore>
   сertificateList: ReturnType<typeof useCertificateListStore>
   city: ReturnType<typeof useCityStore >
+  contact: ReturnType<typeof useContactStore >
 }
 
 type StoreKeys = ExtractStoreId<IStoreTypes[keyof IStoreTypes]>
@@ -40,6 +42,7 @@ export const stores: Readonly<{ [K in StoreKeys]: () => IStoreTypes[K] }> = Obje
   filialList: useFilialListStore,
   сertificateList: useCertificateListStore,
   city: useCityStore,
+  contact: useContactStore,
 })
 
 function setupStore<T extends StoreKeys>(key: T): Readonly<IStoreTypes[T]>

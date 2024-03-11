@@ -9,11 +9,12 @@ const loading: WritableComputedRef<boolean> = computed({
   get: () => store.loading,
   set: v => store.setLoading(v),
 })
-
-const stores = setupStore(['questList', 'holidaysList', 'city'])
+const stores = setupStore(['questList', 'holidaysList', 'city', 'contact'])
 
 stores.city.fetchCity()
 stores.questList.fetchQuests()
+stores.contact.fetchPhone()
+stores.contact.fetchEmail()
 stores.holidaysList.fetchHolidaysList()
 </script>
 

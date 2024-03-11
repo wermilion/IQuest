@@ -4,7 +4,8 @@ import type { Filials } from '../location.types'
 export function filials(): Filials {
   return {
     id: faker.number.int({ min: 10, max: 1000 }),
-    yandex_mark: 'Метка',
+    width: faker.location.latitude({ min: 56.484, max: 56.484642 }).toString(),
+    longitude: faker.location.longitude({ min: 84.94, max: 84.947650 }).toString(),
     address: faker.location.street(),
     city: {
       id: faker.number.int({ min: 10, max: 1000 }),

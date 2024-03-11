@@ -32,7 +32,7 @@ function openResultModal(isSuccess: ResultModal) {
       :class="{
         man: type === 'Взрослый праздник',
         child: type === 'Детский праздник',
-        corp: type === 'Корпорастив',
+        corp: type === 'Корпоратив',
       }"
     >
       <div class="container cover-info" :class="{ corpInfo }">
@@ -116,7 +116,7 @@ function openResultModal(isSuccess: ResultModal) {
 .corp {
   background:
     linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
-    url('/holidays/coop.jpg'),
+    url('/holidays/corp.jpg'),
     lightgray 50% / cover no-repeat;
 }
 </style>

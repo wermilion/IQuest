@@ -1,6 +1,11 @@
 // стили для модального окана
 @import './fonts.scss';
 
+.v-overlay__scrim {
+  background-color: $color-base2 !important;
+  opacity: 4% !important;
+}
+
 .v-input__details,
 .v-field,
 .v-input__control {

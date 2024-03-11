@@ -48,8 +48,14 @@ body {
 .loading-lazy {
   &:not(.loaded),
   &:not(.error) {
-    background: linear-gradient(-45deg, #dddddd, #f0f0f0, #d6d6d6, #f0f0f0);
-    background-size: 400% 400%;
+    background: linear-gradient(
+      90deg,
+      $color-opacity02,
+      $color-base1,
+      $color-opacity025,
+      $color-base1
+    );
+    background-size: 300% 200%;
     -webkit-animation: Shine 2.25s ease infinite;
     -moz-animation: Shine 2.25s ease infinite;
     animation: Shine 2.25s ease infinite;

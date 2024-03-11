@@ -56,13 +56,13 @@ onMounted(() => {
           v-for="img in images"
           :key="img.image"
           v-lazy-src="img.image"
-          loading="lazy"
+
           class="swiper-slide loading-lazy"
           :alt="img.image"
         >
       </template>
       <template v-else>
-        <img v-lazy-src="stores.quest?.cover" :alt="stores.quest?.cover">
+        <img v-lazy-src="stores.quest?.cover" class="loading-lazy" alt="">
       </template>
     </div>
 
@@ -80,10 +80,9 @@ onMounted(() => {
 .swiper-container {
   overflow: hidden;
   position: relative;
-  max-width: 616px;
-  max-height: 411px;
+  width: 616px;
+  height: 411px;
   width: 100%;
-  height: 100%;
 }
 .swiper-slide {
   border-radius: $cover-8;

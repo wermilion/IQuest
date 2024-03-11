@@ -54,7 +54,7 @@ function openResultModal(isSuccess: ResultModal) {
               </FilterChip>
             </div>
           </div>
-          <span class="body">Стоисотьс упаковки — {{ activePackege.price }}₽</span>
+          <span class="body">Стоимость упаковки — {{ activePackege.price }}₽</span>
         </div>
       </div>
       <div class="wrapper-content">

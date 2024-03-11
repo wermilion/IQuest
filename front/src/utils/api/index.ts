@@ -9,6 +9,7 @@ import BookingApi from './services/booking/booking'
 import FilialApi from './services/filial/filial'
 import CertificateApi from './services/certificate/certificate'
 import CityApi from './services/city/city'
+import ContactApi from './services/contact/contact'
 
 import { RequestErrorInterceptor } from './interceptors/request-error'
 
@@ -28,4 +29,5 @@ export const api = {
   filial: FilialApi(instance),
   certificate: CertificateApi(instance),
   city: CityApi(instance),
+  contact: ContactApi(instance),
 }

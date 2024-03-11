@@ -48,7 +48,6 @@ function mapToMove(lon: number, lag: number, id: number) {
         }"
         theme
         height="492px"
-        showScaleInCopyrights: true
         width="100%"
       >
         <YandexMapDefaultSchemeLayer :settings="{ theme: 'dark' }" />

@@ -16,7 +16,7 @@ RUN npm install
 RUN npm run build
 
 FROM harbor.tomsk-it.ru/asap-infra/unit:php8.2-pdo-psql as back
-RUN apt-get update && apt-get install -y git unzip libzip-dev libicu-dev libpng-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git unzip libzip-dev libicu-dev libpng-dev libjpeg62-turbo-dev && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install zip && \
     docker-php-ext-configure gd && docker-php-ext-install gd && \
     docker-php-ext-configure intl && docker-php-ext-install intl

@@ -4,18 +4,31 @@ namespace App\Dto;
 
 use Illuminate\Support\Fluent;
 
+/**
+ * class QuestNewRequest
+ *
+ * @property string $new_request - Новая заявка
+ * @property string $quest - Квест
+ * @property string $date_and_time - Дата и время
+ * @property string $customer_name - Имя клиента
+ * @property string $customer_phone - телефон клиента
+ * @property string $count_participants - Кол - во участников
+ * @property string $final_price - Цена
+ * @property string $comment - Комментарий
+ */
 class QuestNewRequest extends Fluent
 {
-    public function __construct(array $attributes = [])
+    public function toArray(): array
     {
-        $attributes['new_request'] = "Новая заявка: {$attributes['new_request']}";
-        $attributes['quest'] = "Квест: {$attributes['quest']}";
-        $attributes['date_and_time'] = "Дата и время: {$attributes['date_and_time']}";
-        $attributes['customer_name'] = "Имя клиента: {$attributes['customer_name']}";
-        $attributes['customer_phone'] = "Телефон: {$attributes['customer_phone']}";
-        $attributes['count_participants'] = "Кол - во участников: {$attributes['count_participants']}";
-        $attributes['final_price'] = "Цена: {$attributes['final_price']}";
-
-        parent::__construct($attributes);
+        return [
+            "Новая заявка: $this->new_request",
+            "Квест: $this->quest",
+            "Дата и время: $this->date_and_time",
+            "Имя клиента: $this->customer_name",
+            "Телефон: $this->customer_phone",
+            "Кол - во участников: $this->count_participants",
+            "Цена: $this->final_price",
+            "Комментарий: $this->comment"
+        ];
     }
 }

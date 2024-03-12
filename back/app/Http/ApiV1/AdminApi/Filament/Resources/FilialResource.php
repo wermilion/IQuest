@@ -7,6 +7,7 @@ use App\Domain\Locations\Models\Filial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\CreateFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\EditFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\ListFilials;
+use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicNumberRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -48,14 +49,15 @@ class FilialResource extends Resource
                 TextInput::make('address')
                     ->label('Адрес')
                     ->required()
-                    ->maxLengthWithHint(255)
+                    ->rules([new CyrillicNumberRule])
+                    ->maxLengthWithHint(40)
                     ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                TextInput::make('width')
+                TextInput::make('latitude')
                     ->label('Ширина')
-                    ->hint('Координата по ширине')
+                    ->hint('Координата по широте')
                     ->numeric()
                     ->required()
                     ->validationMessages([

@@ -12,6 +12,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -19,6 +20,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\HtmlString;
 
 class PackagesRelationManager extends RelationManager
 {
@@ -65,6 +67,7 @@ class PackagesRelationManager extends RelationManager
                     ->columnSpanFull()
                     ->required()
                     ->maxLengthWithHint(1000)
+                    ->helperText(new HtmlString('При заполнении описания обязательно используйте <b>нумерованные</b> или <b>маркированные</b> списки для корректного отображения компонентов праздника.'))
                     ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -109,6 +112,7 @@ class PackagesRelationManager extends RelationManager
                 ViewAction::make()->modalHeading('Просмотр пакета'),
                 DeleteAction::make()->modalHeading('Удаление пакета'),
                 RestoreAction::make()->modalHeading('Восстановление пакета'),
+                ForceDeleteAction::make()->modalHeading('Удаление пакета'),
             ]);
     }
 }

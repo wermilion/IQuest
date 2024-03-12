@@ -8,6 +8,7 @@ use App\Domain\Bookings\Models\Booking;
 use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
 use App\Dto\CertificateNewRequest;
+use App\Dto\FullLoungeNewRequest;
 use App\Dto\HolidayNewRequest;
 use App\Dto\LoungeNewRequest;
 use App\Dto\QuestNewRequest;
@@ -40,7 +41,7 @@ class SendMessageBookingAction
         if (!empty($userIds)) {
             match ($booking->type->value) {
                 BookingType::QUEST->value => $this->sendMessageQuest($booking, $userIds),
-                BookingType::LOUNGE->value => $this->sendMessageLounge($booking, $userIds),
+                BookingType::LOUNGE->value => $this->sendMessageLounge($booking, userIds: $userIds),
                 BookingType::HOLIDAY->value => $this->sendMessageHoliday($booking, $userIds),
                 BookingType::CERTIFICATE->value => $this->sendMessageCertificate($booking, $userIds),
             };
@@ -52,48 +53,42 @@ class SendMessageBookingAction
         $bookingScheduleQuest = $booking->bookingScheduleQuest;
 
         $adminFilials = $this->getAdminFilials($bookingScheduleQuest->timeslot->scheduleQuest->quest->filial_id);
-
         $userIds = array_merge($userIds, $adminFilials);
 
-        $comment = $bookingScheduleQuest->comment ? "Комментарий: $bookingScheduleQuest->comment" : "";
+        $comment = $bookingScheduleQuest->comment ? $bookingScheduleQuest->comment : '';
 
-        $message = new QuestNewRequest([
-            'new_request' => "Новая заявка: {$booking->type->value}",
-            'quest' => "Квест: {$bookingScheduleQuest->timeslot->scheduleQuest->quest->slug}",
-            'date_and_time' => "Дата и время: {$bookingScheduleQuest->timeslot->scheduleQuest->date} {$bookingScheduleQuest->timeslot->time}",
-            'customer_name' => "Имя клиента: $booking->name",
-            'customer_phone' => "Телефон: $booking->phone",
-            'count_participants' => "Кол - во участников: $bookingScheduleQuest->count_participants",
-            'final_price' => "Цена: $bookingScheduleQuest->final_price",
-            'comment' => $comment
-        ]);
+        $questNewRequest = new QuestNewRequest();
+        $questNewRequest->new_request = $booking->type->value;
+        $questNewRequest->quest = $bookingScheduleQuest->timeslot->scheduleQuest->quest->name;
+        $questNewRequest->date_and_time = "{$bookingScheduleQuest->timeslot->scheduleQuest->date} {$bookingScheduleQuest->timeslot->time}";
+        $questNewRequest->customer_name = "$booking->name";
+        $questNewRequest->customer_phone = "$booking->phone";
+        $questNewRequest->count_participants = "$bookingScheduleQuest->count_participants";
+        $questNewRequest->final_price = "$bookingScheduleQuest->final_price";
+        $questNewRequest->comment = $comment;
 
-        $messageString = implode('<br>', $message->toArray());
+        $messageString = implode('<br>', $questNewRequest->toArray());
 
         foreach ($userIds as $userId) {
             $this->vk->sendMessage($userId, $messageString);
         }
     }
 
-    public function sendMessageLounge(Booking $booking, array $userIds = []): void
+    public function sendMessageLounge(Booking $booking, array $userIds): void
     {
-        $message = new LoungeNewRequest([
-            'new_request' => $booking->type->value,
-            'customer_name' => $booking->name,
-            'customer_phone' => $booking->phone,
-        ]);
+        $loungeNewRequest = new LoungeNewRequest();
+        $loungeNewRequest->new_request = $booking->type->value;
+        $loungeNewRequest->customer_name = $booking->name;
+        $loungeNewRequest->customer_phone = $booking->phone;
 
-        $scheduleLounge = $booking->bookingScheduleLounge->scheduleLounge;
+        if ($booking->bookingScheduleLounge()->exists()) {
+            $userIds = $this->getAdminFilials($booking->bookingScheduleLounge->scheduleLounge->lounge->filial_id);
 
-        if ($scheduleLounge) {
-            $message->lounge = $scheduleLounge->lounge->name;
-            $message->date_and_time = "$scheduleLounge->date с $scheduleLounge->time_from по $scheduleLounge->time_to";
-
-            $adminFilials = $this->getAdminFilials($scheduleLounge->lounge->filial_id);
-            $userIds = array_merge($userIds, $adminFilials);
+            $loungeNewRequest->lounge = $booking->bookingScheduleLounge->scheduleLounge->lounge->name;
+            $loungeNewRequest->date_and_time = "{$booking->bookingScheduleLounge->scheduleLounge->date} с {$booking->bookingScheduleLounge->scheduleLounge->time_from} по {$booking->bookingScheduleLounge->scheduleLounge->time_to}";
         }
 
-        $messageString = implode('<br>', $message->toArray());
+        $messageString = implode('<br>', $loungeNewRequest->toArray());
 
         foreach ($userIds as $userId) {
             $this->vk->sendMessage($userId, $messageString);
@@ -104,14 +99,14 @@ class SendMessageBookingAction
     {
         $holidayPackage = $booking->bookingHoliday->holidayPackage;
 
-        $message = new HolidayNewRequest([
-            'new_request' => "Новая заявка: {$booking->type->value}",
-            'holiday_and_package' => "Праздник и пакет: {$holidayPackage->holiday->type->value} {$holidayPackage->package->name}",
-            'customer_name' => "Имя клиента: $booking->name",
-            'customer_phone' => "Телефон: $booking->phone",
-        ]);
+        $holidayNewRequest = new HolidayNewRequest();
+        $holidayNewRequest->new_request = $booking->type->value;
+        $holidayNewRequest->holiday = $holidayPackage->holiday->type->value;
+        $holidayNewRequest->package = $holidayPackage->package->name;
+        $holidayNewRequest->customer_name = $booking->name;
+        $holidayNewRequest->customer_phone = $booking->phone;
 
-        $messageString = implode('<br>', $message->toArray());
+        $messageString = implode('<br>', $holidayNewRequest->toArray());
 
         foreach ($userIds as $userId) {
             $this->vk->sendMessage($userId, $messageString);
@@ -122,14 +117,13 @@ class SendMessageBookingAction
     {
         $bookingCertificate = $booking->bookingCertificate;
 
-        $message = new CertificateNewRequest([
-            'new_request' => "Новая заявка: {$booking->type->value}",
-            'certificate' => "Тип сертификата: {$bookingCertificate->certificate->type->value}",
-            'customer_name' => "Имя клиента: $booking->name",
-            'customer_phone' => "Телефон: $booking->phone",
-        ]);
+        $certificateNewRequest = new CertificateNewRequest();
+        $certificateNewRequest->new_request = $booking->type->value;
+        $certificateNewRequest->certificate = $bookingCertificate->certificateType->name;
+        $certificateNewRequest->customer_name = $booking->name;
+        $certificateNewRequest->customer_phone = $booking->phone;
 
-        $messageString = implode('<br>', $message->toArray());
+        $messageString = implode('<br>', $certificateNewRequest->toArray());
 
         foreach ($userIds as $userId) {
             $this->vk->sendMessage($userId, $messageString);

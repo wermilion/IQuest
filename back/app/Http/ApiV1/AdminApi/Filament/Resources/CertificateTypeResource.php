@@ -43,7 +43,7 @@ class CertificateTypeResource extends BaseResource
                     ->autofocus()
                     ->label('Название')
                     ->required()
-                    ->maxLengthWithHint(255)
+                    ->maxLengthWithHint(30)
                     ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',

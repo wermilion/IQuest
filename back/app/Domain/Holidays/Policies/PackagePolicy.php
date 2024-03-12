@@ -37,7 +37,7 @@ class PackagePolicy
      */
     public function update(User $user, Package $package): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN && !$package->trashed();
     }
 
     /**

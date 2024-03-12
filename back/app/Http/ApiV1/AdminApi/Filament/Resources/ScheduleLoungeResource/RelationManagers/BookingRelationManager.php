@@ -6,9 +6,6 @@ use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
-use App\Domain\Users\Enums\Role;
-use App\Domain\Users\Models\User;
-use App\Dto\LoungeNewRequest;
 use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Rules\PhoneRule;
 use Filament\Forms\Components\Select;
@@ -135,36 +132,18 @@ class BookingRelationManager extends RelationManager
                         ->withoutTrashed())
                     ->attachAnother(false)
                     ->recordSelectSearchColumns(['id'])
-                    ->after(function (RelationManager $livewire, Booking $booking) {
-                        $this->sendMessage($booking, $livewire->ownerRecord);
+                    ->after(function (Booking $booking) {
+                        resolve(SendMessageBookingAction::class)->execute($booking);
                     }),
                 CreateAction::make()
                     ->modalHeading('Создание заявки')
                     ->createAnother(false)
-                    ->after(function (RelationManager $livewire, Booking $booking) {
-                        $this->sendMessage($booking, $livewire->ownerRecord);
-                    }),
+                    ->after(function (Booking $booking) {
+                        resolve(SendMessageBookingAction::class)->execute($booking);
+                    })
             ])
             ->actions([
                 EditAction::make()->modalHeading('Редактирование заявки'),
             ]);
-    }
-
-    private function sendMessage(Booking $booking, $scheduleLounge): void
-    {
-        $adminFilials = $this->getAdminFilials($scheduleLounge->lounge->filial_id);
-        
-        resolve(SendMessageBookingAction::class)->sendMessageLounge($booking, $adminFilials);
-    }
-
-    private function getAdminFilials($filialId): array
-    {
-        return User::query()
-            ->whereHas('filials', fn($query) => $query
-                ->where('filial_id', $filialId))
-            ->whereNotNull('vk_id')
-            ->where('role', Role::FILIAL_ADMIN->value)
-            ->pluck('vk_id')
-            ->toArray();
     }
 }

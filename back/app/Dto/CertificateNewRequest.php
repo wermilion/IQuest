@@ -4,15 +4,23 @@ namespace App\Dto;
 
 use Illuminate\Support\Fluent;
 
+/**
+ * class CertificateNewRequest
+ *
+ * @property string $new_request - Новая заявка
+ * @property string $certificate - Тип сертификата
+ * @property string $customer_name - Имя клиента
+ * @property string $customer_phone - телефон клиента
+ */
 class CertificateNewRequest extends Fluent
 {
-    public function __construct(array $attributes = [])
+    public function toArray(): array
     {
-        $attributes['new_request'] = "Новая заявка: {$attributes['new_request']}";
-        $attributes['certificate'] = "Тип сертификата: {$attributes['certificate']}";
-        $attributes['customer_name'] = "Имя клиента: {$attributes['customer_name']}";
-        $attributes['customer_phone'] = "Телефон: {$attributes['customer_phone']}";
-
-        parent::__construct($attributes);
+        return [
+            "Новая заявка: $this->new_request",
+            "Тип: $this->certificate",
+            "Имя клиента: $this->customer_name",
+            "Телефон: $this->customer_phone",
+        ];
     }
 }

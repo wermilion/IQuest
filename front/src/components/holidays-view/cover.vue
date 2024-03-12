@@ -38,7 +38,7 @@ function openResultModal(isSuccess: ResultModal) {
       <div class="container cover-info" :class="{ corpInfo }">
         <h1>{{ type }}</h1>
         <div v-if="corpInfo" class="cover-info__btn">
-          <Button :button-light="true" name="Оставить заявку" @click="openBookingModal" />
+          <Button :button-light="true" name="Оформить заявку" @click="openBookingModal" />
           <span class="body">От 600₽ с человека</span>
         </div>
         <BookingModal

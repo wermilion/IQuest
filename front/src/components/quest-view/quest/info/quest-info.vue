@@ -8,7 +8,7 @@ import Button from '#/components/shared/button.vue'
 import type { Quest } from '#/types/models/quest'
 
 const props = defineProps<{ info: Quest }>()
-const button = 'Оставить заявку'
+const button = 'Забронировать'
 const stores = setupStore(['quest'])
 
 const convertDuration = computed(() => {

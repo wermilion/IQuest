@@ -12,7 +12,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const convertDuration = computed(() => {
-  if (props.quest.duration >= 60) {
+  if (props.quest.duration > 60) {
     const hours = Math.floor(props.quest.duration / 60)
     const minutes = props.quest.duration % 60
     return `${hours} ч ${minutes} мин`

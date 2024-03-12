@@ -27,6 +27,8 @@ readonly class CreateBookingAction
 
         if ($booking->type->value == BookingType::QUEST->value && $data['schedule_quest']) {
             $booking->bookingScheduleQuest()->create([...$data['schedule_quest'], 'booking_id' => $booking->id]);
+        } else if ($booking->type->value == BookingType::LOUNGE->value) {
+            resolve(SendMessageBookingAction::class)->execute($booking);
         } else if ($booking->type->value == BookingType::HOLIDAY->value && $data['holiday']) {
             $this->createBookingHoliday($booking, $data);
         } else if ($booking->type->value == BookingType::CERTIFICATE->value && $data['certificate_type_id']) {

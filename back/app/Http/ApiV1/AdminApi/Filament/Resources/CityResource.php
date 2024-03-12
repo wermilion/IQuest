@@ -6,6 +6,7 @@ use App\Domain\Locations\Models\City;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\CreateCity;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\EditCity;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CityResource\Pages\ListCities;
+use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -34,8 +35,9 @@ class CityResource extends Resource
                     ->label('Название')
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLengthWithHint(40)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->rules([new CyrillicRule])
+                    ->maxLengthWithHint(30)
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.',

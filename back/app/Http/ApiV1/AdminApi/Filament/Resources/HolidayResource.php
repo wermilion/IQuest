@@ -17,7 +17,6 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class HolidayResource extends Resource
 {
@@ -41,7 +40,6 @@ class HolidayResource extends Resource
                     ->options(HolidayType::class)
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLengthWithHint(20)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.'

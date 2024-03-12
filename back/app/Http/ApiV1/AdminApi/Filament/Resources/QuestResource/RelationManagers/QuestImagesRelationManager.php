@@ -28,12 +28,17 @@ class QuestImagesRelationManager extends RelationManager
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
+                    ->resize(50)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'image' => 'Поле ":attribute" должно быть изображением.',
                     ]),
             ]);
+    }
+
+    protected function canCreate(): bool
+    {
+        return static::getOwnerRecord()->images()->count() < 10;
     }
 
     public function table(Table $table): Table

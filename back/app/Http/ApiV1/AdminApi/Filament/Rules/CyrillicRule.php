@@ -15,7 +15,7 @@ class CyrillicRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/^[а-яА-Я\.\-_@!#$%^&*(){}?><,;:\'"\/\\\|`~]+$/iu', $value)) {
+        if (!preg_match('/^[а-яА-Я\. \-_@!#$%^&*(){}?><,;:\'"\/\\\|`~]+$/iu', $value)) {
             $fail('Поле ":attribute" должно содержать только кириллицу и спец. символы.');
         }
     }

@@ -54,12 +54,6 @@ class Booking extends Model
 
     protected static function booted(): void
     {
-        static::created(function (self $model) {
-            if ($model->type->value == BookingType::LOUNGE->value) {
-                resolve(SendMessageBookingAction::class)->execute($model);
-            }
-        });
-
         static::updated(function (self $model) {
             if ($model->isDirty('status') && $model->status->value == BookingStatus::CANCELLED->value) {
                 if ($model->type->value == BookingType::QUEST->value) {

@@ -38,7 +38,7 @@ class FilialPolicy
     public function delete(User $user, Filial $filial): bool
     {
         return $user->role === Role::ADMIN
-            && $filial->quests()->doesntExist()
-            && $filial->lounges()->doesntExist();
+            && $filial->quests()->withTrashed()->doesntExist()
+            && $filial->lounges()->withTrashed()->doesntExist();
     }
 }

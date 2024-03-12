@@ -7,6 +7,7 @@ use App\Domain\Locations\Models\Filial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\CreateFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\EditFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\ListFilials;
+use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicNumberRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,7 +19,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class FilialResource extends Resource
 {
@@ -49,15 +49,25 @@ class FilialResource extends Resource
                 TextInput::make('address')
                     ->label('Адрес')
                     ->required()
-                    ->maxLengthWithHint(255)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->rules([new CyrillicNumberRule])
+                    ->maxLengthWithHint(40)
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                TextInput::make('yandex_mark')
-                    ->label('Яндекс метка')
+                TextInput::make('latitude')
+                    ->label('Широта')
+                    ->hint('Координата по широте')
+                    ->numeric()
                     ->required()
-                    ->maxLengthWithHint(255)
+                    ->validationMessages([
+                        'required' => 'Поле ":attribute" обязательное.',
+                    ]),
+                TextInput::make('longitude')
+                    ->label('Долгота')
+                    ->hint('Координата по долготе')
+                    ->numeric()
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),

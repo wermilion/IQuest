@@ -16,7 +16,7 @@ interface Props {
 const props = defineProps<Props>()
 const emits = defineEmits<{ submit: [ResultModal] }>()
 const modal = defineModel<boolean>()
-const stores = setupStore('holiday')
+const stores = setupStore(['holiday', 'city'])
 const formData = reactive({
   fullName: '',
   phoneNumber: '',
@@ -25,7 +25,7 @@ const formData = reactive({
 
 const modalProps = computed(() => ({
   title: 'Оформление',
-  subTitle: `${stores.holiday?.type} • ${props.package.name}`,
+  subTitle: `${stores.holiday.holiday?.type} • ${props.package.name}`,
 }))
 
 async function submitForm() {
@@ -37,10 +37,10 @@ async function submitForm() {
         name: formData.fullName,
         phone: formData.phoneNumber,
         type: 'Праздник',
-        city_id: 1,
+        city_id: stores.city.selectedCity.id,
       },
       holiday: {
-        holiday_id: stores.holiday?.id || 0,
+        holiday_id: stores.holiday.holiday?.id || 0,
         package_id: props.package?.id || 0,
       },
     })

@@ -15,11 +15,12 @@ export const useQuestListStore = defineStore('questList', {
   }),
   actions: {
     async fetchQuests() {
+      const stores = setupStore(['city'])
       try {
         const response = await api.quest.getSearch({
           include: ['type', 'genre'],
           filter: {
-            city_id: 1,
+            city_id: stores.city.selectedCity.id,
             is_active: true,
           },
         })

@@ -15,11 +15,12 @@ export const useStocksStore = defineStore('stocks', {
   }),
   actions: {
     async fetchStocks() {
+      const stores = setupStore(['city'])
       try {
         const response = await api.stocks.getStocks({
           include: [],
           filter: {
-            city_id: 1,
+            city_id: stores.city.selectedCity.id,
             is_active: true,
           },
         })

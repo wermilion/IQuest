@@ -3,7 +3,7 @@ export interface BookingPayload {
     name: string
     phone: string
     type: 'Квест' | 'Лаунж' | 'Праздник' | 'Сертификат'
-    city_id: number | string
+    city_id: number
   }
   schedule_quest?: {
     timeslot_id: number

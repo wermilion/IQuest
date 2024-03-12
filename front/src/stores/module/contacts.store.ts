@@ -22,6 +22,7 @@ export const useContactStore = defineStore('contact', {
   },
   actions: {
     async fetchSocial() {
+      const stores = setupStore(['city'])
       this.requestWrapper({
         key: 'contact',
 
@@ -31,7 +32,7 @@ export const useContactStore = defineStore('contact', {
               'contactType',
             ],
             filter: {
-              city_id: 1,
+              city_id: stores.city.selectedCity.id,
               contact_type_id: 1,
               is_social: true,
             },
@@ -43,6 +44,7 @@ export const useContactStore = defineStore('contact', {
       })
     },
     async fetchPhone() {
+      const stores = setupStore(['city'])
       this.requestWrapper({
         key: 'contact',
 
@@ -52,7 +54,7 @@ export const useContactStore = defineStore('contact', {
               'contactType',
             ],
             filter: {
-              city_id: 1,
+              city_id: stores.city.selectedCity.id,
               contact_type_id: 3,
             },
           })
@@ -63,6 +65,7 @@ export const useContactStore = defineStore('contact', {
       })
     },
     async fetchEmail() {
+      const stores = setupStore(['city'])
       this.requestWrapper({
         key: 'contact',
 
@@ -72,7 +75,7 @@ export const useContactStore = defineStore('contact', {
               'contactType',
             ],
             filter: {
-              city_id: 1,
+              city_id: stores.city.selectedCity.id,
               contact_type_id: 2,
             },
           })

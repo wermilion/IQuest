@@ -10,9 +10,9 @@ const stores = setupStore(['city'])
     class="link footnote city pointer"
   >
     <span>[</span>
-    {{ stores.city.city?.[0].name }}
+    {{ stores.city.selectedCity.name }}
     <Arrow class="arrow" />
-    <DropList class="drop-down" :item="stores.city.city!" />
+    <DropList class="drop-down" :item="stores.city.cities!" />
     <span>]</span>
   </div>
 </template>
@@ -32,7 +32,6 @@ const stores = setupStore(['city'])
     display: none;
     z-index: 10;
   }
-
   .arrow {
     transition: all 0.1s ease-in-out;
     transform: rotate(0);

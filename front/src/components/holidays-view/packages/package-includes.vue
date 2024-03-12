@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import AssistChip from '#/components/quest-view/quest/info/assist-chip.vue'
 
 const props = defineProps<{ description?: string }>()

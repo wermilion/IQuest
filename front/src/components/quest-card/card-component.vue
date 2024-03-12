@@ -45,7 +45,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
       @click="router.push({ name: EAppRouteNames.Quest, params: { id: quest.id } })"
     >
       <div class="card-image">
-        <img loading="lazy" :src="quest.cover" :alt="quest.cover">
+        <img v-lazy-src="quest.cover" class="loading-lazy" alt="">
       </div>
 
       <div class="card-body">
@@ -91,7 +91,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 
   &-image {
     width: 398px;
-    height: 100%;
+    height: 246px;
     overflow: hidden;
   }
 

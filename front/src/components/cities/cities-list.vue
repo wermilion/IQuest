@@ -2,6 +2,8 @@
 import type { City } from '#/types/models/city'
 
 defineProps<{ item?: City[] }>()
+
+const stores = setupStore('city')
 </script>
 
 <template>
@@ -10,6 +12,7 @@ defineProps<{ item?: City[] }>()
       v-for="element in item"
       :key="element.id"
       class="footnote"
+      @click="stores.selectCity(element)"
     >
       {{ element.name }}
     </div>

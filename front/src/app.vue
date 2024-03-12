@@ -1,28 +1,44 @@
 <script setup lang="ts">
-import { type WritableComputedRef, computed } from 'vue'
 import HeaderComponent from '#/components/header-component.vue'
 import FooterComponent from '#/components/footer-component.vue'
 
-const store = setupStore('global')
+const stores = setupStore(['global', 'stocks', 'questList', 'holidaysList', 'contact', 'city'])
+const isInitialized = ref(false)
 
-const loading: WritableComputedRef<boolean> = computed({
-  get: () => store.loading,
-  set: v => store.setLoading(v),
-})
-const stores = setupStore(['questList', 'holidaysList', 'city', 'contact'])
-
-Promise.all([
-  stores.city.fetchCity(),
-  stores.questList.fetchQuests(),
+Promise.allSettled([
+  stores.city.fetchCities(),
   stores.contact.fetchPhone(),
   stores.contact.fetchEmail(),
+
   stores.holidaysList.fetchHolidaysList(),
 ])
+  .then (() => {
+    isInitialized.value = true
+  })
+
+const isLoading: WritableComputedRef<boolean> = computed({
+  get: () => stores.global.loading || !isInitialized.value,
+  set: v => stores.global.setLoading(v),
+})
+
+watch(() => stores.city.selectedCity, () => {
+  isInitialized.value = false
+  Promise.allSettled([
+    stores.contact.fetchPhone(),
+    stores.stocks.fetchStocks(),
+    stores.contact.fetchEmail(),
+    stores.questList.fetchQuests(),
+    stores.holidaysList.fetchHolidaysList(),
+  ])
+    .then (() => {
+      isInitialized.value = true
+    })
+})
 </script>
 
 <template>
   <div class="main-container">
-    <template v-if="loading">
+    <template v-if="isLoading">
       Loading...
     </template>
 

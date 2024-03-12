@@ -8,6 +8,7 @@ import type { ResultModal } from '#/types/shared/common'
 
 const emits = defineEmits<{ submit: [ResultModal] }>()
 const modal = defineModel<boolean>()
+const stores = setupStore(['city'])
 const formData = reactive({
   fullName: '',
   phoneNumber: '',
@@ -28,7 +29,7 @@ async function submitForm() {
         name: formData.fullName,
         phone: formData.phoneNumber,
         type: 'Праздник',
-        city_id: 1,
+        city_id: stores.city.selectedCity.id,
       },
       holiday: {
         holiday_id: 3,

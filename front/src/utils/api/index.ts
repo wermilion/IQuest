@@ -20,6 +20,7 @@ const instance = axios.create({
 RequestErrorInterceptor(instance)
 
 export const api = {
+  city: CityApi(instance),
   shared: SharedApi(instance),
   quest: QuestApi(instance),
   stocks: StocksApi(instance),
@@ -28,6 +29,5 @@ export const api = {
   booking: BookingApi(instance),
   filial: FilialApi(instance),
   certificate: CertificateApi(instance),
-  city: CityApi(instance),
   contact: ContactApi(instance),
 }

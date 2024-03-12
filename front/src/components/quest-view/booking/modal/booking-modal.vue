@@ -19,10 +19,10 @@ interface Props {
 const props = defineProps<Props>()
 const emits = defineEmits<{ submit: [ResultModal] }>()
 const modal = defineModel<boolean>()
-const stores = setupStore('quest')
+const stores = setupStore(['quest', 'city'])
 
 const formData = reactive({
-  people: stores.quest?.min_people || 0,
+  people: stores.quest.quest?.min_people || 0,
   fullName: '',
   phoneNumber: '',
   addLoudge: false,
@@ -39,20 +39,20 @@ const totalPrice = computed(() => {
 })
 
 function addPeople(): void {
-  if (stores.quest?.max_people !== undefined
-    && formData.people < stores.quest?.max_people)
+  if (stores.quest.quest?.max_people !== undefined
+    && formData.people < stores.quest.quest?.max_people)
     formData.people++
 }
 
 function removePeople(): void {
-  if (stores.quest?.min_people !== undefined
-    && formData.people > stores.quest?.min_people)
+  if (stores.quest.quest?.min_people !== undefined
+    && formData.people > stores.quest.quest?.min_people)
     formData.people--
 }
 
 const modalProps = computed(() => ({
   title: 'Бронирование',
-  subTitle: `${stores.quest?.name} • ${props.date} • ${props.item?.time?.replace(/:00$/, '') ?? ''}`,
+  subTitle: `${stores.quest.quest?.name} • ${props.date} • ${props.item?.time?.replace(/:00$/, '') ?? ''}`,
 }))
 
 async function submitForm() {
@@ -64,7 +64,7 @@ async function submitForm() {
         name: formData.fullName,
         phone: formData.phoneNumber,
         type: 'Квест',
-        city_id: 1,
+        city_id: stores.city.selectedCity.id,
       },
       schedule_quest: {
         timeslot_id: props.item?.id,

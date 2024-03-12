@@ -56,7 +56,7 @@ class FilialResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
                 TextInput::make('latitude')
-                    ->label('Ширина')
+                    ->label('Широта')
                     ->hint('Координата по широте')
                     ->numeric()
                     ->required()

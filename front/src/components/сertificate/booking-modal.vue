@@ -14,6 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 const emits = defineEmits<{ submit: [ResultModal] }>()
 const modal = defineModel<boolean>()
+const stores = setupStore(['city'])
 
 const formData = reactive({
   fullName: '',
@@ -35,7 +36,7 @@ async function submitForm() {
         name: formData.fullName,
         phone: formData.phoneNumber,
         type: 'Сертификат',
-        city_id: 1,
+        city_id: stores.city.selectedCity.id,
       },
       certificate_type_id: props.certificate.id,
     })

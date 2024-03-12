@@ -49,7 +49,7 @@ function openResultModal(isSuccess: ResultModal) {
         <div class="booking-footer">
           <Button
             :button-light="true"
-            name="Забронировать"
+            name="Оформить заявку"
             @click="openBookingModal"
           />
           <span class="body">От {{ activePackege.price }}₽</span>

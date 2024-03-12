@@ -32,13 +32,13 @@ function openResultModal(isSuccess: ResultModal) {
       :class="{
         man: type === 'Взрослый праздник',
         child: type === 'Детский праздник',
-        corp: type === 'Корпорастив',
+        corp: type === 'Корпоратив',
       }"
     >
       <div class="container cover-info" :class="{ corpInfo }">
         <h1>{{ type }}</h1>
         <div v-if="corpInfo" class="cover-info__btn">
-          <Button :button-light="true" name="Оставить заявку" @click="openBookingModal" />
+          <Button :button-light="true" name="Оформить заявку" @click="openBookingModal" />
           <span class="body">От 600₽ с человека</span>
         </div>
         <BookingModal
@@ -116,7 +116,7 @@ function openResultModal(isSuccess: ResultModal) {
 .corp {
   background:
     linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
-    url('/holidays/coop.jpg'),
+    url('/holidays/corp.jpg'),
     lightgray 50% / cover no-repeat;
 }
 </style>

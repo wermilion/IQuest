@@ -9,11 +9,13 @@ import { useHolidayStore } from './module/holiday.store'
 import { useFilialListStore } from './module/lounge.store'
 import { useCertificateListStore } from './module/certificate.store'
 import { useCityStore } from './module/city.store'
+import { useContactStore } from './module/contacts.store'
 
 type ExtractStoreId<T> = T extends { $id: infer U } ? U : never
 
 interface IStoreTypes {
   global: ReturnType<typeof useGlobalStore>
+  city: ReturnType<typeof useCityStore >
   quest: ReturnType<typeof useQuestStore>
   questList: ReturnType<typeof useQuestListStore>
   scheduleQuest: ReturnType<typeof useScheduleQuestStore>
@@ -23,13 +25,14 @@ interface IStoreTypes {
   holiday: ReturnType<typeof useHolidayStore>
   filialList: ReturnType<typeof useFilialListStore>
   сertificateList: ReturnType<typeof useCertificateListStore>
-  city: ReturnType<typeof useCityStore >
+  contact: ReturnType<typeof useContactStore >
 }
 
 type StoreKeys = ExtractStoreId<IStoreTypes[keyof IStoreTypes]>
 
 export const stores: Readonly<{ [K in StoreKeys]: () => IStoreTypes[K] }> = Object.freeze({
   global: useGlobalStore,
+  city: useCityStore,
   quest: useQuestStore,
   questList: useQuestListStore,
   scheduleQuest: useScheduleQuestStore,
@@ -39,7 +42,7 @@ export const stores: Readonly<{ [K in StoreKeys]: () => IStoreTypes[K] }> = Obje
   holiday: useHolidayStore,
   filialList: useFilialListStore,
   сertificateList: useCertificateListStore,
-  city: useCityStore,
+  contact: useContactStore,
 })
 
 function setupStore<T extends StoreKeys>(key: T): Readonly<IStoreTypes[T]>

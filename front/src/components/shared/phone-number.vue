@@ -1,15 +1,32 @@
 <script setup lang="ts">
-defineProps<{ isActiveIng?: boolean }>()
-const phoneNumber = {
-  text: '94-29-10',
-  img: 'phone',
-  link: 'tel:94-29-10',
-}
+defineProps<{ isActiveImg?: boolean }>()
+
+const store = setupStore('contact')
+
+onMounted(() => {
+  store.fetchPhone()
+})
+
+const phoneNumber = ref({
+  text: '',
+  img: '',
+  link: '',
+})
+
+watch(() => store.phone, (newValue) => {
+  if (newValue.length) {
+    phoneNumber.value = {
+      text: newValue[0].value!,
+      img: 'phone',
+      link: `tel:${newValue[0].value!}`,
+    }
+  }
+})
 </script>
 
 <template>
   <span class="body">
-    <img v-if="!isActiveIng" :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
+    <img v-if="isActiveImg === false" :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
     <a :href="phoneNumber.link">{{ phoneNumber.text }}</a>
   </span>
 </template>

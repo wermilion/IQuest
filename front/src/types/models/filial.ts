@@ -1,11 +1,11 @@
 export interface Filial {
   id: number
   address: string
-  yandex_mark: string
+  width: number
+  longitude: number
   city: City
   lounges: Lounge[]
 }
-
 interface City {
   id: number
   name: string

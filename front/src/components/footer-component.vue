@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Email from './shared/email.vue'
 import PhoneNumber from './shared/phone-number.vue'
 
 const linksSocial = [
@@ -17,11 +18,6 @@ const linksSocial = [
 ]
 
 const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
-
-const emainAddress = {
-  text: 'iquest.tsk@gmail.com',
-  img: 'mail.svg',
-}
 </script>
 
 <template>
@@ -31,13 +27,7 @@ const emainAddress = {
       <div class="footer-links">
         <div class="footer-links__contacts">
           <PhoneNumber />
-          <span class="body">
-            <img
-              :src="`/icons/share/${emainAddress.img}`"
-              :alt="emainAddress.img"
-            >
-            {{ emainAddress.text }}
-          </span>
+          <Email />
         </div>
         <div class="footer-links__social">
           <a

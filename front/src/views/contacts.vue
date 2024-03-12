@@ -1,36 +1,24 @@
 <script setup lang="ts">
-import {
-  YandexMap,
-  YandexMapControls,
-  YandexMapDefaultSchemeLayer,
-  YandexMapZoomControl,
-} from 'vue-yandex-maps'
+import ContactsMain from '#/components/contacts/contacts-main.vue'
+
+const store = setupStore('filialList')
+
+store.fetchFilial()
 </script>
 
 <template>
-  <section>
-    <h1>Контакты</h1>
-    <YandexMap
-      :settings="{
-        location: {
-
-          center: [84.947649, 56.484645],
-          zoom: 15,
-        },
-      }"
-      height="100vh"
-    >
-      <YandexMapDefaultSchemeLayer :settings="{ theme: 'dark' }" />
-      <YandexMapControls :settings="{ position: 'right' }">
-        <YandexMapZoomControl />
-      </YandexMapControls>
-    </YandexMap>
+  <section v-if="store.filialList.length" class="container">
+    <ContactsMain />
   </section>
+  <template v-else>
+    <section class="loading">
+      <h1>Загрузка контактов</h1>
+    </section>
+  </template>
 </template>
 
 <style scoped>
-#map {
-  width: 100%;
-  height: 400px;
+.container {
+  margin-top: 160px;
 }
 </style>

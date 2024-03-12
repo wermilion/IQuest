@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Holiday } from '../../types/models/holiday'
+import type { Holiday } from '#/types/models/holiday'
 
 //* --- State ----------------------------------------------- *//
 interface HolidayState {

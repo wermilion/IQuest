@@ -20,25 +20,30 @@ const links = [
         <img src="/logo/logo.svg" alt="logo">
       </router-link>
       <div class="header-links">
-        <router-link
-          v-for="(link, index) in links"
-          :key="link.name"
-          :to="link.link"
-          class="footnote"
-        >
-          <div
-            class="link"
-            :class="{ selected: $route.path === link.link, holiday: index === 1 }"
+        <template v-for="(link, index) in links">
+          <router-link
+            v-if="stores.holidaysList.holidaysList.length || index !== 1"
+            :key="link.name"
+            :to="link.link"
+            class="footnote"
           >
-            <span>[</span>
-            {{ link.name }}
-            <div v-if="index === 1" class="select">
-              <Arrow class="arrow" />
-              <DropList class="drop-down" :item="stores.holidaysList.holidaysList" />
+            <div
+              class="link"
+              :class="{
+                selected: $route.path === link.link,
+                holiday: index === 1,
+              }"
+            >
+              <span>[</span>
+              {{ link.name }}
+              <div v-if="index === 1" class="select">
+                <Arrow class="arrow" />
+                <DropList class="drop-down" :item="stores.holidaysList.holidaysList" />
+              </div>
+              <span>]</span>
             </div>
-            <span>]</span>
-          </div>
-        </router-link>
+          </router-link>
+        </template>
       </div>
       <City />
     </div>
@@ -109,11 +114,12 @@ const links = [
 }
 
 .holiday {
+  position: relative;
   transition: all 0.1s ease-in-out;
   .drop-down {
     transition: all 0.3s ease-in-out;
-    top: 60px;
-    right: 670px;
+    top: 40px;
+    right: -10px;
     position: absolute;
     display: none;
     z-index: 10;
@@ -121,6 +127,9 @@ const links = [
 
   .arrow {
     transition: all 0.1s ease-in-out;
+    :deep(path) {
+      stroke-opacity: 0.6;
+    }
     transform: rotate(0);
   }
 
@@ -128,6 +137,9 @@ const links = [
     color: $color-base2;
     .arrow {
       transform: rotate(180deg);
+      :deep(path) {
+        stroke-opacity: 1;
+      }
     }
     span {
       color: $color-base2;

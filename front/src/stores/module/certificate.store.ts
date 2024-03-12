@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia'
 import type { Certificate } from '#/types/models/certificate'
 
 //* --- State ----------------------------------------------- *//

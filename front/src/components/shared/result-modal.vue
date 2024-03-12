@@ -9,7 +9,7 @@ const model = defineModel<boolean>()
 </script>
 
 <template>
-  <v-dialog v-model="model" persistent>
+  <v-dialog v-model="model" persistent :scrollable="true">
     <div class="modal-wrapper">
       <template v-if="isSuccess.status === 'success'">
         <div class="modal-header">
@@ -31,14 +31,14 @@ const model = defineModel<boolean>()
           </div>
         </div>
         <div class="modal-footer">
-          <Button name="Закрыть" @click="model = false" />
+          <Button name="Закрыть" @click="$router.go(0)" />
         </div>
       </template>
       <template v-else>
         <div class="modal-header__error">
           <div class="modal-header__text">
             <h2 class="error">
-              Ошибка
+              Ошибка:
             </h2>
             <h2 class="error">
               {{ isSuccess.info.title }}

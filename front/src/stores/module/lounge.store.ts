@@ -11,6 +11,7 @@ export const useFilialListStore = defineStore('filialList', {
     filialList: [],
   }),
   getters: {
+
     requestWrapper: () => useRequestMeta().requestMetaWrapper,
     isLoading: (): boolean => useRequestMeta().checkAnyIsLoading(['lounge']),
     errors: () => useRequestMeta().getError(['lounge']),
@@ -20,6 +21,7 @@ export const useFilialListStore = defineStore('filialList', {
   },
   actions: {
     async fetchFilial() {
+      const stores = setupStore(['city'])
       this.requestWrapper({
         key: 'lounge',
 
@@ -30,7 +32,7 @@ export const useFilialListStore = defineStore('filialList', {
               'lounges',
             ],
             filter: {
-              city_id: 1,
+              city_id: stores.city.selectedCity.id,
             },
           })
         },

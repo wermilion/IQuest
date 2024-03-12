@@ -9,6 +9,7 @@ import BookingApi from './services/booking/booking'
 import FilialApi from './services/filial/filial'
 import CertificateApi from './services/certificate/certificate'
 import CityApi from './services/city/city'
+import ContactApi from './services/contact/contact'
 
 import { RequestErrorInterceptor } from './interceptors/request-error'
 
@@ -19,6 +20,7 @@ const instance = axios.create({
 RequestErrorInterceptor(instance)
 
 export const api = {
+  city: CityApi(instance),
   shared: SharedApi(instance),
   quest: QuestApi(instance),
   stocks: StocksApi(instance),
@@ -27,5 +29,5 @@ export const api = {
   booking: BookingApi(instance),
   filial: FilialApi(instance),
   certificate: CertificateApi(instance),
-  city: CityApi(instance),
+  contact: ContactApi(instance),
 }

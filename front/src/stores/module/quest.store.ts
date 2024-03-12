@@ -20,11 +20,12 @@ export const useQuestStore = defineStore('quest', {
   }),
   actions: {
     async fetchQuest(id: string) {
+      const stores = setupStore(['city'])
       try {
         const response = await api.quest.getQuest(id, {
           include: ['type', 'genre', 'filial', 'images', 'age_limit'],
           filter: {
-            city_id: 1,
+            city_id: stores.city.selectedCity.id,
             is_active: true,
           },
         })

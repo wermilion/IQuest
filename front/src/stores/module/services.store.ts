@@ -15,11 +15,12 @@ export const useServicesStore = defineStore('services', {
   }),
   actions: {
     async fetchServices() {
+      const stores = setupStore(['city'])
       try {
         const response = await api.services.getServices({
           include: [],
           filter: {
-            city_id: 1,
+            city_id: stores.city.selectedCity.id,
           },
         })
         this.services = response.data.data

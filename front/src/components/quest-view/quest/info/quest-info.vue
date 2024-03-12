@@ -8,11 +8,11 @@ import Button from '#/components/shared/button.vue'
 import type { Quest } from '#/types/models/quest'
 
 const props = defineProps<{ info: Quest }>()
-const button = 'Оставить заявку'
+const button = 'Забронировать'
 const stores = setupStore(['quest'])
 
 const convertDuration = computed(() => {
-  if (props.info.duration >= 60) {
+  if (props.info.duration > 60) {
     const hours = Math.floor(props.info.duration / 60)
     const minutes = props.info.duration % 60
     return `${hours} ч ${minutes} мин`
@@ -37,7 +37,7 @@ const chips = computed(() => {
     { title: `${genre.name}` },
     { title: `${age_limit?.name}` },
     {
-      title: `Сложность `,
+      title: `Сложность`,
       slot: {
         is: Difficulty,
         props: { max: level },

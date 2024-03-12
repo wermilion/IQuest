@@ -12,7 +12,7 @@ const button = 'Забронировать'
 const stores = setupStore(['quest'])
 
 const convertDuration = computed(() => {
-  if (props.info.duration >= 60) {
+  if (props.info.duration > 60) {
     const hours = Math.floor(props.info.duration / 60)
     const minutes = props.info.duration % 60
     return `${hours} ч ${minutes} мин`

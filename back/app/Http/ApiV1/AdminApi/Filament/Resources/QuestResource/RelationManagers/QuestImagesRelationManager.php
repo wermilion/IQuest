@@ -28,6 +28,7 @@ class QuestImagesRelationManager extends RelationManager
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
+                    ->orientImagesFromExif(false)
                     ->resize(50)
                     ->required()
                     ->validationMessages([

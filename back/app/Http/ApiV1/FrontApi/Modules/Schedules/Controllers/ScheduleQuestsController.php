@@ -17,7 +17,7 @@ class ScheduleQuestsController
     public function search(PageBuilderFactory $pageBuilderFactory, ScheduleQuestsQuery $query): AnonymousResourceCollection
     {
         return ScheduleQuestsResource::collectPage(
-            $pageBuilderFactory->fromQuery($query)->build()
+            $pageBuilderFactory->fromQuery($query->withoutTrashed())->build()
         );
     }
 }

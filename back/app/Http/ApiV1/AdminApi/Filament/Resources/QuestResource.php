@@ -208,6 +208,7 @@ class QuestResource extends Resource
                     ->label('Обложка')
                     ->columnSpanFull()
                     ->image()
+                    ->orientImagesFromExif(false)
                     ->resize(50)
                     ->required()
                     ->validationMessages([

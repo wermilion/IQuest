@@ -60,16 +60,24 @@ class FilialResource extends Resource
                     ->hint('Координата по широте')
                     ->numeric()
                     ->required()
+                    ->rules([
+                        'regex:/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/'
+                    ])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'regex' => 'Поле ":attribute" должно быть в формате широты.',
                     ]),
                 TextInput::make('longitude')
                     ->label('Долгота')
                     ->hint('Координата по долготе')
                     ->numeric()
                     ->required()
+                    ->rules([
+                        'regex:/^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/',
+                    ])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'regex' => 'Поле ":attribute" должно быть в формате долготы.',
                     ]),
             ]);
     }

@@ -75,6 +75,7 @@ class SaleResource extends Resource
                     ->label('Переднее изображение')
                     ->columnSpanFull()
                     ->image()
+                    ->orientImagesFromExif(false)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -85,6 +86,7 @@ class SaleResource extends Resource
                     ->label('Заднее изображение')
                     ->columnSpanFull()
                     ->image()
+                    ->orientImagesFromExif(false)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',

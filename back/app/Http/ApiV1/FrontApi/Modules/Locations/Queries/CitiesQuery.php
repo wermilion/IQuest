@@ -15,6 +15,6 @@ class CitiesQuery extends QueryBuilder
             'name'
         ]);
 
-        $this->defaultSort('name');
+        $this->defaultSort('id');
     }
 }

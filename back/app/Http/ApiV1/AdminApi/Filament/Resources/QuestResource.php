@@ -20,6 +20,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\Qu
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
 use Auth;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -148,9 +149,9 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
                     ]),
-                Textarea::make('description')
-                    ->autosize()
+                RichEditor::make('description')
                     ->label('Описание')
+                    ->columnSpanFull()
                     ->required()
                     ->maxLengthWithHint(1000)
                     ->dehydrateStateUsing(fn($state) => trim($state))
@@ -158,9 +159,9 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" не должно превышать :max символов.'
                     ]),
-                Textarea::make('short_description')
-                    ->autosize()
+                RichEditor::make('short_description')
                     ->label('Краткое описание')
+                    ->columnSpanFull()
                     ->required()
                     ->maxLengthWithHint(125)
                     ->dehydrateStateUsing(fn($state) => trim($state))

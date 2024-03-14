@@ -38,7 +38,7 @@ const loundge = {
 
   &-image {
     width: 100%;
-    height: 100%;
+    max-height: 246px;
     overflow: hidden;
   }
 
@@ -49,13 +49,13 @@ const loundge = {
   }
 
   &-body {
-    max-height: 152px;
+    height: 100%;
+    max-height: clamp(122px, 20vw, 152px);
     background: $color-opacity004;
-    backdrop-filter: blur(50px);
-    padding: $cover-24;
+    padding: clamp($cover-20, 3vw, $cover-24);
     display: flex;
     flex-direction: column;
-    gap: $cover-36;
+    gap: clamp($cover-28, 3vw, $cover-36);
   }
 }
 

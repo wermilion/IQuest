@@ -8,14 +8,14 @@ const stores = setupStore('city')
 
 <template>
   <div class="dorp-list pointer">
-    <div
+    <span
       v-for="element in item"
       :key="element.id"
       class="footnote"
       @click="stores.selectCity(element)"
     >
       {{ element.name }}
-    </div>
+    </span>
   </div>
 </template>
 
@@ -28,12 +28,11 @@ const stores = setupStore('city')
   background-color: $color-base1;
   border: 1px solid $color-opacity012;
 
-  div {
+  span {
     display: flex;
     padding: $cover-12;
     align-items: center;
     transition: all 0.2s ease-out;
-
     &:hover {
       color: $color-base2;
     }

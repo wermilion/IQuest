@@ -12,7 +12,7 @@ const model = defineModel<boolean>()
 </script>
 
 <template>
-  <v-dialog v-model="model">
+  <v-dialog v-model="model" scrollable>
     <div class="modal-wrapper">
       <div class="modal-header">
         <div class="modal-header__title">

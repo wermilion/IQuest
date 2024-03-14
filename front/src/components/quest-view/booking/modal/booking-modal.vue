@@ -55,9 +55,16 @@ const modalProps = computed(() => ({
   subTitle: `${stores.quest.quest?.name} • ${props.date} • ${props.item?.time?.replace(/:00$/, '') ?? ''}`,
 }))
 
+const validatName = ref()
+
 async function submitForm() {
-  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
-    return
+  // if (
+  //   validatName.value
+  //   || phoneRules.every(rule => rule(formData.phoneNumber))
+  //   || checkboxRules.every(rule => rule(formData.privatePolice))
+  // )
+  //   console.log(validatName.value.validate())
+
   try {
     await api.booking.postBooking({
       booking: {
@@ -88,17 +95,17 @@ async function submitForm() {
 </script>
 
 <template>
-  <Modal v-model="modal" persistent v-bind="modalProps">
+  <Modal v-model="modal" v-bind="modalProps">
     <template #content>
       <div class="content-wrapper">
         <v-form class="form">
           <v-text-field
+            ref="validatName"
             v-model.lazy.trim="formData.fullName"
             :rules="nameRules"
             color="primary"
             variant="underlined"
             label="Имя"
-
             required
           />
           <v-text-field
@@ -149,7 +156,6 @@ async function submitForm() {
         <Button
           name="Забронировать"
           type="submit"
-          :disabled="!formData.fullName || !formData.phoneNumber || !formData.privatePolice"
           :button-light="true"
           @click="submitForm"
         />

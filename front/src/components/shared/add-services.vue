@@ -39,13 +39,10 @@ const stores = setupStore('services')
   display: inline-flex;
   padding: $cover-40;
   justify-content: space-between;
-  gap: 102px;
+  gap: clamp(50px, 7vw, 102px);
+
   border-radius: $cover-12;
   border: 2px solid $color-opacity025;
-
-  @media screen and (max-width: 1200px) {
-    flex-wrap: wrap;
-  }
 
   &__body {
     display: flex;
@@ -55,7 +52,7 @@ const stores = setupStore('services')
     gap: $cover-32;
     max-width: 722px;
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1024px) {
       max-width: 100%;
     }
   }
@@ -68,6 +65,7 @@ const stores = setupStore('services')
     &-header {
       gap: $cover-12;
       align-items: center;
+      flex-wrap: wrap;
 
       span {
         display: flex;
@@ -91,6 +89,26 @@ const stores = setupStore('services')
       justify-content: space-between;
       padding-bottom: 4px;
       border-bottom: 1px solid $color-opacity025;
+    }
+  }
+
+  @media screen and (max-width: 1270px) {
+    border: none;
+    border-radius: 0%;
+    border-top: 1px solid $color-opacity025;
+    border-bottom: 1px solid $color-opacity025;
+  }
+
+  @media screen and (max-width: 1024px) {
+    padding: $cover-24 $cover-16;
+    flex-wrap: wrap;
+
+    :deep(a .card) {
+      width: 100%;
+
+      .card-image {
+        width: 100%;
+      }
     }
   }
 }

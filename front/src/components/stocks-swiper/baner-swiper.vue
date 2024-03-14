@@ -57,7 +57,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="bag-secondary">
+  <section v-if="stores.stocks?.length" class="bag-secondary">
     <div ref="slider" class="swiper-container container">
       <div class="swiper-wrapper">
         <SliderComponent
@@ -115,6 +115,10 @@ onMounted(() => {
   background-repeat: no-repeat;
   background-position: center;
   overflow: hidden;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 }
 
 .swiper-container {
@@ -139,7 +143,8 @@ onMounted(() => {
   left: 9%;
   right: auto;
   top: 260px;
-  min-width: 192px;
+  max-width: clamp(140px, 13vw, 192px);
+  width: 100%;
   display: flex;
   gap: $cover-8;
 }

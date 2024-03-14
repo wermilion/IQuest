@@ -23,7 +23,7 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
 <template>
   <footer class="border">
     <div class="container footer">
-      <img src="/logo/logo_full.svg" alt="logo">
+      <img src="/logo/logo_full.svg" class="logo" alt="logo">
       <div class="footer-links">
         <div class="footer-links__contacts">
           <PhoneNumber />
@@ -61,13 +61,17 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
   background-image: url('/gradient/footer-gradient.svg');
   background-repeat: no-repeat;
   background-position: center top;
-  margin-top: 108px;
+  margin-top: clamp(64px, 10vw, 108px);
+
+  @media screen and (max-width: 1024px) {
+    background-position: center 160px;
+  }
 }
 
 .footer {
   height: 100%;
   margin-inline: auto;
-  padding: 72px 88px;
+  padding: clamp(32px, 3vw, 72px) clamp(16px, 3vw, 88px);
   justify-content: space-between;
   max-height: 282px;
 
@@ -99,12 +103,74 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    color: $color-base2;
+
+    p {
+      color: $color-base2;
+    }
 
     span {
+      color: #f0f0f0;
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    display: grid;
+    margin: 0 auto;
+    grid-template-columns: 1fr;
+    gap: 41px;
+    max-height: 100%;
+
+    &-links {
+      grid-column: 1;
+      grid-row: 1;
+      align-items: center;
+      gap: 41px;
+      flex-direction: column-reverse;
+
+      &__social {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+
+        img {
+          width: 100%;
+          height: 32px;
+        }
+
+        a:nth-child(2) {
+          grid-column: 3;
+        }
+
+        a:nth-child(3) {
+          grid-row: 1;
+          grid-column: 2;
+        }
+      }
+    }
+
+    &-privacy {
+      grid-column: 1;
+      grid-row: 3;
+      align-items: center;
+      gap: $cover-12;
+
+      a {
+        width: 80px;
+        height: 40px;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    .logo {
+      max-width: 88px;
+      width: 100%;
+      padding-left: 18.5px;
+      margin: 0 auto;
     }
   }
 }

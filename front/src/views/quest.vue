@@ -8,6 +8,8 @@ const route = useRoute()
 
 const stores = setupStore(['quest', 'services'])
 
+stores.quest.$reset()
+
 stores.quest.fetchQuest(`${route.params.id}`)
 stores.services.fetchServices()
 

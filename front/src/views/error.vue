@@ -55,6 +55,10 @@ function goBack() {
   &-content {
     display: flex;
     gap: $cover-24;
+
+    @media (max-width: 600px) {
+      flex-wrap: wrap;
+    }
   }
 }
 </style>

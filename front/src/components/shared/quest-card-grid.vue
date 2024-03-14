@@ -4,7 +4,6 @@ import Card from '#/components/quest-card/card-component.vue'
 const stores = setupStore(['questList'])
 
 const route = useRoute()
-stores.questList.fetchQuests()
 </script>
 
 <template>
@@ -38,6 +37,27 @@ h2 {
     align-content: center;
     gap: $cover-32;
     flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .cards-grid {
+    display: grid !important;
+    grid-template-columns: 50% auto;
+
+    :deep(div .card) {
+      width: 100%;
+
+      .card-image {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .cards-grid {
+    grid-template-columns: 100%;
   }
 }
 </style>

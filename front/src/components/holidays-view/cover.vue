@@ -88,7 +88,7 @@ function openResultModal(isSuccess: ResultModal) {
       align-items: center;
       gap: $cover-16;
 
-      a {
+      div {
         max-width: 295px;
       }
     }

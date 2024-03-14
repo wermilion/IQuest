@@ -93,11 +93,15 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('final_price')
                     ->label('Общая стоимость')
                     ->numeric()
-                    ->minValue(1)
+                    ->minValue(0)
+                    ->rules([
+                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
+                    ])
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше 0',
+                        'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 TextInput::make('comment')
                     ->label('Комментарий')
@@ -161,11 +165,15 @@ class BookingRelationManager extends RelationManager
                         TextInput::make('final_price')
                             ->label('Общая стоимость')
                             ->numeric()
-                            ->minValue(1)
+                            ->minValue(0)
+                            ->rules([
+                                'regex:/^\d{1,6}(\.\d{1,2})?$/'
+                            ])
                             ->required()
                             ->validationMessages([
                                 'required' => 'Поле ":attribute" обязательно.',
-                                'min' => 'Поле ":attribute" должно быть больше 0',
+                                'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                                'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                             ]),
                         TextInput::make('comment')
                             ->label('Комментарий')

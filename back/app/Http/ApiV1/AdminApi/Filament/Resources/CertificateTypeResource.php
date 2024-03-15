@@ -8,6 +8,7 @@ use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ListCertificateTypes;
+use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -70,13 +71,14 @@ class CertificateTypeResource extends BaseResource
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
-                    ->orientImagesFromExif(false)
-                    ->resize(50)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
-                    ]),
+                    ])
+                    ->saveUploadedFileUsing(function ($record, $file) {
+                        return (new CompressImageService($file, 'certificate_images'))->compress();
+                    }),
             ]);
     }
 

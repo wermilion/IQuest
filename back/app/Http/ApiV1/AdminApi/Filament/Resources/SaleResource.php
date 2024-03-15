@@ -5,10 +5,10 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Domain\Sales\Models\Sale;
 use App\Domain\Users\Enums\Role;
-use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\CreateSale;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\EditSale;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\ListSales;
+use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -80,7 +80,10 @@ class SaleResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
-                    ]),
+                    ])
+                    ->saveUploadedFileUsing(function ($record, $file) {
+                        return (new CompressImageService($file, 'sales'))->compress();
+                    }),
                 FileUpload::make('back_image')
                     ->directory('sales')
                     ->label('Заднее изображение')
@@ -91,7 +94,10 @@ class SaleResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
-                    ]),
+                    ])
+                    ->saveUploadedFileUsing(function ($record, $file) {
+                        return (new CompressImageService($file, 'sales'))->compress();
+                    }),
                 Toggle::make('is_active')
                     ->label('Отображение на сайте'),
             ]);

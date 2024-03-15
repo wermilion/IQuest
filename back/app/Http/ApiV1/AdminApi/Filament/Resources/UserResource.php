@@ -9,8 +9,8 @@ use App\Domain\Users\Models\User;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\EditUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
-use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinNumberRule;
+use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
 use Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -70,14 +70,14 @@ class UserResource extends Resource
                     ->label('Имя')
                     ->required()
                     ->maxLengthWithHint(40)
-                    ->rules([new CyrillicRule])
+                    ->rules([new NameRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
                 TextInput::make('surname')
                     ->label('Фамилия')
-                    ->rules([new CyrillicRule])
+                    ->rules([new NameRule])
                     ->maxLengthWithHint(40)
                     ->validationMessages([
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',

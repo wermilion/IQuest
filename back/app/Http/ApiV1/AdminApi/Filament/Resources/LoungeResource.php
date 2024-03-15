@@ -10,6 +10,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ViewLounge;
+use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -125,11 +126,13 @@ class LoungeResource extends Resource
                     ->columnSpanFull()
                     ->image()
                     ->orientImagesFromExif(false)
-                    ->resize(50)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ]),
+                    ])
+                    ->saveUploadedFileUsing(function ($record, $file) {
+                        return (new CompressImageService($file, 'lounge_covers'))->compress();
+                    }),
                 Toggle::make('is_active')
                     ->label('Отображение на сайте'),
             ]);

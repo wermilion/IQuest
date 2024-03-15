@@ -10,6 +10,7 @@ use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\CreateBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\EditBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\ListBookings;
+use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use App\Rules\PhoneRule;
 use Filament\Forms\Components\Select;
@@ -58,6 +59,7 @@ class BookingResource extends BaseResource
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
+                    ->rules([new NameRule])
                     ->maxLengthWithHint(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',

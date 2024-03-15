@@ -36,8 +36,8 @@ class GenreResource extends Resource
                     ->label('Название')
                     ->required()
                     ->unique(ignoreRecord: true)
-                    ->maxLengthWithHint(40)
-                    ->dehydrateStateUsing(fn ($state) => trim($state))
+                    ->maxLengthWithHint(30)
+                    ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'unique' => 'Поле ":attribute" должно быть уникальным.'

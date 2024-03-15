@@ -102,12 +102,12 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
   }
 
   &-body {
-    max-height: 152px;
+    max-height: clamp(122px, 20vw, 152px);
     background: $color-opacity004;
-    padding: $cover-24;
+    padding: clamp($cover-20, 3vw, $cover-24);
     display: flex;
     flex-direction: column;
-    gap: $cover-36;
+    gap: clamp($cover-28, 3vw, $cover-36);
 
     transition: $hover-animation;
 
@@ -194,10 +194,37 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
 
   &:not(:hover) {
     .card-body {
-      max-height: 152px;
+      max-height: clamp(122px, 20vw, 152px);
 
       &__description {
         transform: translateY(100%);
+      }
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    &:hover {
+      .hover {
+        &-before,
+        &-after {
+          opacity: 0;
+        }
+
+        svg {
+          opacity: 0;
+        }
+      }
+
+      .card {
+        transform: scale(1);
+
+        &-body {
+          max-height: clamp(122px, 20vw, 152px);
+
+          &__description {
+            transform: translateY(100%);
+          }
+        }
       }
     }
   }

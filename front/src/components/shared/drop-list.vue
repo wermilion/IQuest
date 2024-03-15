@@ -2,6 +2,11 @@
 import type { Holiday } from '#/types/models/holiday'
 
 defineProps<{ item: Holiday[] }>()
+
+function getFirstWord(text: string) {
+  const words = text.split(' ')
+  return words[0]
+}
 </script>
 
 <template>
@@ -12,7 +17,7 @@ defineProps<{ item: Holiday[] }>()
       class="footnote"
       :to="`/holidays/${element.id}`"
     >
-      {{ element.type }}
+      {{ getFirstWord(element.type) }}
     </router-link>
   </div>
 </template>

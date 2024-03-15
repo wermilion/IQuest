@@ -9,7 +9,8 @@ Promise.allSettled([
   stores.city.fetchCities(),
   stores.contact.fetchPhone(),
   stores.contact.fetchEmail(),
-
+  stores.stocks.fetchStocks(),
+  stores.questList.fetchQuests(),
   stores.holidaysList.fetchHolidaysList(),
 ])
   .then (() => {
@@ -39,7 +40,9 @@ watch(() => stores.city.selectedCity, () => {
 <template>
   <div class="main-container">
     <template v-if="isLoading">
-      Loading...
+      <section class="loading">
+        <h1>Загрузка...</h1>
+      </section>
     </template>
 
     <template v-else>

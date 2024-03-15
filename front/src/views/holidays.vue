@@ -37,6 +37,6 @@ if (route.params.id === '3')
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 108px;
+  gap: clamp($cover-64, 20vw, 108px);
 }
 </style>

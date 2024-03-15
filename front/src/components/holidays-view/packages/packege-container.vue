@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { id } from 'vuetify/locale'
 import BookingModal from '../booking-modal.vue'
 import PackageIncludes from './package-includes.vue'
 import type { Packages } from '#/types/models/holiday'
@@ -20,6 +21,7 @@ const bookingModal = ref(false)
 const resultModal = ref(false)
 const isSuccessBooking = ref()
 
+const sort = stores.holiday.holiday?.packages.sort((a, b) => a.id - b.id)
 function openBookingModal() {
   bookingModal.value = true
 }
@@ -37,7 +39,7 @@ function openResultModal(isSuccess: ResultModal) {
         <h2>Пакет</h2>
         <div class="filter">
           <FilterChip
-            v-for="item in stores.holiday.holiday?.packages"
+            v-for="item in sort"
             :key="item.name"
             :is-selected="activePackegeId === item.id"
             @click="activePackegeId = item.id"
@@ -88,7 +90,7 @@ function openResultModal(isSuccess: ResultModal) {
 
     .filter {
       display: flex;
-      flex-wrap: wrap;
+      overflow: auto;
       gap: $cover-16;
     }
   }
@@ -107,6 +109,20 @@ function openResultModal(isSuccess: ResultModal) {
     div {
       max-width: 309px;
     }
+  }
+
+  @media screen and (max-width: 1024px) {
+    padding: $cover-24 $cover-16;
+  }
+
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    padding: 0;
   }
 }
 </style>

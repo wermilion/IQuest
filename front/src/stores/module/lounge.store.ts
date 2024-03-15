@@ -33,6 +33,7 @@ export const useFilialListStore = defineStore('filialList', {
             ],
             filter: {
               city_id: stores.city.selectedCity.id,
+              lounge_is_active: true,
             },
           })
         },

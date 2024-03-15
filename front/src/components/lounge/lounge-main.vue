@@ -58,15 +58,17 @@ function openResultModal(isSuccess: ResultModal) {
       <div class="wrapper">
         <div class="wrapper-header">
           <h1>Лаунж зона</h1>
-          <div class="filter">
-            <FilterChip
-              v-for="item in stores.filialList.filialList"
-              :key="item.address"
-              :is-selected="activeFilialId === item.id"
-              @click="activeFilialId = item.id"
-            >
-              {{ item.address }}
-            </FilterChip>
+          <div class="filter-chips">
+            <div class="filter">
+              <FilterChip
+                v-for="item in stores.filialList.filialList"
+                :key="item.address"
+                :is-selected="activeFilialId === item.id"
+                @click="activeFilialId = item.id"
+              >
+                {{ item.address }}
+              </FilterChip>
+            </div>
           </div>
           <div class="wrapper-header__rooms">
             <span class="bodyBold">Комната:</span>
@@ -103,6 +105,7 @@ function openResultModal(isSuccess: ResultModal) {
           <Button :button-light="true" name="Оформить заявку" @click="openBookingModal" />
         </div>
       </div>
+
       <BookingModal
         v-model="bookingModal"
         :lounge="activeRoom!"
@@ -128,27 +131,44 @@ function openResultModal(isSuccess: ResultModal) {
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
+    gap: $cover-16;
   }
 }
 .img-container {
   overflow: hidden;
   border-radius: $cover-12;
   width: 600px;
-  height: 568px;
+  height: clamp(324px, 50vw, 568px);
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+
+  @media screen and (max-width: 1345px) {
+    width: 100%;
+  }
 }
 
 .filter {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  gap: $cover-16;
   flex-wrap: wrap;
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: clamp($cover-12, 3vw, $cover-16);
+  max-width: -moz-available;
+  max-width: -webkit-fill-available;
+  overflow: auto;
+
+  @media screen and (max-width: 1345px) {
+    flex-wrap: nowrap;
+  }
+
+  &-chips {
+    display: flex;
+    align-items: flex-start;
+  }
 }
 
 .wrapper {
@@ -156,13 +176,14 @@ function openResultModal(isSuccess: ResultModal) {
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: $cover-64;
+  gap: clamp($cover-32, 3vw, $cover-64);
   align-items: flex-start;
 
   &-header {
     display: flex;
     flex-direction: column;
     gap: $cover-32;
+    max-width: inherit;
 
     &__rooms {
       display: flex;
@@ -186,6 +207,12 @@ function openResultModal(isSuccess: ResultModal) {
       display: flex;
       gap: $cover-12;
       align-items: center;
+
+      @media screen and (max-width: 1024px) {
+        :deep(svg) {
+          transform: scale(0.875);
+        }
+      }
     }
   }
 
@@ -193,7 +220,7 @@ function openResultModal(isSuccess: ResultModal) {
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: $cover-24;
+    padding: clamp($cover-16, 3vw, $cover-24);
     gap: $cover-24;
     border-radius: $cover-12;
     background-color: $color-opacity004;
@@ -201,8 +228,28 @@ function openResultModal(isSuccess: ResultModal) {
     &__price {
       display: flex;
       align-items: center;
-      gap: $cover-16;
+      gap: clamp($cover-8, 2vw, $cover-16);
+
+      @media screen and (max-width: 1024px) {
+        :deep(svg) {
+          transform: scale(0.875);
+        }
+      }
     }
+
+    @media screen and (max-width: 1024px) {
+      background-color: $color-opacity004;
+      gap: $cover-12;
+      position: sticky;
+      backdrop-filter: blur(24px);
+      bottom: 16px;
+      right: 0;
+      z-index: 10;
+    }
+  }
+
+  @media screen and (max-width: 1345px) {
+    max-width: 100%;
   }
 }
 </style>

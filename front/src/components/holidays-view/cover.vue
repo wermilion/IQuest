@@ -57,7 +57,7 @@ function openResultModal(isSuccess: ResultModal) {
 <style scoped lang="scss">
 .cover {
   margin-top: 88px;
-  height: 555px;
+  height: clamp(304px, 40vw, 555px);
   position: relative;
 
   &-container,
@@ -80,7 +80,7 @@ function openResultModal(isSuccess: ResultModal) {
     flex-direction: column;
     gap: $cover-32;
     z-index: 2;
-    margin-bottom: 108px;
+    margin-bottom: clamp($cover-64, 20vw, 108px);
 
     &__btn {
       display: flex;
@@ -88,10 +88,14 @@ function openResultModal(isSuccess: ResultModal) {
       align-items: center;
       gap: $cover-16;
 
-      a {
+      div {
         max-width: 295px;
       }
     }
+  }
+
+  @media screen and (max-width: 1024px) {
+    margin-top: 0;
   }
 }
 

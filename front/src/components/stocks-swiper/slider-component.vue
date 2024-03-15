@@ -16,10 +16,10 @@ defineProps<{ salse: Stocks }>()
     </div>
     <div class="baner-swiper__image">
       <div class="baner-front">
-        <img v-lazy-src="salse.front_image" alt=" ">
+        <img v-lazy-src="salse.front_image" class="loading-lazy" alt="">
       </div>
       <div class="baner-back">
-        <img v-lazy-src="salse.back_image" alt="baner">
+        <img v-lazy-src="salse.back_image" class="loading-lazy" alt="">
       </div>
     </div>
   </div>
@@ -39,7 +39,7 @@ defineProps<{ salse: Stocks }>()
       display: flex;
       flex-direction: column;
       gap: $cover-12;
-      max-width: 596px;
+      max-width: clamp(350px, 50vw, 500px);
     }
 
     &-controler {
@@ -60,7 +60,7 @@ defineProps<{ salse: Stocks }>()
     right: 174px;
     top: 22px;
     z-index: 1;
-    width: 364px;
+    width: clamp(250px, 25vw, 364px);
     height: 310px;
     display: flex;
     transform: rotate(-8deg);
@@ -72,7 +72,7 @@ defineProps<{ salse: Stocks }>()
 
   &-back {
     margin-top: 71px;
-    width: 321px;
+    width: clamp(220px, 25vw, 321px);
     height: 272px;
     display: flex;
     transform: rotate(4deg);
@@ -85,6 +85,7 @@ defineProps<{ salse: Stocks }>()
 
 img {
   width: 100%;
+  object-fit: cover;
   border-radius: $cover-4;
 }
 

@@ -9,7 +9,7 @@ const model = defineModel<boolean>()
 </script>
 
 <template>
-  <v-dialog v-model="model" persistent :scrollable="true">
+  <v-dialog v-model="model" :scrollable="true">
     <div class="modal-wrapper">
       <template v-if="isSuccess.status === 'success'">
         <div class="modal-header">

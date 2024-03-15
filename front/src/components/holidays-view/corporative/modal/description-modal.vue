@@ -16,18 +16,32 @@ const modalProps = computed(() => ({
 </script>
 
 <template>
-  <Modal v-model="modal" persistent v-bind="modalProps">
+  <Modal v-model="modal" v-bind="modalProps">
     <template #content>
       <p class="footnoteText">
         {{ description }}
       </p>
     </template>
-    <template #footer>
-      <Button
-        name="Оформить заявку"
-        type="submit"
-        :button-light="true"
-      />
-    </template>
   </Modal>
 </template>
+
+<style scoped lang="scss">
+.footnoteText {
+  max-height: 300px;
+  padding-right: 10px;
+  overflow: auto;
+}
+
+p::-webkit-scrollbar {
+  width: 5px;
+}
+
+p::-webkit-scrollbar-track {
+  background-color: unset;
+}
+
+p::-webkit-scrollbar-thumb {
+  background-color: $color-opacity06;
+  border-radius: 20px;
+}
+</style>

@@ -53,13 +53,17 @@ const framchise = [
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 108px;
+  gap: clamp($cover-64, 10vw, 108px);
 
   &-header {
     display: flex;
     width: 100%;
     justify-content: space-between;
     flex-wrap: wrap;
+
+    @media screen and (max-width: 1024px) {
+      gap: $cover-40;
+    }
 
     &__contacts {
       display: flex;
@@ -93,8 +97,23 @@ const framchise = [
       justify-content: center;
       flex-wrap: wrap;
       height: 100%;
-      display: flex;
+      display: grid;
       gap: $cover-32;
+      grid-template-columns: 1fr 1fr 1fr;
+
+      @media screen and (max-width: 1024px) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @media screen and (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  @media screen and (max-width: 375px) {
+    h2 {
+      letter-spacing: 0;
     }
   }
 }

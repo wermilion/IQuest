@@ -33,6 +33,7 @@ watch(() => store.phone, (newValue) => {
 
 <style scoped lang="scss">
   span {
+  align-items: center;
   display: flex;
   gap: 8px;
   a {

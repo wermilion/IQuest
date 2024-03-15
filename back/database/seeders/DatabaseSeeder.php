@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-
 use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
 use Illuminate\Database\Seeder;
@@ -18,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             HolidaySeeder::class,
             CorporatePackagesSeeder::class,
+            ContactTypeSeeder::class,
         ]);
 
         User::query()->firstOrCreate([

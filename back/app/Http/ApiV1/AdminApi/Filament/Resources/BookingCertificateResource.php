@@ -65,7 +65,7 @@ class BookingCertificateResource extends BaseResource
                                         'required' => 'Поле ":attribute" обязательно.',
                                     ])
                                     ->helperText(function () {
-                                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте лаунж.';
+                                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
                                     })
                                     ->native(false),
                                 TextInput::make('name')
@@ -114,7 +114,7 @@ class BookingCertificateResource extends BaseResource
                                 Select::make('certificate_type_id')
                                     ->label('Тип')
                                     ->placeholder('Выберите тип')
-                                    ->relationship('certificateType', 'name')
+                                    ->relationship('certificateType', 'name', fn($query) => $query->withoutTrashed())
                                     ->required()
                                     ->validationMessages([
                                         'required' => 'Поле ":attribute" обязательное.',

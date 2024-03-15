@@ -97,7 +97,7 @@ class ScheduleLoungeResource extends Resource
                         'date_format' => 'Поле ":attribute" должно быть в формате 00:00.',
                     ]),
                 TextInput::make('time_to')
-                    ->label('Время конца')
+                    ->label('Время окончания')
                     ->mask('99:99')
                     ->placeholder('00:00')
                     ->after('time_from')
@@ -135,7 +135,7 @@ class ScheduleLoungeResource extends Resource
                 TextColumn::make('time_from')
                     ->label('Время начала'),
                 TextColumn::make('time_to')
-                    ->label('Время конца'),
+                    ->label('Время окончания'),
             ])
             ->filters([
                 TrashedFilter::make()

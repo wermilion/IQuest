@@ -10,7 +10,6 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\Crea
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\EditScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\ListScheduleLounges;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\RelationManagers\BookingRelationManager;
-use App\Http\ApiV1\AdminApi\Filament\Rules\TimeRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -91,19 +90,23 @@ class ScheduleLoungeResource extends Resource
                     ->label('Время начала')
                     ->mask('99:99')
                     ->placeholder('00:00')
-                    ->rules([new TimeRule])
+                    ->rules(['date_format:H:i'])
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'date_format' => 'Поле ":attribute" должно быть в формате 00:00.',
                     ]),
                 TextInput::make('time_to')
                     ->label('Время конца')
                     ->mask('99:99')
                     ->placeholder('00:00')
-                    ->rules([new TimeRule])
+                    ->after('time_from')
+                    ->rules(['date_format:H:i'])
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'date_format' => 'Поле ":attribute" должно быть в формате 00:00.',
+                        'after' => 'Время конца должно быть больше времени начала.',
                     ]),
             ]);
     }

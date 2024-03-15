@@ -47,7 +47,7 @@ function mapToMove(lon: number, lag: number, id: number) {
           },
         }"
         theme
-        height="492px"
+        height="100%"
         width="100%"
       >
         <YandexMapDefaultSchemeLayer :settings="{ theme: 'dark' }" />
@@ -76,16 +76,19 @@ function mapToMove(lon: number, lag: number, id: number) {
 .map {
   display: flex;
   flex-direction: column;
-  gap: $cover-32;
+  gap: clamp($cover-24, 5vw, $cover-32);
 
   &-button {
     display: flex;
-    gap: $cover-32;
+    gap: clamp(17px, 5vw, $cover-32);
+    flex-wrap: wrap;
   }
 
   &-container {
     border-radius: $cover-12;
     overflow: hidden;
+    width: 100%;
+    height: clamp(222px, 30vw, 492px);
   }
 }
 

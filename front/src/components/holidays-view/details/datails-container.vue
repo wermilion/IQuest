@@ -51,15 +51,26 @@ const details = [
   }
 
   &-items {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     align-items: flex-start;
+    flex-wrap: wrap;
     align-content: flex-start;
     gap: $cover-24;
+
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media screen and (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &-info {
     display: flex;
     gap: $cover-8;
+    flex-wrap: wrap;
 
     .gradient {
       background: $color-gradient;

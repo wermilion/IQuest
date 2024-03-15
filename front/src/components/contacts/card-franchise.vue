@@ -13,7 +13,7 @@ const store = setupStore('contact')
 <template>
   <div class="card" :class="{ email }">
     <img class="card-img" :src="`/icons/franchise/${img}.svg`" alt="img">
-    <span class="footnoteText">
+    <span class="footnote">
       {{ title }}
       <template v-if="email">
         <span v-for="item in store.emial" :key="item.id" class="active">
@@ -29,7 +29,7 @@ const store = setupStore('contact')
   width: 100%;
   max-width: 400px;
   max-height: 293px;
-  gap: $cover-16;
+  gap: clamp($cover-12, 2vw, $cover-16);
   height: 100%;
   display: flex;
   padding: $cover-32;
@@ -39,13 +39,19 @@ const store = setupStore('contact')
   border: 1px solid $color-opacity012;
 
   &-img {
-    max-width: 80px;
-    max-height: 80px;
+    max-width: clamp(60px, 5vw, 80px);
+    max-height: clamp(60px, 5vw, 80px);
 
     img {
       width: 100%;
       height: 100%;
     }
+  }
+
+  @media screen and (max-width: 600px) {
+    padding: $cover-24 $cover-20;
+    max-width: 100%;
+    height: auto;
   }
 }
 .active {

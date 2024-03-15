@@ -30,6 +30,11 @@ function openMenuHoliday(index: number) {
   else
     isMenuHoliday.value = true
 }
+
+function getFirstWord(text: string) {
+  const words = text.split(' ')
+  return words[0]
+}
 </script>
 
 <template>
@@ -102,7 +107,7 @@ function openMenuHoliday(index: number) {
                   class="body"
                   :to="`/holidays/${holiday.id}`"
                 >
-                  {{ holiday.type }}
+                  {{ getFirstWord(holiday.type) }}
                 </router-link>
               </div>
             </template>
@@ -117,15 +122,6 @@ function openMenuHoliday(index: number) {
 </template>
 
 <style scoped lang="scss">
-.slide-down {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease-out;
-}
-
-.slide-down.active {
-  max-height: 500px; /* Замените 500px на нужную вам высоту */
-}
 .header {
   position: absolute;
   max-width: 1440px;
@@ -165,7 +161,7 @@ function openMenuHoliday(index: number) {
         flex-direction: column;
         position: absolute;
         top: 57px;
-        height: 333px;
+        height: max-content;
         padding-bottom: 35px;
         justify-content: space-between;
         background-color: $color-base1;
@@ -200,10 +196,19 @@ function openMenuHoliday(index: number) {
         }
 
         .holiday-list {
+          width: 100;
           display: flex;
           flex-direction: column;
           align-items: flex-end;
           gap: $cover-8;
+
+          a {
+            white-space: nowrap; /* Запрещаем перенос строк */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+          }
         }
       }
     }

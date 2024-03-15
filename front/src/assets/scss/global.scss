@@ -1,10 +1,10 @@
-@import '@mdi/font/css/materialdesignicons.min.css';
-@import '@vuepic/vue-datepicker/dist/main.css';
+@import "@mdi/font/css/materialdesignicons.min.css";
+@import "@vuepic/vue-datepicker/dist/main.css";
 
-@import './fonts.scss';
-@import './normalize.scss';
-@import './swiper.scss';
-@import './datepicker.scss';
+@import "./fonts.scss";
+@import "./normalize.scss";
+@import "./swiper.scss";
+@import "./datepicker.scss";
 
 html {
   background-color: $color-base1;
@@ -52,7 +52,7 @@ body {
 .btn-container {
   width: 100%;
   display: flex;
-  padding: $cover-16 $cover-24;
+  padding: clamp($cover-12, 3vw, $cover-16) $cover-24;
   align-items: center;
 }
 
@@ -65,13 +65,7 @@ body {
 .loading-lazy {
   &:not(.loaded),
   &:not(.error) {
-    background: linear-gradient(
-      90deg,
-      $color-opacity02,
-      $color-base1,
-      $color-opacity025,
-      $color-base1
-    );
+    background: linear-gradient(90deg, $color-opacity02, $color-base1, $color-opacity025, $color-base1);
     background-size: 300% 200%;
     -webkit-animation: Shine 2.25s ease infinite;
     -moz-animation: Shine 2.25s ease infinite;
@@ -143,9 +137,9 @@ h3 {
 }
 
 .footnote {
-  font-size: clamp(14px, 4vw, 20px);
+  font-size: clamp(14px, 3vw, 20px);
   font-weight: 400;
-  line-height: clamp(18px, 4vw, 24px);
+  line-height: clamp(18px, 3vw, 24px);
   color: $color-opacity06;
 }
 

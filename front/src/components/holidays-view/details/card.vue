@@ -10,7 +10,9 @@ defineProps<{ item: Props }>()
 
 <template>
   <div class="item">
-    <img :src="`/icons/details/${item.icon}.svg`" :alt="item.icon">
+    <div class="item-img">
+      <img :src="`/icons/details/${item.icon}.svg`">
+    </div>
     <p :class="{ footnote: item.footnote, smallFootnote: !item.footnote }">
       {{ item.description }}
     </p>
@@ -21,7 +23,6 @@ defineProps<{ item: Props }>()
 .item {
   display: flex;
   height: 100%;
-  min-height: 280px;
   width: 100%;
   padding: $cover-32;
   flex-direction: column;
@@ -32,6 +33,21 @@ defineProps<{ item: Props }>()
 
   .smallFootnote {
     color: $color-base2;
+  }
+
+  @media screen and (max-width: 600px) {
+    padding: 24px 20px;
+    height: auto;
+  }
+
+  &-img {
+    max-width: clamp(60px, 5vw, 80px);
+    max-height: clamp(60px, 5vw, 80px);
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 </style>

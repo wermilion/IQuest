@@ -90,7 +90,7 @@ function openResultModal(isSuccess: ResultModal) {
 
     .filter {
       display: flex;
-      flex-wrap: wrap;
+      overflow: auto;
       gap: $cover-16;
     }
   }
@@ -109,6 +109,20 @@ function openResultModal(isSuccess: ResultModal) {
     div {
       max-width: 309px;
     }
+  }
+
+  @media screen and (max-width: 1024px) {
+    padding: $cover-24 $cover-16;
+  }
+
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    padding: 0;
   }
 }
 </style>

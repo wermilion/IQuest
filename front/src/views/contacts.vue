@@ -19,6 +19,6 @@ store.fetchFilial()
 
 <style scoped>
 .container {
-  margin-top: 160px;
+  margin-top: clamp(40px, 10vw, 160px);
 }
 </style>

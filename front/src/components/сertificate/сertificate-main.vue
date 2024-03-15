@@ -88,6 +88,7 @@ function openResultModal(isSuccess: ResultModal) {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  gap: $cover-16;
   width: 100%;
 }
 
@@ -95,12 +96,16 @@ function openResultModal(isSuccess: ResultModal) {
   overflow: hidden;
   border-radius: $cover-12;
   width: 600px;
-  height: 568px;
+  height: clamp(324px, 50vw, 568px);
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media screen and (max-width: 1345px) {
+    width: 100%;
   }
 }
 
@@ -109,7 +114,7 @@ function openResultModal(isSuccess: ResultModal) {
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  gap: $cover-64;
+  gap: clamp($cover-32, 3vw, $cover-64);
   align-items: flex-start;
 
   &-header {
@@ -128,16 +133,28 @@ function openResultModal(isSuccess: ResultModal) {
       flex-direction: column;
       align-items: flex-start;
       gap: $cover-16;
+
       .body {
         color: $color-opacity06;
       }
       .filter {
+        flex-wrap: wrap;
         display: flex;
         align-items: flex-start;
         align-content: flex-start;
-        flex-wrap: wrap;
-        gap: $cover-16;
+        gap: clamp($cover-12, 3vw, $cover-16);
+        max-width: -moz-available;
+        max-width: -webkit-fill-available;
+        overflow: auto;
+
+        @media screen and (max-width: 1345px) {
+          flex-wrap: nowrap;
+        }
       }
+    }
+
+    @media screen and (max-width: 1345px) {
+      max-width: inherit;
     }
   }
 
@@ -152,7 +169,7 @@ function openResultModal(isSuccess: ResultModal) {
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: $cover-24;
+    padding: clamp($cover-16, 3vw, $cover-24);
     gap: $cover-24;
     border-radius: $cover-12;
     background-color: $color-opacity004;
@@ -167,8 +184,28 @@ function openResultModal(isSuccess: ResultModal) {
     &__item {
       display: flex;
       align-items: center;
-      gap: $cover-12;
+      gap: clamp($cover-8, 2vw, $cover-12);
+
+      @media screen and (max-width: 1024px) {
+        img {
+          transform: scale(0.875);
+        }
+      }
     }
+
+    @media screen and (max-width: 1024px) {
+      background-color: $color-opacity004;
+      gap: $cover-12;
+      position: sticky;
+      backdrop-filter: blur(24px);
+      bottom: 16px;
+      right: 0;
+      z-index: 10;
+    }
+  }
+
+  @media screen and (max-width: 1345px) {
+    max-width: 100%;
   }
 }
 </style>

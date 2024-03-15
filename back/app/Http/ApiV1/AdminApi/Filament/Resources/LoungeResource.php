@@ -13,6 +13,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ViewLounge;
 use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -95,8 +96,7 @@ class LoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Textarea::make('description')
-                    ->autosize()
+                RichEditor::make('description')
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()

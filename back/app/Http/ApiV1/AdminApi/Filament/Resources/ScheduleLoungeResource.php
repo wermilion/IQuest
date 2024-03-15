@@ -106,7 +106,7 @@ class ScheduleLoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'date_format' => 'Поле ":attribute" должно быть в формате 00:00.',
-                        'after' => 'Время конца должно быть больше времени начала.',
+                        'after' => 'Поле ":attribute" должно быть больше больше "времени начала".',
                     ]),
             ]);
     }

@@ -71,7 +71,9 @@ onMounted(() => {
     <button class="swiper-button-next swiper-button">
       <Next />
     </button>
-    <div class="swiper-pagination" />
+    <div class="swiper-pagination__wrapper">
+      <div class="swiper-pagination" />
+    </div>
   </div>
 </template>
 
@@ -79,26 +81,26 @@ onMounted(() => {
 .swiper-container {
   overflow: hidden;
   position: relative;
-
-  max-width: 616px;
-  max-height: 411px;
+  height: 100%;
+  width: 100%;
 }
 .swiper-slide {
   border-radius: $cover-8;
 }
 .swiper-pagination {
-  max-width: 272px;
   display: flex;
-  bottom: 12px;
-  left: 25%;
-  right: auto;
+  bottom: clamp(8px, 2vw, 12px);
+  left: 0;
+
+  &__wrapper {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 272px;
+  }
 }
-
 .swiper-wrapper {
-  backdrop-filter: blur(8px);
-  width: 616px;
-  height: 411px;
-
   img {
     border-radius: $cover-12;
     object-fit: cover;

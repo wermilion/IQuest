@@ -15,6 +15,10 @@ const convertDuration = computed(() => {
   if (props.quest.duration > 60) {
     const hours = Math.floor(props.quest.duration / 60)
     const minutes = props.quest.duration % 60
+
+    if (minutes === 0)
+      return `${hours} ч`
+
     return `${hours} ч ${minutes} мин`
   }
   else {

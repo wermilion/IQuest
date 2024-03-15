@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { id } from 'vuetify/locale'
 import BookingModal from '../booking-modal.vue'
 import PackageIncludes from './package-includes.vue'
 import type { Packages } from '#/types/models/holiday'
@@ -7,6 +6,8 @@ import FilterChip from '#/components/quest-view/booking/chips/filter-chip.vue'
 import Button from '#/components/shared/button.vue'
 import ResultModalDialog from '#/components/shared/result-modal.vue'
 import type { ResultModal } from '#/types/shared/common'
+import DetailsContainer from '#/components/holidays-view/details/datails-container.vue'
+import Price from '#/assets/svg/shared/cash.svg?url'
 
 const stores = setupStore(['holiday'])
 
@@ -33,29 +34,44 @@ function openResultModal(isSuccess: ResultModal) {
 </script>
 
 <template>
-  <section class="container">
-    <div class="booking">
-      <div class="booking-header">
-        <h2>Пакет</h2>
-        <div class="filter">
-          <FilterChip
-            v-for="item in sort"
-            :key="item.name"
-            :is-selected="activePackegeId === item.id"
-            @click="activePackegeId = item.id"
-          >
-            {{ item.name }}
-          </FilterChip>
+  <div class="wrapper">
+    <section class="container">
+      <div class="booking">
+        <div class="booking-header">
+          <h2>Пакет</h2>
+          <div class="filter">
+            <template v-for="item in sort" :key="item.name">
+              <FilterChip
+                v-f="item.description.length > 0"
+                :is-selected="activePackegeId === item.id"
+                @click="activePackegeId = item.id"
+              >
+                {{ item.name }}
+              </FilterChip>
+            </template>
+          </div>
+          <PackageIncludes :description="activePackege.description" />
+          <div class="booking-footer">
+            <Button
+              :button-light="true"
+              name="Оформить заявку"
+              @click="openBookingModal"
+            />
+            <span class="body">От {{ activePackege.price }}₽</span>
+          </div>
         </div>
-        <PackageIncludes :description="activePackege.description" />
-        <div class="booking-footer">
-          <Button
-            :button-light="true"
-            name="Оформить заявку"
-            @click="openBookingModal"
-          />
-          <span class="body">От {{ activePackege.price }}₽</span>
-        </div>
+      </div>
+    </section>
+    <DetailsContainer />
+    <div class="footer-btn">
+      <Button
+        :button-light="true"
+        name="Оформить заявку"
+        @click="openBookingModal"
+      />
+      <div class="footer-btn__price">
+        <img :src="Price">
+        <span class="body">От {{ activePackege.price }}₽</span>
       </div>
     </div>
     <BookingModal
@@ -67,7 +83,7 @@ function openResultModal(isSuccess: ResultModal) {
       v-model="resultModal"
       :is-success="isSuccessBooking"
     />
-  </section>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -83,10 +99,6 @@ function openResultModal(isSuccess: ResultModal) {
     display: flex;
     flex-direction: column;
     gap: $cover-32;
-
-    h2 {
-      color: $color-opacity06;
-    }
 
     .filter {
       display: flex;
@@ -109,6 +121,10 @@ function openResultModal(isSuccess: ResultModal) {
     div {
       max-width: 309px;
     }
+
+    @media screen and (max-width: 600px) {
+      display: none;
+    }
   }
 
   @media screen and (max-width: 1024px) {
@@ -120,9 +136,49 @@ function openResultModal(isSuccess: ResultModal) {
   }
 }
 
+.footer-btn {
+  display: none;
+  flex-direction: column-reverse;
+  position: sticky;
+  bottom: 20px;
+  z-index: 10;
+
+  padding: $cover-16;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $cover-12;
+
+  border-radius: 14px;
+  background: $color-opacity004;
+  backdrop-filter: blur($cover-24);
+
+  div {
+    max-width: 100%;
+  }
+
+  span {
+    color: $color-opacity06;
+  }
+
+  &__price {
+    display: flex;
+    align-items: center;
+    gap: $cover-8;
+
+    img {
+      width: clamp(26px, 5vw, $cover-32);
+    }
+  }
+}
+
 @media screen and (max-width: 600px) {
-  .container {
+  .container:nth-child(1) {
     padding: 0;
+  }
+
+  .footer-btn {
+    display: flex;
+    margin-inline: $cover-16;
   }
 }
 </style>

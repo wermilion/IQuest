@@ -16,8 +16,8 @@ const store = setupStore('contact')
     <span class="footnote">
       {{ title }}
       <template v-if="email">
-        <span v-for="item in store.emial" :key="item.id" class="active">
-          {{ item.value }}
+        <span class="active">
+          {{ store.getEmail }}
         </span>
       </template>
     </span>

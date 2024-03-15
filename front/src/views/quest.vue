@@ -30,6 +30,7 @@ const { questBookingEl } = storeToRefs(stores.quest)
 
 <style scoped lang="scss">
 .quest {
+  padding-top: clamp(40px, 10vw, 120px);
   display: flex;
   flex-direction: column;
   gap: 108px;

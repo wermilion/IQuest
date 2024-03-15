@@ -2,16 +2,12 @@
 defineProps<{ isActiveImg?: boolean }>()
 
 const store = setupStore('contact')
-
-onMounted(() => {
-  store.fetchSocial()
-})
 </script>
 
 <template>
   <div class="social-list">
     <a
-      v-for="item in store.social"
+      v-for="item in store.getSocial"
       :key="item.id"
       class="body"
       :href="item.value"

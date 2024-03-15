@@ -59,9 +59,6 @@ function openResultModal(isSuccess: ResultModal) {
       />
     </div>
   </div>
-  <!-- <div class="schedule">
-    <v-skeleton-loader type="ossein" width="100px" height="100px" />
-  </div> -->
 
   <BookingModal
     v-model="bookingModal"
@@ -80,11 +77,11 @@ function openResultModal(isSuccess: ResultModal) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: $cover-32;
+  gap: clamp($cover-16, 3vw, $cover-32);
 
   &-items {
     display: flex;
-    gap: $cover-24;
+    gap: clamp($cover-12, 3vw, $cover-24);
     flex-wrap: wrap;
   }
 }

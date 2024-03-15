@@ -22,8 +22,8 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: $cover-16 $cover-32;
-  gap: $cover-12;
+  padding: clamp($cover-12, 3vw, $cover-16) clamp($cover-24, 5vw, $cover-32);
+  gap: clamp($cover-8, 2vw, $cover-12);
   background-color: $color-opacity004;
   border-radius: $cover-16;
 

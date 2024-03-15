@@ -20,6 +20,7 @@
     "@vuepic/vue-datepicker": "^8.2.0",
     "animate.css": "^4.1.1",
     "axios": "^1.6.7",
+    "dayjs": "^1.11.10",
     "maska": "^2.1.11",
     "pinia": "^2.1.7",
     "swiper": "^11.0.7",

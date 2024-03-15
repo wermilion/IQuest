@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import VueDatePicker from '@vuepic/vue-datepicker'
+import dayjs from 'dayjs'
+import { useDisplay } from 'vuetify'
 
 const emit = defineEmits<{ select: [value: string[] ] }>()
 const selectedDate = ref<string[]>()
+
+const { xs } = useDisplay()
 
 function format(dates: Date[]) {
   return dates.map((date) => {
@@ -15,13 +19,14 @@ function format(dates: Date[]) {
 
 watch(selectedDate, (value) => {
   if (value && value.length > 1)
-    emit?.('select', value)
+    emit?.('select', value.map(value => dayjs(value).format('YYYY-MM-DD')))
 })
 </script>
 
 <template>
   <VueDatePicker
     v-model="selectedDate"
+    :teleport-center="xs"
     disable-year-select
     :clearable="false"
     placeholder="Выбрать даты"

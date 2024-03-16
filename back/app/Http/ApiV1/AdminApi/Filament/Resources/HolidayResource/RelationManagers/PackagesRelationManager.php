@@ -3,6 +3,7 @@
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationManagers;
 
 use App\Domain\Users\Enums\Role;
+use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use Auth;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
@@ -17,9 +18,7 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 
 class PackagesRelationManager extends RelationManager
@@ -106,7 +105,7 @@ class PackagesRelationManager extends RelationManager
             ])
             ->defaultSort('sequence_number')
             ->filters([
-                TrashedFilter::make()
+                BaseTrashedFilter::make()
                     ->native(false),
             ])
             ->headerActions([

@@ -30,11 +30,11 @@ class ScheduleQuestCommand extends Command
     {
         $timezone = $this->argument('timezone');
         $quests = Quest::whereHas('filial.city', fn($query) => $query->where('timezone', $timezone));
-        $currentDate = Carbon::today($timezone);
+        $currentDate = Carbon::now($timezone);
 
         $this->deleteSlotsForYesterday($currentDate);
 
-        $currentDate->addMonth();
+        $currentDate->addDays(30);
 
         if ($currentDate->isWeekday()) {
             $this->createScheduleQuests($quests, $currentDate, 'questWeekdaysSlots');
@@ -45,11 +45,15 @@ class ScheduleQuestCommand extends Command
 
     private function deleteSlotsForYesterday(Carbon $currentDate): void
     {
-        $scheduleQuests = ScheduleQuest::query()->whereDate('date', $currentDate->subDay());
+        $scheduleQuests = ScheduleQuest::query()->whereDate('date', $currentDate->copy()->subDay());
         $scheduleQuests->each(function (ScheduleQuest $scheduleQuest) {
             $scheduleQuest->timeslots()
-                ->whereDoesntHave('booking')
+                ->whereDoesntHave('bookingScheduleQuest')
                 ->forceDelete();
+            $scheduleQuest->timeslots()
+                ->whereHas('bookingScheduleQuest')
+                ->delete();
+
             if ($scheduleQuest->timeslots()->doesntExist()) {
                 $scheduleQuest->forceDelete();
             }
@@ -59,13 +63,13 @@ class ScheduleQuestCommand extends Command
     private function createScheduleQuests($quests, Carbon $currentDate, $slotType): void
     {
         $quests->each(function ($quest) use ($currentDate, $slotType) {
-            $scheduleQuest = $quest->scheduleQuests()->create([
+            $scheduleQuest = $quest->scheduleQuests()->firstOrCreate([
                 'date' => $currentDate,
                 'quest_id' => $quest->id,
             ]);
 
             $quest->$slotType->each(function ($slot) use ($scheduleQuest) {
-                $scheduleQuest->timeslots()->create([
+                $scheduleQuest->timeslots()->firstOrCreate([
                     'time' => $slot->time,
                     'price' => $slot->price,
                     'is_active' => true,

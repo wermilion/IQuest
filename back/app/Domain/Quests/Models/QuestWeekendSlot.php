@@ -39,7 +39,7 @@ class QuestWeekendSlot extends Model
             resolve(UpdateQuestWeekendSlotAction::class)->execute($model);
         });
 
-        static::deleted(function (self $model) {
+        static::deleting(function (self $model) {
             resolve(DeleteQuestWeekendSlotAction::class)->execute($model);
         });
     }

@@ -13,17 +13,18 @@ class ContactTypeSeeder extends Seeder
     public function run(): void
     {
         $data = [
-            'Номер телефона',
-            'Почта',
-            'YouTube',
-            'VK',
-            'Telegram',
-            'Instagram',
+            ['Номер телефона', false],
+            ['Почта', false],
+            ['YouTube', true],
+            ['VK', true],
+            ['Telegram', true],
+            ['Instagram', true],
         ];
 
         foreach ($data as $value) {
             ContactType::firstOrCreate([
-                'name' => $value,
+                'name' => $value[0],
+                'is_social' => $value[1],
             ]);
         }
     }

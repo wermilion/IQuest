@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Certificates\Models\CertificateType;
 use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
+use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ListCertificateTypes;
@@ -21,7 +22,6 @@ use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -117,7 +117,7 @@ class CertificateTypeResource extends BaseResource
             ])
             ->defaultSort('price')
             ->filters([
-                TrashedFilter::make()
+                BaseTrashedFilter::make()
                     ->native(false),
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([

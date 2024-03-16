@@ -3,6 +3,7 @@
 namespace App\Domain\Quests\Actions\QuestWeekdaysSlots;
 
 use App\Domain\Quests\Models\QuestWeekdaysSlot;
+use App\Domain\Schedules\Models\ScheduleQuest;
 
 class UpdateQuestWeekdaysSlotAction
 {
@@ -12,13 +13,13 @@ class UpdateQuestWeekdaysSlotAction
         $dirtyFields = array_keys($slot->getDirty());
 
         foreach ($dirtyFields as $field) {
-            foreach ($scheduleQuests as $scheduleQuest) {
+            $scheduleQuests->each(function (ScheduleQuest $scheduleQuest) use ($slot, $field) {
                 $scheduleQuest->timeslots()
                     ->where($field, $slot->getOriginal($field))
                     ->update([
                         $field => $slot->$field,
                     ]);
-            }
+            });
         }
     }
 }

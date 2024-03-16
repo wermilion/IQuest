@@ -10,8 +10,10 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ViewLounge;
+use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -94,8 +96,7 @@ class LoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ]),
-                Textarea::make('description')
-                    ->autosize()
+                RichEditor::make('description')
                     ->label('Описание')
                     ->columnSpanFull()
                     ->required()
@@ -124,11 +125,14 @@ class LoungeResource extends Resource
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
-                    ->resize(50)
+                    ->orientImagesFromExif(false)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                    ]),
+                    ])
+                    ->saveUploadedFileUsing(function ($record, $file) {
+                        return (new CompressImageService($file, 'lounge_covers'))->compress();
+                    }),
                 Toggle::make('is_active')
                     ->label('Отображение на сайте'),
             ]);

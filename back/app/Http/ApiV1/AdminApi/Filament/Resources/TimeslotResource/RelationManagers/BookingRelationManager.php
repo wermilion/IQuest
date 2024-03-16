@@ -6,7 +6,7 @@ use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
-use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
+use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
 use App\Rules\PhoneRule;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -19,6 +19,7 @@ use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use PhpParser\Node\Name;
 
 class BookingRelationManager extends RelationManager
 {
@@ -48,7 +49,7 @@ class BookingRelationManager extends RelationManager
                 TextInput::make('name')
                     ->label('Имя')
                     ->required()
-                    ->rules([new CyrillicRule])
+                    ->rules([new NameRule])
                     ->maxLengthWithHint(40)
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',

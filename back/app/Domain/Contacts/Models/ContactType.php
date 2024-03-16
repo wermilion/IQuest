@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id Идентификатор типа контакта
  * @property string $name Название типа контакта
- * @property bool $is_social Соц. сеть
  */
 class ContactType extends Model
 {
@@ -18,10 +17,5 @@ class ContactType extends Model
 
     protected $fillable = [
         'name',
-        'is_social',
-    ];
-
-    protected $casts = [
-        'is_social' => 'boolean',
     ];
 }

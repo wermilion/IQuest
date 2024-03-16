@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class TimeRule implements ValidationRule
+class NameRule implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -15,8 +15,8 @@ class TimeRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/', $value)) {
-            $fail('Поле ":attribute" должно быть в формате 00:00.');
+        if (!preg_match("/^[a-zA-Zа-яА-ЯёЁ'\-]+$/", $value)) {
+            $fail('Поле ":attribute" должно содержать только кириллицу и/или латиницу, апостроф, дефис');
         }
     }
 }

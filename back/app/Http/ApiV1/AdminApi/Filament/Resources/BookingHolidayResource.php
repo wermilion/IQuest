@@ -12,6 +12,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\Crea
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\ListBookingHolidays;
 use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
+use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use App\Rules\PhoneRule;
 use Carbon\Carbon;
@@ -69,7 +70,7 @@ class BookingHolidayResource extends BaseResource
                         TextInput::make('name')
                             ->label('Имя')
                             ->required()
-                            ->rules([new CyrillicRule])
+                            ->rules([new NameRule])
                             ->maxLengthWithHint(40)
                             ->dehydrateStateUsing(fn($state) => trim($state))
                             ->validationMessages([

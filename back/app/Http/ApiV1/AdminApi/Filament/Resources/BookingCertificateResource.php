@@ -11,7 +11,7 @@ use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\CreateBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\EditBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\ListBookingCertificates;
-use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
+use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use App\Rules\PhoneRule;
 use Carbon\Carbon;
@@ -65,13 +65,13 @@ class BookingCertificateResource extends BaseResource
                                         'required' => 'Поле ":attribute" обязательно.',
                                     ])
                                     ->helperText(function () {
-                                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте лаунж.';
+                                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
                                     })
                                     ->native(false),
                                 TextInput::make('name')
                                     ->label('Имя')
                                     ->required()
-                                    ->rules([new CyrillicRule])
+                                    ->rules([new NameRule])
                                     ->maxLengthWithHint(40)
                                     ->dehydrateStateUsing(fn($state) => trim($state))
                                     ->validationMessages([
@@ -114,13 +114,13 @@ class BookingCertificateResource extends BaseResource
                                 Select::make('certificate_type_id')
                                     ->label('Тип')
                                     ->placeholder('Выберите тип')
-                                    ->relationship('certificateType', 'name')
+                                    ->relationship('certificateType', 'name', fn($query) => $query->withoutTrashed())
                                     ->required()
                                     ->validationMessages([
                                         'required' => 'Поле ":attribute" обязательное.',
                                     ])
                                     ->helperText(function () {
-                                        return CertificateType::exists() ? '' : 'Типы не обнаружены. Сначала создайте лаунж.';
+                                        return CertificateType::exists() ? '' : 'Типы не обнаружены. Сначала создайте тип.';
                                     })
                                     ->native(false),
                             ])

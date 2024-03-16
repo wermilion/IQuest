@@ -47,4 +47,11 @@ class Filial extends Model
     {
         return $this->hasMany(Lounge::class);
     }
+
+    public function scopeLoungeIsActive($query, bool $isActive)
+    {
+        return $query->with('lounges', function ($query) use ($isActive) {
+            $query->where('is_active', $isActive);
+        });
+    }
 }

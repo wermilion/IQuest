@@ -69,7 +69,7 @@ class BookingScheduleLoungeResource extends Resource
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('scheduleLounge.time_to')
-                    ->label('Время конца')
+                    ->label('Время окончания')
                     ->numeric()
                     ->toggleable(isToggledHiddenByDefault: true),
                 SelectColumn::make('booking.status')

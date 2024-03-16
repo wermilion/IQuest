@@ -3,6 +3,7 @@
 namespace App\Domain\Quests\Actions\QuestWeekdaysSlots;
 
 use App\Domain\Quests\Models\QuestWeekdaysSlot;
+use App\Domain\Schedules\Models\ScheduleQuest;
 
 class DeleteQuestWeekdaysSlotAction
 {
@@ -10,12 +11,17 @@ class DeleteQuestWeekdaysSlotAction
     {
         $scheduleQuests = $slot->quest->scheduleQuests;
 
-        foreach ($scheduleQuests as $scheduleQuest) {
-            $scheduleQuest->timeslots()
+        $scheduleQuests->each(function (ScheduleQuest $scheduleQuest) use ($slot) {
+            $timeslot = $scheduleQuest->timeslots
                 ->where('time', $slot->time)
                 ->where('price', $slot->price)
-                ->whereDoesntHave('booking')
-                ->delete();
-        }
+                ->first();
+
+            if ($timeslot->bookingScheduleQuest()->doesntExist()) {
+                $timeslot->forceDelete();
+            } else {
+                $timeslot->delete();
+            }
+        });
     }
 }

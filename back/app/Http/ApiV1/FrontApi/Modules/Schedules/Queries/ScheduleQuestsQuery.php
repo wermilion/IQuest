@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\FrontApi\Modules\Schedules\Queries;
 use App\Domain\Schedules\Models\ScheduleQuest;
 use Carbon\Carbon;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedInclude;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ScheduleQuestsQuery extends QueryBuilder
@@ -14,7 +15,9 @@ class ScheduleQuestsQuery extends QueryBuilder
         parent::__construct(ScheduleQuest::query());
 
         $this->allowedIncludes([
-            'timeslots',
+            AllowedInclude::callback('timeslots', function ($query) {
+                $query->withoutTrashed();
+            })
         ]);
 
         $this->allowedFilters([

@@ -21,7 +21,7 @@ class ContactTypePolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === Role::ADMIN;
+        return false;
     }
 
     /**
@@ -29,7 +29,7 @@ class ContactTypePolicy
      */
     public function update(User $user, ContactType $contactType): bool
     {
-        return $user->role === Role::ADMIN;
+        return false;
     }
 
     /**
@@ -37,6 +37,6 @@ class ContactTypePolicy
      */
     public function delete(User $user, ContactType $contactType): bool
     {
-        return $user->role === Role::ADMIN;
+        return false;
     }
 }

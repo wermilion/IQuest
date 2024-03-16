@@ -18,6 +18,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\Qu
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekdaysSlotsRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekendSlotsRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
+use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -208,12 +209,15 @@ class QuestResource extends Resource
                     ->label('Обложка')
                     ->columnSpanFull()
                     ->image()
-                    ->resize(50)
+                    ->orientImagesFromExif(false)
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
-                    ]),
+                    ])
+                    ->saveUploadedFileUsing(function ($record, $file) {
+                        return (new CompressImageService($file, 'quest_covers'))->compress();
+                    }),
                 Toggle::make('is_active')
                     ->label('Отображение на сайте'),
             ]);

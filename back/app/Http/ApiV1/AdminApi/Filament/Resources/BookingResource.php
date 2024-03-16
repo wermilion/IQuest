@@ -7,6 +7,7 @@ use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
 use App\Domain\Locations\Models\City;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
+use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\CreateBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\EditBooking;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingResource\Pages\ListBookings;
@@ -23,7 +24,6 @@ use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 class BookingResource extends BaseResource
@@ -135,7 +135,7 @@ class BookingResource extends BaseResource
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                TrashedFilter::make()
+                BaseTrashedFilter::make()
                     ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')

@@ -12,7 +12,7 @@ class CreateQuestWeekdaysSlotAction
     public function execute(QuestWeekdaysSlot $slot): void
     {
         $startDate = Carbon::today();
-        $endDate = Carbon::today()->addMonth();
+        $endDate = Carbon::today()->addDays(30);
 
         $workingDays = CarbonPeriod::create($startDate, $endDate)
             ->addFilter(function ($date) {

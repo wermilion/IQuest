@@ -8,10 +8,10 @@ use App\Domain\Bookings\Models\BookingHoliday;
 use App\Domain\Holidays\Models\Package;
 use App\Domain\Locations\Models\City;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
+use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\CreateBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\ListBookingHolidays;
-use App\Http\ApiV1\AdminApi\Filament\Rules\CyrillicRule;
 use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use App\Rules\PhoneRule;
@@ -23,14 +23,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ForceDeleteAction;
-use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -195,7 +192,7 @@ class BookingHolidayResource extends BaseResource
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                TrashedFilter::make()
+                BaseTrashedFilter::make()
                     ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')

@@ -6,6 +6,7 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
 use App\Domain\Schedules\Models\ScheduleLounge;
+use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\CreateScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\EditScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\ListScheduleLounges;
@@ -23,7 +24,6 @@ use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -106,7 +106,7 @@ class ScheduleLoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'date_format' => 'Поле ":attribute" должно быть в формате 00:00.',
-                        'after' => 'Поле ":attribute" должно быть больше больше "времени начала".',
+                        'after' => 'Поле ":attribute" должно быть позже "времени начала".',
                     ]),
             ]);
     }
@@ -138,7 +138,7 @@ class ScheduleLoungeResource extends Resource
                     ->label('Время окончания'),
             ])
             ->filters([
-                TrashedFilter::make()
+                BaseTrashedFilter::make()
                     ->native(false),
                 Filter::make('location')
                     ->form([

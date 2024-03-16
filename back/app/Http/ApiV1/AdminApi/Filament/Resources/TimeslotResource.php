@@ -6,6 +6,7 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Quests\Models\Quest;
 use App\Domain\Schedules\Models\Timeslot;
+use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\CreateTimeslot;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\EditTimeslot;
 use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\Pages\ListTimeslots;
@@ -13,7 +14,6 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\TimeslotResource\RelationManagers
 use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Tables\Actions\ForceDeleteAction;
-use Filament\Tables\Filters\TrashedFilter;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -125,7 +125,7 @@ class TimeslotResource extends Resource
             ])
             ->defaultSort('scheduleQuest.date')
             ->filters([
-                TrashedFilter::make()
+                BaseTrashedFilter::make()
                     ->native(false),
                 Filter::make('location')
                     ->form([
@@ -158,6 +158,7 @@ class TimeslotResource extends Resource
                         Select::make('quest_id')
                             ->key('quest')
                             ->label('Квест')
+                            ->placeholder('Выберите квест')
                             ->options(fn(Get $get) => Quest::where('filial_id', $get('filial_id'))
                                 ->pluck('slug', 'id'))
                             ->native(false),

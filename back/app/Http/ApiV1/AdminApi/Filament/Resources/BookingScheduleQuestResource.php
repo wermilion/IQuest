@@ -4,6 +4,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Models\BookingScheduleQuest;
+use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingScheduleQuestResource\Pages\ListBookingScheduleQuests;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\DatePicker;
@@ -13,7 +14,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -87,7 +87,7 @@ class BookingScheduleQuestResource extends Resource
             ])
             ->defaultSort('id', 'desc')
             ->filters([
-                TrashedFilter::make()
+                BaseTrashedFilter::make()
                     ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')

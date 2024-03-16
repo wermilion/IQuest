@@ -27,6 +27,5 @@ class Debug extends Command
      */
     public function handle()
     {
-       
     }
 }

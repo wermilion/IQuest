@@ -7,11 +7,6 @@ const isInitialized = ref(false)
 
 Promise.allSettled([
   stores.city.fetchCities(),
-  stores.contact.fetchPhone(),
-  stores.contact.fetchEmail(),
-  stores.stocks.fetchStocks(),
-  stores.questList.fetchQuests(),
-  stores.holidaysList.fetchHolidaysList(),
 ])
   .then (() => {
     isInitialized.value = true
@@ -25,9 +20,8 @@ const isLoading: WritableComputedRef<boolean> = computed({
 watch(() => stores.city.selectedCity, () => {
   isInitialized.value = false
   Promise.allSettled([
-    stores.contact.fetchPhone(),
+    stores.contact.fetchContact(),
     stores.stocks.fetchStocks(),
-    stores.contact.fetchEmail(),
     stores.questList.fetchQuests(),
     stores.holidaysList.fetchHolidaysList(),
   ])

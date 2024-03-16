@@ -33,8 +33,14 @@ updateData()
       <AssistChip
         v-for="(item, index) in itemsArray"
         :key="index"
+        class="assist-chip"
         :name="item"
       />
+      <ul class="mobile-list">
+        <li v-for="(item, index) in itemsArray" :key="index" class="footnote ">
+          {{ item }}
+        </li>
+      </ul>
     </div>
     <div v-else class="loading">
       <h3>loading...</h3>
@@ -47,7 +53,7 @@ updateData()
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: $cover-32;
+  gap: clamp($cover-16, 3vw, $cover-32);
   align-self: stretch;
 
   &__items {
@@ -58,6 +64,10 @@ updateData()
     align-self: stretch;
     flex-wrap: wrap;
   }
+
+  h3 {
+    color: $color-base2;
+  }
 }
 .loading {
   display: flex;
@@ -66,6 +76,38 @@ updateData()
 
   h3 {
     color: $color-base2;
+  }
+}
+
+.mobile-list {
+  display: none;
+  gap: $cover-12;
+  flex-direction: column;
+
+  li {
+    list-style-type: none;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  li::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background-image: url('/icons/share/star.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 6px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .assist-chip {
+    display: none;
+  }
+
+  .mobile-list {
+    display: flex;
   }
 }
 </style>

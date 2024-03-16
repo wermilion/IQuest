@@ -3,29 +3,21 @@ defineProps<{ isActiveImg?: boolean }>()
 
 const store = setupStore('contact')
 
-onMounted(() => {
-  store.fetchEmail()
-})
-
 const email = ref({
-  text: '',
-  img: '',
+  text: store.getEmail,
+  img: 'mail',
+  link: `mailto:${store.getEmail}`,
 })
 
-watch(() => store.emial, (newValue) => {
-  if (newValue.length) {
-    email.value = {
-      text: newValue[0].value!,
-      img: 'mail',
-    }
-  }
+watch(() => store.getEmail, () => {
+  email.value.text = store.getEmail
 })
 </script>
 
 <template>
-  <span class="body">
+  <span v-if="store.getEmail" class="body">
     <img v-if="isActiveImg === false" :src="`/icons/share/${email.img}.svg`" :alt="email.img">
-    <span>{{ email.text }}</span>
+    <a :href="email.link">{{ email.text }}</a>
   </span>
 </template>
 

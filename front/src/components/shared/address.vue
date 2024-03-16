@@ -23,8 +23,13 @@ const yandexMapUrl = computed(() => `https://yandex.ru/maps/?text=${props.addres
   span {
   display: flex;
   gap: 8px;
+  align-items: center;
   a {
     color: $color-base2;
+  }
+
+  img {
+    width: clamp(22px, 5vw, $cover-28);
   }
 }
 </style>

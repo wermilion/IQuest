@@ -132,7 +132,7 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
 
       &__social {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
 
         img {
           width: 100%;

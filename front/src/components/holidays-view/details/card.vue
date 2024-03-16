@@ -31,10 +31,6 @@ defineProps<{ item: Props }>()
   border-radius: $cover-8;
   border: 1px solid $color-opacity012;
 
-  .smallFootnote {
-    color: $color-base2;
-  }
-
   @media screen and (max-width: 600px) {
     padding: 24px 20px;
     height: auto;

@@ -99,10 +99,10 @@ const framchise = [
       height: 100%;
       display: grid;
       gap: $cover-32;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
 
       @media screen and (max-width: 1024px) {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       @media screen and (max-width: 600px) {

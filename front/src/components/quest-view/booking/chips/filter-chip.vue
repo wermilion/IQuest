@@ -30,6 +30,10 @@ defineProps<Props>()
   }
 }
 
+.body {
+  width: max-content;
+}
+
 .isSelected {
   background-color: $color-primary;
 

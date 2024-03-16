@@ -169,7 +169,7 @@ function getFirstWord(text: string) {
         align-items: flex-end;
         border-bottom: 1px solid $color-opacity025;
 
-        z-index: 10;
+        z-index: 12;
 
         &-list {
           padding-top: 11px;

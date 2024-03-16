@@ -39,7 +39,7 @@ class PackagesRelationManager extends RelationManager
                 TextInput::make('name')
                     ->label('Название')
                     ->required()
-                    ->maxLengthWithHint(40)
+                    ->maxLengthWithHint(30)
                     ->dehydrateStateUsing(fn($state) => trim($state))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
@@ -57,10 +57,12 @@ class PackagesRelationManager extends RelationManager
                     ->label('Порядковый номер')
                     ->required()
                     ->numeric()
-                    ->minValue(1)
+                    ->minValue('1')
+                    ->maxValue('999')
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                        'max' => 'Поле ":attribute" должно быть меньше или равно :max.'
                     ]),
                 RichEditor::make('description')
                     ->label('Описание')

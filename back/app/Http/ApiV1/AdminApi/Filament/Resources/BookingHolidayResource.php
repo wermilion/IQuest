@@ -215,8 +215,6 @@ class BookingHolidayResource extends BaseResource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
-                RestoreAction::make()->modalHeading('Восстановление заявки'),
-                ForceDeleteAction::make()->modalHeading('Полное удаление заявки'),
             ]);
     }
 

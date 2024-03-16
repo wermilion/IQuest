@@ -2,7 +2,6 @@
 
 namespace App\Domain\Bookings\Models;
 
-use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Locations\Models\City;

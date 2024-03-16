@@ -175,9 +175,11 @@ class QuestResource extends Resource
                     ->required()
                     ->numeric()
                     ->minValue('1')
+                    ->maxValue('99')
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно 1.'
+                        'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                        'max' => 'Поле ":attribute" должно быть меньше или равно :max.'
                     ]),
                 TextInput::make('max_people')
                     ->label('Макс. кол-во человек')
@@ -192,17 +194,23 @@ class QuestResource extends Resource
                     ->label('Продолжительность (в мин)')
                     ->required()
                     ->numeric()
+                    ->minValue('1')
+                    ->maxValue('720')
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                        'max' => 'Поле ":attribute" должно быть меньше или равно :max.'
                     ]),
                 TextInput::make('sequence_number')
                     ->label('Порядковый номер')
                     ->required()
                     ->numeric()
                     ->minValue('1')
+                    ->maxValue('999')
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно 1.'
+                        'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                        'max' => 'Поле ":attribute" должно быть меньше или равно :max.'
                     ]),
                 FileUpload::make('cover')
                     ->directory('quest_covers')

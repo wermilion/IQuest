@@ -13,7 +13,7 @@ use Intervention\Image\Facades\Image;
  * @property string $directory Название директории
  * @property int $quality Качество сжатия
  */
-readonly class  CompressImageService
+readonly class CompressImageService
 {
 
     public function __construct(private UploadedFile $file, private string $directory, private int $quality = 50)

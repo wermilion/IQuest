@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
@@ -84,7 +85,7 @@ class CertificateTypeResource extends BaseResource
 
     public static function canEdit(Model $record): bool
     {
-        return Auth::user()->role === Role::ADMIN;
+        return Auth::user()->role === Role::ADMIN && !$record->trashed();
     }
 
     public static function table(Table $table): Table
@@ -118,6 +119,7 @@ class CertificateTypeResource extends BaseResource
                 ViewAction::make()->modalHeading('Просмотр сертификата'),
                 DeleteAction::make()->modalHeading('Удаление сертификата'),
                 RestoreAction::make()->modalHeading('Восстановление сертификата'),
+                ForceDeleteAction::make()->modalHeading('Полное удаление сертификата'),
             ]);
     }
 

@@ -33,14 +33,19 @@ class CertificateType extends Model
     {
         static::deleting(function (self $model) {
             $model->bookingCertificates()->each(function (BookingCertificate $bookingCertificate) {
-                $bookingCertificate->booking()->delete();
                 $bookingCertificate->delete();
+            });
+        });
+
+        static::forceDeleting(function (self $model) {
+            $model->bookingCertificates()->each(function (BookingCertificate $bookingCertificate) {
+                $bookingCertificate->forceDelete();
             });
         });
     }
 
     public function bookingCertificates(): HasMany
     {
-        return $this->hasMany(BookingCertificate::class);
+        return $this->hasMany(BookingCertificate::class)->withTrashed();
     }
 }

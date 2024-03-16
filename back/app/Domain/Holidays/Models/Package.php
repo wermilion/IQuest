@@ -43,10 +43,18 @@ class Package extends Model
         static::deleting(function (self $model) {
             $model->holidayPackages()->each(function (HolidayPackage $holidayPackage) {
                 $holidayPackage->bookingHolidays()->each(function (BookingHoliday $bookingHoliday) {
-                    $bookingHoliday->booking()->delete();
                     $bookingHoliday->delete();
                 });
                 $holidayPackage->delete();
+            });
+        });
+
+        static::forceDeleting(function (self $model) {
+            $model->holidayPackages()->each(function (HolidayPackage $holidayPackage) {
+                $holidayPackage->bookingHolidays()->each(function (BookingHoliday $bookingHoliday) {
+                    $bookingHoliday->forceDelete();
+                });
+                $holidayPackage->forceDelete();
             });
         });
 
@@ -62,6 +70,6 @@ class Package extends Model
 
     public function holidayPackages(): HasMany
     {
-        return $this->hasMany(HolidayPackage::class);
+        return $this->hasMany(HolidayPackage::class)->withTrashed();
     }
 }

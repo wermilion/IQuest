@@ -27,8 +27,5 @@ class Debug extends Command
      */
     public function handle()
     {
-        $current = Carbon::now();
-
-        dd($current/*->copy()*/->subDay(), $current->addDays(30));
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\ApiV1\FrontApi\Modules\Bookings\Requests;
 
 use App\Domain\Bookings\Enums\BookingType;
-use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
+use App\Rules\NameRule;
 use App\Rules\PhoneRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;

@@ -10,7 +10,7 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\EditUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinNumberRule;
-use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
+use App\Rules\NameRule;
 use Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;

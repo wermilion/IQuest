@@ -35,7 +35,7 @@ class BookingScheduleQuestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->emptyStateHeading('Заявок на квесты не обнаружены')
+            ->emptyStateHeading('Заявок на квесты не обнаружено')
             ->columns([
                 TextColumn::make('booking.id')
                     ->label('ID')
@@ -56,7 +56,7 @@ class BookingScheduleQuestResource extends Resource
                     ->label('Телефон')
                     ->numeric()
                     ->searchable(),
-                TextColumn::make('timeslot.scheduleQuest.quest.name')
+                TextColumn::make('timeslot.scheduleQuest.quest.slug')
                     ->label('Квест')
                     ->numeric()
                     ->sortable(),
@@ -71,19 +71,6 @@ class BookingScheduleQuestResource extends Resource
                     ->label('Статус')
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
-                TextColumn::make('comment')
-                    ->label('Комментарий')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('created_at')
-                    ->label('Дата создания')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label('Дата обновления')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
@@ -91,6 +78,7 @@ class BookingScheduleQuestResource extends Resource
                     ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')
+                    ->placeholder('Выберите город')
                     ->relationship('booking.city', 'name')
                     ->native(false),
                 Filter::make('date')

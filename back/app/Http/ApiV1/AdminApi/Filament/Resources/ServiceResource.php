@@ -7,6 +7,7 @@ use App\Domain\Services\Models\Service;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\CreateService;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\EditService;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ServiceResource\Pages\ListServices;
+use App\Rules\PriceRule;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -62,13 +63,10 @@ class ServiceResource extends Resource
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->rules([
-                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                    ])
+                    ->rules([new PriceRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
-                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 TextInput::make('unit')
                     ->label('Единица измерения')

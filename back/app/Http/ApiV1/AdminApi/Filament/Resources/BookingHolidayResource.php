@@ -12,8 +12,8 @@ use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\CreateBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\ListBookingHolidays;
-use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use App\Rules\NameRule;
 use App\Rules\PhoneRule;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
@@ -186,9 +186,6 @@ class BookingHolidayResource extends BaseResource
                     ->label('Статус')
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
-                TextColumn::make('comment')
-                    ->label('Комментарий')
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
@@ -196,6 +193,7 @@ class BookingHolidayResource extends BaseResource
                     ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')
+                    ->placeholder('Выберите город')
                     ->relationship('booking.city', 'name')
                     ->native(false),
                 Filter::make('date')

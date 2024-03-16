@@ -12,8 +12,8 @@ use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\CreateBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\EditBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\ListBookingCertificates;
-use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
+use App\Rules\NameRule;
 use App\Rules\PhoneRule;
 use Carbon\Carbon;
 use Filament\Forms\Components\DatePicker;
@@ -161,10 +161,12 @@ class BookingCertificateResource extends BaseResource
                     ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')
+                    ->placeholder('Выберите город')
                     ->relationship('booking.city', 'name')
                     ->native(false),
                 SelectFilter::make('type')
                     ->label('Тип сертификата')
+                    ->placeholder('Выберите тип')
                     ->relationship('certificateType', 'name')
                     ->native(false),
                 Filter::make('date')

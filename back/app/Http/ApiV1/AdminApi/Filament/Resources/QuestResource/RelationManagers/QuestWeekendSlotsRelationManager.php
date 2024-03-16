@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers;
 
+use App\Rules\PriceRule;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -40,13 +41,10 @@ class QuestWeekendSlotsRelationManager extends RelationManager
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->rules([
-                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                    ])
+                    ->rules([new PriceRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'min' => 'Поле ":attribute" должно быть больше нуля.',
-                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
             ]);
     }

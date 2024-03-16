@@ -5,7 +5,6 @@ import BanerSwiper from '#/components/stocks-swiper/baner-swiper.vue'
 
 const stores = setupStore(['stocks', 'services'])
 
-stores.stocks.fetchStocks()
 stores.services.fetchServices()
 </script>
 
@@ -28,6 +27,12 @@ stores.services.fetchServices()
 
   &:nth-child(3) {
     margin-top: 108px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .bag-black:nth-child(2) {
+    margin-top: clamp(40px, 6vw, 108px);
   }
 }
 </style>

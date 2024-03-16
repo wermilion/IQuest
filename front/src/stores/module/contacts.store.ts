@@ -3,25 +3,36 @@ import type { Contact } from '#/types/models/contact'
 //* --- State ----------------------------------------------- *//
 interface ContactState {
   social: Contact[]
-  phone: Contact[]
-  emial: Contact[]
 }
 
 //* --- Store ----------------------------------------------- *//
 export const useContactStore = defineStore('contact', {
   state: (): ContactState => ({
     social: [],
-    phone: [],
-    emial: [],
   }),
   getters: {
     requestWrapper: () => useRequestMeta().requestMetaWrapper,
     isLoading: (): boolean => useRequestMeta().checkAnyIsLoading(['contact']),
     errors: () => useRequestMeta().getError(['contact']),
 
+    getPhone: (state) => {
+      const phone = state.social.find(item => item.type.name === 'Номер телефона')
+      return phone ? phone.value : null
+    },
+
+    getEmail: (state) => {
+      const email = state.social.find(item => item.type.name === 'Почта')
+      return email ? email.value : null
+    },
+
+    getSocial: (state) => {
+      const social = state.social.filter(item => item.type.is_social === true)
+      return social.length > 0 ? social : null
+    },
+
   },
   actions: {
-    async fetchSocial() {
+    async fetchContact() {
       const stores = setupStore(['city'])
       this.requestWrapper({
         key: 'contact',
@@ -33,55 +44,11 @@ export const useContactStore = defineStore('contact', {
             ],
             filter: {
               city_id: stores.city.selectedCity.id,
-              contact_type_id: 1,
-              is_social: true,
             },
           })
         },
         successCallback: ({ data }) => {
           this.social = data.data.data
-        },
-      })
-    },
-    async fetchPhone() {
-      const stores = setupStore(['city'])
-      this.requestWrapper({
-        key: 'contact',
-
-        callback: () => {
-          return api.contact.getContact({
-            include: [
-              'contactType',
-            ],
-            filter: {
-              city_id: stores.city.selectedCity.id,
-              contact_type_id: 3,
-            },
-          })
-        },
-        successCallback: ({ data }) => {
-          this.phone = data.data.data
-        },
-      })
-    },
-    async fetchEmail() {
-      const stores = setupStore(['city'])
-      this.requestWrapper({
-        key: 'contact',
-
-        callback: () => {
-          return api.contact.getContact({
-            include: [
-              'contactType',
-            ],
-            filter: {
-              city_id: stores.city.selectedCity.id,
-              contact_type_id: 2,
-            },
-          })
-        },
-        successCallback: ({ data }) => {
-          this.emial = data.data.data
         },
       })
     },

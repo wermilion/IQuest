@@ -4,7 +4,6 @@ namespace App\Domain\Locations\Models;
 
 use App\Domain\Lounges\Models\Lounge;
 use App\Domain\Quests\Models\Quest;
-use App\Domain\Users\Models\FilialUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $id - Идентификатор филиала
  * @property string $address - Адрес филиала
- * @property float $width - Координата по широте
+ * @property float $latitude - Координата по широте
  * @property float $longitude - Координата по долготе
  * @property int $city_id - Идентификатор города
  *

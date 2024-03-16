@@ -56,13 +56,12 @@ onMounted(() => {
           v-for="img in images"
           :key="img.image"
           v-lazy-src="img.image"
-
           class="swiper-slide loading-lazy"
-          :alt="img.image"
+          alt=""
         >
       </template>
       <template v-else>
-        <img v-lazy-src="stores.quest?.cover" class="loading-lazy" alt="">
+        <img :key="stores.quest?.cover" v-lazy-src="stores.quest?.cover" class="loading-lazy" alt="">
       </template>
     </div>
 
@@ -72,7 +71,9 @@ onMounted(() => {
     <button class="swiper-button-next swiper-button">
       <Next />
     </button>
-    <div class="swiper-pagination" />
+    <div class="swiper-pagination__wrapper">
+      <div class="swiper-pagination" />
+    </div>
   </div>
 </template>
 
@@ -80,22 +81,31 @@ onMounted(() => {
 .swiper-container {
   overflow: hidden;
   position: relative;
-  width: 616px;
-  height: 411px;
+  height: 100%;
   width: 100%;
 }
 .swiper-slide {
   border-radius: $cover-8;
 }
 .swiper-pagination {
-  max-width: 272px;
   display: flex;
-  bottom: 12px;
-  left: 25%;
-  right: auto;
-}
+  bottom: clamp(8px, 2vw, 12px);
+  left: 0;
 
+  &__wrapper {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    width: 272px;
+  }
+}
 .swiper-wrapper {
-  backdrop-filter: blur(8px);
+  img {
+    border-radius: $cover-12;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
 }
 </style>

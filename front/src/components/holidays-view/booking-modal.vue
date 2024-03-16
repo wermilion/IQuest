@@ -59,7 +59,7 @@ async function submitForm() {
 </script>
 
 <template>
-  <Modal v-model="modal" persistent v-bind="modalProps">
+  <Modal v-model="modal" v-bind="modalProps">
     <template #content>
       <div class="content-wrapper">
         <v-form class="form">

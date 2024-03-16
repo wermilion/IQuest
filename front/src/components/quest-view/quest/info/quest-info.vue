@@ -15,6 +15,10 @@ const convertDuration = computed(() => {
   if (props.info.duration > 60) {
     const hours = Math.floor(props.info.duration / 60)
     const minutes = props.info.duration % 60
+
+    if (minutes === 0)
+      return `${hours} ч`
+
     return `${hours} ч ${minutes} мин`
   }
   else {
@@ -74,7 +78,7 @@ const { scrollToQuestBooking } = stores.quest
 
 <style scoped lang="scss">
 .info {
-  position: -webkit-sticky; /* Safari */
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
 
@@ -87,7 +91,7 @@ const { scrollToQuestBooking } = stores.quest
   &-container {
     display: flex;
     flex-direction: column;
-    gap: $cover-32;
+    gap: clamp($cover-24, 4vw, $cover-32);
   }
 
   &-contacts {
@@ -97,7 +101,7 @@ const { scrollToQuestBooking } = stores.quest
   &-details {
     display: flex;
     flex-wrap: wrap;
-    gap: $cover-16;
+    gap: clamp($cover-12, 5vw, $cover-16);
   }
 }
 </style>

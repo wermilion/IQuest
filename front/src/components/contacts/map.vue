@@ -13,10 +13,10 @@ const store = setupStore('filialList')
 
 const active = ref(store.getFirstFilial.id)
 
-const center = ref([store.getFirstFilial.longitude, store.getFirstFilial.width] as LngLat)
+const center = ref([store.getFirstFilial.longitude, store.getFirstFilial.latitude] as LngLat)
 
-function mapToMove(lon: number, lag: number, id: number) {
-  center.value = [lon, lag] as LngLat
+function mapToMove(lon: number, lat: number, id: number) {
+  center.value = [lon, lat] as LngLat
   active.value = id
 }
 </script>
@@ -29,7 +29,7 @@ function mapToMove(lon: number, lag: number, id: number) {
         :key="item.id"
         class="bodyBold pointer"
         :class="{ active: active === item.id }"
-        @click="mapToMove(item.longitude, item.width, item.id)"
+        @click="mapToMove(item.longitude, item.latitude, item.id)"
       >
         {{ item.address }}
       </span>
@@ -47,7 +47,7 @@ function mapToMove(lon: number, lag: number, id: number) {
           },
         }"
         theme
-        height="492px"
+        height="100%"
         width="100%"
       >
         <YandexMapDefaultSchemeLayer :settings="{ theme: 'dark' }" />
@@ -59,7 +59,7 @@ function mapToMove(lon: number, lag: number, id: number) {
           v-for="marker in store.filialList"
           :key="marker.id"
           :settings="{
-            coordinates: [marker.longitude, marker.width],
+            coordinates: [marker.longitude, marker.latitude],
             title: marker.address,
             color: 'balck',
           }"
@@ -76,16 +76,19 @@ function mapToMove(lon: number, lag: number, id: number) {
 .map {
   display: flex;
   flex-direction: column;
-  gap: $cover-32;
+  gap: clamp($cover-24, 5vw, $cover-32);
 
   &-button {
     display: flex;
-    gap: $cover-32;
+    gap: clamp(17px, 5vw, $cover-32);
+    flex-wrap: wrap;
   }
 
   &-container {
     border-radius: $cover-12;
     overflow: hidden;
+    width: 100%;
+    height: clamp(222px, 30vw, 492px);
   }
 }
 

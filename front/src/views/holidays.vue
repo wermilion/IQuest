@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Cover from '#/components/holidays-view/cover.vue'
-import Packages from '#/components/holidays-view/packages/packege-container.vue'
+import PackagesMain from '#/components/holidays-view/packages/packege-container.vue'
 import PackagesCorp from '#/components/holidays-view/packages/package-corp.vue'
-import DetailsContainer from '#/components/holidays-view/details/datails-container.vue'
 
 const route = useRoute()
 const stores = setupStore(['holiday'])
@@ -20,9 +19,8 @@ if (route.params.id === '3')
 <template>
   <section v-if="stores.holiday.holiday">
     <Cover :type="stores.holiday.holiday.type" :corp-info="corp" />
-    <section v-if="!corp" class="wrapper">
-      <Packages :key="stores.holiday.getFirstPackegs?.id" />
-      <DetailsContainer />
+    <section v-if="!corp">
+      <PackagesMain :key="stores.holiday.getFirstPackegs?.id" />
     </section>
     <section v-else class="wrapper">
       <PackagesCorp />
@@ -37,6 +35,6 @@ if (route.params.id === '3')
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 108px;
+  gap: clamp($cover-64, 20vw, 108px);
 }
 </style>

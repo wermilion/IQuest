@@ -1,7 +1,7 @@
 export interface Filial {
   id: number
   address: string
-  width: number
+  latitude: number
   longitude: number
   city: City
   lounges: Lounge[]

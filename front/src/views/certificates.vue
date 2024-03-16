@@ -23,6 +23,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .container {
-  margin-top: 144px;
+  margin-top: clamp(40px, 10vw, 144px);
 }
 </style>

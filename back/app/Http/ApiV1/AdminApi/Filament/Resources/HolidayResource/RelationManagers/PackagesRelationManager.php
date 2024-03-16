@@ -48,10 +48,14 @@ class PackagesRelationManager extends RelationManager
                     ->label('Цена')
                     ->required()
                     ->numeric()
-                    ->minValue(1)
+                    ->minValue(0)
+                    ->rules([
+                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
+                    ])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
-                        'min' => 'Поле ":attribute" должно быть больше или равно 1.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 TextInput::make('sequence_number')
                     ->label('Порядковый номер')

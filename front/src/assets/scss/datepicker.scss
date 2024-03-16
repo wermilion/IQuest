@@ -54,7 +54,7 @@
   --dp-menu-padding: 6px 8px; /*Menu padding*/
 
   /*Font sizes*/
-  --dp-font-size: 24px; /*Default font-size*/
+  --dp-font-size: clamp(18px, 3vw, 24px); /*Default font-size*/
   --dp-preview-font-size: 12px; /*Font size of the date preview in the action row*/
   --dp-time-font-size: 0.8rem; /*Font size in the time picker*/
 
@@ -71,7 +71,7 @@
 
 .dp__input {
   background-color: transparent;
-  max-width: 160px;
+  max-width: clamp(120px, 50vw, 160px);
 }
 
 .dp__input_wrap input::-webkit-input-placeholder {

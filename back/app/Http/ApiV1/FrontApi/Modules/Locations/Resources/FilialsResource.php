@@ -16,7 +16,7 @@ class FilialsResource extends BaseJsonResource
         return [
             'id' => $this->id,
             'address' => $this->address,
-            'width' => $this->width,
+            'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'city' => new CitiesResource($this->whenLoaded('city')),
             'lounges' => LoungesResource::collection($this->whenLoaded('lounges'))

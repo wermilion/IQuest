@@ -43,7 +43,6 @@ onMounted(() => select(defaultChip.name, defaultChip.params))
     <div class="booking" :class="{ toLight: stores.quest.toLight }">
       <div class="booking-header">
         <h2>Расписание</h2>
-
         <div class="filter">
           <FilterChip
             v-for="item in filters"
@@ -61,14 +60,13 @@ onMounted(() => select(defaultChip.name, defaultChip.params))
             />
           </FilterChip>
         </div>
-
-        <div class="booking-schedule">
-          <ScheduleContainer
-            v-for="item in stores.scheduleQuest.scheduleQuest"
-            :key="item.id"
-            :date-times="item"
-          />
-        </div>
+      </div>
+      <div class="booking-schedule">
+        <ScheduleContainer
+          v-for="item in stores.scheduleQuest.scheduleQuest"
+          :key="item.id"
+          :date-times="item"
+        />
       </div>
     </div>
   </section>
@@ -78,7 +76,9 @@ onMounted(() => select(defaultChip.name, defaultChip.params))
 .booking {
   width: 100%;
   height: 100%;
-  gap: $cover-64;
+  display: flex;
+  flex-direction: column;
+  gap: clamp($cover-40, 3vw, $cover-64);
   border-radius: $cover-16;
   padding: $cover-48;
   background-color: $color-opacity004;
@@ -87,23 +87,31 @@ onMounted(() => select(defaultChip.name, defaultChip.params))
   &-header {
     display: flex;
     flex-direction: column;
-    gap: $cover-32;
-
-    h2 {
-      color: $color-opacity06;
-    }
-
+    gap: clamp($cover-16, 3vw, $cover-32);
     .filter {
+      overflow: auto;
       display: flex;
-      flex-wrap: wrap;
-      gap: $cover-16;
+      gap: clamp($cover-8, 2vw, $cover-16);
     }
   }
 
   &-schedule {
     display: flex;
     flex-direction: column;
-    gap: $cover-64;
+    gap: clamp($cover-40, 3vw, $cover-64);
+  }
+
+  @media screen and (max-width: 600px) {
+    padding: $cover-24 $cover-16;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .booking {
+    border-radius: 0;
+  }
+  .container {
+    padding: 0;
   }
 }
 

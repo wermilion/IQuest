@@ -3,29 +3,19 @@ defineProps<{ isActiveImg?: boolean }>()
 
 const store = setupStore('contact')
 
-onMounted(() => {
-  store.fetchPhone()
-})
-
 const phoneNumber = ref({
-  text: '',
-  img: '',
-  link: '',
+  text: store.getPhone,
+  img: 'phone',
+  link: `tel:${store.getPhone}`,
 })
 
-watch(() => store.phone, (newValue) => {
-  if (newValue.length) {
-    phoneNumber.value = {
-      text: newValue[0].value!,
-      img: 'phone',
-      link: `tel:${newValue[0].value!}`,
-    }
-  }
+watch(() => store.getPhone, () => {
+  phoneNumber.value.text = store.getPhone
 })
 </script>
 
 <template>
-  <span class="body">
+  <span v-if="store.getPhone" class="body">
     <img v-if="isActiveImg === false" :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
     <a :href="phoneNumber.link">{{ phoneNumber.text }}</a>
   </span>
@@ -33,10 +23,15 @@ watch(() => store.phone, (newValue) => {
 
 <style scoped lang="scss">
   span {
+  align-items: center;
   display: flex;
   gap: 8px;
   a {
     color: $color-base2;
+  }
+
+  img {
+    width: clamp(22px, 5vw, $cover-28);
   }
 }
 </style>

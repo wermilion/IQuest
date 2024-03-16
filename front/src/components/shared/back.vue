@@ -31,5 +31,8 @@ function goBack() {
       }
     }
   }
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 }
 </style>

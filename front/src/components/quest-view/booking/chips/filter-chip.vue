@@ -16,16 +16,22 @@ defineProps<Props>()
 
 <style scoped lang="scss">
 .chip {
+  white-space: nowrap;
+  width: max-content;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 120px;
   background-color: $color-opacity004;
-  padding: $cover-16 $cover-48;
+  padding: clamp($cover-12, 3vw, $cover-16) clamp($cover-24, 5vw, $cover-48);
 
   &:hover {
     background-color: $color-opacity012;
   }
+}
+
+.body {
+  width: max-content;
 }
 
 .isSelected {

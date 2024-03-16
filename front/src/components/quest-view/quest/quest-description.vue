@@ -15,9 +15,7 @@ function toggleExpand() {
   <div class="description">
     <span class="bodyBold">Описание</span>
     <div class="description-content">
-      <p class="footnoteText" :class="{ extend: isExpanded }">
-        {{ description }}
-      </p>
+      <p class="footnoteText" :class="{ extend: isExpanded }" v-html="description" />
       <div
         class="read-more body pointer"
         :class="{ active: isExpanded }"

@@ -61,8 +61,14 @@ class ServiceResource extends Resource
                     ->label('Цена')
                     ->required()
                     ->numeric()
+                    ->minValue(0)
+                    ->rules([
+                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
+                    ])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 TextInput::make('unit')
                     ->label('Единица измерения')

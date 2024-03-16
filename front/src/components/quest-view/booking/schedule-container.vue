@@ -58,17 +58,18 @@ function openResultModal(isSuccess: ResultModal) {
         :is-active="item.is_active" @click="openModal(dateTimes.date, item)"
       />
     </div>
-    <BookingModal
-      v-model="bookingModal"
-      :item="dayItem"
-      :date="dayDate"
-      @submit="openResultModal"
-    />
-    <ResultModalDialog
-      v-model="resultModal"
-      :is-success="isSuccessBooking"
-    />
   </div>
+
+  <BookingModal
+    v-model="bookingModal"
+    :item="dayItem"
+    :date="dayDate"
+    @submit="openResultModal"
+  />
+  <ResultModalDialog
+    v-model="resultModal"
+    :is-success="isSuccessBooking"
+  />
 </template>
 
 <style scoped lang="scss">
@@ -76,11 +77,12 @@ function openResultModal(isSuccess: ResultModal) {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: $cover-32;
+  gap: clamp($cover-16, 3vw, $cover-32);
 
   &-items {
     display: flex;
-    gap: $cover-24;
+    gap: clamp($cover-12, 3vw, $cover-24);
+    flex-wrap: wrap;
   }
 }
 </style>

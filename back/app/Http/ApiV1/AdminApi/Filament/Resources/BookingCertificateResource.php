@@ -32,6 +32,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class BookingCertificateResource extends BaseResource
 {
@@ -183,8 +184,6 @@ class BookingCertificateResource extends BaseResource
             ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 EditAction::make(),
-                RestoreAction::make()->modalHeading('Восстановление заявки'),
-                ForceDeleteAction::make()->modalHeading('Полное удаление заявки'),
             ]);
     }
 

@@ -32,8 +32,13 @@ class HolidayPackage extends Model
     {
         static::deleting(function (self $model) {
             $model->bookingHolidays()->each(function (BookingHoliday $bookingHoliday) {
-                $bookingHoliday->booking()->delete();
                 $bookingHoliday->delete();
+            });
+        });
+
+        static::forceDeleted(function (self $model) {
+            $model->bookingHolidays()->each(function (BookingHoliday $bookingHoliday) {
+                $bookingHoliday->forceDelete();
             });
         });
     }
@@ -50,6 +55,6 @@ class HolidayPackage extends Model
 
     public function bookingHolidays(): HasMany
     {
-        return $this->hasMany(BookingHoliday::class);
+        return $this->hasMany(BookingHoliday::class)->withTrashed();
     }
 }

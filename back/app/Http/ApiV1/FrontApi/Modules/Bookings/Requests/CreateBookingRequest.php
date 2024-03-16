@@ -22,7 +22,7 @@ class CreateBookingRequest extends FormRequest
 
             'schedule_quest.timeslot_id' => ['nullable', 'integer', Rule::exists('timeslots', 'id')],
             'schedule_quest.count_participants' => ['nullable', 'integer', 'between:1,255'],
-            'schedule_quest.final_price' => ['nullable', 'numeric', 'min:1'],
+            'schedule_quest.final_price' => ['nullable', 'numeric', 'min:1', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'schedule_quest.comment' => ['nullable', 'string', 'max:125'],
 
             'holiday.holiday_id' => ['nullable', 'integer'],

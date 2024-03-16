@@ -6,10 +6,12 @@ use App\Domain\Contacts\Models\ContactType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ContactTypeResource\Pages\ListContactTypes;
 use App\Http\ApiV1\AdminApi\Support\Enums\NavigationGroup;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -36,6 +38,10 @@ class ContactTypeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
+                Toggle::make('is_social')
+                    ->label('Соц. сеть')
+                    ->columnSpan(2),
+
             ]);
     }
 
@@ -46,7 +52,12 @@ class ContactTypeResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('Название'),
+                IconColumn::make('is_social')
+                    ->label('Соц. сеть')
+                    ->sortable(),
+
             ])
+            ->defaultSort('is_social', 'desc')
             ->actions([
                 EditAction::make()->modalHeading('Редактирование типа контакта'),
                 DeleteAction::make()->modalHeading('Удаление типа контакта'),

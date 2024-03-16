@@ -29,7 +29,7 @@ class ContactTypePolicy
      */
     public function update(User $user, ContactType $contactType): bool
     {
-        return false;
+        return true;
     }
 
     /**

@@ -17,5 +17,10 @@ class ContactType extends Model
 
     protected $fillable = [
         'name',
+        'is_social',
+    ];
+
+    protected $casts = [
+        'is_social' => 'boolean',
     ];
 }

@@ -37,7 +37,7 @@ class CertificateTypePolicy
      */
     public function update(User $user, CertificateType $certificateType): bool
     {
-        return $user->role === Role::ADMIN;
+        return $user->role === Role::ADMIN && !$certificateType->trashed();
     }
 
     /**

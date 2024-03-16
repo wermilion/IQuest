@@ -61,6 +61,7 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('time')
                     ->label('Время')
+                    ->date('H:i')
                     ->sortable(),
                 TextColumn::make('price')
                     ->label('Цена')

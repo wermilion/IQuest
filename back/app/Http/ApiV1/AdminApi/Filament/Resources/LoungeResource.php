@@ -93,8 +93,12 @@ class LoungeResource extends Resource
                     ->label('Макс. кол-во человек')
                     ->required()
                     ->numeric()
+                    ->minValue('1')
+                    ->maxValue('99')
                     ->validationMessages([
-                        'required' => 'Поле ":attribute" обязательное.'
+                        'required' => 'Поле ":attribute" обязательное.',
+                        'min' => 'Поле ":attribute" должно быть больше или равно :min.',
+                        'max' => 'Поле ":attribute" должно быть меньше или равно :max.'
                     ]),
                 RichEditor::make('description')
                     ->label('Описание')

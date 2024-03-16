@@ -36,16 +36,12 @@ class BookingHoliday extends Model
             resolve(SendMessageBookingAction::class)->execute($model->booking);
         });
 
-        static::deleting(function (self $model) {
+        static::deleted(function (self $model) {
             $model->booking()->delete();
         });
 
-        static::forceDeleting(function (self $model) {
+        static::forceDeleted(function (self $model) {
             $model->booking()->forceDelete();
-        });
-
-        static::restoring(function (self $model) {
-            $model->booking()->restore();
         });
     }
 

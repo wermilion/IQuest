@@ -15,8 +15,8 @@ class NameRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match("/^[a-zA-Zа-яА-ЯёЁ'\-]+$/", $value)) {
-            $fail('Поле ":attribute" должно содержать только кириллицу и/или латиницу, апостроф, дефис');
+        if (!preg_match("/^[a-zA-ZА-яёЁ'\- ]+$/u", trim($value))) {
+            $fail('Поле ":attribute" должно содержать только кириллицу и/или латиницу, апостроф, дефис и пробел.');
         }
     }
 }

@@ -2,16 +2,15 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
-use App\Domain\Locations\Models\City;
 use App\Domain\Sales\Models\Sale;
 use App\Domain\Users\Enums\Role;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\CreateSale;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\EditSale;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\ListSales;
 use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -41,16 +40,13 @@ class SaleResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('city_id')
+                BaseSelect::make('city_id')
                     ->label('Город')
                     ->relationship('city', 'name')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
-                    ->helperText(function () {
-                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
-                    })
                     ->native(false),
                 TextInput::make('header')
                     ->label('Заголовок')

@@ -8,6 +8,7 @@ use App\Domain\Bookings\Models\BookingHoliday;
 use App\Domain\Holidays\Models\Package;
 use App\Domain\Locations\Models\City;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\CreateBookingHoliday;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingHolidayResource\Pages\EditBookingHoliday;
@@ -52,7 +53,7 @@ class BookingHolidayResource extends BaseResource
                 Repeater::make('booking')
                     ->label('Заявка')
                     ->schema([
-                        Select::make('city_id')
+                        BaseSelect::make('city_id')
                             ->label('Город')
                             ->placeholder('Выберите город')
                             ->required()
@@ -60,9 +61,6 @@ class BookingHolidayResource extends BaseResource
                             ->validationMessages([
                                 'required' => 'Поле ":attribute" обязательно.',
                             ])
-                            ->helperText(function () {
-                                return City::exists() ? '' : 'Города не обнаружены. Сначала создайте лаунж.';
-                            })
                             ->native(false),
                         TextInput::make('name')
                             ->label('Имя')
@@ -141,9 +139,6 @@ class BookingHolidayResource extends BaseResource
                             ->validationMessages([
                                 'required' => 'Поле ":attribute" обязательное.',
                             ])
-                            ->helperText(function () {
-                                return Package::exists() ? '' : 'Пакеты не обнаружены. Сначала создайте пакеты.';
-                            })
                             ->native(false),
                     ])
                     ->disableItemDeletion()

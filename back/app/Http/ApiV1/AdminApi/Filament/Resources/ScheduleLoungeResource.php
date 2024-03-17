@@ -6,6 +6,7 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
 use App\Domain\Schedules\Models\ScheduleLounge;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\CreateScheduleLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\ScheduleLoungeResource\Pages\EditScheduleLounge;
@@ -46,7 +47,7 @@ class ScheduleLoungeResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('city')
+                BaseSelect::make('city')
                     ->label('Город')
                     ->live()
                     ->relationship('lounge.filial.city', 'name')
@@ -61,9 +62,6 @@ class ScheduleLoungeResource extends Resource
                             ->getComponent('lounge_id')
                             ->state(null)
                             ->options(null);
-                    })
-                    ->helperText(function () {
-                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
                     })
                     ->native(false),
                 Select::make('filial')

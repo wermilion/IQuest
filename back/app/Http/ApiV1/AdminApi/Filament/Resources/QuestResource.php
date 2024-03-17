@@ -5,11 +5,9 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Quests\Enums\LevelEnum;
-use App\Domain\Quests\Models\AgeLimit;
-use App\Domain\Quests\Models\Genre;
 use App\Domain\Quests\Models\Quest;
-use App\Domain\Quests\Models\Type;
 use App\Domain\Users\Enums\Role;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\EditQuest;
@@ -58,11 +56,11 @@ class QuestResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('city')
+                BaseSelect::make('city')
                     ->label('Город')
                     ->live()
                     ->relationship('filial.city', 'name')
-                    ->afterStateUpdated(function ($state, Select $component) {
+                    ->afterStateUpdated(function ($state, BaseSelect $component) {
                         $component->getContainer()
                             ->getComponent('filial_id')
                             ->state(null)
@@ -72,9 +70,6 @@ class QuestResource extends Resource
                             );
                     })
                     ->hiddenOn('')
-                    ->helperText(function () {
-                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
-                    })
                     ->native(false),
                 Select::make('filial_id')
                     ->key('filial_id')
@@ -84,42 +79,30 @@ class QuestResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
-                    ->helperText(function () {
-                        return Filial::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
-                    })
                     ->native(false),
-                Select::make('type_id')
+                BaseSelect::make('type_id')
                     ->label('Тип')
                     ->relationship('type', 'name')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
-                    ->helperText(function () {
-                        return Type::exists() ? '' : 'Типы не обнаружены. Сначала создайте типы.';
-                    })
                     ->native(false),
-                Select::make('genre_id')
+                BaseSelect::make('genre_id')
                     ->label('Жанр')
                     ->relationship('genre', 'name')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
-                    ->helperText(function () {
-                        return Genre::exists() ? '' : 'Жанры не обнаружены. Сначала создайте жанры.';
-                    })
                     ->native(false),
-                Select::make('age_limit_id')
+                BaseSelect::make('age_limit_id')
                     ->label('Ограничение')
                     ->relationship('age_limit', 'limit')
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.'
                     ])
-                    ->helperText(function () {
-                        return AgeLimit::exists() ? '' : 'Ограничения не обнаружены. Сначала создайте ограничения.';
-                    })
                     ->native(false),
                 Select::make('level')
                     ->label('Уровень сложности')

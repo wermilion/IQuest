@@ -11,6 +11,7 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rule;
 
 class QuestWeekdaysSlotsRelationManager extends RelationManager
 {
@@ -22,6 +23,11 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
 
     protected static bool $isLazy = false;
 
+    private function getParentId()
+    {
+        return $this->getOwnerRecord()->id;
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -30,11 +36,12 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
                     ->label('Время')
                     ->mask('99:99')
                     ->placeholder('00:00')
-                    ->rules(['date_format:H:i'])
+                    ->rules(['date_format:H:i', Rule::unique('quest_weekdays_slots', 'time')->where('quest_id', $this->getParentId())])
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'date_format' => 'Поле ":attribute" должно быть в формате 00:00.',
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                     ]),
                 TextInput::make('price')
                     ->label('Цена')

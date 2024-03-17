@@ -5,9 +5,8 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\BookingCertificate;
-use App\Domain\Certificates\Models\CertificateType;
-use App\Domain\Locations\Models\City;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\CreateBookingCertificate;
 use App\Http\ApiV1\AdminApi\Filament\Resources\BookingCertificateResource\Pages\EditBookingCertificate;
@@ -54,7 +53,7 @@ class BookingCertificateResource extends BaseResource
                         Repeater::make('booking')
                             ->label('Заявка')
                             ->schema([
-                                Select::make('city_id')
+                                BaseSelect::make('city_id')
                                     ->label('Город')
                                     ->placeholder('Выберите город')
                                     ->required()
@@ -62,9 +61,6 @@ class BookingCertificateResource extends BaseResource
                                     ->validationMessages([
                                         'required' => 'Поле ":attribute" обязательно.',
                                     ])
-                                    ->helperText(function () {
-                                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
-                                    })
                                     ->native(false),
                                 TextInput::make('name')
                                     ->label('Имя')
@@ -109,7 +105,7 @@ class BookingCertificateResource extends BaseResource
                         Repeater::make('certificateType')
                             ->label('Тип сертификата')
                             ->schema([
-                                Select::make('certificate_type_id')
+                                BaseSelect::make('certificate_type_id')
                                     ->label('Тип')
                                     ->placeholder('Выберите тип')
                                     ->relationship('certificateType', 'name', fn($query) => $query->withoutTrashed())
@@ -117,9 +113,6 @@ class BookingCertificateResource extends BaseResource
                                     ->validationMessages([
                                         'required' => 'Поле ":attribute" обязательное.',
                                     ])
-                                    ->helperText(function () {
-                                        return CertificateType::exists() ? '' : 'Типы не обнаружены. Сначала создайте тип.';
-                                    })
                                     ->native(false),
                             ])
                             ->disableItemDeletion()

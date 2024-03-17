@@ -6,6 +6,7 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\EditUser;
 use App\Http\ApiV1\AdminApi\Filament\Resources\UserResource\Pages\ListUsers;
@@ -40,7 +41,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('city')
+                BaseSelect::make('city')
                     ->label('Город')
                     ->placeholder('Выберите город')
                     ->live()
@@ -50,18 +51,16 @@ class UserResource extends Resource
                         ->state(null)
                         ->relationship('filials', 'address'))
                     ->hidden(Auth::user()->role !== Role::ADMIN)
-                    ->helperText(function () {
-                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
-                    })
                     ->native(false),
                 Select::make('filials')
+                    ->key('filials')
                     ->label('Филиалы')
                     ->placeholder('Выберите филиалы')
                     ->multiple()
+                    ->preload()
                     ->live()
                     ->relationship('filials', 'address', fn(Builder $query, Get $get) => $query->where('city_id', $get('city')))
                     ->hidden(Auth::user()->role !== Role::ADMIN)
-                    ->key('filials')
                     ->helperText(function () {
                         return Filial::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
                     })
@@ -93,7 +92,7 @@ class UserResource extends Resource
                         'unique' => 'Поле ":attribute" должно быть уникальным.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
-                Select::make('role')
+                BaseSelect::make('role')
                     ->label('Роль')
                     ->options(Role::class)
                     ->required()

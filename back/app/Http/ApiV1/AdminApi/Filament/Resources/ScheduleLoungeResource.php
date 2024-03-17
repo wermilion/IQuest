@@ -52,27 +52,44 @@ class ScheduleLoungeResource extends Resource
                     ->live()
                     ->relationship('lounge.filial.city', 'name')
                     ->hiddenOn('')
+                    ->afterStateUpdated(function ($state, Select $component) {
+                        $component->getContainer()
+                            ->getComponent('filial')
+                            ->state(null)
+                            ->options(fn() => Filial::where('city_id', $state)->pluck('address', 'id'));
+
+                        $component->getContainer()
+                            ->getComponent('lounge_id')
+                            ->state(null)
+                            ->options(null);
+                    })
                     ->helperText(function () {
                         return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
                     })
                     ->native(false),
                 Select::make('filial')
+                    ->key('filial')
                     ->label('Филиал')
                     ->live()
-                    ->options(fn(Get $get): Collection => Filial::query()
-                        ->where('city_id', $get('city'))
-                        ->pluck('address', 'id'))
                     ->hiddenOn('')
+                    ->options(fn(Get $get) => Filial::where('city_id', $get('city'))
+                        ->pluck('address', 'id'))
+                    ->afterStateUpdated(function ($state, Select $component) {
+                        $component->getContainer()
+                            ->getComponent('lounge_id')
+                            ->state(null)
+                            ->options(fn() => Lounge::where('filial_id', $state)->pluck('name', 'id'));
+                    })
                     ->helperText(function () {
                         return Filial::exists() ? '' : 'Филиалы не обнаружены. Сначала создайте филиалы.';
                     })
                     ->native(false),
                 Select::make('lounge_id')
+                    ->key('lounge_id')
                     ->label('Лаунж')
-                    ->options(fn(Get $get): Collection => Lounge::query()
-                        ->where('filial_id', $get('filial'))
-                        ->pluck('name', 'id'))
                     ->required()
+                    ->options(fn(Get $get) => Lounge::where('filial_id', $get('filial'))
+                        ->pluck('name', 'id'))
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])

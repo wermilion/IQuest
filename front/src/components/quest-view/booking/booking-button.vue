@@ -5,7 +5,7 @@ const time = props.time.replace(/:00$/, '')
 </script>
 
 <template>
-  <button :class="{ 'selected ': !isActive, 'pointer': isActive }" class="booking ">
+  <button :class="{ 'selected ': !isActive }" class="booking ">
     <span class="body">{{ time }}</span>
     <span class="footnote">{{ price }}₽</span>
   </button>
@@ -34,6 +34,11 @@ button {
 
 .selected {
   background-color: $color-opacity004;
+  cursor: default;
   opacity: 0.5;
+
+  &:hover {
+    background-color: $color-opacity004;
+  }
 }
 </style>

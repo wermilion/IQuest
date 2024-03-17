@@ -40,7 +40,7 @@ const details = [
     </div>
     <div class="details-info">
       <span class="gradient bodyBold">Остались вопросы?</span>
-      <span class="bodyBold">Свяжитесь с нашим оператором —</span>
+      <span class="body">Свяжитесь с нашим оператором —</span>
       <PhoneNumber :is-active-img="true" />
     </div>
   </section>
@@ -54,15 +54,11 @@ const details = [
 
   &-items {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     align-items: flex-start;
     flex-wrap: wrap;
     align-content: flex-start;
     gap: $cover-24;
-
-    @media screen and (max-width: 1024px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
 
     @media screen and (max-width: 600px) {
       grid-template-columns: 1fr;

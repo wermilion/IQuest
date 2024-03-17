@@ -35,7 +35,7 @@ function openModal() {
 <template>
   <div class="plot">
     <div class="plot-img">
-      <img v-lazy-src="`/plots/${info.img}.jpg`" :alt="info.img">
+      <img v-lazy-src="`/plots/${info.img}.webp`" :alt="info.img">
     </div>
     <div class="plot-main">
       <div class="plot-main__info">
@@ -55,7 +55,7 @@ function openModal() {
           <p class="footnote">
             {{ info.description }}
           </p>
-          <Button name="Читать полностью" @click="openModal" />
+          <Button name="Читать полностью" :footnote="true" @click="openModal" />
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@ function openModal() {
     img {
       width: 100%;
       object-fit: cover;
-      object-position: center top;
+      object-position: center;
       height: 100%;
       position: relative;
       z-index: 1;

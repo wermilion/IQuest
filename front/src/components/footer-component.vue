@@ -2,18 +2,24 @@
 import Email from './shared/email.vue'
 import PhoneNumber from './shared/phone-number.vue'
 
+const store = setupStore('contact')
+
 const linksSocial = [
   {
-    link: 'https://vk.com/iquest',
+    link: store.getSocial?.find(item => item.type.name === 'VK')?.value,
     img: 'vk.svg',
   },
   {
-    link: 'https://t.me/questtomsk',
+    link: store.getSocial?.find(item => item.type.name === 'Telegram')?.value,
     img: 'telegram.svg',
   },
   {
-    link: 'https://www.youtube.com/channel/UCiEXe3D9fy8GX9X73lpxOxA?disable_polymer=true',
+    link: store.getSocial?.find(item => item.type.name === 'YouTube')?.value,
     img: 'youtube.svg',
+  },
+  {
+    link: store.getSocial?.find(item => item.type.name === 'Instagram')?.value,
+    img: 'instagram.svg',
   },
 ]
 
@@ -30,20 +36,24 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
           <Email />
         </div>
         <div class="footer-links__social">
-          <a
+          <template
             v-for="link in linksSocial"
             :key="link.img"
-            target="_blank"
-            :href="link.link"
           >
-            <img :src="`/icons/social/${link.img}`" :alt="link.img">
-          </a>
+            <a
+              v-if="link.link"
+              target="_blank"
+              :href="link.link"
+            >
+              <img :src="`/icons/social/${link.img}`">
+            </a>
+          </template>
         </div>
       </div>
       <div class="footer-privacy">
-        <p class="smallFootnote">
+        <a href="/privacy-policy.pdf" target="_blank" class="smallFootnote">
           Политика конфиденциальности
-        </p>
+        </a>
         <span class="smallFootnote">
           Разработано в
           <a :href="linkASAP" target="_blank">
@@ -146,6 +156,12 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
         a:nth-child(3) {
           grid-row: 1;
           grid-column: 2;
+        }
+      }
+
+      &__contacts {
+        .body {
+          margin: 0 auto;
         }
       }
     }

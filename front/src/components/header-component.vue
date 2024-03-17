@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { LottieAnimation } from 'lottie-web-vue'
 import DropList from './shared/drop-list.vue'
 import City from '#/components/cities/cities-main.vue'
 import Arrow from '#/assets/svg/shared/arrow=default.svg'
 import Logo from '#/assets/svg/logo/logo.svg?component'
 import LogoMobile from '#/assets/svg/logo/logo-mobile.svg?component'
-import Burger from '#/assets/svg/burger/burger.svg?url'
-import BurgerClose from '#/assets/svg/burger/burgerClose.svg?url'
+import BurgerOpen from '#/assets/animation/burger-open.json'
+import BurgerClose from '#/assets/animation/burger-close.json'
 
 const stores = setupStore(['holidaysList', 'city'])
 
@@ -18,8 +19,7 @@ const links = [
 
 const isMenuOpened = ref(false)
 const isMenuHoliday = ref(false)
-
-function openMenu() {
+function toggleMenu() {
   isMenuOpened.value = !isMenuOpened.value
 }
 
@@ -66,19 +66,14 @@ function handleMouseOut(index: number) {
       <div class="header-links">
         <template v-for="(link, index) in links">
           <router-link
-            v-if="stores.holidaysList.holidaysList.length || index !== 1"
-            :key="link.name"
-            :to="link.link"
+            v-if="stores.holidaysList.holidaysList.length || index !== 1" :key="link.name" :to="link.link"
             class="footnote"
           >
             <div
-              class="link"
-              :class="{
+              class="link" :class="{
                 selected: $route.path === link.link,
                 holiday: index === 1,
-              }"
-              @mouseover="handleMouseOver(index)"
-              @mouseout="handleMouseOut(index)"
+              }" @mouseover="handleMouseOver(index)" @mouseout="handleMouseOut(index)"
             >
               <span>[</span>
               {{ link.name }}
@@ -100,34 +95,31 @@ function handleMouseOut(index: number) {
         <LogoMobile />
       </router-link>
       <div class="burger-menu">
-        <Transition name="burger-button">
-          <div v-show="!isMenuOpened" @click="openMenu">
-            <img :src="Burger">
-          </div>
-        </Transition>
-        <Transition name="burger-button">
-          <div v-show="isMenuOpened" @click="openMenu">
-            <img :src="BurgerClose">
-          </div>
-        </Transition>
+        <div v-show="!isMenuOpened" @click="toggleMenu">
+          <LottieAnimation
+            :animation-data="BurgerClose"
+            :speed="1"
+          />
+        </div>
+        <div v-show="isMenuOpened" @click="toggleMenu">
+          <LottieAnimation
+            :animation-data="BurgerOpen"
+            :speed="1"
+          />
+        </div>
       </div>
       <Transition name="menu">
         <div v-if="isMenuOpened" class="burger-menu__drop">
           <div class="burger-menu__drop-list">
             <div
-              v-for="link, index in links"
-              :key="link.name"
-              class="burger-menu__drop-links"
+              v-for="link, index in links" :key="link.name" class="burger-menu__drop-links"
               :class="{ 'holiday-burger': index === 1 }"
             >
               <router-link
-                class="h3"
-                :class="{
+                class="h3" :class="{
                   selected: $route.path === link.link,
                   holiday: index === 1,
-                }"
-                :to="link.link"
-                @click="openMenuHoliday(index)"
+                }" :to="link.link" @click="openMenuHoliday(index)"
               >
                 {{ link.name }}
                 <Arrow v-if="index === 1" class="arrow-burger" />
@@ -136,11 +128,8 @@ function handleMouseOut(index: number) {
                 <template v-if="isMenuHoliday && index === 1">
                   <div class="holiday-list">
                     <router-link
-                      v-for="holiday in stores.holidaysList.holidaysList"
-                      :key="holiday.id"
-                      class="h3"
-                      :to="`/holidays/${holiday.id}`"
-                      @click="closeMenu"
+                      v-for="holiday in stores.holidaysList.holidaysList" :key="holiday.id" class="h3"
+                      :to="`/holidays/${holiday.id}`" @click="closeMenu"
                     >
                       {{ getFirstWord(holiday.type) }}
                     </router-link>
@@ -299,6 +288,7 @@ function handleMouseOut(index: number) {
     display: flex;
   }
 }
+
 .holiday {
   display: flex;
   align-items: center;
@@ -314,20 +304,25 @@ function handleMouseOut(index: number) {
 
   .arrow {
     transition: transform 0.1s ease-in-out;
+
     :deep(path) {
       stroke-opacity: 0.6;
     }
+
     transform: rotate(0);
   }
 
   &:hover {
     color: $color-base2;
+
     .arrow {
       transform: rotate(180deg);
+
       :deep(path) {
         stroke-opacity: 1;
       }
     }
+
     span {
       color: $color-base2;
     }

@@ -3,11 +3,12 @@ import {
   YandexMap,
   YandexMapControls,
   YandexMapDefaultFeaturesLayer,
-  YandexMapDefaultMarker,
   YandexMapDefaultSchemeLayer,
+  YandexMapMarker,
   YandexMapZoomControl,
 } from 'vue-yandex-maps'
 import type { LngLat } from '@yandex/ymaps3-types'
+import Marker from '#/assets/svg/map/marker.svg?url'
 
 const store = setupStore('filialList')
 
@@ -55,21 +56,27 @@ function mapToMove(lon: number, lat: number, id: number) {
         <YandexMapControls :settings="{ position: 'right' }">
           <YandexMapZoomControl />
         </YandexMapControls>
-        <YandexMapDefaultMarker
+        <YandexMapMarker
           v-for="marker in store.filialList"
           :key="marker.id"
           :settings="{
             coordinates: [marker.longitude, marker.latitude],
-            title: marker.address,
-            color: 'balck',
           }"
-        />
+          position="top left-center"
+        >
+          <img class="pin" :src="Marker">
+        </YandexMapMarker>
       </YandexMap>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+.pin {
+  display: block;
+  margin: auto;
+}
+
 .bodyBold {
   color: $color-opacity06;
 }

@@ -17,7 +17,7 @@ function toggleExpand() {
     <div class="description-content">
       <p class="footnote" :class="{ extend: isExpanded }" v-html="description" />
       <div
-        class="read-more body pointer"
+        class="read-more footnote pointer"
         :class="{ active: isExpanded }"
         @click="toggleExpand"
       >

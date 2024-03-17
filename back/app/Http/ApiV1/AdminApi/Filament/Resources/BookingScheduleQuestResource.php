@@ -66,7 +66,7 @@ class BookingScheduleQuestResource extends Resource
                     ->sortable(),
                 TextColumn::make('timeslot.time')
                     ->label('Время')
-                    ->numeric(),
+                    ->date('H:i'),
                 SelectColumn::make('booking.status')
                     ->label('Статус')
                     ->options(BookingStatus::class)

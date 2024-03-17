@@ -29,6 +29,7 @@
     },
     "autoload": {
         "files": [
+            "app/constants.php",
             "app/helpers.php"
         ],
         "psr-4": {

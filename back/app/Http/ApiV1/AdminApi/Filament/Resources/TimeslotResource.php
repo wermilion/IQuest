@@ -116,7 +116,8 @@ class TimeslotResource extends Resource
                     ->date()
                     ->sortable(),
                 TextColumn::make('time')
-                    ->label('Время'),
+                    ->label('Время')
+                    ->date('H:i'),
                 TextColumn::make('price')
                     ->label('Цена'),
                 ToggleColumn::make('is_active')

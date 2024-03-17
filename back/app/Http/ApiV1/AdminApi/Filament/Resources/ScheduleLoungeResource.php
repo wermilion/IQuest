@@ -106,7 +106,7 @@ class ScheduleLoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'date_format' => 'Поле ":attribute" должно быть в формате 00:00.',
-                        'after' => 'Поле ":attribute" должно быть позже "времени начала".',
+                        'after' => 'Время окончания должно быть позже времени начала.',
                     ]),
             ]);
     }
@@ -133,9 +133,11 @@ class ScheduleLoungeResource extends Resource
                     ->date()
                     ->sortable(),
                 TextColumn::make('time_from')
-                    ->label('Время начала'),
+                    ->label('Время начала')
+                    ->date('H:i'),
                 TextColumn::make('time_to')
-                    ->label('Время окончания'),
+                    ->label('Время окончания')
+                    ->date('H:i'),
             ])
             ->filters([
                 BaseTrashedFilter::make()

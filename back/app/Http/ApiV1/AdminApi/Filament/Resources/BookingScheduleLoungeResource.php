@@ -76,16 +76,6 @@ class BookingScheduleLoungeResource extends Resource
                     ->label('Статус')
                     ->options(BookingStatus::class)
                     ->selectablePlaceholder(false),
-                TextColumn::make('created_at')
-                    ->label('Дата создания')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->label('Дата обновления')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
@@ -93,6 +83,7 @@ class BookingScheduleLoungeResource extends Resource
                     ->native(false),
                 SelectFilter::make('city')
                     ->label('Город')
+                    ->placeholder('Выберите город')
                     ->relationship('booking.city', 'name')
                     ->native(false),
                 Filter::make('date')

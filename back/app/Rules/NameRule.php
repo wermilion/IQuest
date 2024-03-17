@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\ApiV1\AdminApi\Filament\Rules;
+namespace App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class LatinNumberRule implements ValidationRule
+class NameRule implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -15,8 +15,8 @@ class LatinNumberRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/^[a-zA-Z0-9\. \-_@!#$%^&*(){}?><,;:\'"\/\\\|`~]+$/i', $value)) {
-            $fail('Поле ":attribute" должно содержать только латиницу, цифры и спец. символы.');
+        if (!preg_match("/^[a-zA-ZА-яёЁ'\- ]+$/u", trim($value))) {
+            $fail('Поле ":attribute" должно содержать только кириллицу и/или латиницу, апостроф, дефис и пробел.');
         }
     }
 }

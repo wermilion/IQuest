@@ -9,6 +9,7 @@ use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\ListCertificateTypes;
+use App\Rules\PriceRule;
 use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
@@ -55,14 +56,11 @@ class CertificateTypeResource extends BaseResource
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->rules([
-                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                    ])
+                    ->rules([new PriceRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'numeric' => 'Поле ":attribute" должно быть числом.',
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
-                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 RichEditor::make('description')
                     ->label('Описание')

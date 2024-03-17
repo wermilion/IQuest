@@ -34,7 +34,7 @@ class ScheduleQuestCommand extends Command
 
         $this->deleteSlotsForYesterday($currentDate);
 
-        $currentDate->addDays(30);
+        $currentDate->addDays(PERIOD_OF_DAYS);
 
         if ($currentDate->isWeekday()) {
             $this->createScheduleQuests($quests, $currentDate, 'questWeekdaysSlots');

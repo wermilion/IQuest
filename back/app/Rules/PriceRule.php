@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\ApiV1\AdminApi\Filament\Rules;
+namespace App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class NameRule implements ValidationRule
+class PriceRule implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -15,8 +15,8 @@ class NameRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match("/^[a-zA-ZА-яёЁ'\- ]+$/u", trim($value))) {
-            $fail('Поле ":attribute" должно содержать только кириллицу и/или латиницу, апостроф, дефис и пробел.');
+        if (!preg_match('/^\d{1,6}(\.\d{1,2})?$/', $value)) {
+            $fail('Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.');
         }
     }
 }

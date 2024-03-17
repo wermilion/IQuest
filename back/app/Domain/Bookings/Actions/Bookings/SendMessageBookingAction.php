@@ -8,7 +8,6 @@ use App\Domain\Bookings\Models\Booking;
 use App\Domain\Users\Enums\Role;
 use App\Domain\Users\Models\User;
 use App\Dto\CertificateNewRequest;
-use App\Dto\FullLoungeNewRequest;
 use App\Dto\HolidayNewRequest;
 use App\Dto\LoungeNewRequest;
 use App\Dto\QuestNewRequest;
@@ -82,7 +81,8 @@ class SendMessageBookingAction
         $loungeNewRequest->customer_phone = $booking->phone;
 
         if ($booking->bookingScheduleLounge()->exists()) {
-            $userIds = $this->getAdminFilials($booking->bookingScheduleLounge->scheduleLounge->lounge->filial_id);
+            $adminFilials = $this->getAdminFilials($booking->bookingScheduleLounge->scheduleLounge->lounge->filial_id);
+            $userIds = array_merge($userIds, $adminFilials);
 
             $loungeNewRequest->lounge = $booking->bookingScheduleLounge->scheduleLounge->lounge->name;
             $loungeNewRequest->date_and_time = "{$booking->bookingScheduleLounge->scheduleLounge->date} с {$booking->bookingScheduleLounge->scheduleLounge->time_from} по {$booking->bookingScheduleLounge->scheduleLounge->time_to}";

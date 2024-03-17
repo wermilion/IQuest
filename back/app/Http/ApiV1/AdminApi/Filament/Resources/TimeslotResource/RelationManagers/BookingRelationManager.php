@@ -6,8 +6,10 @@ use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
-use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
+use App\Rules\NameRule;
 use App\Rules\PhoneRule;
+use App\Rules\PriceRule;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -19,7 +21,6 @@ use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use PhpParser\Node\Name;
 
 class BookingRelationManager extends RelationManager
 {
@@ -37,11 +38,11 @@ class BookingRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Select::make('city_id')
+                BaseSelect::make('city_id')
                     ->label('Город')
                     ->placeholder('Выберите город')
-                    ->required()
                     ->relationship('city', 'name')
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ])
@@ -95,14 +96,11 @@ class BookingRelationManager extends RelationManager
                     ->label('Общая стоимость')
                     ->numeric()
                     ->minValue(0)
-                    ->rules([
-                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                    ])
+                    ->rules([new PriceRule])
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
-                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 TextInput::make('comment')
                     ->label('Комментарий')
@@ -142,8 +140,6 @@ class BookingRelationManager extends RelationManager
                     ->label('Кол-во человек'),
                 TextColumn::make('final_price')
                     ->label('Общая стоимость'),
-                TextColumn::make('comment')
-                    ->label('Комментарий'),
                 SelectColumn::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class)
@@ -167,14 +163,11 @@ class BookingRelationManager extends RelationManager
                             ->label('Общая стоимость')
                             ->numeric()
                             ->minValue(0)
-                            ->rules([
-                                'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                            ])
+                            ->rules([new PriceRule])
                             ->required()
                             ->validationMessages([
                                 'required' => 'Поле ":attribute" обязательно.',
                                 'min' => 'Поле ":attribute" должно быть больше или равно :min.',
-                                'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                             ]),
                         TextInput::make('comment')
                             ->label('Комментарий')

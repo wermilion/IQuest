@@ -12,6 +12,6 @@ class BaseTrashedFilter extends TrashedFilter
 
         $this->placeholder('Без удаленных');
         $this->trueLabel('С удаленными');
-        $this->falseLabel('Без удаленных');
+        $this->falseLabel('Только удаленные');
     }
 }

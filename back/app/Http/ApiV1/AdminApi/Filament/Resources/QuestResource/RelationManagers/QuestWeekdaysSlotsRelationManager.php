@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers;
 
+use App\Rules\PriceRule;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -10,6 +11,7 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rule;
 
 class QuestWeekdaysSlotsRelationManager extends RelationManager
 {
@@ -21,6 +23,11 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
 
     protected static bool $isLazy = false;
 
+    private function getParentId()
+    {
+        return $this->getOwnerRecord()->id;
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -29,24 +36,22 @@ class QuestWeekdaysSlotsRelationManager extends RelationManager
                     ->label('Время')
                     ->mask('99:99')
                     ->placeholder('00:00')
-                    ->rules(['date_format:H:i'])
+                    ->rules(['date_format:H:i', Rule::unique('quest_weekdays_slots', 'time')->where('quest_id', $this->getParentId())])
                     ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'date_format' => 'Поле ":attribute" должно быть в формате 00:00.',
+                        'unique' => 'Поле ":attribute" должно быть уникальным.',
                     ]),
                 TextInput::make('price')
                     ->label('Цена')
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->rules([
-                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                    ])
+                    ->rules([new PriceRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'min' => 'Поле ":attribute" должно быть больше нуля.',
-                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
             ]);
     }

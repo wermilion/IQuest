@@ -6,7 +6,8 @@ use App\Domain\Bookings\Actions\Bookings\SendMessageBookingAction;
 use App\Domain\Bookings\Enums\BookingStatus;
 use App\Domain\Bookings\Enums\BookingType;
 use App\Domain\Bookings\Models\Booking;
-use App\Http\ApiV1\AdminApi\Filament\Rules\NameRule;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
+use App\Rules\NameRule;
 use App\Rules\PhoneRule;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -32,11 +33,11 @@ class BookingRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Select::make('city_id')
+                BaseSelect::make('city_id')
                     ->label('Город')
                     ->placeholder('Выберите город')
-                    ->required()
                     ->relationship('city', 'name')
+                    ->required()
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                     ])
@@ -108,8 +109,6 @@ class BookingRelationManager extends RelationManager
                     ->label('Имя'),
                 TextColumn::make('phone')
                     ->label('Телефон'),
-                TextColumn::make('comment')
-                    ->label('Комментарий'),
                 SelectColumn::make('status')
                     ->label('Статус заявки')
                     ->options(BookingStatus::class)

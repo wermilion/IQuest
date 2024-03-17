@@ -5,7 +5,6 @@ namespace App\Traits;
 use Illuminate\Database\Eloquent\Model;
 use Storage;
 
-
 trait HasCover
 {
     protected static function bootHasCover(): void

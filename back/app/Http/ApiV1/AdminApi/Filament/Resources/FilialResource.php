@@ -4,6 +4,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\CreateFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\EditFilial;
 use App\Http\ApiV1\AdminApi\Filament\Resources\FilialResource\Pages\ListFilials;
@@ -34,7 +35,7 @@ class FilialResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('city_id')
+                BaseSelect::make('city_id')
                     ->label('Город')
                     ->placeholder('Выберите город')
                     ->relationship('city', 'name')
@@ -42,9 +43,6 @@ class FilialResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
-                    ->helperText(function () {
-                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
-                    })
                     ->native(false),
                 TextInput::make('address')
                     ->label('Адрес')

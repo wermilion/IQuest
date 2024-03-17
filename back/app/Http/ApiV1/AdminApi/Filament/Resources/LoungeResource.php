@@ -6,11 +6,13 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
 use App\Domain\Users\Enums\Role;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ViewLounge;
+use App\Rules\PriceRule;
 use App\Services\CompressImageService;
 use Auth;
 use Filament\Forms\Components\FileUpload;
@@ -49,7 +51,7 @@ class LoungeResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('city')
+                BaseSelect::make('city')
                     ->label('Город')
                     ->placeholder('Выберите город')
                     ->live()
@@ -61,9 +63,6 @@ class LoungeResource extends Resource
                             ->options(fn() => Filial::where('city_id', $state)->pluck('address', 'id'));
                     })
                     ->hiddenOn('')
-                    ->helperText(function () {
-                        return City::exists() ? '' : 'Города не обнаружены. Сначала создайте города.';
-                    })
                     ->native(false),
                 Select::make('filial_id')
                     ->key('filial')
@@ -114,26 +113,20 @@ class LoungeResource extends Resource
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->rules([
-                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                    ])
+                    ->rules([new PriceRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
-                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 TextInput::make('price_per_hour')
                     ->label('Цена за час')
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->rules([
-                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                    ])
+                    ->rules([new PriceRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
-                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 FileUpload::make('cover')
                     ->directory('lounge_covers')

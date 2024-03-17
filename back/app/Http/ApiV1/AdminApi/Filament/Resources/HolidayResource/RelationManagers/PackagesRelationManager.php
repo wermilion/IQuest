@@ -4,6 +4,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources\HolidayResource\RelationMan
 
 use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
+use App\Rules\PriceRule;
 use Auth;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
@@ -48,13 +49,10 @@ class PackagesRelationManager extends RelationManager
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->rules([
-                        'regex:/^\d{1,6}(\.\d{1,2})?$/'
-                    ])
+                    ->rules([new PriceRule])
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательно.',
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
-                        'regex' => 'Поле ":attribute" должно иметь вид от 1 до 6 цифр до запятой и две цифры после.',
                     ]),
                 TextInput::make('sequence_number')
                     ->label('Порядковый номер')

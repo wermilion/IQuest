@@ -3,11 +3,13 @@ services:
   front:
     image: ${CI_REGISTRY_IMAGE}/front:${CI_COMMIT_TAG}
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-front
+    restart: unless-stopped
     networks:
       - server
   back:
     image: ${CI_REGISTRY_IMAGE}/back:${CI_COMMIT_TAG}
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back
+    restart: unless-stopped
     volumes:
       - ./storage:/app/storage/app/public
     env_file:
@@ -18,6 +20,7 @@ services:
     image: ${CI_REGISTRY_IMAGE}/back:${CI_COMMIT_TAG}
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back-schedule
     entrypoint: ["/usr/local/bin/php", "artisan", "schedule:work"]
+    restart: unless-stopped
     volumes:
       - ./storage:/app/storage/app/public
     env_file:
@@ -27,6 +30,7 @@ services:
   db:
     image: harbor.tomsk-it.ru/dockerhub/bitnami/postgresql:15.3.0-debian-11-r17
     container_name: ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-db
+    restart: unless-stopped
     environment:
       - POSTGRESQL_USERNAME=${DB_USERNAME}
       - POSTGRESQL_PASSWORD=${DB_PASSWORD}

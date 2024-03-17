@@ -27,7 +27,6 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 class ScheduleLoungeResource extends Resource
 {

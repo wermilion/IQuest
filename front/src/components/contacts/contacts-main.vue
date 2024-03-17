@@ -5,6 +5,8 @@ import Social from './social.vue'
 import CardFranchise from './card-franchise.vue'
 import PhoneNumber from '#/components/shared/phone-number.vue'
 
+const store = setupStore(['contact', 'filialList'])
+
 const framchise = [
   { title: `Наша компания — лидер рынка реалити-квестов в Томске`, img: 'people' },
   { title: `Мы открыты к сотрудничеству и предлагаем помощь и поддержку на всех этапах вашего проекта.`, img: 'rishake' },
@@ -15,14 +17,14 @@ const framchise = [
 <template>
   <div class="block">
     <div class="block-header">
-      <div class="block-header__contacts">
+      <div v-if="store.contact.getEmail || store.contact.getPhone" class="block-header__contacts">
         <h2>Контакты</h2>
         <div class="contacts-list">
-          <PhoneNumber class="contacts-list__item" />
-          <Email class="contacts-list__item" />
+          <PhoneNumber v-if="store.contact.getPhone" class="contacts-list__item" />
+          <Email v-if="store.contact.getEmail" class="contacts-list__item" />
         </div>
       </div>
-      <div class="block-header__contacts">
+      <div v-if="store.contact.getSocial" class="block-header__contacts">
         <h2>Соц сети</h2>
         <div>
           <Social />

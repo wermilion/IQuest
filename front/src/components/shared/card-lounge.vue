@@ -6,10 +6,17 @@ const loundge = {
   img: 'loundge',
   tag: '600р/30 мин • 1000р/1 час',
 }
+
+const store = setupStore(['filialList'])
+
+const isLoundge: any = computed(() => {
+  if (store.filialList.filialList.find(item => item.lounges.length > 0))
+    return isLoundge.value = EAppRouteNames.Lounge
+})
 </script>
 
 <template>
-  <router-link :to="{ name: EAppRouteNames.Lounge }" class="hover-container">
+  <router-link :to="{ name: isLoundge }" class="hover-container" :class="{ 'no-pointer': !isLoundge }">
     <div class="card">
       <div class="card-image">
         <img v-lazy-src="`/loundge/${loundge.img}.jpg`" :alt="loundge.img">

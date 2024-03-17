@@ -57,56 +57,58 @@ onMounted(() => {
 </script>
 
 <template>
-  <section v-if="stores.stocks?.length" class="bag-secondary">
-    <div ref="slider" class="swiper-container container">
-      <div class="swiper-wrapper">
-        <SliderComponent
-          v-for="item in stores.stocks"
-          :key="item.id"
-          :salse="item"
-          class="swiper-slide"
-        />
-      </div>
+  <template v-if="stores.stocks?.length">
+    <section class="bag-secondary">
+      <div ref="slider" class="swiper-container container">
+        <div class="swiper-wrapper">
+          <SliderComponent
+            v-for="item in stores.stocks"
+            :key="item.id"
+            :salse="item"
+            class="swiper-slide"
+          />
+        </div>
 
-      <button class="swiper-button-prev swiper-button">
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M16 28L8 20L16 12"
-            stroke="white"
-            stroke-opacity="0.75"
-            stroke-width="2"
-            stroke-linecap="square"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
-      <button class="swiper-button-next swiper-button">
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M24 12L32 20L24 28"
-            stroke="white"
-            stroke-opacity="0.75"
-            stroke-width="2"
-            stroke-linecap="square"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
-      <div class="swiper-pagination" />
-    </div>
-  </section>
+        <button class="swiper-button-prev swiper-button">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 28L8 20L16 12"
+              stroke="white"
+              stroke-opacity="0.75"
+              stroke-width="2"
+              stroke-linecap="square"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <button class="swiper-button-next swiper-button">
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24 12L32 20L24 28"
+              stroke="white"
+              stroke-opacity="0.75"
+              stroke-width="2"
+              stroke-linecap="square"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div class="swiper-pagination" />
+      </div>
+    </section>
+  </template>
 </template>
 
 <style scoped lang="scss">

@@ -1,20 +1,34 @@
 <script setup lang="ts">
+import ViewWrapper from '#/components/layouts/view-wrapper.vue'
 import ContactsMain from '#/components/contacts/contacts-main.vue'
 
-const store = setupStore('filialList')
+const stores = setupStore(['filialList', 'city', 'global'])
 
-store.fetchFilial()
+const isViewLoading = ref<boolean>(true)
+
+const isLoading = computed(() => {
+  return !stores.global.isInitialized || isViewLoading.value
+})
+
+async function loadView() {
+  isViewLoading.value = true
+  stores.filialList.$reset()
+  await stores.filialList.fetchFilial()
+
+  isViewLoading.value = false
+}
+
+watch(() => stores.city.selectedCity, loadView)
+
+loadView()
 </script>
 
 <template>
-  <section v-if="store.filialList.length" class="container">
-    <ContactsMain />
-  </section>
-  <template v-else>
-    <section class="loading">
-      <h1>Загрузка контактов</h1>
+  <ViewWrapper :is-loading="isLoading">
+    <section class="container">
+      <ContactsMain />
     </section>
-  </template>
+  </ViewWrapper>
 </template>
 
 <style scoped>

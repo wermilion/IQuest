@@ -1,10 +1,11 @@
-@import "@mdi/font/css/materialdesignicons.min.css";
-@import "@vuepic/vue-datepicker/dist/main.css";
+@import '@mdi/font/css/materialdesignicons.min.css';
+@import '@vuepic/vue-datepicker/dist/main.css';
 
-@import "./fonts.scss";
-@import "./normalize.scss";
-@import "./swiper.scss";
-@import "./datepicker.scss";
+@import './animation';
+@import './fonts.scss';
+@import './normalize.scss';
+@import './swiper.scss';
+@import './datepicker.scss';
 
 html {
   background-color: $color-base1;
@@ -38,6 +39,10 @@ body {
 
 *::-webkit-scrollbar {
   width: 5px;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 }
 
 *::-webkit-scrollbar-thumb {
@@ -56,16 +61,16 @@ body {
   align-items: center;
 }
 
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .loading-lazy {
   &:not(.loaded),
   &:not(.error) {
-    background: linear-gradient(90deg, $color-opacity02, $color-base1, $color-opacity025, $color-base1);
+    background: linear-gradient(
+      90deg,
+      $color-opacity02,
+      $color-base1,
+      $color-opacity025,
+      $color-base1
+    );
     background-size: 300% 200%;
     -webkit-animation: Shine 2.25s ease infinite;
     -moz-animation: Shine 2.25s ease infinite;
@@ -104,7 +109,8 @@ h2 {
   color: $color-base2;
 }
 
-h3 {
+h3,
+.h3 {
   font-family: Onest;
   font-size: clamp(22px, 4vw, 32px);
   font-style: normal;
@@ -200,7 +206,7 @@ h3 {
 }
 
 .no-pointer {
-  cursor: none;
+  cursor: auto;
 }
 
 .pointer {

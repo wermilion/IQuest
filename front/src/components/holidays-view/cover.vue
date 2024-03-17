@@ -91,6 +91,10 @@ function openResultModal(isSuccess: ResultModal) {
       div {
         max-width: 295px;
       }
+
+      @media screen and (max-width: 600px) {
+        display: none;
+      }
     }
   }
 
@@ -106,21 +110,21 @@ function openResultModal(isSuccess: ResultModal) {
 .man {
   background:
     linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
-    url('/holidays/man.jpg'),
+    url('/holidays/man.webp'),
     lightgray 50% / cover no-repeat;
 }
 
 .child {
   background:
     linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
-    url('/holidays/child.jpg'),
+    url('/holidays/child.webp'),
     lightgray 50% / cover no-repeat;
 }
 
 .corp {
   background:
     linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
-    url('/holidays/corp.jpg'),
+    url('/holidays/corp.webp'),
     lightgray 50% / cover no-repeat;
 }
 </style>

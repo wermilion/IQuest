@@ -89,9 +89,12 @@ onMounted(() => select(defaultChip.name, defaultChip.params))
     flex-direction: column;
     gap: clamp($cover-16, 3vw, $cover-32);
     .filter {
-      overflow: auto;
       display: flex;
       gap: clamp($cover-8, 2vw, $cover-16);
+
+      @media screen and (max-width: 1024px) {
+        overflow: auto;
+      }
     }
   }
 

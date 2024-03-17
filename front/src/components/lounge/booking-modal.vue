@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
 import type { Lounge } from '#/types/models/filial'
-import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
+import {
+  checkboxRules,
+  nameRules,
+  phoneRules,
+  regexName,
+  regexNumber,
+  validateField,
+  validateLength,
+} from '#/utils/helpers/rules'
 import { options } from '#/utils/helpers/maska'
 import Modal from '#/components/shared/modal.vue'
 import Button from '#/components/shared/button.vue'
@@ -27,8 +35,15 @@ const modalProps = computed(() => ({
   subTitle: `Лаунж зона`,
 }))
 
+const guard = ref(true)
+
 async function submitForm() {
-  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
+  if (
+    !validateField(formData.fullName, regexName)
+    || !validateLength(formData.fullName, 4, 30)
+    || !validateField(formData.phoneNumber, regexNumber)
+    || !formData.privatePolice
+  )
     return
   try {
     await api.booking.postBooking({
@@ -51,6 +66,19 @@ async function submitForm() {
     modal.value = false
   }
 }
+
+watch(formData, (newValue, _oldValue) => {
+  const allFieldsValid = (
+    validateField(newValue.fullName, regexName)
+    && validateLength(newValue.fullName, 4, 30)
+    && validateField(newValue.phoneNumber, regexNumber)
+    && newValue.privatePolice
+  )
+  if (allFieldsValid)
+    guard.value = false
+  else
+    guard.value = true
+}, { deep: true, immediate: true })
 </script>
 
 <template>
@@ -97,7 +125,7 @@ async function submitForm() {
           name="Оформить заявку"
           type="submit"
           :button-light="true"
-          :disabled="!formData.fullName || !formData.phoneNumber || !formData.privatePolice"
+          :button-disabled="guard"
           @click="submitForm"
         />
       </div>

@@ -10,6 +10,10 @@ const props = defineProps<{ info: PlotList }>()
 const chips = computed(() => {
   return [
     { title: `${props.info.chips[0].name}` },
+    { title: `${props.info.chips[4].name}` },
+
+    { title: `${props.info.chips[2].name}` },
+    { title: `${props.info.chips[3].name}` },
     {
       title: `${props.info.chips[1].name}`,
       slot: {
@@ -17,9 +21,7 @@ const chips = computed(() => {
         props: { max: props.info.chips[1].def },
       },
     },
-    { title: `${props.info.chips[2].name}` },
-    { title: `${props.info.chips[3].name}` },
-    { title: `${props.info.chips[4].name}` },
+
   ]
 })
 
@@ -50,7 +52,7 @@ function openModal() {
       <div class="plot-main__description">
         <span class="body">Описание</span>
         <div class="plot-main__description-content">
-          <p class="footnoteText">
+          <p class="footnote">
             {{ info.description }}
           </p>
           <Button name="Читать полностью" @click="openModal" />
@@ -72,7 +74,7 @@ function openModal() {
   overflow: hidden;
 
   &-img {
-    height: 404px;
+    height: clamp(140px, 30vw, 404px);
     position: relative;
     overflow: hidden;
 
@@ -95,7 +97,7 @@ function openModal() {
     img {
       width: 100%;
       object-fit: cover;
-      object-position: center -180px;
+      object-position: center top;
       height: 100%;
       position: relative;
       z-index: 1;
@@ -106,7 +108,8 @@ function openModal() {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: $cover-40;
+    padding: clamp($cover-20, 3vw, $cover-40);
+    flex-wrap: wrap;
     background-color: $color-opacity004;
 
     &__info {
@@ -115,14 +118,18 @@ function openModal() {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: $cover-32;
+      gap: clamp($cover-16, 3vw, $cover-32);
 
       .chips {
         display: flex;
         flex-wrap: wrap;
-        gap: $cover-16;
+        gap: clamp($cover-12, 3vw, $cover-16);
         align-items: center;
         align-content: center;
+      }
+
+      @media screen and (max-width: 1360px) {
+        max-width: 100%;
       }
     }
 
@@ -145,6 +152,14 @@ function openModal() {
           -webkit-line-clamp: 3;
         }
       }
+
+      @media screen and (max-width: 1360px) {
+        max-width: 100%;
+      }
+    }
+
+    @media screen and (max-width: 1360px) {
+      gap: 24px;
     }
   }
 }

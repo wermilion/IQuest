@@ -59,7 +59,7 @@ function openResultModal(isSuccess: ResultModal) {
       </div>
       <div class="wrapper-content">
         <span class="bodyBold">Описание</span>
-        <p class="footnoteText" v-html="activePackege.description " />
+        <p class="footnote" v-html="activePackege.description " />
       </div>
       <div class="wrapper-footer">
         <div class="wrapper-footer__info">
@@ -194,7 +194,8 @@ function openResultModal(isSuccess: ResultModal) {
     }
 
     @media screen and (max-width: 1024px) {
-      background-color: $color-opacity004;
+      border: 1px solid $color-opacity004;
+      background: $color-base1-opacity04;
       gap: $cover-12;
       position: sticky;
       backdrop-filter: blur(24px);

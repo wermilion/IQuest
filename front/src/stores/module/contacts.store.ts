@@ -3,18 +3,16 @@ import type { Contact } from '#/types/models/contact'
 //* --- State ----------------------------------------------- *//
 interface ContactState {
   social: Contact[]
+  error: unknown
 }
 
 //* --- Store ----------------------------------------------- *//
 export const useContactStore = defineStore('contact', {
   state: (): ContactState => ({
     social: [],
+    error: {},
   }),
   getters: {
-    requestWrapper: () => useRequestMeta().requestMetaWrapper,
-    isLoading: (): boolean => useRequestMeta().checkAnyIsLoading(['contact']),
-    errors: () => useRequestMeta().getError(['contact']),
-
     getPhone: (state) => {
       const phone = state.social.find(item => item.type.name === 'Номер телефона')
       return phone ? phone.value : null
@@ -34,23 +32,19 @@ export const useContactStore = defineStore('contact', {
   actions: {
     async fetchContact() {
       const stores = setupStore(['city'])
-      this.requestWrapper({
-        key: 'contact',
 
-        callback: () => {
-          return api.contact.getContact({
-            include: [
-              'contactType',
-            ],
-            filter: {
-              city_id: stores.city.selectedCity.id,
-            },
-          })
-        },
-        successCallback: ({ data }) => {
-          this.social = data.data.data
-        },
-      })
+      try {
+        const response = await api.contact.getContact({
+          include: ['contactType'],
+          filter: {
+            city_id: stores.city.selectedCity.id,
+          },
+        })
+        this.social = response.data.data
+      }
+      catch (error) {
+        this.error = error
+      }
     },
   },
 

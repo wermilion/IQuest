@@ -1,3 +1,4 @@
+import router from '#/router'
 import type { City } from '#/types/models/city'
 
 //* --- State ----------------------------------------------- *//
@@ -36,6 +37,7 @@ export const useCityStore = defineStore('city', {
     },
 
     selectCity(city: City) {
+      router.push('/')
       this.selectedCity = city
       localStorage.setItem('city', city.id.toString())
     },

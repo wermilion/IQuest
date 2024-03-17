@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ViewWrapper from '#/components/layouts/view-wrapper.vue'
 import QuestContainer from '#/components/quest-view/quest/quest-container.vue'
 import QuestBooking from '#/components/quest-view/booking/booking.vue'
 import AddServices from '#/components/shared/add-services.vue'
@@ -6,26 +7,39 @@ import QuestCardGrid from '#/components/shared/quest-card-grid.vue'
 
 const route = useRoute()
 
-const stores = setupStore(['quest', 'services'])
+const stores = setupStore(['quest', 'services', 'global', 'questList'])
 
 stores.quest.$reset()
 
-stores.quest.fetchQuest(`${route.params.id}`)
-stores.services.fetchServices()
+const isViewLoading = ref<boolean>(true)
+
+const isLoading = computed(() => {
+  return !stores.global.isInitialized || isViewLoading.value
+})
 
 const { questBookingEl } = storeToRefs(stores.quest)
+
+async function loadView() {
+  isViewLoading.value = true
+  await Promise.allSettled([
+    stores.quest.fetchQuest(`${route.params.id}`),
+    stores.services.fetchServices(),
+  ])
+  isViewLoading.value = false
+}
+
+loadView()
 </script>
 
 <template>
-  <section v-if="stores.quest.quest && stores.services.services " class="quest">
-    <QuestContainer :quest="stores.quest.quest" />
-    <QuestBooking ref="questBookingEl" :id-quest="stores.quest.quest.id" />
-    <AddServices />
-    <QuestCardGrid />
-  </section>
-  <section v-else class="loading">
-    <h2>Я не придумал что вставить ;)</h2>
-  </section>
+  <ViewWrapper :is-loading="isLoading">
+    <section class="quest">
+      <QuestContainer :quest="stores.quest.quest!" />
+      <QuestBooking ref="questBookingEl" :id-quest="stores.quest.quest!.id" />
+      <AddServices />
+      <QuestCardGrid />
+    </section>
+  </ViewWrapper>
 </template>
 
 <style scoped lang="scss">

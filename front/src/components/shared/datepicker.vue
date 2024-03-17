@@ -6,7 +6,7 @@ import { useDisplay } from 'vuetify'
 const emit = defineEmits<{ select: [value: string[] ] }>()
 const selectedDate = ref<string[]>()
 
-const { xs } = useDisplay()
+const { mdAndDown } = useDisplay()
 
 function format(dates: Date[]) {
   return dates.map((date) => {
@@ -26,7 +26,7 @@ watch(selectedDate, (value) => {
 <template>
   <VueDatePicker
     v-model="selectedDate"
-    :teleport-center="xs"
+    :teleport-center="mdAndDown"
     disable-year-select
     :clearable="false"
     placeholder="Выбрать даты"

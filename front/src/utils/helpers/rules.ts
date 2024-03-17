@@ -12,3 +12,14 @@ export const phoneRules = [
 export const checkboxRules = [
   (v: boolean) => !!v || 'Необходимо дать согласие на обработку персональных данных',
 ]
+
+export const regexName = /^[a-zA-Zа-яА-Я- ]*$/
+export const regexNumber = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/
+
+export function validateField(field: string, regex: RegExp) {
+  return field && regex.test(field)
+}
+
+export function validateLength(field: string, min: number, max: number) {
+  return field && field.length >= min && field.length <= max
+}

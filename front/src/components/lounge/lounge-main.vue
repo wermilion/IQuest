@@ -11,7 +11,8 @@ import ResultModalDialog from '#/components/shared/result-modal.vue'
 
 const stores = setupStore(['filialList'])
 
-const activeFilialId = ref(stores.filialList.getFirstFilial?.id)
+const activeFilialId = ref(stores.filialList.getFirstLounge?.id)
+
 const activeRoomId = ref(stores.filialList.getFirstRoom?.id)
 
 watch(activeFilialId, (newFilialId) => {
@@ -60,14 +61,18 @@ function openResultModal(isSuccess: ResultModal) {
           <h1>Лаунж зона</h1>
           <div class="filter-chips">
             <div class="filter">
-              <FilterChip
+              <template
                 v-for="item in stores.filialList.filialList"
                 :key="item.address"
-                :is-selected="activeFilialId === item.id"
-                @click="activeFilialId = item.id"
               >
-                {{ item.address }}
-              </FilterChip>
+                <FilterChip
+                  v-if="item.lounges.length > 0"
+                  :is-selected="activeFilialId === item.id"
+                  @click="activeFilialId = item.id"
+                >
+                  {{ item.address }}
+                </FilterChip>
+              </template>
             </div>
           </div>
           <div class="wrapper-header__rooms">
@@ -87,7 +92,7 @@ function openResultModal(isSuccess: ResultModal) {
         <div class="wrapper-content">
           <div class="wrapper-content__text">
             <span class="bodyBold">Описание</span>
-            <p class="footnoteText" v-html="activeRoom?.description" />
+            <p class="footnote" v-html="activeRoom?.description" />
           </div>
           <div class="wrapper-content__people">
             <People />
@@ -238,7 +243,8 @@ function openResultModal(isSuccess: ResultModal) {
     }
 
     @media screen and (max-width: 1024px) {
-      background-color: $color-opacity004;
+      border: 1px solid $color-opacity004;
+      background: $color-base1-opacity04;
       gap: $cover-12;
       position: sticky;
       backdrop-filter: blur(24px);

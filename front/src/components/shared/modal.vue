@@ -4,6 +4,7 @@ import Close from '#/assets/svg/shared/close.svg?component'
 interface Props {
   title?: string
   subTitle?: string
+  customClass?: string
 }
 
 defineProps<Props>()
@@ -12,7 +13,7 @@ const model = defineModel<boolean>()
 </script>
 
 <template>
-  <v-dialog v-model="model" scrollable>
+  <v-dialog v-model="model" :class="customClass" scrollable>
     <div class="modal-wrapper">
       <div class="modal-header">
         <div class="modal-header__title">
@@ -37,7 +38,7 @@ const model = defineModel<boolean>()
   &-wrapper {
     overflow: auto;
     background-color: $color-base1;
-    padding: $cover-32;
+    padding: clamp($cover-16, 5vw, $cover-32);
     border-radius: $cover-12;
     width: 100%;
     max-width: 624px;
@@ -48,11 +49,17 @@ const model = defineModel<boolean>()
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    @media screen and (max-width: 600px) {
+      max-width: 100%;
+      height: 100%;
+    }
   }
 
   &-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     &__title {
       display: flex;
@@ -66,6 +73,13 @@ const model = defineModel<boolean>()
     display: flex;
     flex-direction: column;
     gap: $cover-32;
+  }
+
+  &-footer {
+    @media screen and (max-width: 600px) {
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
   }
 }
 </style>

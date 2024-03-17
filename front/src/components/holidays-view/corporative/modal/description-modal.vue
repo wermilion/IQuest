@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Modal from '#/components/shared/modal.vue'
-import Button from '#/components/shared/button.vue'
 
 interface Props {
   name: string
@@ -16,9 +15,9 @@ const modalProps = computed(() => ({
 </script>
 
 <template>
-  <Modal v-model="modal" v-bind="modalProps">
+  <Modal v-model="modal" custom-class="city-modal" v-bind="modalProps">
     <template #content>
-      <p class="footnoteText">
+      <p class="footnote">
         {{ description }}
       </p>
     </template>
@@ -26,7 +25,7 @@ const modalProps = computed(() => ({
 </template>
 
 <style scoped lang="scss">
-.footnoteText {
+.footnote {
   max-height: 300px;
   padding-right: 10px;
   overflow: auto;
@@ -43,5 +42,20 @@ p::-webkit-scrollbar-track {
 p::-webkit-scrollbar-thumb {
   background-color: $color-opacity06;
   border-radius: 20px;
+}
+</style>
+
+<style lang="scss">
+.city-modal .modal-wrapper {
+  height: auto !important;
+  overflow: hidden;
+  max-height: 400px;
+  gap: $cover-16;
+
+  max-width: 90%;
+}
+
+.city-modal .modal-content {
+  overflow: auto;
 }
 </style>

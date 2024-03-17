@@ -22,7 +22,7 @@ const bookingModal = ref(false)
 const resultModal = ref(false)
 const isSuccessBooking = ref()
 
-const sort = stores.holiday.holiday?.packages.sort((a, b) => a.id - b.id)
+const sort = stores.holiday.holiday?.packages.sort((a, b) => a.sequence_number - b.sequence_number)
 function openBookingModal() {
   bookingModal.value = true
 }
@@ -36,13 +36,13 @@ function openResultModal(isSuccess: ResultModal) {
 <template>
   <div class="wrapper">
     <section class="container">
-      <div class="booking">
+      <div v-if="activePackege" class="booking">
         <div class="booking-header">
           <h2>Пакет</h2>
           <div class="filter">
             <template v-for="item in sort" :key="item.name">
               <FilterChip
-                v-f="item.description.length > 0"
+                v-if="item.description.length > 0"
                 :is-selected="activePackegeId === item.id"
                 @click="activePackegeId = item.id"
               >
@@ -63,7 +63,7 @@ function openResultModal(isSuccess: ResultModal) {
       </div>
     </section>
     <DetailsContainer />
-    <div class="footer-btn">
+    <div v-if="activePackege" class="footer-btn">
       <Button
         :button-light="true"
         name="Оформить заявку"
@@ -149,7 +149,8 @@ function openResultModal(isSuccess: ResultModal) {
   gap: $cover-12;
 
   border-radius: 14px;
-  background: $color-opacity004;
+  border: 1px solid $color-opacity004;
+  background: $color-base1-opacity04;
   backdrop-filter: blur($cover-24);
 
   div {

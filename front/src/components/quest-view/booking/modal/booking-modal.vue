@@ -2,7 +2,15 @@
 import { vMaska } from 'maska'
 import QuestRules from './quest-rules.vue'
 import type { ResultModal } from '#/types/shared/common'
-import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
+import {
+  checkboxRules,
+  nameRules,
+  phoneRules,
+  regexName,
+  regexNumber,
+  validateField,
+  validateLength,
+} from '#/utils/helpers/rules'
 import { options } from '#/utils/helpers/maska'
 import Modal from '#/components/shared/modal.vue'
 import Plus from '#/assets/svg/shared/plus.svg?component'
@@ -55,15 +63,16 @@ const modalProps = computed(() => ({
   subTitle: `${stores.quest.quest?.name} • ${props.date} • ${props.item?.time?.replace(/:00$/, '') ?? ''}`,
 }))
 
-const validatName = ref()
+const guard = ref(true)
 
 async function submitForm() {
-  // if (
-  //   validatName.value
-  //   || phoneRules.every(rule => rule(formData.phoneNumber))
-  //   || checkboxRules.every(rule => rule(formData.privatePolice))
-  // )
-  //   console.log(validatName.value.validate())
+  if (
+    !validateField(formData.fullName, regexName)
+    || !validateLength(formData.fullName, 4, 30)
+    || !validateField(formData.phoneNumber, regexNumber)
+    || !formData.privatePolice
+  )
+    return
 
   try {
     await api.booking.postBooking({
@@ -92,6 +101,19 @@ async function submitForm() {
     modal.value = false
   }
 }
+
+watch(formData, (newValue, _oldValue) => {
+  const allFieldsValid = (
+    validateField(newValue.fullName, regexName)
+    && validateLength(newValue.fullName, 4, 30)
+    && validateField(newValue.phoneNumber, regexNumber)
+    && newValue.privatePolice
+  )
+  if (allFieldsValid)
+    guard.value = false
+  else
+    guard.value = true
+}, { deep: true, immediate: true })
 </script>
 
 <template>
@@ -100,7 +122,6 @@ async function submitForm() {
       <div class="content-wrapper">
         <v-form class="form">
           <v-text-field
-            ref="validatName"
             v-model.lazy.trim="formData.fullName"
             :rules="nameRules"
             color="primary"
@@ -157,6 +178,7 @@ async function submitForm() {
           name="Забронировать"
           type="submit"
           :button-light="true"
+          :button-disabled="guard"
           @click="submitForm"
         />
       </div>

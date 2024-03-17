@@ -61,9 +61,7 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
             :name="tag"
           />
         </div>
-        <p v-if="quest.short_description" class="card-body__description footnote">
-          {{ quest.short_description }}
-        </p>
+        <p v-if="quest.short_description" class="card-body__description footnote" v-html="quest.short_description" />
       </div>
     </div>
     <div v-if="isHover" class="hover">

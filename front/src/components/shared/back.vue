@@ -16,6 +16,7 @@ function goBack() {
 
 <style scoped lang="scss">
 .back {
+  width: max-content;
   display: flex;
   gap: $cover-4;
   align-items: flex-end;

@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import DropList from './shared/drop-list.vue'
-import City from '#/components/cities/cities.vue'
+import City from '#/components/cities/cities-main.vue'
 import Arrow from '#/assets/svg/shared/arrow=default.svg'
 import Logo from '#/assets/svg/logo/logo.svg?component'
 import LogoMobile from '#/assets/svg/logo/logo-mobile.svg?component'
-import Burger from '#/assets/svg/burger/burger.svg?component'
-import BurgerClose from '#/assets/svg/burger/burgerClose.svg?component'
-import PhoneNumber from '#/components/shared/phone-number.vue'
+import Burger from '#/assets/svg/burger/burger.svg?url'
+import BurgerClose from '#/assets/svg/burger/burgerClose.svg?url'
 
-const stores = setupStore(['holidaysList'])
+const stores = setupStore(['holidaysList', 'city'])
 
 const links = [
   { name: 'Квесты', link: '/' },
@@ -28,12 +27,33 @@ function openMenuHoliday(index: number) {
   if (index === 1)
     isMenuHoliday.value = !isMenuHoliday.value
   else
-    isMenuHoliday.value = true
+    isMenuOpened.value = false
 }
 
 function getFirstWord(text: string) {
   const words = text.split(' ')
   return words[0]
+}
+
+function closeMenu() {
+  isMenuOpened.value = false
+  isMenuHoliday.value = false
+}
+
+watch(() => stores.city.selectedCity, () => {
+  isMenuOpened.value = false
+})
+
+const list = ref(false)
+
+function handleMouseOver(index: number) {
+  if (index === 1)
+    list.value = true
+}
+
+function handleMouseOut(index: number) {
+  if (index === 1)
+    list.value = false
 }
 </script>
 
@@ -57,12 +77,16 @@ function getFirstWord(text: string) {
                 selected: $route.path === link.link,
                 holiday: index === 1,
               }"
+              @mouseover="handleMouseOver(index)"
+              @mouseout="handleMouseOut(index)"
             >
               <span>[</span>
               {{ link.name }}
               <div v-if="index === 1" class="select">
                 <Arrow class="arrow" />
-                <DropList class="drop-down" :item="stores.holidaysList.holidaysList" />
+                <Transition name="holidays-list">
+                  <DropList v-show="list" class="drop-down" :item="stores.holidaysList.holidaysList" />
+                </Transition>
               </div>
               <span>]</span>
             </div>
@@ -76,47 +100,60 @@ function getFirstWord(text: string) {
         <LogoMobile />
       </router-link>
       <div class="burger-menu">
-        <Burger v-if="!isMenuOpened" @click="openMenu" />
-        <BurgerClose v-if="isMenuOpened" @click="openMenu" />
+        <Transition name="burger-button">
+          <div v-show="!isMenuOpened" @click="openMenu">
+            <img :src="Burger">
+          </div>
+        </Transition>
+        <Transition name="burger-button">
+          <div v-show="isMenuOpened" @click="openMenu">
+            <img :src="BurgerClose">
+          </div>
+        </Transition>
       </div>
-      <div v-if="isMenuOpened" class="burger-menu__drop">
-        <div class="burger-menu__drop-list">
-          <div
-            v-for="link, index in links"
-            :key="link.name"
-            class="burger-menu__drop-links"
-            :class="{ 'holiday-burger': index === 1 }"
-          >
-            <router-link
-              class="body"
-              :class="{
-                selected: $route.path === link.link,
-                holiday: index === 1,
-
-              }" :to="link.link"
-              @click="openMenuHoliday(index)"
+      <Transition name="menu">
+        <div v-if="isMenuOpened" class="burger-menu__drop">
+          <div class="burger-menu__drop-list">
+            <div
+              v-for="link, index in links"
+              :key="link.name"
+              class="burger-menu__drop-links"
+              :class="{ 'holiday-burger': index === 1 }"
             >
-              <Arrow v-if="index === 1" class="arrow-burger" />
-              {{ link.name }}
-            </router-link>
-            <template v-if="isMenuHoliday && index === 1">
-              <div class="holiday-list">
-                <router-link
-                  v-for="holiday in stores.holidaysList.holidaysList"
-                  :key="holiday.id"
-                  class="body"
-                  :to="`/holidays/${holiday.id}`"
-                >
-                  {{ getFirstWord(holiday.type) }}
-                </router-link>
-              </div>
-            </template>
+              <router-link
+                class="h3"
+                :class="{
+                  selected: $route.path === link.link,
+                  holiday: index === 1,
+                }"
+                :to="link.link"
+                @click="openMenuHoliday(index)"
+              >
+                {{ link.name }}
+                <Arrow v-if="index === 1" class="arrow-burger" />
+              </router-link>
+              <Transition name="holiday">
+                <template v-if="isMenuHoliday && index === 1">
+                  <div class="holiday-list">
+                    <router-link
+                      v-for="holiday in stores.holidaysList.holidaysList"
+                      :key="holiday.id"
+                      class="h3"
+                      :to="`/holidays/${holiday.id}`"
+                      @click="closeMenu"
+                    >
+                      {{ getFirstWord(holiday.type) }}
+                    </router-link>
+                  </div>
+                </template>
+              </Transition>
+            </div>
+          </div>
+          <div class="burger-menu__city">
+            <City />
           </div>
         </div>
-        <div class="burger-menu__drop-contacts">
-          <PhoneNumber />
-        </div>
-      </div>
+      </Transition>
     </div>
   </header>
 </template>
@@ -155,24 +192,26 @@ function getFirstWord(text: string) {
     position: relative;
 
     .burger-menu {
+      display: flex;
+
       &__drop {
         right: 0;
         display: flex;
         flex-direction: column;
         position: absolute;
         top: 57px;
-        height: max-content;
-        padding-bottom: 35px;
+        padding-bottom: 16px;
         justify-content: space-between;
         background-color: $color-base1;
         width: 100%;
         align-items: flex-end;
         border-bottom: 1px solid $color-opacity025;
+        height: 488px;
 
         z-index: 12;
 
         &-list {
-          padding-top: 11px;
+          padding-top: 10px;
         }
 
         &-links {
@@ -188,28 +227,25 @@ function getFirstWord(text: string) {
           }
         }
 
-        &-contacts {
-          display: flex;
-          padding: 12px 24px;
-          border-radius: 100px;
-          background: $color-opacity004;
-        }
-
         .holiday-list {
           width: 100;
           display: flex;
           flex-direction: column;
           align-items: flex-end;
-          gap: $cover-8;
+          padding: 0 $cover-8;
 
           a {
-            white-space: nowrap; /* Запрещаем перенос строк */
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 3;
+            padding: $cover-12;
           }
         }
+      }
+
+      &__city {
+        margin-right: $cover-16;
+        display: flex;
+        padding: $cover-12 $cover-24;
+        border-radius: $cover-12;
+        background: $color-opacity004;
       }
     }
   }
@@ -219,7 +255,9 @@ function getFirstWord(text: string) {
 
     &-mobile {
       display: flex;
-      padding: 14px clamp(16px, 5vw, 88px);
+      padding-top: 14px;
+      padding-bottom: 14px;
+      padding-left: clamp(16px, 5vw, 88px);
       width: 100%;
       max-height: 60px;
       align-items: center;
@@ -266,18 +304,16 @@ function getFirstWord(text: string) {
   align-items: center;
   gap: 4px;
   position: relative;
-  transition: all 0.1s ease-in-out;
+
   .drop-down {
-    transition: all 0.3s ease-in-out;
     top: 40px;
     right: -10px;
     position: absolute;
-    display: none;
     z-index: 10;
   }
 
   .arrow {
-    transition: all 0.1s ease-in-out;
+    transition: transform 0.1s ease-in-out;
     :deep(path) {
       stroke-opacity: 0.6;
     }
@@ -294,9 +330,6 @@ function getFirstWord(text: string) {
     }
     span {
       color: $color-base2;
-    }
-    .drop-down {
-      display: block;
     }
   }
 

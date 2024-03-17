@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import PlotCard from './plot-card.vue'
-
-import TitlePlots from '#/assets/svg/shared/titlePlots.svg?component'
 import PlotList from '#/utils/mock/plot-list'
 </script>
 
 <template>
   <div class="container">
     <div class="title">
-      <TitlePlots />
+      <h1>Сюжеты</h1>
       <img src="/gradient/gradient.png" alt="gradient">
     </div>
     <div class="plots-list">
@@ -26,21 +24,37 @@ import PlotList from '#/utils/mock/plot-list'
 }
 .title {
   position: absolute;
-  height: 600px;
-  svg {
-    top: 0px;
+  height: clamp(150px, 33vw, 535px);
+
+  h1 {
     position: sticky;
+    top: 0;
+    font-size: clamp(50px, 18vw, 259px);
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.35) -20.8%,
+      rgba(255, 255, 255, 0) 77.86%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   img {
-    position: relative;
+    width: 100%;
+    position: absolute;
+    bottom: clamp(1px, 2vw, 34px);
   }
 }
 
 .plots-list {
-  margin-top: 290px;
+  margin-top: clamp(82px, 33vw, 341px);
   display: flex;
   flex-direction: column;
-  gap: 108px;
+  gap: clamp(64px, 10vw, 108px);
 }
 </style>

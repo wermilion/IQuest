@@ -15,7 +15,7 @@ function toggleExpand() {
   <div class="description">
     <span class="bodyBold">Описание</span>
     <div class="description-content">
-      <p class="footnoteText" :class="{ extend: isExpanded }" v-html="description" />
+      <p class="footnote" :class="{ extend: isExpanded }" v-html="description" />
       <div
         class="read-more body pointer"
         :class="{ active: isExpanded }"
@@ -79,7 +79,7 @@ function toggleExpand() {
       -webkit-box-orient: vertical;
       overflow: hidden;
       transition: all 0.25s ease-in-out;
-      max-height: 84px;
+      max-height: 72px;
     }
 
     p.extend {

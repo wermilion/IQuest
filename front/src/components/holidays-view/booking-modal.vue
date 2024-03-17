@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { vMaska } from 'maska'
 import infoPopUpVue from '../shared/info-pop-up.vue'
-import { checkboxRules, nameRules, phoneRules } from '#/utils/helpers/rules'
+import {
+  checkboxRules,
+  nameRules,
+  phoneRules,
+  regexName,
+  regexNumber,
+  validateField,
+  validateLength,
+} from '#/utils/helpers/rules'
 import { options } from '#/utils/helpers/maska'
 import type { Packages } from '#/types/models/holiday'
 import QuestRules from '#/components/quest-view/booking/modal/quest-rules.vue'
@@ -25,12 +33,20 @@ const formData = reactive({
 
 const modalProps = computed(() => ({
   title: 'Оформление',
-  subTitle: `${stores.holiday.holiday?.type} • ${props.package.name}`,
+  subTitle: `${stores.holiday.holiday?.type} • ${props.package?.name}`,
 }))
 
+const guard = ref(true)
+
 async function submitForm() {
-  if (!formData.fullName || !formData.phoneNumber || !formData.privatePolice)
+  if (
+    !validateField(formData.fullName, regexName)
+    || !validateLength(formData.fullName, 4, 30)
+    || !validateField(formData.phoneNumber, regexNumber)
+    || !formData.privatePolice
+  )
     return
+
   try {
     await api.booking.postBooking({
       booking: {
@@ -56,6 +72,19 @@ async function submitForm() {
     modal.value = false
   }
 }
+
+watch(formData, (newValue, _oldValue) => {
+  const allFieldsValid = (
+    validateField(newValue.fullName, regexName)
+    && validateLength(newValue.fullName, 4, 30)
+    && validateField(newValue.phoneNumber, regexNumber)
+    && newValue.privatePolice
+  )
+  if (allFieldsValid)
+    guard.value = false
+  else
+    guard.value = true
+}, { deep: true, immediate: true })
 </script>
 
 <template>
@@ -100,7 +129,7 @@ async function submitForm() {
           name="Оформить заявку"
           type="submit"
           :button-light="true"
-          :disabled="!formData.fullName || !formData.phoneNumber || !formData.privatePolice"
+          :button-disabled="guard"
           @click="submitForm"
         />
       </div>

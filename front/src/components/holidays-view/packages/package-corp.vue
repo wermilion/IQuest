@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import Card from '../details/card.vue'
+import Price from '#/assets/svg/shared/cash.svg?url'
+
+import BookingModal from '#/components/holidays-view/corporative/modal/booking-modal.vue'
+import ResultModalDialog from '#/components/shared/result-modal.vue'
+import type { ResultModal } from '#/types/shared/common'
+import Button from '#/components/shared/button.vue'
+
 import FilterChip from '#/components/quest-view/booking/chips/filter-chip.vue'
 import CorporaivePlots from '#/components/holidays-view/corporative/corporaive-plots.vue'
 
@@ -43,6 +50,19 @@ const detailsKeys = [
     footnote: true,
   },
 ]
+
+const bookingModal = ref(false)
+const resultModal = ref(false)
+const isSuccessBooking = ref()
+
+function openBookingModal() {
+  bookingModal.value = true
+}
+
+function openResultModal(isSuccess: ResultModal) {
+  isSuccessBooking.value = isSuccess
+  resultModal.value = true
+}
 </script>
 
 <template>
@@ -61,7 +81,7 @@ const detailsKeys = [
               {{ item }}
             </FilterChip>
           </div>
-          <div class="booking-details">
+          <div class="booking-details" :class="{ 'column-gap': activePackege.name === 'Под ключ' }">
             <Card v-for="item in detailsLiveQuest" v-show="activePackege.name === 'Живой квест'" :key="item.icon" :item="item" />
             <Card v-for="item in detailsKeys" v-show="activePackege.name === 'Под ключ'" :key="item.icon" :item="item" />
           </div>
@@ -70,6 +90,25 @@ const detailsKeys = [
     </div>
   </section>
   <CorporaivePlots v-show="activePackege.name === 'Живой квест'" />
+  <div class="footer-btn">
+    <Button
+      :button-light="true"
+      name="Оформить заявку"
+      @click="openBookingModal"
+    />
+    <div class="footer-btn__price">
+      <img :src="Price">
+      <span class="body">От 600₽ с человека</span>
+    </div>
+  </div>
+  <BookingModal
+    v-model="bookingModal"
+    @submit="openResultModal"
+  />
+  <ResultModalDialog
+    v-model="resultModal"
+    :is-success="isSuccessBooking"
+  />
 </template>
 
 <style scoped lang="scss">
@@ -102,10 +141,85 @@ const detailsKeys = [
   }
 
   &-details {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     align-items: flex-start;
     align-content: flex-start;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: $cover-24;
+
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+
+      .item:nth-child(3) {
+        grid-column: 1 / 3;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(1, 1fr);
+
+      .item:nth-child(1) {
+        grid-column: 1;
+      }
+
+      .item:nth-child(2) {
+        grid-column: 1;
+      }
+
+      .item:nth-child(3) {
+        grid-column: 1;
+      }
+    }
+  }
+}
+
+.column-gap {
+  grid-template-columns: repeat(2, 1fr);
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.footer-btn {
+  display: none;
+  flex-direction: column-reverse;
+  position: sticky;
+  bottom: 20px;
+  z-index: 10;
+
+  padding: $cover-16;
+  justify-content: center;
+  align-items: flex-start;
+  gap: $cover-12;
+
+  border-radius: 14px;
+  border: 1px solid $color-opacity004;
+  background: $color-base1-opacity04;
+  backdrop-filter: blur($cover-24);
+
+  div {
+    max-width: 100%;
+  }
+
+  span {
+    color: $color-opacity06;
+  }
+
+  &__price {
+    display: flex;
+    align-items: center;
+    gap: $cover-8;
+
+    img {
+      width: clamp(26px, 5vw, $cover-32);
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    display: flex;
+    margin-inline: $cover-16;
   }
 }
 </style>

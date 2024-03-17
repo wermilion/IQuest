@@ -33,7 +33,7 @@ const guard = ref(true)
 async function submitForm() {
   if (
     !validateField(formData.fullName, regexName)
-    || !validateLength(formData.fullName, 4, 30)
+    || !validateLength(formData.fullName)
     || !validateField(formData.phoneNumber, regexNumber)
     || !formData.privatePolice
   )
@@ -67,7 +67,7 @@ async function submitForm() {
 watch(formData, (newValue, _oldValue) => {
   const allFieldsValid = (
     validateField(newValue.fullName, regexName)
-    && validateLength(newValue.fullName, 4, 30)
+    && validateLength(newValue.fullName)
     && validateField(newValue.phoneNumber, regexNumber)
     && newValue.privatePolice
   )

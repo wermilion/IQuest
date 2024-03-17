@@ -3,6 +3,7 @@ interface Button {
   name: string
   buttonLight?: boolean
   buttonDisabled?: boolean
+  footnote?: boolean
 }
 
 defineProps<Button>()
@@ -13,7 +14,7 @@ defineProps<Button>()
     class="btn-container button pointer"
     :class="{ buttonLight, buttonDisabled }"
   >
-    <span class="bodyBold">{{ name }}</span>
+    <span class="bodyBold" :class="{ footnote }">{{ name }}</span>
   </div>
 </template>
 
@@ -35,6 +36,10 @@ defineProps<Button>()
   &:hover {
     background-color: $color-light-primary;
   }
+}
+
+.footnote {
+  color: $color-base2;
 }
 
 .buttonDisabled {

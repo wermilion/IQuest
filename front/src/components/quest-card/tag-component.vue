@@ -60,7 +60,7 @@ watch(
   align-items: center;
   border-radius: 120px;
   border: 1px solid $color-opacity004;
-  background: $color-opacity004;
+  background: transparent;
 
   @media screen and (max-width: 375px) {
     gap: $cover-4;

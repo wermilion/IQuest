@@ -7,7 +7,7 @@ import QuestCardGrid from '#/components/shared/quest-card-grid.vue'
 
 const route = useRoute()
 
-const stores = setupStore(['quest', 'services', 'global', 'questList'])
+const stores = setupStore(['quest', 'services', 'global', 'questList', 'city'])
 
 stores.quest.$reset()
 
@@ -19,11 +19,15 @@ const isLoading = computed(() => {
 
 const { questBookingEl } = storeToRefs(stores.quest)
 
+watch(() => route.params.id, loadView)
+watch(() => stores.city.selectedCity, loadView)
+
 async function loadView() {
   isViewLoading.value = true
   await Promise.allSettled([
     stores.quest.fetchQuest(`${route.params.id}`),
     stores.services.fetchServices(),
+    stores.questList.fetchQuests(),
   ])
   isViewLoading.value = false
 }

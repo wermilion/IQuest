@@ -38,16 +38,18 @@ const modalProps = computed(() => ({
 </style>
 
 <style lang="scss">
-.city-modal .modal-wrapper {
-  height: auto !important;
-  overflow: hidden;
-  max-height: 400px;
-  gap: $cover-16;
+@media screen and (max-width: 600px) {
+  .city-modal .modal-wrapper {
+    height: auto !important;
+    overflow: hidden;
+    max-height: 400px;
+    gap: $cover-16;
 
-  max-width: 90%;
-}
+    max-width: 90%;
+  }
 
-.city-modal .modal-content {
-  overflow: auto;
+  .city-modal .modal-content {
+    overflow: auto;
+  }
 }
 </style>

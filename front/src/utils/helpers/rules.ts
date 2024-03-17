@@ -1,6 +1,6 @@
 export const nameRules = [
   (v: string) => !!v || 'Имя обязательно для заполнения',
-  (v: string) => (v.length >= 3 && v.length <= 30) || 'Имя должно содержать от 3 до 30 символов',
+  (v: string) => (v.length >= 1 && v.length <= 40) || 'Имя должно содержать от 1 до 40 символов',
   (v: string) => /^[a-zA-Zа-яА-Я- ]*$/.test(v) || 'Имя может содержать только латинские и/или кириллические буквы и дефисы',
 ]
 
@@ -20,6 +20,6 @@ export function validateField(field: string, regex: RegExp) {
   return field && regex.test(field)
 }
 
-export function validateLength(field: string, min: number, max: number) {
-  return field && field.length >= min && field.length <= max
+export function validateLength(field: string) {
+  return field && field.length >= 1 && field.length <= 40
 }

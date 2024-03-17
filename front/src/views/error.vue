@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { EAppRouteNames } from '../types/routes'
+import ViewWrapper from '#/components/layouts/view-wrapper.vue'
 import Error from '#/assets/svg/error/error.svg?component'
 import Button from '#/components/shared/button.vue'
 
 const router = useRouter()
+const stores = setupStore(['global'])
+// const isViewLoading = ref<boolean>(true)
+
+const isLoading = computed(() => {
+  return !stores.global.isInitialized
+})
 
 function goToQuest() {
   router.push({ name: EAppRouteNames.Home })
@@ -16,7 +23,7 @@ function goBack() {
 </script>
 
 <template>
-  <section class="loading">
+  <ViewWrapper :is-loading="isLoading">
     <div class="error">
       <div class="error-header">
         <Error />
@@ -27,11 +34,12 @@ function goBack() {
         <Button :button-light="false" name="Назад" @click="goBack" />
       </div>
     </div>
-  </section>
+  </ViewWrapper>
 </template>
 
 <style scoped lang="scss">
 .error {
+  margin: 0 auto;
   max-width: 566px;
   max-height: 378px;
   width: 100%;

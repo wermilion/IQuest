@@ -124,7 +124,6 @@ function openResultModal(isSuccess: ResultModal) {
 .corp {
   background:
     linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
-    url('/holidays/corp.webp'),
-    lightgray 50% / cover no-repeat;
+    url('/holidays/corp.webp') no-repeat;
 }
 </style>

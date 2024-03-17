@@ -3,8 +3,9 @@ import ViewWrapper from '#/components/layouts/view-wrapper.vue'
 import AddServicesVue from '#/components/shared/add-services.vue'
 import QuestCardGrid from '#/components/shared/quest-card-grid.vue'
 import BanerSwiper from '#/components/stocks-swiper/baner-swiper.vue'
+import BanerSwiperMob from '#/components/stocks-swiper/baner-swiper-mob.vue'
 
-const stores = setupStore(['stocks', 'contact', 'services', 'city', 'global', 'questList'])
+const stores = setupStore(['stocks', 'contact', 'services', 'city', 'global', 'questList', 'filialList'])
 
 const isViewLoading = ref<boolean>(true)
 
@@ -20,6 +21,7 @@ async function loadView() {
     stores.contact.fetchContact(),
     stores.services.fetchServices(),
     stores.stocks.fetchStocks(),
+    stores.filialList.fetchFilial(),
   ])
   isViewLoading.value = false
 }
@@ -32,7 +34,8 @@ loadView()
 <template>
   <ViewWrapper :is-loading="isLoading">
     <section class="bag-black">
-      <BanerSwiper />
+      <BanerSwiper class="baner-pc" />
+      <BanerSwiperMob class="baner-mob" />
       <QuestCardGrid />
       <AddServicesVue />
     </section>
@@ -47,6 +50,12 @@ loadView()
 }
 
 @media screen and (max-width: 1024px) {
+  .baner-pc {
+    display: none;
+  }
+  .baner-mob {
+    display: flex;
+  }
   .bag-black:nth-child(2) {
     margin-top: clamp(40px, 6vw, 108px);
   }

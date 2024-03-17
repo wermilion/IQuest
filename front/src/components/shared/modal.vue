@@ -59,7 +59,6 @@ const model = defineModel<boolean>()
   &-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
 
     &__title {
       display: flex;

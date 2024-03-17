@@ -74,7 +74,7 @@ const isLoundge: any = computed(() => {
   align-items: center;
   border-radius: 120px;
   border: 1px solid $color-opacity004;
-  background: $color-opacity004;
+  background: transparent;
 }
 
 .hover-container {

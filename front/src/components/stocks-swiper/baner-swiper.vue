@@ -117,10 +117,6 @@ onMounted(() => {
   background-repeat: no-repeat;
   background-position: center;
   overflow: hidden;
-
-  @media screen and (max-width: 1024px) {
-    display: none;
-  }
 }
 
 .swiper-container {

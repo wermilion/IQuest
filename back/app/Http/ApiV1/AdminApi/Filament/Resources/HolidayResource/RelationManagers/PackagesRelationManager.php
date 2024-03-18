@@ -94,7 +94,6 @@ class PackagesRelationManager extends RelationManager
                     ->label('Название'),
                 TextColumn::make('price')
                     ->label('Цена')
-                    ->numeric()
                     ->sortable(),
                 ToggleColumn::make('is_active')
                     ->label('Отображение на сайте')

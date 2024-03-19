@@ -42,7 +42,6 @@ function openResultModal(isSuccess: ResultModal) {
           <div class="filter">
             <template v-for="item in sort" :key="item.name">
               <FilterChip
-                v-if="item.description.length > 0"
                 :is-selected="activePackegeId === item.id"
                 @click="activePackegeId = item.id"
               >

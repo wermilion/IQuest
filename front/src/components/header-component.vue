@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { LottieAnimation } from 'lottie-web-vue'
+import { useRoute } from 'vue-router'
+import { EAppRoutePaths } from '../types/routes'
 import DropList from './shared/drop-list.vue'
 import City from '#/components/cities/cities-main.vue'
 import Arrow from '#/assets/svg/shared/arrow=default.svg'
@@ -8,19 +10,33 @@ import LogoMobile from '#/assets/svg/logo/logo-mobile.svg?component'
 import BurgerOpen from '#/assets/animation/burger-open.json'
 import BurgerClose from '#/assets/animation/burger-close.json'
 
-const stores = setupStore(['holidaysList', 'city'])
+const stores = setupStore(['holidaysList', 'city', 'global'])
 
 const links = [
-  { name: 'Квесты', link: '/' },
+  { name: 'Квесты', link: EAppRoutePaths.Home },
   { name: 'Праздники', link: '' },
-  { name: 'Сертификат', link: '/certificates' },
-  { name: 'Контакты', link: '/contacts' },
+  { name: 'Сертификат', link: EAppRoutePaths.Certificat },
+  { name: 'Контакты', link: EAppRoutePaths.Contacts },
 ]
 
 const isMenuOpened = ref(false)
 const isMenuHoliday = ref(false)
+
+const lottie = ref()
+const lottieRefresh = ref(new Date())
+const lockMenu = ref(false)
+
 function toggleMenu() {
+  if (lockMenu.value)
+    return
+
+  lockMenu.value = true
   isMenuOpened.value = !isMenuOpened.value
+  isMenuHoliday.value = false
+  lottie.value.play()
+  setTimeout(() => {
+    defaultPosition()
+  }, 500)
 }
 
 function openMenuHoliday(index: number) {
@@ -42,7 +58,19 @@ function closeMenu() {
 
 watch(() => stores.city.selectedCity, () => {
   isMenuOpened.value = false
+  defaultPosition()
 })
+
+const route = useRoute()
+
+watch(() => route.path, () => {
+  defaultPosition()
+})
+
+function defaultPosition() {
+  lottieRefresh.value = new Date()
+  lockMenu.value = false
+}
 
 const list = ref(false)
 
@@ -68,12 +96,14 @@ function handleMouseOut(index: number) {
           <router-link
             v-if="stores.holidaysList.holidaysList.length || index !== 1" :key="link.name" :to="link.link"
             class="footnote"
+            @mouseover="handleMouseOver(index)"
+            @mouseout="handleMouseOut(index)"
           >
             <div
               class="link" :class="{
                 selected: $route.path === link.link,
                 holiday: index === 1,
-              }" @mouseover="handleMouseOver(index)" @mouseout="handleMouseOut(index)"
+              }"
             >
               <span>[</span>
               {{ link.name }}
@@ -95,18 +125,15 @@ function handleMouseOut(index: number) {
         <LogoMobile />
       </router-link>
       <div class="burger-menu">
-        <div v-show="!isMenuOpened" @click="toggleMenu">
-          <LottieAnimation
-            :animation-data="BurgerClose"
-            :speed="1"
-          />
-        </div>
-        <div v-show="isMenuOpened" @click="toggleMenu">
-          <LottieAnimation
-            :animation-data="BurgerOpen"
-            :speed="1"
-          />
-        </div>
+        <LottieAnimation
+          :key="+lottieRefresh"
+          ref="lottie"
+          :animation-data="isMenuOpened ? BurgerClose : BurgerOpen"
+          :loop="false"
+          :auto-play="false"
+          :speed="1"
+          @click="toggleMenu"
+        />
       </div>
       <Transition name="menu">
         <div v-if="isMenuOpened" class="burger-menu__drop">
@@ -117,22 +144,28 @@ function handleMouseOut(index: number) {
             >
               <router-link
                 class="h3" :class="{
-                  selected: $route.path === link.link,
-                  holiday: index === 1,
+                  'selected': $route.path === link.link,
+                  'holiday': index === 1,
+                  'holiday-active': isMenuHoliday && index === 1,
                 }" :to="link.link" @click="openMenuHoliday(index)"
               >
                 {{ link.name }}
-                <Arrow v-if="index === 1" class="arrow-burger" />
+                <Arrow v-if="index === 1" class="arrow-burger" :class="{ 'arrow-active': isMenuHoliday }" />
               </router-link>
               <Transition name="holiday">
                 <template v-if="isMenuHoliday && index === 1">
-                  <div class="holiday-list">
-                    <router-link
-                      v-for="holiday in stores.holidaysList.holidaysList" :key="holiday.id" class="h3"
-                      :to="`/holidays/${holiday.id}`" @click="closeMenu"
-                    >
-                      {{ getFirstWord(holiday.type) }}
-                    </router-link>
+                  <div class="holiday-gup">
+                    <div class="holiday-list">
+                      <router-link
+                        v-for="holiday in stores.holidaysList.holidaysList" :key="holiday.id" class="h3"
+                        :to="`/holidays/${holiday.id}`" @click="closeMenu"
+                      >
+                        {{ getFirstWord(holiday.type) }}
+                      </router-link>
+                    </div>
+                    <svg width="2" height="120" viewBox="0 0 2 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 1L1.00001 119" stroke="white" stroke-opacity="0.6" stroke-width="0.5" stroke-linecap="round" />
+                    </svg>
                   </div>
                 </template>
               </Transition>
@@ -149,6 +182,7 @@ function handleMouseOut(index: number) {
 
 <style scoped lang="scss">
 .header {
+  z-index: 2;
   position: absolute;
   max-width: 1440px;
   display: flex;
@@ -183,6 +217,10 @@ function handleMouseOut(index: number) {
     .burger-menu {
       display: flex;
 
+      :deep(html) {
+        overflow: hidden !important;
+      }
+
       &__drop {
         right: 0;
         display: flex;
@@ -196,7 +234,6 @@ function handleMouseOut(index: number) {
         align-items: flex-end;
         border-bottom: 1px solid $color-opacity025;
         height: 488px;
-
         z-index: 12;
 
         &-list {
@@ -225,6 +262,10 @@ function handleMouseOut(index: number) {
 
           a {
             padding: $cover-12;
+
+            &:nth-child(1) {
+              padding-top: 28px;
+            }
           }
         }
       }
@@ -292,14 +333,27 @@ function handleMouseOut(index: number) {
 .holiday {
   display: flex;
   align-items: center;
-  gap: 4px;
   position: relative;
+  gap: $cover-4;
+
+  &-gup {
+    display: flex;
+    align-items: center;
+
+    svg {
+      padding-top: 10px;
+    }
+  }
 
   .drop-down {
     top: 40px;
     right: -10px;
     position: absolute;
-    z-index: 10;
+    z-index: 20;
+  }
+
+  &-active {
+    color: $color-base2 !important;
   }
 
   .arrow {
@@ -310,6 +364,22 @@ function handleMouseOut(index: number) {
     }
 
     transform: rotate(0);
+
+    &-burger {
+      transition: transform 0.1s ease-in-out;
+      transform: rotate(0);
+
+      :deep(path) {
+        stroke-opacity: 0.6;
+      }
+    }
+
+    &-active {
+      transform: rotate(180deg);
+      :deep(path) {
+        stroke-opacity: 1;
+      }
+    }
   }
 
   &:hover {

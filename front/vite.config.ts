@@ -74,19 +74,4 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    cors: false,
-    proxy: {
-      '/api/filials:search': {
-        target: 'http://localhost:8080/',
-        secure: false,
-        changeOrigin: true,
-      },
-      '/api/': {
-        target: 'https://iquest-dev.tomsk-it.ru/',
-        secure: false,
-        changeOrigin: true,
-      },
-    },
-  },
 })

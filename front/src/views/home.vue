@@ -46,7 +46,7 @@ loadView()
 .bag-black {
   display: flex;
   flex-direction: column;
-  gap: 108px;
+  gap: clamp($cover-64, 10vw, 108px);
 }
 
 @media screen and (max-width: 1024px) {
@@ -56,8 +56,8 @@ loadView()
   .baner-mob {
     display: flex;
   }
-  .bag-black:nth-child(2) {
-    margin-top: clamp(40px, 6vw, 108px);
+  .bag-black {
+    margin-top: 40px;
   }
 }
 </style>

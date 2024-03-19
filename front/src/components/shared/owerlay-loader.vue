@@ -5,10 +5,16 @@ import WatermelonJSON from '#/assets/animation/animate.json'
 
 <template>
   <LottieAnimation
-    class="loading"
+
     :animation-data="WatermelonJSON"
     :loop="true"
     :auto-play="true"
     :speed="1"
   />
 </template>
+
+<style>
+svg {
+  transform: translate3d(0) !important;
+}
+</style>

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-defineProps<{ isActiveImg?: boolean }>()
+import Link from '#/assets/svg/shared/link-quest.svg?url'
+
+defineProps<{
+  isActiveImg?: boolean
+  isActiveLink?: boolean
+}>()
 
 const store = setupStore('contact')
 
@@ -15,14 +20,15 @@ watch(() => store.getPhone, () => {
 </script>
 
 <template>
-  <span v-if="store.getPhone" class="body">
+  <a v-if="store.getPhone" :href="phoneNumber.link" class="body" :class="{ isActiveLink }">
     <img v-if="isActiveImg === false" :src="`/icons/share/${phoneNumber.img}.svg`" :alt="phoneNumber.img">
-    <a :href="phoneNumber.link">{{ phoneNumber.text }}</a>
-  </span>
+    <sapn>{{ phoneNumber.text }}</sapn>
+    <img v-if="isActiveLink" :src="Link">
+  </a>
 </template>
 
 <style scoped lang="scss">
-  span {
+a {
   align-items: center;
   display: flex;
   gap: 8px;
@@ -32,6 +38,17 @@ watch(() => store.getPhone, () => {
 
   img {
     width: clamp(22px, 5vw, $cover-28);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .isActiveLink {
+    display: flex;
+    padding: $cover-16 $cover-24;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: $cover-16;
+    background: $color-opacity004;
   }
 }
 </style>

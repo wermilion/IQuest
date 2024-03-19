@@ -76,7 +76,8 @@ const framchise = [
       max-width: 600px;
       .contacts-list {
         display: flex;
-        gap: $cover-32;
+        gap: clamp($cover-16, 3vw, $cover-32);
+        flex-wrap: wrap;
 
         &__item {
           opacity: 0.6;

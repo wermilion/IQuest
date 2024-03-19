@@ -36,6 +36,7 @@ const model = defineModel<boolean>()
 <style scoped lang="scss">
 .modal {
   &-wrapper {
+    max-height: calc(100vh - 40px);
     overflow: auto;
     background-color: $color-base1;
     padding: clamp($cover-16, 5vw, $cover-32);
@@ -52,6 +53,7 @@ const model = defineModel<boolean>()
 
     @media screen and (max-width: 600px) {
       max-width: 100%;
+      max-height: 100%;
       height: 100%;
     }
   }

@@ -15,7 +15,7 @@ const modalProps = computed(() => ({
 </script>
 
 <template>
-  <Modal v-model="modal" custom-class="city-modal" v-bind="modalProps">
+  <Modal v-model="modal" persistent custom-class="desc-modal" v-bind="modalProps">
     <template #content>
       <p class="footnote">
         {{ description }}
@@ -47,7 +47,7 @@ p::-webkit-scrollbar-thumb {
 
 <style lang="scss">
 @media screen and (max-width: 600px) {
-  .city-modal .modal-wrapper {
+  .desc-modal .modal-wrapper {
     height: auto !important;
     overflow: hidden;
     max-height: 400px;
@@ -56,7 +56,7 @@ p::-webkit-scrollbar-thumb {
     max-width: 90%;
   }
 
-  .city-modal .modal-content {
+  .desc-modal .modal-content {
     overflow: auto;
   }
 }

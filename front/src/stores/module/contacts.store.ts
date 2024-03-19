@@ -25,7 +25,7 @@ export const useContactStore = defineStore('contact', {
 
     getSocial: (state) => {
       const social = state.social.filter(item => item.type.is_social === true)
-      return social.length > 0 ? social : null
+      return social || null
     },
 
   },

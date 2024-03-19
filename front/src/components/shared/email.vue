@@ -24,6 +24,7 @@ watch(() => store.getEmail, () => {
 <style scoped lang="scss">
   span {
   display: flex;
+  align-items: center;
   gap: 8px;
   a {
     color: $color-base2;

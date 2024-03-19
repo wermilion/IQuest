@@ -39,13 +39,11 @@ const guard = ref(true)
 
 async function submitForm() {
   if (
-    !validateField(formData.fullName, regexName)
-    || !validateLength(formData.fullName)
-    || !validateField(formData.phoneNumber, regexNumber)
-    || !formData.privatePolice
+    guard.value
   )
     return
   try {
+    guard.value = true
     await api.booking.postBooking({
       booking: {
         name: formData.fullName,
@@ -83,7 +81,7 @@ watch(formData, (newValue, _oldValue) => {
 </script>
 
 <template>
-  <Modal v-model="modal" v-bind="modalProps">
+  <Modal v-model="modal" custom-class="custom-modal" v-bind="modalProps">
     <template #content>
       <div class="content-wrapper">
         <v-form class="form">
@@ -165,5 +163,13 @@ input h2 {
 
 h3 {
   color: $color-base2;
+}
+</style>
+
+<style lang="scss">
+@media screen and (max-width: 600px) {
+  .custom-modal .modal-wrapper {
+    border-radius: 0%;
+  }
 }
 </style>

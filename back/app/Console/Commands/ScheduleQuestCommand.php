@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Domain\Quests\Models\Quest;
-use App\Domain\Schedules\Models\ScheduleQuest;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 
 class ScheduleQuestCommand extends Command
 {
@@ -32,7 +32,7 @@ class ScheduleQuestCommand extends Command
         $quests = Quest::whereHas('filial.city', fn($query) => $query->where('timezone', $timezone));
         $currentDate = Carbon::now($timezone);
 
-        $this->deleteSlotsForYesterday($currentDate);
+        $this->deleteSlotsForYesterday($quests, $currentDate);
 
         $currentDate->addDays(PERIOD_OF_DAYS);
 
@@ -43,10 +43,11 @@ class ScheduleQuestCommand extends Command
         }
     }
 
-    private function deleteSlotsForYesterday(Carbon $currentDate): void
+    private function deleteSlotsForYesterday(Builder $quests, Carbon $currentDate): void
     {
-        $scheduleQuests = ScheduleQuest::query()->whereDate('date', $currentDate->copy()->subDay());
-        $scheduleQuests->each(function (ScheduleQuest $scheduleQuest) {
+        $quests->each(function ($quest) use ($currentDate) {
+            $scheduleQuest = $quest->scheduleQuests()->whereDate('date', $currentDate->copy()->subDay())->first();
+
             $scheduleQuest->timeslots()
                 ->whereDoesntHave('bookingScheduleQuest')
                 ->forceDelete();
@@ -60,7 +61,7 @@ class ScheduleQuestCommand extends Command
         });
     }
 
-    private function createScheduleQuests($quests, Carbon $currentDate, $slotType): void
+    private function createScheduleQuests(Builder $quests, Carbon $currentDate, $slotType): void
     {
         $quests->each(function ($quest) use ($currentDate, $slotType) {
             $scheduleQuest = $quest->scheduleQuests()->firstOrCreate([

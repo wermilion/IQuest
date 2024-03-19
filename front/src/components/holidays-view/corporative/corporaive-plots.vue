@@ -42,6 +42,10 @@ import PlotList from '#/utils/mock/plot-list'
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    @media screen and (max-width: 600px) {
+      top: 50px;
+    }
   }
 
   img {

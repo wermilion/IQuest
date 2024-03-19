@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Button from '#/components/shared/button.vue'
-import CustomerSupport from '#/assets/svg/shared/customer-support.svg?component'
+import CustomerSupport from '#/assets/svg/shared/customer-support.svg?url'
 import Close from '#/assets/svg/shared/close.svg?component'
 import type { ResultModal } from '#/types/shared/common'
 
@@ -24,7 +24,7 @@ const model = defineModel<boolean>()
           <span class="footnote">{{ isSuccess.info.subTitle }}</span>
         </div>
         <div class="modal-content">
-          <CustomerSupport />
+          <img :src="CustomerSupport">
           <div class="modal-content__text">
             <span class="body">Оператор перезвонит вам для подтверждения заявки</span>
             <span class="footnote">Будьте на связи:)</span>
@@ -79,11 +79,16 @@ const model = defineModel<boolean>()
     max-width: 624px;
     display: flex;
     flex-direction: column;
-    gap: $cover-48;
+    gap: clamp($cover-32, 10vw, $cover-48);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    @media screen and (max-width: 600px) {
+      border-radius: 0;
+      padding: $cover-24 $cover-16;
+    }
   }
 
   &-header {
@@ -104,14 +109,12 @@ const model = defineModel<boolean>()
 
   &-content {
     display: flex;
-    height: 96px;
-    gap: $cover-16;
-    align-items: center;
 
-    svg {
-      width: 100%;
-      max-width: 83px;
-      height: 82px;
+    gap: $cover-16;
+
+    img {
+      width: clamp($cover-64, 15vw, 83px);
+      height: clamp($cover-64, 15vw, 82px);
     }
 
     &__error {
@@ -122,7 +125,7 @@ const model = defineModel<boolean>()
 
     &__text {
       height: 100%;
-      justify-content: space-between;
+      gap: $cover-8;
       display: flex;
       flex-direction: column;
     }

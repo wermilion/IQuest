@@ -39,7 +39,7 @@ defineProps<{ salse: Stocks }>()
       display: flex;
       flex-direction: column;
       gap: $cover-12;
-      max-width: clamp(350px, 50vw, 500px);
+      max-width: clamp(350px, 45vw, 600px);
     }
 
     &-controler {

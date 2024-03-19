@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import { useDisplay } from 'vuetify'
 import Chip from './assist-chip.vue'
 import Difficulty from './difficulty-chip.vue'
-
 import Address from '#/components/shared/address.vue'
 import PhoneNumber from '#/components/shared/phone-number.vue'
 import Button from '#/components/shared/button.vue'
 import type { Quest } from '#/types/models/quest'
 
 const props = defineProps<{ info: Quest }>()
+const { xs } = useDisplay()
 const button = 'Забронировать'
 const stores = setupStore(['quest'])
 
@@ -60,8 +61,8 @@ const { scrollToQuestBooking } = stores.quest
     <div class="info-container">
       <h1>{{ info.name }}</h1>
       <div class="info-contacts d-flex">
-        <PhoneNumber />
-        <Address :address="info.filial.address" />
+        <PhoneNumber :is-active-link="xs" :is-active-img="xs" />
+        <Address :is-active-img="xs" :is-active-link="xs" :address="info.filial.address" />
       </div>
       <div class="info-details">
         <Chip v-for="item in chips" :key="item.title" :name="item.title">
@@ -81,9 +82,6 @@ const { scrollToQuestBooking } = stores.quest
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-
-  max-width: 616px;
-  max-height: 411px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -96,6 +94,11 @@ const { scrollToQuestBooking } = stores.quest
 
   &-contacts {
     gap: $cover-32;
+
+    @media screen and (max-width: 600px) {
+      flex-direction: column-reverse;
+      gap: $cover-12;
+    }
   }
 
   &-details {

@@ -1,30 +1,62 @@
 <script setup lang="ts">
+import Button from './button.vue'
 import Card from '#/components/quest-card/card-component.vue'
 
-const stores = setupStore(['questList'])
-
+const stores = setupStore(['questList', 'city'])
 const route = useRoute()
 </script>
 
 <template>
-  <section class="cards container">
+  <section v-if="stores.questList.questList.length" class="cards container">
     <h2>Наши квесты</h2>
-    <div v-if="stores.questList.questList.length" class="d-flex cards-grid">
+    <div class="d-flex cards-grid">
       <template v-for="quest in stores.questList.questList" :key="quest.id">
         <Card v-if="quest.id !== +route.params.id" :is-hover="true" :quest="quest" />
       </template>
     </div>
-    <template v-else>
-      <div class="loading">
-        <h3>Квестов пока что нет, ожидайте :)</h3>
-      </div>
-    </template>
   </section>
+  <template v-else>
+    <div class="loading container">
+      <div class="loading-container">
+        <h2>Квестов <span class="gradient">пока что</span> нет, ожидайте</h2>
+        <Button :button-light="true" name="Выбрать Томск" @click="stores.city.selectCity(stores.city.getFirstCity)" />
+      </div>
+    </div>
+  </template>
 </template>
 
 <style scoped lang="scss">
 h2 {
   color: $color-base2;
+}
+
+.loading {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h2 {
+    text-align: center;
+  }
+
+  .gradient {
+    background: $color-gradient;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  &-container {
+    display: flex;
+    flex-direction: column;
+    gap: $cover-32;
+    align-items: center;
+
+    .button {
+      max-width: 278px;
+    }
+  }
 }
 
 .cards {

@@ -89,6 +89,10 @@ const stores = setupStore('services')
       justify-content: space-between;
       padding-bottom: 4px;
       border-bottom: 1px solid $color-opacity025;
+
+      .footnote {
+        text-align: right;
+      }
     }
   }
 

@@ -109,6 +109,9 @@ onMounted(() => {
       </div>
     </section>
   </template>
+  <template v-else>
+    <div class="plug" />
+  </template>
 </template>
 
 <style scoped lang="scss">

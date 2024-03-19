@@ -8,7 +8,7 @@ import { useGlobalStore } from '#/stores/common/global.store'
 const Home = () => import('#/views/home.vue')
 const Quest = () => import('#/views/quest.vue')
 const Contacts = () => import('#/views/contacts.vue')
-const Certificates = () => import('#/views/certificates.vue')
+const Certificat = () => import('#/views/certificates.vue')
 const Holidays = () => import('#/views/holidays.vue')
 const Lounge = () => import('#/views/lounge.vue')
 const Error = () => import('#/views/error.vue')
@@ -35,9 +35,9 @@ const routes: RouteRecordRaw[] = [
     component: Holidays,
   },
   {
-    path: EAppRoutePaths.Certificates,
-    name: EAppRouteNames.Certificates,
-    component: Certificates,
+    path: EAppRoutePaths.Certificat,
+    name: EAppRouteNames.Certificat,
+    component: Certificat,
   },
   {
     path: EAppRoutePaths.Lounge,

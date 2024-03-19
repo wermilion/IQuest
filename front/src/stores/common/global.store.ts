@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 interface IGlobalState {
   loading: boolean
   isInitialized: boolean
+  isOpenModal: boolean
 }
 
 //* --- Store ----------------------------------------------- *//
@@ -11,6 +12,7 @@ export const useGlobalStore = defineStore('global', {
   state: (): IGlobalState => ({
     loading: true,
     isInitialized: false,
+    isOpenModal: false,
   }),
 
   actions: {

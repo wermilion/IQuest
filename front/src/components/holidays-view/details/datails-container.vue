@@ -32,7 +32,6 @@ const details = [
     <h2>Подробности</h2>
     <div class="details-items">
       <Card
-
         v-for="element in details"
         :key="element.icon"
         :item="element"

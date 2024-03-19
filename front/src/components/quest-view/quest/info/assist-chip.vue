@@ -15,6 +15,7 @@ defineProps<Props>()
 
 <style scoped lang="scss">
 .chip {
+  align-items: center;
   display: flex;
   padding: $cover-12 $cover-20;
   justify-content: space-between;

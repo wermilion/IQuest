@@ -1,27 +1,44 @@
 <script setup lang="ts">
+import type { Contact } from '../types/models/contact'
 import Email from './shared/email.vue'
 import PhoneNumber from './shared/phone-number.vue'
+import AsapLogo from '#/assets/svg/logo/asapLogo.svg?url'
+import LogoFull from '#/assets/svg/logo/logo_full.svg?url'
 
 const store = setupStore('contact')
 
-const linksSocial = [
-  {
-    link: store.getSocial?.find(item => item.type.name === 'VK')?.value,
+const link = ref([] as Contact[])
+
+const linksSocial = reactive({
+  vk: {
+    link: '',
     img: 'vk.svg',
   },
-  {
-    link: store.getSocial?.find(item => item.type.name === 'Telegram')?.value,
+  telegram: {
+    link: '',
     img: 'telegram.svg',
   },
-  {
-    link: store.getSocial?.find(item => item.type.name === 'YouTube')?.value,
+  youtube: {
+    link: '',
     img: 'youtube.svg',
   },
-  {
-    link: store.getSocial?.find(item => item.type.name === 'Instagram')?.value,
-    img: 'instagram.svg',
+  instagram: {
+    link: '',
+    img: 'insta.svg',
   },
-]
+})
+
+watch(() => store.getSocial, () => {
+  link.value = store.getSocial
+  updateLinks()
+}, { immediate: true })
+
+function updateLinks() {
+  linksSocial.vk.link = link.value?.find(item => item.type.name === 'VK')?.value || ''
+  linksSocial.telegram.link = link.value?.find(item => item.type.name === 'Telegram')?.value || ''
+  linksSocial.youtube.link = link.value?.find(item => item.type.name === 'YouTube')?.value || ''
+  linksSocial.instagram.link = link.value?.find(item => item.type.name === 'Instagram')?.value || ''
+}
 
 const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
 </script>
@@ -29,7 +46,7 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
 <template>
   <footer class="border">
     <div class="container footer">
-      <img src="/logo/logo_full.svg" class="logo" alt="logo">
+      <img :src="LogoFull" class="logo">
       <div class="footer-links">
         <div class="footer-links__contacts">
           <PhoneNumber />
@@ -51,13 +68,13 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
         </div>
       </div>
       <div class="footer-privacy">
-        <a href="/privacy-policy.pdf" target="_blank" class="smallFootnote">
+        <a href="/privacy-policy.pdf" target="_blank" class="smallFootnote privecy">
           Политика конфиденциальности
         </a>
         <span class="smallFootnote">
           Разработано в
           <a :href="linkASAP" target="_blank">
-            <img src="/logo/asapLogo.svg" alt="asapLogo">
+            <img :src="AsapLogo">
           </a>
         </span>
       </div>
@@ -105,6 +122,22 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
       display: flex;
       gap: 16px;
       align-items: flex-start;
+
+      a {
+        display: flex;
+        align-items: center;
+
+        img {
+          opacity: 0.6;
+          transition: $hover-animation;
+        }
+
+        &:hover {
+          img {
+            opacity: 1;
+          }
+        }
+      }
     }
   }
 
@@ -128,7 +161,6 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
 
   @media screen and (max-width: 1024px) {
     display: grid;
-    margin: 0 auto;
     grid-template-columns: 1fr;
     gap: 41px;
     max-height: 100%;
@@ -141,21 +173,9 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
       flex-direction: column-reverse;
 
       &__social {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-
         img {
           width: 100%;
           height: 32px;
-        }
-
-        a:nth-child(2) {
-          grid-column: 3;
-        }
-
-        a:nth-child(3) {
-          grid-row: 1;
-          grid-column: 2;
         }
       }
 
@@ -179,6 +199,10 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
         img {
           width: 100%;
         }
+      }
+
+      .privecy {
+        width: max-content;
       }
     }
 

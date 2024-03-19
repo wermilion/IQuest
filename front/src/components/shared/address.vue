@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import Link from '#/assets/svg/shared/link-quest.svg?url'
 
 interface Props {
   address?: string
+  isActiveImg?: boolean
+  isActiveLink?: boolean
 }
 
 const props = defineProps<Props>()
@@ -13,14 +15,15 @@ const yandexMapUrl = computed(() => `https://yandex.ru/maps/?text=${props.addres
 </script>
 
 <template>
-  <span class="body">
-    <img :src="`/icons/share/${img}.svg`" :alt="img">
-    <a :href="yandexMapUrl" target="_blank">{{ address }}</a>
-  </span>
+  <a :href="yandexMapUrl" target="_blank" class="body" :class="{ isActiveLink }">
+    <img v-if="!isActiveImg" :src="`/icons/share/${img}.svg`" :alt="img">
+    <span>{{ address }} </span>
+    <img v-if="isActiveLink" :src="Link">
+  </a>
 </template>
 
 <style scoped lang="scss">
-  span {
+  a {
   display: flex;
   gap: 8px;
   align-items: center;
@@ -30,6 +33,17 @@ const yandexMapUrl = computed(() => `https://yandex.ru/maps/?text=${props.addres
 
   img {
     width: clamp(22px, 5vw, $cover-28);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .isActiveLink {
+    display: flex;
+    padding: $cover-16 $cover-24;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: $cover-16;
+    background: $color-opacity004;
   }
 }
 </style>

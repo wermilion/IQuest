@@ -35,7 +35,7 @@ function openModal() {
 <template>
   <div class="plot">
     <div class="plot-img">
-      <img v-lazy-src="`/plots/${info.img}.webp`" :alt="info.img">
+      <img v-lazy-src="`/plots/${info.img}.webp`" class="loading-lazy">
     </div>
     <div class="plot-main">
       <div class="plot-main__info">

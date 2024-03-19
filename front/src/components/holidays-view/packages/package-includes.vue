@@ -27,9 +27,9 @@ updateData()
 </script>
 
 <template>
-  <div class="includes">
-    <h3>В пакет включенно</h3>
-    <div v-if="itemsArray.length > 0" class="includes__items">
+  <div v-if="itemsArray.length > 0" class="includes">
+    <h3>В пакет включено</h3>
+    <div class="includes__items">
       <AssistChip
         v-for="(item, index) in itemsArray"
         :key="index"
@@ -41,9 +41,6 @@ updateData()
           {{ item }}
         </li>
       </ul>
-    </div>
-    <div v-else class="loading">
-      <h3>loading...</h3>
     </div>
   </div>
 </template>
@@ -87,7 +84,7 @@ updateData()
   li {
     list-style-type: none;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
   }
 
   li::before {

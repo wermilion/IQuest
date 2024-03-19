@@ -10,6 +10,7 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class EditUser extends BaseEditRecord
@@ -65,6 +66,11 @@ class EditUser extends BaseEditRecord
                     $record->update([
                         'password' => Hash::make($data['password']),
                     ]);
+
+                    if (Auth::user()->id == $record->id) {
+                        Auth::logout();
+                    }
+
                     Notification::make()
                         ->title('Пароль успешно изменен')
                         ->success()

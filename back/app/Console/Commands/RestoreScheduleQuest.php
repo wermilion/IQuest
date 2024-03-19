@@ -31,7 +31,7 @@ class RestoreScheduleQuest extends Command
         $quests = Quest::all();
 
         $startDate = Carbon::today();
-        $endDate = Carbon::today()->addMonth();
+        $endDate = Carbon::today()->addDays(PERIOD_OF_DAYS);
 
         $workingDays = CarbonPeriod::create($startDate, $endDate);
 

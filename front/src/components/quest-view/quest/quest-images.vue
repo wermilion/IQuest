@@ -81,8 +81,13 @@ onMounted(() => {
 .swiper-container {
   overflow: hidden;
   position: relative;
-  height: 100%;
+
   width: 100%;
+  height: 411px;
+
+  @media screen and (max-width: 600px) {
+    height: 229px;
+  }
 }
 .swiper-slide {
   border-radius: $cover-8;

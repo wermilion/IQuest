@@ -30,10 +30,6 @@ readonly class CompressImageService
 
         $image->orientate();
 
-        $image->resize($image->width(), $image->height(), function ($constraint) {
-            $constraint->aspectRatio();
-        });
-
         $image->save($path, $this->quality);
 
         return $filename;

@@ -11,7 +11,8 @@ class CreateQuestWeekendSlotAction
 {
     public function execute(QuestWeekendSlot $slot): void
     {
-        $startDate = Carbon::today();
+        $tz = $slot->quest->filial->city->timezone;
+        $startDate = Carbon::today($tz);
         $endDate = Carbon::today()->addDays(PERIOD_OF_DAYS);
 
         $workingDays = CarbonPeriod::create($startDate, $endDate)

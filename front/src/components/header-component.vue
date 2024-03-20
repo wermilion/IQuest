@@ -57,7 +57,6 @@ function closeMenu() {
 }
 
 watch(() => stores.city.selectedCity, () => {
-  isMenuOpened.value = false
   defaultPosition()
 })
 
@@ -136,7 +135,7 @@ function handleMouseOut(index: number) {
         />
       </div>
       <Transition name="menu">
-        <div v-if="isMenuOpened" class="burger-menu__drop">
+        <div v-if="isMenuOpened" v-click-outside="toggleMenu" class="burger-menu__drop">
           <div class="burger-menu__drop-list">
             <div
               v-for="link, index in links" :key="link.name" class="burger-menu__drop-links"
@@ -216,6 +215,8 @@ function handleMouseOut(index: number) {
 
     .burger-menu {
       display: flex;
+      width: 56px;
+      height: 60px;
 
       :deep(html) {
         overflow: hidden !important;

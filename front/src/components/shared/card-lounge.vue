@@ -45,7 +45,7 @@ const isLoundge: any = computed(() => {
 
   &-image {
     width: 100%;
-    max-height: 246px;
+    height: 246px;
     overflow: hidden;
   }
 
@@ -64,6 +64,10 @@ const isLoundge: any = computed(() => {
     flex-direction: column;
     gap: clamp($cover-28, 3vw, $cover-36);
   }
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
 }
 
 .tag {
@@ -79,5 +83,9 @@ const isLoundge: any = computed(() => {
 
 .hover-container {
   display: flex;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
 }
 </style>

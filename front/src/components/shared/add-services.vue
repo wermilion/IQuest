@@ -106,14 +106,6 @@ const stores = setupStore('services')
   @media screen and (max-width: 1024px) {
     padding: $cover-24 $cover-16;
     flex-wrap: wrap;
-
-    :deep(a .card) {
-      width: 100%;
-
-      .card-image {
-        width: 100%;
-      }
-    }
   }
 }
 </style>

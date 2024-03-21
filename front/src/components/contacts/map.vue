@@ -16,21 +16,7 @@ const store = setupStore('filialList')
 
 const active = ref(store.getFirstFilial.id)
 
-const center = ref()
-
-if (store.selectFilial) {
-  const address = store.filialList.find(item => item.id === store.selectFilial)
-  center.value = [address?.longitude, address?.latitude] as LngLat
-  active.value = store.selectFilial
-}
-else {
-  center.value = [store.getFirstFilial.longitude, store.getFirstFilial.latitude] as LngLat
-}
-
-onMounted (() => {
-  active.value = store.getFirstFilial.id
-  center.value = [store.getFirstFilial.longitude, store.getFirstFilial.latitude] as LngLat
-})
+const center = ref([store.getFirstFilial.longitude, store.getFirstFilial.latitude] as LngLat)
 
 function mapToMove(lon: number, lat: number, id: number) {
   center.value = [lon, lat] as LngLat
@@ -51,7 +37,7 @@ function openYandexMaps() {
         v-for="item in store.filialList"
         :key="item.id"
         class="bodyBold pointer"
-        :class="{ active: store.selectFilial === item.id || active === item.id }"
+        :class="{ active: active === item.id }"
         @click="mapToMove(item.longitude, item.latitude, item.id)"
       >
         {{ item.address }}
@@ -63,11 +49,11 @@ function openYandexMaps() {
         :settings="{
           location: {
             center,
-            zoom: 16,
+            zoom: 12,
           },
           zoomRange: {
-            min: 16,
-            max: 25,
+            min: 12,
+            max: 20,
           },
         }"
         theme

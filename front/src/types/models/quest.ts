@@ -29,4 +29,6 @@ export interface Quest {
 export interface Filial {
   id: number
   address: string
+  latitude: string
+  longitude: string
 }

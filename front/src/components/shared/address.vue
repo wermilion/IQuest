@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { EAppRouteNames } from '#/types/routes'
 import Link from '#/assets/svg/shared/link-quest.svg?url'
 import Pin from '#/assets/svg/icon/pin.svg?url'
 import type { Filial } from '#/types/models/quest'
@@ -11,23 +10,20 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const store = setupStore(['filialList'])
-
-function selectFilial() {
-  store.filialList.selectFilial = props.address?.id
-}
+const url = `https://yandex.ru/maps/?&ll=${props.address.longitude},${props.address.latitude}&text=${encodeURIComponent('iQuest')}&z=17`
 </script>
 
 <template>
-  <router-link
-    :to="{ name: EAppRouteNames.Contacts }"
+  <a
+    :href="url"
     class="body"
-    :class="{ isActiveLink }" @click="selectFilial"
+    :class="{ isActiveLink }"
+    target="_blank"
   >
     <img v-if="!isActiveImg" :src="Pin">
     <span>{{ address?.address }} </span>
     <img v-if="isActiveLink" :src="Link">
-  </router-link>
+  </a>
 </template>
 
 <style scoped lang="scss">

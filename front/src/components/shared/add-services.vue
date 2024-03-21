@@ -98,7 +98,7 @@ stores.fetchServices()
     }
   }
 
-  @media screen and (max-width: 1300px) {
+  @media screen and (max-width: 1280px) {
     max-width: 100%;
     border: none;
     border-radius: 0%;

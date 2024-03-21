@@ -19,7 +19,6 @@ async function loadView() {
 
 watch(() => stores.city.selectedCity, () => {
   loadView()
-  stores.filialList.selectFilial = null
 })
 
 loadView()

@@ -142,6 +142,7 @@ function handleMouseOut(index: number) {
               :class="{ 'holiday-burger': index === 1 }"
             >
               <router-link
+                v-if="stores.holidaysList.holidaysList.length || index !== 1"
                 class="h3" :class="{
                   'selected': $route.path === link.link,
                   'holiday': index === 1,

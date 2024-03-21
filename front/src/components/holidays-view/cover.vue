@@ -26,7 +26,7 @@ function openResultModal(isSuccess: ResultModal) {
 </script>
 
 <template>
-  <div class="cover">
+  <div class="cover" :class="{ 'corp-cover': type === 'Корпоратив' }">
     <div
       class="cover-container"
       :class="{
@@ -55,6 +55,12 @@ function openResultModal(isSuccess: ResultModal) {
 </template>
 
 <style scoped lang="scss">
+.corp-cover {
+  @media screen and (max-width: 500px) {
+    max-height: 191px;
+  }
+}
+
 .cover {
   margin-top: 88px;
   height: clamp(304px, 40vw, 555px);
@@ -125,5 +131,11 @@ function openResultModal(isSuccess: ResultModal) {
   background:
     linear-gradient(180deg, #151116 0%, rgba(21, 17, 22, 0) 49%, #151116 96%),
     url('/holidays/corp.webp') no-repeat;
+}
+
+.corp {
+  @media screen and (max-width: 500px) {
+    background-position: center 10px !important;
+  }
 }
 </style>

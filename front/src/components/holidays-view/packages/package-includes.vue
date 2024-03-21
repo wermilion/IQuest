@@ -66,15 +66,6 @@ updateData()
     color: $color-base2;
   }
 }
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  h3 {
-    color: $color-base2;
-  }
-}
 
 .mobile-list {
   display: none;

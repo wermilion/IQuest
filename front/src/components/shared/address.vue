@@ -1,23 +1,27 @@
 <script setup lang="ts">
 import Link from '#/assets/svg/shared/link-quest.svg?url'
+import Pin from '#/assets/svg/icon/pin.svg?url'
+import type { Filial } from '#/types/models/quest'
 
 interface Props {
-  address?: string
+  address: Filial
   isActiveImg?: boolean
   isActiveLink?: boolean
 }
-
 const props = defineProps<Props>()
 
-const img = 'pin'
-
-const yandexMapUrl = computed(() => `https://yandex.ru/maps/?text=${props.address}`)
+const url = `https://yandex.ru/maps/?&ll=${props.address.longitude},${props.address.latitude}&text=${encodeURIComponent('iQuest')}&z=17`
 </script>
 
 <template>
-  <a :href="yandexMapUrl" target="_blank" class="body" :class="{ isActiveLink }">
-    <img v-if="!isActiveImg" :src="`/icons/share/${img}.svg`" :alt="img">
-    <span>{{ address }} </span>
+  <a
+    :href="url"
+    class="body"
+    :class="{ isActiveLink }"
+    target="_blank"
+  >
+    <img v-if="!isActiveImg" :src="Pin">
+    <span>{{ address?.address }} </span>
     <img v-if="isActiveLink" :src="Link">
   </a>
 </template>

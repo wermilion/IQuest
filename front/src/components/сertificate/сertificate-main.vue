@@ -85,17 +85,21 @@ function openResultModal(isSuccess: ResultModal) {
 
 <style scoped lang="scss">
 .block {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: $cover-16;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $cover-64;
   width: 100%;
+
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    flex-direction: column;
+    gap: $cover-16;
+  }
 }
 
 .img-container {
   overflow: hidden;
   border-radius: $cover-12;
-  width: 600px;
   height: clamp(324px, 50vw, 568px);
 
   img {
@@ -104,7 +108,7 @@ function openResultModal(isSuccess: ResultModal) {
     object-fit: cover;
   }
 
-  @media screen and (max-width: 1345px) {
+  @media screen and (max-width: 1024px) {
     width: 100%;
   }
 }
@@ -147,13 +151,13 @@ function openResultModal(isSuccess: ResultModal) {
         max-width: -webkit-fill-available;
         overflow: auto;
 
-        @media screen and (max-width: 1345px) {
+        @media screen and (max-width: 1024px) {
           flex-wrap: nowrap;
         }
       }
     }
 
-    @media screen and (max-width: 1345px) {
+    @media screen and (max-width: 1024px) {
       max-width: inherit;
     }
   }
@@ -205,7 +209,7 @@ function openResultModal(isSuccess: ResultModal) {
     }
   }
 
-  @media screen and (max-width: 1345px) {
+  @media screen and (max-width: 1024px) {
     max-width: 100%;
   }
 }

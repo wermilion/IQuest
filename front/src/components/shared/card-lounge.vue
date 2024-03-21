@@ -19,7 +19,7 @@ const isLoundge: any = computed(() => {
   <router-link :to="{ name: isLoundge }" class="hover-container" :class="{ 'no-pointer': !isLoundge }">
     <div class="card">
       <div class="card-image">
-        <img v-lazy-src="`/loundge/${loundge.img}.jpg`" class="loading-lazy">
+        <img v-lazy-src="`/loundge/${loundge.img}.webp`" class="loading-lazy">
       </div>
       <div class="card-body">
         <span class="bodyBold">{{ loundge.name }}</span>

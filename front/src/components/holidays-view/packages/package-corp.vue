@@ -123,10 +123,6 @@ function openResultModal(isSuccess: ResultModal) {
     flex-direction: column;
     gap: $cover-32;
 
-    h2 {
-      color: $color-opacity06;
-    }
-
     .filter {
       display: flex;
       flex-wrap: wrap;
@@ -171,6 +167,10 @@ function openResultModal(isSuccess: ResultModal) {
         grid-column: 1;
       }
     }
+  }
+
+  @media screen and (max-width: 600px) {
+    margin-top: 40px;
   }
 }
 

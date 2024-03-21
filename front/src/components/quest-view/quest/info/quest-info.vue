@@ -62,7 +62,7 @@ const { scrollToQuestBooking } = stores.quest
       <h1>{{ info.name }}</h1>
       <div class="info-contacts d-flex">
         <PhoneNumber :is-active-link="xs" :is-active-img="xs" />
-        <Address :is-active-img="xs" :is-active-link="xs" :address="info.filial.address" />
+        <Address :is-active-img="xs" :is-active-link="xs" :address="info.filial" />
       </div>
       <div class="info-details">
         <Chip v-for="item in chips" :key="item.title" :name="item.title">

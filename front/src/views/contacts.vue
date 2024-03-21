@@ -12,13 +12,14 @@ const isLoading = computed(() => {
 
 async function loadView() {
   isViewLoading.value = true
-  stores.filialList.$reset()
-  await stores.filialList.fetchFilial()
 
+  await stores.filialList.fetchFilial()
   isViewLoading.value = false
 }
 
-watch(() => stores.city.selectedCity, loadView)
+watch(() => stores.city.selectedCity, () => {
+  loadView()
+})
 
 loadView()
 </script>

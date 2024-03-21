@@ -9,7 +9,7 @@ const store = setupStore(['contact', 'filialList'])
 
 const framchise = [
   { title: `Наша компания — лидер рынка реалити-квестов в Томске`, img: 'people' },
-  { title: `Мы открыты к сотрудничеству и предлагаем помощь и поддержку на всех этапах вашего проекта.`, img: 'rishake' },
+  { title: `Мы открыты к сотрудничеству и предлагаем помощь и поддержку на всех этапах вашего проекта`, img: 'rishake' },
   { title: `Чтобы связаться, отправьте письмо с информацией о себе, планах и месте создания квестов на `, img: 'mail', email: true },
 ]
 </script>
@@ -24,7 +24,7 @@ const framchise = [
           <Email v-if="store.contact.getEmail" class="contacts-list__item" />
         </div>
       </div>
-      <div v-if="store.contact.getSocial" class="block-header__contacts">
+      <div v-if="store.contact.getSocial.length" class="block-header__contacts">
         <h2>Соц сети</h2>
         <div>
           <Social />
@@ -58,13 +58,15 @@ const framchise = [
   gap: clamp($cover-64, 10vw, 108px);
 
   &-header {
-    display: flex;
+    display: grid;
     width: 100%;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    grid-template-columns: 1fr 1fr;
+    gap: $cover-24;
 
     @media screen and (max-width: 1024px) {
       gap: $cover-40;
+
+      grid-template-columns: 1fr;
     }
 
     &__contacts {
@@ -73,7 +75,7 @@ const framchise = [
       flex-direction: column;
       gap: $cover-24;
       width: 100%;
-      max-width: 600px;
+
       .contacts-list {
         display: flex;
         gap: clamp($cover-16, 3vw, $cover-32);

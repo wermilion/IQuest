@@ -23,8 +23,12 @@ export interface Quest {
     name: string
   }
   level?: number
-  filial: {
-    id: number
-    address: string
-  }
+  filial: Filial
+}
+
+export interface Filial {
+  id: number
+  address: string
+  latitude: string
+  longitude: string
 }

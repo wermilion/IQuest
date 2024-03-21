@@ -3,6 +3,8 @@ import PhoneNumber from '#/components/shared/phone-number.vue'
 import CardLoundge from '#/components/shared/card-lounge.vue'
 
 const stores = setupStore('services')
+
+stores.fetchServices()
 </script>
 
 <template>
@@ -96,7 +98,8 @@ const stores = setupStore('services')
     }
   }
 
-  @media screen and (max-width: 1270px) {
+  @media screen and (max-width: 1300px) {
+    max-width: 100%;
     border: none;
     border-radius: 0%;
     border-top: 1px solid $color-opacity025;

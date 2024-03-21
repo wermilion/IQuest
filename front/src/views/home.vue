@@ -16,12 +16,11 @@ const isLoading = computed(() => (
 
 async function loadView() {
   isViewLoading.value = true
+
   await Promise.allSettled([
     stores.questList.fetchQuests(),
     stores.contact.fetchContact(),
-    stores.services.fetchServices(),
     stores.stocks.fetchStocks(),
-    stores.filialList.fetchFilial(),
   ])
   isViewLoading.value = false
 }

@@ -3,6 +3,7 @@ import type { Filial } from '#/types/models/filial'
 //* --- State ----------------------------------------------- *//
 interface FilialListState {
   filialList: Filial[]
+  selectFilial: number | null
   error: unknown
 }
 
@@ -10,6 +11,7 @@ interface FilialListState {
 export const useFilialListStore = defineStore('filialList', {
   state: (): FilialListState => ({
     filialList: [],
+    selectFilial: null,
     error: {},
   }),
   getters: {

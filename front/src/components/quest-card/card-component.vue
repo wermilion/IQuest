@@ -121,15 +121,21 @@ const tags = computed(() => [props.quest.genre?.name, props.quest.type?.name])
       display: flex;
       flex-wrap: wrap;
       gap: $cover-8;
-
-      @media screen and (max-width: 340px) {
-        gap: 4px;
-      }
     }
 
     &__description {
       transform: translateY(100%);
       transition: $hover-animation;
+    }
+
+    @media screen and (max-width: 360px) {
+      max-height: 100% !important;
+    }
+  }
+
+  @media screen and (max-width: 360px) {
+    &-body__description {
+      display: none;
     }
   }
 }

@@ -1,25 +1,33 @@
 <script setup lang="ts">
+import { EAppRouteNames } from '#/types/routes'
 import Link from '#/assets/svg/shared/link-quest.svg?url'
+import Pin from '#/assets/svg/icon/pin.svg?url'
+import type { Filial } from '#/types/models/quest'
 
 interface Props {
-  address?: string
+  address: Filial
   isActiveImg?: boolean
   isActiveLink?: boolean
 }
-
 const props = defineProps<Props>()
 
-const img = 'pin'
+const store = setupStore(['filialList'])
 
-const yandexMapUrl = computed(() => `https://yandex.ru/maps/?text=${props.address}`)
+function selectFilial() {
+  store.filialList.selectFilial = props.address?.id
+}
 </script>
 
 <template>
-  <a :href="yandexMapUrl" target="_blank" class="body" :class="{ isActiveLink }">
-    <img v-if="!isActiveImg" :src="`/icons/share/${img}.svg`" :alt="img">
-    <span>{{ address }} </span>
+  <router-link
+    :to="{ name: EAppRouteNames.Contacts }"
+    class="body"
+    :class="{ isActiveLink }" @click="selectFilial"
+  >
+    <img v-if="!isActiveImg" :src="Pin">
+    <span>{{ address?.address }} </span>
     <img v-if="isActiveLink" :src="Link">
-  </a>
+  </router-link>
 </template>
 
 <style scoped lang="scss">

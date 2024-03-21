@@ -24,7 +24,7 @@ const framchise = [
           <Email v-if="store.contact.getEmail" class="contacts-list__item" />
         </div>
       </div>
-      <div v-if="store.contact.getSocial" class="block-header__contacts">
+      <div v-if="store.contact.getSocial.length" class="block-header__contacts">
         <h2>Соц сети</h2>
         <div>
           <Social />

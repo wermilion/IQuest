@@ -27,9 +27,7 @@ else {
   center.value = [store.getFirstFilial.longitude, store.getFirstFilial.latitude] as LngLat
 }
 
-const router = useRouter()
-
-watch(() => router.currentRoute.value, (_router) => {
+onMounted (() => {
   active.value = store.getFirstFilial.id
   center.value = [store.getFirstFilial.longitude, store.getFirstFilial.latitude] as LngLat
 })
@@ -69,7 +67,7 @@ function openYandexMaps() {
           },
           zoomRange: {
             min: 16,
-            max: 20,
+            max: 25,
           },
         }"
         theme

@@ -85,6 +85,14 @@ function toggleExpand() {
     p.extend {
       max-height: 100%;
     }
+
+    @media screen and (max-width: 600px) {
+      gap: $cover-4;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    gap: $cover-6;
   }
 }
 </style>

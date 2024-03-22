@@ -84,7 +84,7 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
 
 <style scoped lang="scss">
 .border {
-  border-top: 2px solid $color-shade-6 !important;
+  border-top: 1px solid $color-opacity025 !important;
   background-image: url('/gradient/footer-gradient.svg');
   background-repeat: no-repeat;
   background-position: center top;
@@ -142,12 +142,13 @@ const linkASAP = 'https://asapeducation.ru/?utm_course=iquest_site'
   }
 
   &-privacy {
-    justify-content: space-between;
+    gap: 30px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    justify-content: center;
 
-    p {
+    a {
       color: $color-base2;
     }
 

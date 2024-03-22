@@ -15,9 +15,9 @@ const modalProps = computed(() => ({
 </script>
 
 <template>
-  <Modal v-model="modal" persistent custom-class="desc-modal" v-bind="modalProps">
+  <Modal v-model="modal" custom-class="desc-modal" v-bind="modalProps">
     <template #content>
-      <p class="footnote">
+      <p class="footnoteText">
         {{ description }}
       </p>
     </template>
@@ -25,7 +25,7 @@ const modalProps = computed(() => ({
 </template>
 
 <style scoped lang="scss">
-.footnote {
+.footnoteText {
   max-height: 300px;
   padding-right: 10px;
   overflow: auto;

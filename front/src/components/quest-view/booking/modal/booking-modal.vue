@@ -139,13 +139,13 @@ watch(formData, (newValue, _oldValue) => {
           />
         </v-form>
         <div class="count-wrapper">
-          <span class="smallFootnote">Кол-во человек</span>
+          <span class="footnote">Кол-во человек</span>
           <div class="count">
             <Minus class="btn pointer" @click="removePeople" />
             <span class="body">{{ formData.people }}</span>
             <Plus class="btn pointer" @click="addPeople" />
           </div>
-          <span v-if="formData.people > 4" class="verySmallFootnot">
+          <span v-if="formData.people > 4" class="smallFootnote ">
             если игроков больше 4 — доплата 500₽ за каждого
           </span>
         </div>
@@ -210,6 +210,10 @@ watch(formData, (newValue, _oldValue) => {
         }
       }
     }
+  }
+
+  .footnote {
+    color: $color-base2;
   }
 }
 

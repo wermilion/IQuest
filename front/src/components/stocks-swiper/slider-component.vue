@@ -66,8 +66,8 @@ defineProps<{ salse: Stocks }>()
     transform: rotate(-8deg);
     padding: 12px 12px 68px 12px;
     border-radius: $cover-8;
-    border: 0.5px solid $color-shade-5;
-    background: $color-shade-1;
+    border: 1px solid $color-base1-opacity025;
+    background: $color-base2;
   }
 
   &-back {
@@ -78,8 +78,8 @@ defineProps<{ salse: Stocks }>()
     transform: rotate(4deg);
     padding: 10px 10px 59px 10px;
     border-radius: $cover-8;
-    border: 0.5px solid $color-shade-5;
-    background: $color-shade-1;
+    border: 1px solid $color-base1-opacity025;
+    background: $color-base2;
   }
 }
 

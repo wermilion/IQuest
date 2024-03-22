@@ -23,7 +23,7 @@ defineProps<Props>()
   align-items: center;
   border-radius: 120px;
   background-color: $color-opacity004;
-  padding: clamp($cover-12, 3vw, $cover-16) clamp($cover-24, 5vw, $cover-48);
+  padding: clamp(14px, 3vw, $cover-16) clamp($cover-28, 5vw, $cover-48);
   align-items: center;
   &:hover {
     background-color: $color-opacity012;

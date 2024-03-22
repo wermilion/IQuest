@@ -44,7 +44,7 @@ stores.fetchServices()
   gap: clamp(50px, 7vw, 102px);
 
   border-radius: $cover-12;
-  border: 2px solid $color-opacity025;
+  border: 2px solid $color-opacity012;
 
   &__body {
     display: flex;

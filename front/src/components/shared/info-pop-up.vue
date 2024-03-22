@@ -31,7 +31,9 @@ defineProps<Props>()
 :deep(.v-overlay__content) {
   border-radius: 120px !important;
   padding: 12px 20px !important;
-  background: $color-shade-6 !important;
+  background: $color-opacity004 !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1px solid $color-opacity012 !important;
   top: 710px;
 }
 

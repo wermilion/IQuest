@@ -112,7 +112,11 @@ const framchise = [
 
       @media screen and (max-width: 600px) {
         grid-template-columns: 1fr;
+        gap: $cover-16;
       }
+    }
+    @media screen and (max-width: 600px) {
+      gap: $cover-20;
     }
   }
 

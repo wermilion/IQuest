@@ -23,6 +23,10 @@ const store = setupStore('contact')
   display: flex;
   gap: $cover-32;
   flex-wrap: wrap;
+
+  @media screen and (max-width: 600px) {
+    gap: $cover-16;
+  }
 }
 a {
   color: $color-opacity06;

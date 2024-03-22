@@ -84,5 +84,9 @@ function openResultModal(isSuccess: ResultModal) {
     gap: clamp($cover-12, 3vw, $cover-24);
     flex-wrap: wrap;
   }
+
+  h3 {
+    color: $color-base2;
+  }
 }
 </style>

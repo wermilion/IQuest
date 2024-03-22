@@ -17,7 +17,7 @@ defineProps<Props>()
 .chip {
   align-items: center;
   display: flex;
-  padding: $cover-12 $cover-20;
+  padding: clamp($cover-10, 2vw, $cover-12) $cover-20;
   justify-content: space-between;
   gap: $cover-16;
   border-radius: 120px;

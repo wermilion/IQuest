@@ -118,7 +118,7 @@ onMounted(() => {
 .bag-secondary {
   background-image: url(/gradient/baner-gradient.svg);
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center top;
   overflow: hidden;
 }
 

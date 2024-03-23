@@ -12,6 +12,7 @@ build-dev-front:
     - .for_dev
   variables:
     BUILD_TARGET: front
+    BUILD_ARGS: "--build-arg=VITE_API_URL=https://iquest-dev.tomsk-it.ru/api"
     CI_COMMIT_TAG: ${CI_COMMIT_SHORT_SHA}
 
 build-prod-back:
@@ -27,3 +28,4 @@ build-prod-front:
     - .for_prod
   variables:
     BUILD_TARGET: front
+    BUILD_ARGS: "--build-arg=VITE_API_URL=https://iq.tomsk.ru/api"

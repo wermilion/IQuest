@@ -1,6 +1,7 @@
 FROM harbor.tomsk-it.ru/dockerhub/library/node:20.3.1-slim as nodejs
 WORKDIR /app
 COPY front ./
+ARG VITE_API_URL
 RUN npm install
 RUN npm run build
 

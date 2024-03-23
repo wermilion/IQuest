@@ -22,7 +22,33 @@ deploy-prod:
     TLS_KEY: "${TOMSK_IT_WILD_KEY}"
     SSH_PORT: "12312"
     DOMAIN: "iq.tomsk.ru"
-  
+  script:
+    - echo "SSH_PORT=${SSH_PORT:=22}"
+    - echo "SHARED_PROXY_CONFIG_FILE=${SHARED_PROXY_CONFIG_FILE}"
+    - cp ${BACK_ENV} .docker/.env
+    - envsubst '$CI_REGISTRY_IMAGE,$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME,$CI_COMMIT_TAG' < .docker/docker-compose.yml.tpl > .docker/docker-compose.yml
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "mkdir -p ${APP_DIRECTORY}"
+    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -P ${SSH_PORT:=22} -p .docker/docker-compose.yml ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
+    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -P ${SSH_PORT:=22} -p .docker/.env ${SSH_USER}@${SSH_HOST}:${APP_DIRECTORY}/
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "echo ${CI_REGISTRY_PASSWORD} | docker login -u ${CI_REGISTRY_USER} --password-stdin ${CI_REGISTRY}"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "mkdir -p -m 777 ${APP_DIRECTORY}/postgresql_data ${APP_DIRECTORY}/storage"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker network create --driver bridge server || true"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml pull"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f ${APP_DIRECTORY}/docker-compose.yml up -d"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back php /app/artisan migrate --force"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back php /app/artisan db:seed --force"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec ${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}-back php /app/artisan storage:link --force"
+
+    # shared proxy
+    - mkdir -p .shared-proxy/server_blocks .shared-proxy/tls
+    - envsubst '$CI_PROJECT_NAME,$CI_ENVIRONMENT_NAME,$DOMAIN' < .shared-proxy/${SHARED_PROXY_CONFIG_FILE} > .shared-proxy/server_blocks/${CI_PROJECT_NAME}-${CI_ENVIRONMENT_NAME}.conf
+    - if [ -n "$TLS_CRT" ]; then echo "${TLS_CRT}" > .shared-proxy/tls/${DOMAIN}.pem; fi
+    - if [ -n "$TLS_KEY" ]; then echo "${TLS_KEY}" > .shared-proxy/tls/${DOMAIN}-key.pem; fi
+    - sshpass -p ${SSH_PASSWORD} scp ${SSH_OPT} -P ${SSH_PORT:=22} -pr .shared-proxy/ ${SSH_USER}@${SSH_HOST}:/home/${SSH_USER}/
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose-shared-prod.yml pull"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker compose -f /home/${SSH_USER}/.shared-proxy/docker-compose-shared-prod.yml up -d"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec shared-proxy nginx -t"
+    - sshpass -p ${SSH_PASSWORD} ssh -p ${SSH_PORT:=22} ${SSH_OPT} ${SSH_USER}@${SSH_HOST} "docker exec shared-proxy nginx -s reload"
   environment:
     name: prod
     url: https://${DOMAIN}

@@ -21,6 +21,7 @@ async function loadView() {
     stores.questList.fetchQuests(),
     stores.contact.fetchContact(),
     stores.stocks.fetchStocks(),
+    stores.filialList.fetchFilial(),
   ])
   isViewLoading.value = false
 }

@@ -86,6 +86,7 @@ class SendMessageBookingAction
 
             $loungeNewRequest->lounge = $booking->bookingScheduleLounge->scheduleLounge->lounge->name;
             $loungeNewRequest->date_and_time = "{$booking->bookingScheduleLounge->scheduleLounge->date} с {$booking->bookingScheduleLounge->scheduleLounge->time_from} по {$booking->bookingScheduleLounge->scheduleLounge->time_to}";
+            $loungeNewRequest->comment = $booking->bookingScheduleLounge->comment ?? '';
         }
 
         $messageString = implode('<br>', $loungeNewRequest->toArray());

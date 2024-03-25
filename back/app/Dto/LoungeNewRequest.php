@@ -12,7 +12,6 @@ use Illuminate\Support\Fluent;
  * @property string $date_and_time - Дата и время
  * @property string $customer_name - Имя клиента
  * @property string $customer_phone - телефон клиента
- * @property string $comment - email клиента
  */
 class LoungeNewRequest extends Fluent
 {
@@ -25,8 +24,7 @@ class LoungeNewRequest extends Fluent
                 "Комната: $this->lounge",
                 "Дата и время: $this->date_and_time",
                 "Имя клиента: $this->customer_name",
-                "Телефон: $this->customer_phone",
-                "Комментарий: $this->comment"
+                "Телефон: $this->customer_phone"
             ];
         }
 

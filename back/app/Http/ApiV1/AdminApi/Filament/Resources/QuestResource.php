@@ -7,6 +7,7 @@ use App\Domain\Locations\Models\Filial;
 use App\Domain\Quests\Enums\LevelEnum;
 use App\Domain\Quests\Models\Quest;
 use App\Domain\Users\Enums\Role;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseFileUpload;
 use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest;
@@ -19,7 +20,6 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\Qu
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
 use App\Services\CompressImageService;
 use Auth;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -194,7 +194,7 @@ class QuestResource extends Resource
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
                         'max' => 'Поле ":attribute" должно быть меньше или равно :max.'
                     ]),
-                FileUpload::make('cover')
+                BaseFileUpload::make('cover')
                     ->directory('quest_covers')
                     ->label('Обложка')
                     ->columnSpanFull()
@@ -205,9 +205,9 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
                     ])
-                    ->saveUploadedFileUsing(function ($record, $file) {
-                        return (new CompressImageService($file, 'quest_covers'))->compress();
-                    }),
+                /*->saveUploadedFileUsing(function ($record, $file) {
+                    return (new CompressImageService($file, 'quest_covers'))->compress();
+                })*/,
                 Toggle::make('is_active')
                     ->label('Отображение на сайте'),
             ]);

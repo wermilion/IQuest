@@ -5,6 +5,7 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 use App\Domain\Certificates\Models\CertificateType;
 use App\Domain\Users\Enums\Role;
 use App\Http\ApiV1\AdminApi\Filament\AbstractClasses\BaseResource;
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseFileUpload;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\CreateCertificateType;
 use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\EditCertificateType;
@@ -12,7 +13,6 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\CertificateTypeResource\Pages\Lis
 use App\Rules\PriceRule;
 use App\Services\CompressImageService;
 use Auth;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -71,7 +71,7 @@ class CertificateTypeResource extends BaseResource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ]),
-                FileUpload::make('cover')
+                BaseFileUpload::make('cover')
                     ->directory('certificate_images')
                     ->label('Изображение')
                     ->columnSpanFull()
@@ -81,9 +81,9 @@ class CertificateTypeResource extends BaseResource
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
                     ])
-                    ->saveUploadedFileUsing(function ($record, $file) {
-                        return (new CompressImageService($file, 'certificate_images'))->compress();
-                    }),
+                /*->saveUploadedFileUsing(function ($record, $file) {
+                    return (new CompressImageService($file, 'certificate_images'))->compress();
+                })*/,
             ]);
     }
 

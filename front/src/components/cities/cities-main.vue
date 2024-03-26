@@ -18,20 +18,18 @@ watch(() => stores.city.selectedCity, () => {
 
 const list = ref(false)
 
-function handleMouseOver() {
-  list.value = true
-}
-
-function handleMouseOut() {
+function close() {
   list.value = false
 }
 </script>
 
 <template>
   <div
+    v-click-outside="close"
+    v-scroll="close"
     class="link footnote city pointer"
-    @mouseover="handleMouseOver()"
-    @mouseout="handleMouseOut()"
+    :class="{ active: list }"
+    @click="list = !list"
   >
     <span>[</span>
     {{ stores.city.selectedCity.name }}
@@ -55,6 +53,11 @@ function handleMouseOut() {
   display: flex;
   gap: $cover-4;
   position: relative;
+  z-index: 10;
+
+  &-mobile {
+    display: none;
+  }
 
   span {
     visibility: hidden;
@@ -74,16 +77,8 @@ function handleMouseOut() {
   }
 
   &:hover {
-    color: $color-base2;
-    .arrow {
-      transform: rotate(180deg);
-      :deep(path) {
-        stroke-opacity: 1;
-      }
-    }
     span {
       visibility: visible;
-      color: $color-base2;
     }
     .drop-down {
       display: block;
@@ -107,6 +102,23 @@ function handleMouseOut() {
     @media screen and (max-width: 1024px) {
       display: flex;
     }
+  }
+}
+
+.active {
+  color: $color-base2;
+  .arrow {
+    transform: rotate(180deg);
+    :deep(path) {
+      stroke-opacity: 1;
+    }
+  }
+  span {
+    visibility: visible;
+    color: $color-base2;
+  }
+  .drop-down {
+    display: block;
   }
 }
 </style>

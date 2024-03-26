@@ -97,20 +97,15 @@ class TimeslotResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated([10, 25, 50, 100])
             ->emptyStateHeading('Слоты не обнаружены')
             ->columns([
                 TextColumn::make('scheduleQuest.quest.filial.city.name')
-                    ->label('Город')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Город'),
                 TextColumn::make('scheduleQuest.quest.filial.address')
-                    ->label('Филиал')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Филиал'),
                 TextColumn::make('scheduleQuest.quest.slug')
-                    ->label('Квест')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Квест'),
                 TextColumn::make('scheduleQuest.date')
                     ->label('Дата')
                     ->date()
@@ -125,6 +120,7 @@ class TimeslotResource extends Resource
                     ->disabled(Auth::user()->role !== Role::ADMIN),
             ])
             ->defaultSort('scheduleQuest.date')
+            ->persistSortInSession()
             ->filters([
                 BaseTrashedFilter::make()
                     ->native(false),
@@ -186,7 +182,7 @@ class TimeslotResource extends Resource
                         $indicators = [];
                         $data['city_id'] && $indicators[] = 'Город: ' . City::find($data['city_id'])->name;
                         $data['filial_id'] && $indicators[] = 'Филиал: ' . Filial::find($data['filial_id'])->address;
-                        $data['quest_id'] && $indicators[] = 'Филиал: ' . Quest::find($data['quest_id'])->slug;
+                        $data['quest_id'] && $indicators[] = 'Квест: ' . Quest::find($data['quest_id'])->slug;
                         return $indicators;
                     })
                     ->columnSpan(3)->columns(3),

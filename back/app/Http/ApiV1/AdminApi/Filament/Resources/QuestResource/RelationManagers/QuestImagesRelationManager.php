@@ -2,8 +2,8 @@
 
 namespace App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers;
 
+use App\Http\ApiV1\AdminApi\Filament\Components\BaseFileUpload;
 use App\Services\CompressImageService;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
@@ -24,7 +24,7 @@ class QuestImagesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                FileUpload::make('image')
+                BaseFileUpload::make('image')
                     ->directory('quest_images')
                     ->label('Изображение')
                     ->columnSpanFull()
@@ -34,9 +34,9 @@ class QuestImagesRelationManager extends RelationManager
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
-                    ->saveUploadedFileUsing(function ($record, $file) {
-                        return (new CompressImageService($file, 'quest_images'))->compress();
-                    }),
+                /*->saveUploadedFileUsing(function ($record, $file) {
+                    return (new CompressImageService($file, 'quest_images'))->compress();
+                })*/,
             ]);
     }
 

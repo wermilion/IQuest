@@ -18,6 +18,7 @@ const stores = setupStore('stocks')
 const slider = ref<HTMLElement | null>(null)
 const swiperOptions: SwiperOptions = {
   direction: 'vertical',
+
   slidesPerView: 1,
   spaceBetween: 500,
   speed: 850,
@@ -43,7 +44,7 @@ const swiperOptions: SwiperOptions = {
       translate: [0, 1000, 0],
     },
   },
-
+  allowTouchMove: false,
   effect: 'creative',
   modules: [Navigation, Pagination, Autoplay, EffectCreative],
 }

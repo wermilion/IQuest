@@ -75,12 +75,11 @@ const list = ref(false)
 
 function handleMouseOver(index: number) {
   if (index === 1)
-    list.value = true
+    list.value = !list.value
 }
 
-function handleMouseOut(index: number) {
-  if (index === 1)
-    list.value = false
+function close() {
+  list.value = false
 }
 </script>
 
@@ -90,13 +89,19 @@ function handleMouseOut(index: number) {
       <router-link to="/">
         <Logo />
       </router-link>
-      <div class="header-links">
+      <div
+        v-click-outside="close"
+        v-scroll="close"
+        class="header-links"
+      >
         <template v-for="(link, index) in links">
           <router-link
-            v-if="stores.holidaysList.holidaysList.length || index !== 1" :key="link.name" :to="link.link"
+            v-if="stores.holidaysList.holidaysList.length || index !== 1"
+            :key="link.name"
+            :class="{ active: list && index === 1 }"
+            :to="link.link"
             class="footnote"
-            @mouseover="handleMouseOver(index)"
-            @mouseout="handleMouseOut(index)"
+            @click="handleMouseOver(index)"
           >
             <div
               class="link" :class="{
@@ -384,22 +389,6 @@ function handleMouseOut(index: number) {
     }
   }
 
-  &:hover {
-    color: $color-base2;
-
-    .arrow {
-      transform: rotate(180deg);
-
-      :deep(path) {
-        stroke-opacity: 1;
-      }
-    }
-
-    span {
-      color: $color-base2;
-    }
-  }
-
   &-burger {
     flex-direction: column;
     justify-content: flex-end;
@@ -408,7 +397,23 @@ function handleMouseOut(index: number) {
   }
 }
 
-path {
-  stroke: $color-opacity06;
+.active {
+  .link {
+    color: $color-base2;
+  }
+
+  .arrow {
+    transform: rotate(180deg);
+    :deep(path) {
+      stroke-opacity: 1;
+    }
+  }
+  span {
+    visibility: visible;
+    color: $color-base2;
+  }
+  .drop-down {
+    display: block;
+  }
 }
 </style>

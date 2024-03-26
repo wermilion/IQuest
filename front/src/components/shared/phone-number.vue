@@ -16,6 +16,7 @@ const phoneNumber = ref({
 
 watch(() => store.getPhone, () => {
   phoneNumber.value.text = store.getPhone
+  phoneNumber.value.link = `tel:${store.getPhone}`
 })
 </script>
 

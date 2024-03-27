@@ -4,13 +4,12 @@ namespace App\Http\ApiV1\AdminApi\Filament\Resources;
 
 use App\Domain\Sales\Models\Sale;
 use App\Domain\Users\Enums\Role;
-use App\Http\ApiV1\AdminApi\Filament\Components\BaseFileUpload;
 use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\CreateSale;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\EditSale;
 use App\Http\ApiV1\AdminApi\Filament\Resources\SaleResource\Pages\ListSales;
-use App\Services\CompressImageService;
 use Auth;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -66,8 +65,8 @@ class SaleResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'max' => 'Поле ":attribute" должно содержать не более :max символов.',
                     ]),
-                BaseFileUpload::make('front_image')
-                    ->directory('sales')
+                FileUpload::make('front_image')
+                    ->disk('sales')
                     ->label('Переднее изображение')
                     ->columnSpanFull()
                     ->image()
@@ -77,11 +76,12 @@ class SaleResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
                     ])
-                    /*->saveUploadedFileUsing(function ($record, $file) {
-                        return (new CompressImageService($file, 'sales'))->compress();
-                    })*/,
-                BaseFileUpload::make('back_image')
-                    ->directory('sales')
+                    ->maxSize(2048)
+                /*->saveUploadedFileUsing(function ($record, $file) {
+                    return (new CompressImageService($file, 'sales'))->compress();
+                })*/,
+                FileUpload::make('back_image')
+                    ->disk('sales')
                     ->label('Заднее изображение')
                     ->columnSpanFull()
                     ->image()
@@ -91,6 +91,7 @@ class SaleResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
                     ])
+                    ->maxSize(2048)
                 /*->saveUploadedFileUsing(function ($record, $file) {
                     return (new CompressImageService($file, 'sales'))->compress();
                 })*/,

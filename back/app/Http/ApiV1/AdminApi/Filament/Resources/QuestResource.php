@@ -204,6 +204,7 @@ class QuestResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'image' => 'Поле ":attribute" должно быть изображением.',
                     ])
+                    ->maxSize(2048)
                 /*->saveUploadedFileUsing(function ($record, $file) {
                     return (new CompressImageService($file, 'quest_covers'))->compress();
                 })*/,

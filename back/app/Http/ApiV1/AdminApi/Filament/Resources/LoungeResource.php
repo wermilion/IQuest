@@ -6,7 +6,6 @@ use App\Domain\Locations\Models\City;
 use App\Domain\Locations\Models\Filial;
 use App\Domain\Lounges\Models\Lounge;
 use App\Domain\Users\Enums\Role;
-use App\Http\ApiV1\AdminApi\Filament\Components\BaseFileUpload;
 use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\CreateLounge;
@@ -14,8 +13,8 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\EditLounge;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ListLounges;
 use App\Http\ApiV1\AdminApi\Filament\Resources\LoungeResource\Pages\ViewLounge;
 use App\Rules\PriceRule;
-use App\Services\CompressImageService;
 use Auth;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -128,8 +127,8 @@ class LoungeResource extends Resource
                         'required' => 'Поле ":attribute" обязательное.',
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
                     ]),
-                BaseFileUpload::make('cover')
-                    ->directory('lounge_covers')
+                FileUpload::make('cover')
+                    ->disk('lounge_covers')
                     ->label('Изображение')
                     ->columnSpanFull()
                     ->image()
@@ -137,6 +136,7 @@ class LoungeResource extends Resource
                     ->validationMessages([
                         'required' => 'Поле ":attribute" обязательное.',
                     ])
+                    ->maxSize(2048)
                 /*->saveUploadedFileUsing(function ($record, $file) {
                     return (new CompressImageService($file, 'lounge_covers'))->compress();
                 })*/,

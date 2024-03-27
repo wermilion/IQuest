@@ -11,22 +11,24 @@ const email = ref({
 
 watch(() => store.getEmail, () => {
   email.value.text = store.getEmail
+  email.value.link = `mailto:${store.getEmail}`
 })
 </script>
 
 <template>
-  <span v-if="store.getEmail" class="body">
+  <a v-if="store.getEmail" :href="email.link" class="body">
     <img v-if="isActiveImg === false" :src="`/icons/share/${email.img}.svg`" :alt="email.img">
-    <a :href="email.link">{{ email.text }}</a>
-  </span>
+    <span>{{ email.text }}</span>
+  </a>
 </template>
 
 <style scoped lang="scss">
-  span {
+  a {
   display: flex;
   align-items: center;
   gap: 8px;
-  a {
+
+  span {
     color: $color-base2;
   }
 }

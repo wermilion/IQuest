@@ -76,6 +76,8 @@ const list = ref(false)
 function handleMouseOver(index: number) {
   if (index === 1)
     list.value = !list.value
+  else
+    list.value = false
 }
 
 function close() {

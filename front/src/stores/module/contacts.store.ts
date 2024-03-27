@@ -15,12 +15,12 @@ export const useContactStore = defineStore('contact', {
   getters: {
     getPhone: (state) => {
       const phone = state.social.find(item => item.type.name === 'Номер телефона')
-      return phone ? phone.value : null
+      return phone?.value || null
     },
 
     getEmail: (state) => {
       const email = state.social.find(item => item.type.name === 'Почта')
-      return email ? email.value : null
+      return email?.value || null
     },
 
     getSocial: (state) => {

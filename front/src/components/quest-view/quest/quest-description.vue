@@ -1,27 +1,57 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import Arrow from '#/assets/svg/shared/arrow=default.svg?component'
 
-defineProps<{ description: string }>()
+const props = defineProps<{ description: string }>()
+const MAX_CHARS_TO_SHOW = 170
 
 const isExpanded = ref(false)
+const desc = ref(`${props.description.slice(0, MAX_CHARS_TO_SHOW)}...`)
 
 function toggleExpand() {
   isExpanded.value = !isExpanded.value
+
+  if (isExpanded.value) {
+    desc.value = props.description
+  }
+  else {
+    setTimeout (() => {
+      desc.value = `${props.description.slice(0, MAX_CHARS_TO_SHOW)}...`
+    }, 250)
+  }
 }
+
+const truncatedDescription = computed(() => {
+  if (props.description.length <= MAX_CHARS_TO_SHOW)
+    return props.description
+
+  return desc.value
+})
+
+const fullDescription = computed(() => {
+  return isExpanded.value ? props.description : truncatedDescription.value
+})
+
+const expandButtonText = computed(() => {
+  return isExpanded.value ? 'Свернуть' : 'Равернуть'
+})
+
+const shouldTruncate = computed(() => {
+  return props.description.length >= MAX_CHARS_TO_SHOW
+})
 </script>
 
 <template>
   <div class="description">
     <span class="bodyBold">Описание</span>
     <div class="description-content">
-      <p class="footnote" :class="{ extend: isExpanded }" v-html="description" />
+      <p class="footnote" :class="{ extend: isExpanded }" v-html="fullDescription" />
       <div
+        v-if="shouldTruncate"
         class="read-more footnote pointer"
         :class="{ active: isExpanded }"
         @click="toggleExpand"
       >
-        {{ isExpanded ? 'Свернуть' : 'Читать дальше' }}
+        {{ expandButtonText }}
         <Arrow />
       </div>
     </div>
@@ -29,20 +59,6 @@ function toggleExpand() {
 </template>
 
 <style scoped lang="scss">
-.animate-text {
-  animation: textChange 0.25s ease-in-out;
-}
-
-@keyframes textChange {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
 .read-more {
   width: max-content;
   display: flex;

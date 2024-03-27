@@ -56,6 +56,13 @@ return [
             'throw' => false,
         ],
 
+        'quest_covers' => [
+            'driver' => 'local',
+            'root' => public_path('cp/images/quest_covers'),
+            'url' => env('APP_URL').'/cp/images/quest_covers',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
     ],
 
     /*

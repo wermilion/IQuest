@@ -7,7 +7,6 @@ use App\Domain\Locations\Models\Filial;
 use App\Domain\Quests\Enums\LevelEnum;
 use App\Domain\Quests\Models\Quest;
 use App\Domain\Users\Enums\Role;
-use App\Http\ApiV1\AdminApi\Filament\Components\BaseFileUpload;
 use App\Http\ApiV1\AdminApi\Filament\Components\BaseSelect;
 use App\Http\ApiV1\AdminApi\Filament\Filters\BaseTrashedFilter;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\Pages\CreateQuest;
@@ -18,8 +17,8 @@ use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\Qu
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekdaysSlotsRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Resources\QuestResource\RelationManagers\QuestWeekendSlotsRelationManager;
 use App\Http\ApiV1\AdminApi\Filament\Rules\LatinRule;
-use App\Services\CompressImageService;
 use Auth;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -194,8 +193,8 @@ class QuestResource extends Resource
                         'min' => 'Поле ":attribute" должно быть больше или равно :min.',
                         'max' => 'Поле ":attribute" должно быть меньше или равно :max.'
                     ]),
-                BaseFileUpload::make('cover')
-                    ->directory('quest_covers')
+                FileUpload::make('cover')
+                    ->disk('quest_covers')
                     ->label('Обложка')
                     ->columnSpanFull()
                     ->image()

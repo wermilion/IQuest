@@ -19,7 +19,7 @@ class QuestsResource extends BaseJsonResource
             'name' => $this->name,
             'short_description' => $this->short_description,
             'description' => $this->description,
-            'cover' => $this->cover ? config('app.url') . Storage::url($this->cover) : null,
+            'cover' => Storage::disk('quest_covers')->url($this->cover),
             'min_people' => $this->min_people,
             'max_people' => $this->max_people,
             'duration' => $this->duration,

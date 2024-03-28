@@ -55,6 +55,7 @@ class QuestImagesRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
                     ->label('Изображение')
+                    ->disk('quest_images')
                     ->width(200)
                     ->height(200),
             ])

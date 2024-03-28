@@ -58,40 +58,40 @@ return [
 
         'quest_covers' => [
             'driver' => 'local',
-            'root' => public_path('cp/images/quest_covers'),
-            'url' => env('APP_URL').'/cp/images/quest_covers',
+            'root' => storage_path('app/public/quest_covers'),
+            'url' => env('APP_URL') . '/storage/quest_covers',
             'visibility' => 'public',
             'throw' => false,
         ],
 
         'certificate_images' => [
             'driver' => 'local',
-            'root' => public_path('cp/images/certificate_images'),
-            'url' => env('APP_URL').'/cp/images/certificate_images',
+            'root' => storage_path('app/public/certificate_images'),
+            'url' => env('APP_URL') . '/storage/certificate_images',
             'visibility' => 'public',
             'throw' => false,
         ],
 
         'lounge_covers' => [
             'driver' => 'local',
-            'root' => public_path('cp/images/lounge_covers'),
-            'url' => env('APP_URL').'/cp/images/lounge_covers',
+            'root' => storage_path('app/public/lounge_covers'),
+            'url' => env('APP_URL') . '/storage/lounge_covers',
             'visibility' => 'public',
             'throw' => false,
         ],
 
         'quest_images' => [
             'driver' => 'local',
-            'root' => public_path('cp/images/quest_images'),
-            'url' => env('APP_URL').'/cp/images/quest_images',
+            'root' => storage_path('app/public/quest_images'),
+            'url' => env('APP_URL') . '/storage/quest_images',
             'visibility' => 'public',
             'throw' => false,
         ],
 
         'sales' => [
             'driver' => 'local',
-            'root' => public_path('cp/images/sales'),
-            'url' => env('APP_URL').'/cp/images/sales',
+            'root' => storage_path('app/public/sales'),
+            'url' => env('APP_URL') . '/storage/sales',
             'visibility' => 'public',
             'throw' => false,
         ],
